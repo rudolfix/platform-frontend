@@ -1,5 +1,5 @@
 import { KycBankVerifiedBankAccount } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import bankIcon from "../../../assets/img/bank-transfer/bank-icon.svg";

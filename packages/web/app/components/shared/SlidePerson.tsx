@@ -1,6 +1,6 @@
 import { ISrcSet } from "@neufund/design-system";
 import { TSocialChannelsType } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { ResponsiveImage } from "./ResponsiveImage";

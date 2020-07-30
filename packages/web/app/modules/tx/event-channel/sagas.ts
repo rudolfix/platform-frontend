@@ -1,6 +1,6 @@
 import { buffers, call, channel, Channel, delay, put, race, take } from "@neufund/sagas";
 import { secondsToMs } from "@neufund/shared-utils";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs } from "../../../lib/api/users-tx/interfaces";

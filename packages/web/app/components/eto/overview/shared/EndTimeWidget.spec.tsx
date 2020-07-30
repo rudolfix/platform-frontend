@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import * as sinon from "sinon";
 

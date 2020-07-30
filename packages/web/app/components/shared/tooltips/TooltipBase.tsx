@@ -1,5 +1,5 @@
 import { ILogger, noopLogger } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { Tooltip, TooltipProps } from "reactstrap";
 

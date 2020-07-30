@@ -3,11 +3,11 @@ import {
   fork,
   neuCall,
   neuTakeEvery,
-  neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   take,
+  takeLatestUntil,
 } from "@neufund/sagas";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import promiseAll from "promise-all";
@@ -107,7 +107,7 @@ type TSetupSagasConfig = {
 export function setupWalletSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   return function* walletSagas(): any {
     yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
-    yield neuTakeLatestUntil(
+    yield takeLatestUntil(
       authModuleAPI.actions.setUser,
       walletActions.stopWalletBalanceWatcher,
       walletBalanceWatcher,

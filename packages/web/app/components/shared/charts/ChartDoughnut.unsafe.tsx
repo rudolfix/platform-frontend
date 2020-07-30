@@ -1,4 +1,4 @@
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { compose } from "redux";

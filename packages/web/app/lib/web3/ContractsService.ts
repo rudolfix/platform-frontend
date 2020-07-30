@@ -2,7 +2,7 @@ import { IContractsService, ILogger } from "@neufund/shared-modules";
 import { EthereumAddress, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { inject, injectable } from "inversify";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";

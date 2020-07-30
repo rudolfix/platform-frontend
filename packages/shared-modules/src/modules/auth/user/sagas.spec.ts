@@ -3,7 +3,7 @@ import { toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { bootstrapModule, createAndSignLightWalletWithKeyPair, createUser } from "../../../tests";
 import { TLibSymbolType } from "../../../types";
 import { createLibSymbol } from "../../../utils";
-import { IEthManager, ISingleKeyStorage, setupCoreModule } from "../../core/module";
+import { IEthManager, ISingleKeyStorage } from "../../core/module";
 import { EUserType, EWalletSubType, EWalletType } from "../lib/users/interfaces";
 import { authModuleAPI, setupAuthModule } from "../module";
 import { loadOrCreateUser } from "./sagas";
@@ -15,26 +15,31 @@ describe("Auth - User - Integration Test", () => {
     // TODO timeout bad, replace with mocked services
     this.timeout(10000);
 
-    const jwtStorageSymbol = createLibSymbol<ISingleKeyStorage<string>>("jwtStorage");
-    const ethManagerSymbol = createLibSymbol<IEthManager>("ethStorage");
+    const bootstrapAuthModule = async ({ shouldCreateUser }: { shouldCreateUser: boolean }) => {
+      const jwtStorageSymbol = createLibSymbol<ISingleKeyStorage<string>>("jwtStorage");
+      const ethManagerSymbol = createLibSymbol<IEthManager>("ethStorage");
 
-    const getMockJwtStorage = (jwt: string) => ({
-      get: () => Promise.resolve(jwt),
-      set: () => {
-        throw new Error("Not implemented");
-      },
-      clear: () => {
-        throw new Error("Not implemented");
-      },
-    });
+      const getMockJwtStorage = (jwt: string) => ({
+        get: () => Promise.resolve(jwt),
+        set: () => {
+          throw new Error("Not implemented");
+        },
+        clear: () => {
+          throw new Error("Not implemented");
+        },
+      });
 
-    it("should create a new user with the correct data", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
+      const { expectSaga, container } = bootstrapModule(
+        setupAuthModule({
+          backendRootUrl: BACKEND_BASE_URL,
+          jwtStorageSymbol,
+          ethManagerSymbol,
+          jwtTimingThreshold: 100,
+          jwtRefreshThreshold: 100,
+        }),
+      );
 
-      const { jwt, salt, address } = await createAndSignLightWalletWithKeyPair(
+      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
         BACKEND_BASE_URL,
         [],
       );
@@ -46,6 +51,18 @@ describe("Auth - User - Integration Test", () => {
       const apiUserService = container.get<
         TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
       >(authModuleAPI.symbols.apiUserService);
+
+      if (shouldCreateUser) {
+        await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
+      }
+
+      return { expectSaga, salt, address, apiUserService, email, privateKey };
+    };
+
+    it("should create a new user with the correct data", async () => {
+      const { expectSaga, salt, address, apiUserService } = await bootstrapAuthModule({
+        shouldCreateUser: false,
+      });
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -80,21 +97,9 @@ describe("Auth - User - Integration Test", () => {
     });
 
     it("will not update the user with the correct data", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
-
-      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
-        BACKEND_BASE_URL,
-        [],
-      );
-
-      container
-        .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
-        .toConstantValue(getMockJwtStorage(jwt));
-
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
+      const { expectSaga, salt, address, apiUserService, email } = await bootstrapAuthModule({
+        shouldCreateUser: true,
+      });
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -102,10 +107,6 @@ describe("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-
-      const apiUserService = container.get<
-        TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
-      >(authModuleAPI.symbols.apiUserService);
 
       await expectSaga(loadOrCreateUser, { userType: EUserType.INVESTOR, walletMetadata })
         .not.call.fn(apiUserService.createAccount)
@@ -126,21 +127,9 @@ describe("Auth - User - Integration Test", () => {
     });
 
     it("will update the user wallet type", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
-
-      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
-        BACKEND_BASE_URL,
-        [],
-      );
-
-      container
-        .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
-        .toConstantValue(getMockJwtStorage(jwt));
-
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
+      const { expectSaga, salt, address, apiUserService, email } = await bootstrapAuthModule({
+        shouldCreateUser: true,
+      });
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -148,10 +137,6 @@ describe("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-
-      const apiUserService = container.get<
-        TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
-      >(authModuleAPI.symbols.apiUserService);
 
       const currentUser = await apiUserService.me();
 
@@ -191,25 +176,9 @@ describe("Auth - User - Integration Test", () => {
     });
 
     it("should update the user with the correct data when a new email is entered on recovery", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
-
-      const newEmail = "mommy@love.com";
-      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
-        BACKEND_BASE_URL,
-        [],
-      );
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
-
-      container
-        .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
-        .toConstantValue(getMockJwtStorage(jwt));
-
-      const apiUserService = container.get<
-        TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
-      >(authModuleAPI.symbols.apiUserService);
+      const { expectSaga, salt, address, apiUserService, email } = await bootstrapAuthModule({
+        shouldCreateUser: true,
+      });
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -217,6 +186,8 @@ describe("Auth - User - Integration Test", () => {
         salt,
         email,
       };
+
+      const newEmail = "mommy@love.com";
 
       await expectSaga(loadOrCreateUser, {
         userType: EUserType.INVESTOR,
@@ -254,25 +225,9 @@ describe("Auth - User - Integration Test", () => {
     });
 
     it("will update the user when a new email is entered equals verified email", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
-
-      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
-        BACKEND_BASE_URL,
-        [],
-      );
-
-      container
-        .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
-        .toConstantValue(getMockJwtStorage(jwt));
-
-      const apiUserService = container.get<
-        TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
-      >(authModuleAPI.symbols.apiUserService);
-
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
+      const { expectSaga, salt, address, apiUserService, email } = await bootstrapAuthModule({
+        shouldCreateUser: true,
+      });
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -316,25 +271,9 @@ describe("Auth - User - Integration Test", () => {
     });
 
     it("will update the user when a new email is entered similar to unverified email", async () => {
-      const { expectSaga, container } = bootstrapModule([
-        setupCoreModule({ backendRootUrl: BACKEND_BASE_URL }),
-        setupAuthModule({ jwtStorageSymbol, ethManagerSymbol }),
-      ]);
-
-      const { email, jwt, salt, address, privateKey } = await createAndSignLightWalletWithKeyPair(
-        BACKEND_BASE_URL,
-        [],
-      );
-
-      container
-        .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
-        .toConstantValue(getMockJwtStorage(jwt));
-
-      const apiUserService = container.get<
-        TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
-      >(authModuleAPI.symbols.apiUserService);
-
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
+      const { expectSaga, salt, address, apiUserService, email } = await bootstrapAuthModule({
+        shouldCreateUser: true,
+      });
 
       const newEmail = "mommy2@love.test";
       const walletMetadata = {

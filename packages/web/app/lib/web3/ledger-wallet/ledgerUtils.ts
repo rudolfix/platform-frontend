@@ -3,8 +3,8 @@ import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
 import { promisify } from "@neufund/shared-utils";
 import * as semver from "semver";
-import * as Web3 from "web3";
-import * as Web3ProviderEngine from "web3-provider-engine";
+import Web3 from "web3";
+import Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 

@@ -4,13 +4,13 @@ import {
   fork,
   neuCall,
   neuTakeEvery,
-  neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   StringableActionCreator,
   TActionFromCreator,
   take,
+  takeLatestUntil,
 } from "@neufund/sagas";
 
 import { createMessage, TMessage } from "../../messages";
@@ -117,7 +117,6 @@ export function* deleteMyPledge(
 }
 
 export function* watchBookBuildingStats(
-  _: TGlobalDependencies,
   action: TActionFromCreator<
     typeof bookbuildingActions,
     typeof bookbuildingActions.bookBuildingStartWatch
@@ -303,10 +302,9 @@ let ensurePermissionsArePresentAndRunEffect: TEnsurePermissionsArePresentAndRunE
 export function setupBookbuildingSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   ensurePermissionsArePresentAndRunEffect = config.ensurePermissionsArePresentAndRunEffect;
 
-  return function* bookBuildingSagas(): Generator<any, any, any> {
+  return function* bookBuildingSagas(): SagaGenerator<void> {
     yield fork(neuTakeEvery, bookbuildingActions.loadBookBuildingStats, loadBookBuildingStats);
-    yield fork(
-      neuTakeLatestUntil,
+    yield* takeLatestUntil(
       bookbuildingActions.bookBuildingStartWatch,
       bookbuildingActions.bookBuildingStopWatch,
       watchBookBuildingStats,

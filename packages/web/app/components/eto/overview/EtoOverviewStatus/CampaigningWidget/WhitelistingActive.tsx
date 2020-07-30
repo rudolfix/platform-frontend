@@ -1,6 +1,6 @@
 import { WholeEur } from "@neufund/design-system";
 import { IPledge } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 

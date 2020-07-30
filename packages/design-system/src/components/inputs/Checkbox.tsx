@@ -1,5 +1,5 @@
 import { TDataTestId } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 

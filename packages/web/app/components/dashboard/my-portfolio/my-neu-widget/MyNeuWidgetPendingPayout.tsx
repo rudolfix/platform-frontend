@@ -1,5 +1,6 @@
 import { ButtonInline, Eur } from "@neufund/design-system";
-import * as cn from "classnames";
+import { getTomorrowsDate } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -7,7 +8,6 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import { ButtonLink } from "../../../shared/buttons";
 import { InlineIcon } from "../../../shared/icons";
 import { TimeLeftWithSeconds } from "../../../shared/TimeLeft.unsafe";
-import { getTomorrowsDate } from "../../../shared/utils";
 
 import warningIcon from "../../../../assets/img/inline_icons/info.svg";
 import * as styles from "./MyNeuWidget.module.scss";

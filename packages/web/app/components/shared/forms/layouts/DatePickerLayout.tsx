@@ -1,4 +1,5 @@
-import * as moment from "moment";
+import { utcTime } from "@neufund/shared-utils";
+import moment from "moment";
 import * as React from "react";
 import * as DateTime from "react-datetime";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -6,7 +7,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { TDataTestId } from "../../../../types";
 import { InlineIcon } from "../../icons/index";
 import { TimeLeft } from "../../TimeLeft.unsafe";
-import { utcTime } from "../../utils";
 
 // tslint:disable-next-line:no-submodule-imports
 import "react-datetime/css/react-datetime.css";

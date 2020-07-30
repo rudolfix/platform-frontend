@@ -7,9 +7,10 @@ import {
   ERoundingMode,
   formatNumber,
   selectDecimalPlaces,
+  toFixedPrecision,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -30,7 +31,6 @@ import { Form, FormLabel, FormMaskedNumberInput } from "../../../shared/forms/in
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
-import { formatEuroValueToString } from "../../../shared/utils";
 import { VerifiedBankAccount } from "../../../wallet/bank-account/VerifiedBankAccount";
 import { CalculatedFee } from "./CalculatedFee";
 import { TotalRedeemed } from "./TotalRedeemed";
@@ -56,6 +56,17 @@ type TComponentProps = IStateProps & IDispatchProps;
 export interface IReedemData {
   amount: string | undefined;
 }
+
+const formatEuroValueToString = (value: string) =>
+  toFixedPrecision({
+    value: value,
+    roundingMode: ERoundingMode.DOWN,
+    inputFormat: ENumberInputFormat.ULPS,
+    decimalPlaces: selectDecimalPlaces(
+      ECurrency.EUR_TOKEN,
+      ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+    ),
+  });
 
 const getValidators = (minAmount: string, neuroAmount: string) =>
   YupTS.object({

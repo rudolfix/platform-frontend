@@ -3,8 +3,8 @@ import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared-utils";
 import { IConnector, ISessionStatus } from "@walletconnect/types";
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";
-import * as Web3 from "web3";
-import * as Web3ProviderEngine from "web3-provider-engine";
+import Web3 from "web3";
+import Web3ProviderEngine from "web3-provider-engine";
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { WC_DEFAULT_SESSION_REQUEST_TIMEOUT } from "../../../config/constants";

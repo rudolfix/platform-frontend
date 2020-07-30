@@ -1,7 +1,7 @@
 import { Button, EButtonLayout, Eur, Table } from "@neufund/design-system";
 import { ITokenDisbursal } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

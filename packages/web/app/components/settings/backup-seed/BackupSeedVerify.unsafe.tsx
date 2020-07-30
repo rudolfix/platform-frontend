@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EIconPosition, VirtualizedSelect } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import { range } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

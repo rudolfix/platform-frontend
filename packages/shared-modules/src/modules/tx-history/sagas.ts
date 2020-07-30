@@ -4,12 +4,12 @@ import {
   delay,
   fork,
   neuCall,
-  neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   take,
   takeLatest,
+  takeLatestUntil,
 } from "@neufund/sagas";
 import {
   ECurrency,
@@ -494,7 +494,7 @@ export function setupTXHistorySagas(config: TSetupSagasConfig): () => SagaGenera
     yield takeLatest(txHistoryActions.loadNextTransactions, loadTransactionsHistoryNext);
 
     yield fork(
-      neuTakeLatestUntil,
+      takeLatestUntil,
       txHistoryActions.startWatchingForNewTransactions,
       [txHistoryActions.stopWatchingForNewTransactions],
       watchTransactions,

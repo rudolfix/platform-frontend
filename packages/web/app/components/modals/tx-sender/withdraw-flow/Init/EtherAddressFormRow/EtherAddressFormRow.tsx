@@ -1,5 +1,5 @@
 import { YupTS } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import { FormikErrors, FormikValues } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

@@ -1,7 +1,7 @@
 import { ISrcSet } from "@neufund/design-system";
 import { EJurisdiction } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

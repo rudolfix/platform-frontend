@@ -8,7 +8,7 @@ import {
   THumanReadableFormat,
   TValueFormat,
 } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { TBigNumberVariants } from "../../../lib/web3/types";

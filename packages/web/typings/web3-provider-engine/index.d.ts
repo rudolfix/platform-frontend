@@ -49,7 +49,7 @@ declare module "web3-provider-engine" {
 }
 
 declare module "web3-provider-engine/zero" {
-  import * as Web3ProviderEngine from "web3-provider-engine";
+  import Web3ProviderEngine from "web3-provider-engine";
 
   function ZeroClientProvider(opts: Web3ProviderEngine.ProviderOpts): Web3ProviderEngine;
 
@@ -67,7 +67,7 @@ declare module "web3-provider-engine/subproviders/filters" {
 }
 
 declare module "web3-provider-engine/subproviders/hooked-wallet" {
-  import * as Web3 from "web3";
+  import Web3 from "web3";
 
   class HookedWalletSubprovider {
     constructor(opts?: HookedWalletSubprovider.Options);
@@ -109,7 +109,7 @@ declare module "web3-provider-engine/subproviders/hooked-wallet" {
 }
 
 declare module "web3-provider-engine/subproviders/provider" {
-  import * as Web3 from "web3";
+  import Web3 from "web3";
 
   class ProviderSubprovider {
     constructor(provider: Web3.Provider);

@@ -1,5 +1,5 @@
 import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";

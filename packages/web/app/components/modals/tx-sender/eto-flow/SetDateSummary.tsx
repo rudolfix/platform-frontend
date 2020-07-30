@@ -9,7 +9,7 @@ import {
 } from "@neufund/shared-modules";
 import { nonNullable, withParams } from "@neufund/shared-utils";
 import { find } from "lodash";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";

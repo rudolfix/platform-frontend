@@ -1,6 +1,6 @@
 import { Button, EButtonLayout, Eth, Neu, Table, TokenIcon } from "@neufund/design-system";
 import { trimAddress } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

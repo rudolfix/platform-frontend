@@ -26,6 +26,7 @@
     "@types/mocha": "^5.2.6",
     "@types/sinon": "^5.0.5",
     "@types/sinon-chai": "^3.2.0",
+    "@types/jstimezonedetect": "^1.0.1",
     "bignumber.js": "^5.0.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -39,6 +40,7 @@
     "recompose": "^0.30.0",
     "sinon": "^7.3.1",
     "sinon-chai": "^3.2.0",
+    "moment": "^2.21.0",
     "ts-node": "6.2.0",
     "tslib": "^1.10.0",
     "tslint": "^5.20.1",
@@ -51,8 +53,11 @@
     "react-intl": "^2.4.0",
     "react-intl-phraseapp": "^0.2.4",
     "lodash": "^4.17.11",
+    "moment": "^2.21.0",
     "recompose": "^0.30.0",
     "tslib": "^1.10.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "jstimezonedetect": "^1.0.6"
+  }
 }

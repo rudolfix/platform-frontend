@@ -1,6 +1,6 @@
 import { EKycRequestType, IKycFileInfo } from "@neufund/shared-modules";
 import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 

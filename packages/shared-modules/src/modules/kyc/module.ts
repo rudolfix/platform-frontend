@@ -8,6 +8,7 @@ import { loadBankAccountDetails, loadKycRequestData, loadKycStatus, setupKycSaga
 import * as selectors from "./selectors";
 import { symbols } from "./symbols";
 import * as utils from "./utils";
+
 export { KycFlowMessage, EKycRequestStatusTranslation } from "./messages";
 export * from "./lib/http/kyc-api/KycApi.interfaces";
 export * from "./types";
@@ -16,12 +17,22 @@ const MODULE_ID = generateSharedModuleId("kyc");
 
 type Config = Parameters<typeof setupKycSagas>[0];
 
-const setupKycModule = (config: Config) => {
+const setupKycModule = ({
+  displayErrorModalSaga,
+  ensurePermissionsArePresentAndRunEffect,
+  waitUntilSmartContractsAreInitialized,
+}: Config) => {
   const module = {
     id: MODULE_ID,
     api: kycApi,
     libs: [setupContainerModule()],
-    sagas: [setupKycSagas(config)],
+    sagas: [
+      setupKycSagas({
+        waitUntilSmartContractsAreInitialized,
+        displayErrorModalSaga,
+        ensurePermissionsArePresentAndRunEffect,
+      }),
+    ],
     reducerMap: kycReducerMap,
   };
 

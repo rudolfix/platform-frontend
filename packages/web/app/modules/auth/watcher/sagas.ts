@@ -90,7 +90,7 @@ export function* watchRedirectChannel(): Generator<any, any, any> {
 export function* watchTimeoutActions(): Generator<any, any, any> {
   yield race({
     userTimeout: take(actions.auth.userActivityTimeout),
-    jwtTimeout: take(actions.auth.jwtTimeout),
+    jwtTimeout: take(authModuleAPI.actions.jwtTimeout),
   });
   yield put(actions.auth.logout({ logoutType: ELogoutReason.SESSION_TIMEOUT }));
 }

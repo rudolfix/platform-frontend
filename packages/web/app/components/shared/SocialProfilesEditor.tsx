@@ -1,5 +1,5 @@
 import { TSocialChannelsType } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import { connect, FieldArray, getIn } from "formik";
 import { get, isEqual } from "lodash/fp";
 import * as React from "react";

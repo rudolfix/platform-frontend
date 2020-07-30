@@ -74,7 +74,7 @@ const setupInitModule = (config: TConfig) => {
       waitUntilSmartContractsAreInitialized,
     }),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
-    ...setupAuthModule(),
+    ...setupAuthModule(config.backendRootUrl),
     setupEtoModule(),
     setupBookbuildingModule({
       ensurePermissionsArePresentAndRunEffect,

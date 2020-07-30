@@ -5,7 +5,7 @@ import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { ICreateVault } from "./LightWallet";
 

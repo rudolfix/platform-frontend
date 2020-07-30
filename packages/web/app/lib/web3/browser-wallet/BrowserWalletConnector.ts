@@ -1,7 +1,7 @@
 import { EWalletSubType } from "@neufund/shared-modules";
 import { EthereumNetworkId } from "@neufund/shared-utils";
 import { injectable } from "inversify";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { Web3Adapter } from "../Web3Adapter";
 import {

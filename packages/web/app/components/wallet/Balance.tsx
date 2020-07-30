@@ -1,6 +1,6 @@
 import { Button, EButtonLayout, EButtonSize, Eur } from "@neufund/design-system";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { EBalanceActionLevel, TBalance, TBalanceAction } from "../../modules/wallet-view/types";

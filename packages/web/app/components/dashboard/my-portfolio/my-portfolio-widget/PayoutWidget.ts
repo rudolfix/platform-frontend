@@ -1,5 +1,5 @@
 import { investorPortfolioModuleApi, ITokenDisbursal } from "@neufund/shared-modules";
-import * as moment from "moment";
+import moment from "moment";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { PAYOUT_POLLING_DELAY } from "../../../../config/constants";

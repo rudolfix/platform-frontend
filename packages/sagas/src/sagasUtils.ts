@@ -115,7 +115,7 @@ export function* neuTakeEveryUntil(
 /**
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
-export function* neuTakeLatestUntil<
+export function* takeLatestUntil<
   P extends ActionPattern,
   Fn extends (action: ActionMatchingPattern<P>, ...args: any[]) => any
 >(

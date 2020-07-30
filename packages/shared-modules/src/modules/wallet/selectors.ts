@@ -6,7 +6,7 @@ import {
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { selectEtherPriceEur, selectNeuPriceEur } from "../token-price/selectors";
 import { TWalletModuleState } from "./module";

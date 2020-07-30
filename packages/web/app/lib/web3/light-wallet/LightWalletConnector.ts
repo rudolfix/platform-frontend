@@ -2,9 +2,9 @@ import { EWalletType, ILogger } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
-import * as Web3 from "web3";
+import Web3 from "web3";
 // tslint:disable-next-line
-import * as Web3ProviderEngine from "web3-provider-engine";
+import Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
 // tslint:disable-next-line

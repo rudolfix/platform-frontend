@@ -1,6 +1,6 @@
 import { InlineIcon } from "@neufund/design-system";
 import { ENumberOutputFormat, makeTid } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

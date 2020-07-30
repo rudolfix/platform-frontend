@@ -1,6 +1,6 @@
 import { ButtonInline } from "@neufund/design-system";
 import { TCompanyEtoData, TEtoWithCompanyAndContract } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

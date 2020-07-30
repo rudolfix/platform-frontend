@@ -1,6 +1,6 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
-import { DAY } from "@neufund/shared-utils";
-import * as moment from "moment";
+import { calculateTimeLeft, DAY } from "@neufund/shared-utils";
+import moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
@@ -30,7 +30,6 @@ import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPane
 import { DatePickerLayout, FormError } from "../../shared/forms";
 import { TimeLeft } from "../../shared/TimeLeft.unsafe";
 import { TimeLeftWithUTC } from "../../shared/TimeLeftWithUTC";
-import { calculateTimeLeft } from "../../shared/utils";
 
 import * as styles from "./ChooseEtoStartDateWidget.module.scss";
 

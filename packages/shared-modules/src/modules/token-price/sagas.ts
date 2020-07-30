@@ -2,11 +2,11 @@ import {
   call,
   delay,
   fork,
-  neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   take,
+  takeLatestUntil,
 } from "@neufund/sagas";
 import { convertFromUlps, StringableActionCreator } from "@neufund/shared-utils";
 import { isEqual } from "lodash/fp";
@@ -87,7 +87,7 @@ type TSetupSagasConfig = {
 export function setupTokenPriceSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   return function*(): SagaGenerator<void> {
     yield fork(
-      neuTakeLatestUntil,
+      takeLatestUntil,
       tokenPriceActions.watchTokenPriceStart,
       tokenPriceActions.watchTokenPriceStop,
       tokenPriceMonitor,

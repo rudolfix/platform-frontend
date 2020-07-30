@@ -6,7 +6,6 @@ import {
   toEthereumHDMnemonic,
 } from "@neufund/shared-utils";
 import { utils } from "ethers";
-import { UnsignedTransaction } from "ethers/utils";
 import { interfaces } from "inversify";
 
 import { EthModuleError } from "modules/eth/errors";
@@ -97,7 +96,7 @@ class EthWallet {
    *
    * @returns - A signed serialized transaction
    */
-  async signTransaction(transaction: UnsignedTransaction): Promise<string> {
+  async signTransaction(transaction: utils.UnsignedTransaction): Promise<string> {
     this.logger.info("Signing transaction");
 
     const rawTx = utils.serializeTransaction(transaction);

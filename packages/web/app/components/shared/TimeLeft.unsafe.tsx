@@ -1,9 +1,9 @@
-import * as moment from "moment";
+import { calculateTimeLeft, calculateTimeLeftUnits } from "@neufund/shared-utils";
+import moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps } from "../../types";
-import { calculateTimeLeft, calculateTimeLeftUnits } from "./utils";
 
 import sheep from "../../assets/img/landing/rainbowsheep.gif";
 import test_sheep from "../../assets/img/landing/test_rainbowsheep.png";

@@ -1,5 +1,5 @@
 import { invariant } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { InlineIcon } from "../icons/InlineIcon";

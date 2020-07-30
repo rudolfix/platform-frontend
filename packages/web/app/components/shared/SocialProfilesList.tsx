@@ -4,7 +4,7 @@ import {
   TSocialChannelType,
 } from "@neufund/shared-modules";
 import { RequiredNonNullable } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
 

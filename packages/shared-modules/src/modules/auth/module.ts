@@ -1,3 +1,4 @@
+import { setupCoreModule } from "../../modules/core/module";
 import { TModuleState } from "../../types";
 import { generateSharedModuleId } from "../../utils";
 import { jwtActions } from "./jwt/actions";
@@ -31,20 +32,38 @@ import * as userSelectors from "./user/selectors";
 
 const MODULE_ID = generateSharedModuleId("auth");
 
-type TModuleConfig = Parameters<typeof setupContainerModule>[0];
+type TModuleConfig = Parameters<typeof setupContainerModule>[0] &
+  Parameters<typeof setupCoreModule>[0];
 
 const reducerMap = {
   ...jwtReducerMap,
   ...userReducerMap,
 };
 
-const setupAuthModule = (config: TModuleConfig) => ({
-  id: MODULE_ID,
-  libs: [setupContainerModule(config)],
-  sagas: [authUserSagas, authJwtSagas],
-  reducerMap,
-  api: authModuleAPI,
-});
+const setupAuthModule = ({
+  jwtRefreshThreshold,
+  ethManagerSymbol,
+  backendRootUrl,
+  jwtTimingThreshold,
+  jwtStorageSymbol,
+}: TModuleConfig) => {
+  const module = {
+    id: MODULE_ID,
+    libs: [
+      setupContainerModule({
+        jwtRefreshThreshold,
+        ethManagerSymbol,
+        jwtStorageSymbol,
+        jwtTimingThreshold,
+      }),
+    ],
+    sagas: [authUserSagas, authJwtSagas],
+    reducerMap,
+    api: authModuleAPI,
+  };
+
+  return [setupCoreModule({ backendRootUrl }), module];
+};
 
 const authModuleAPI = {
   actions: {

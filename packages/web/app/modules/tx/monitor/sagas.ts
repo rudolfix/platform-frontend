@@ -194,7 +194,7 @@ function* txMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
       logger.error(e, "Error getting pending txs");
     }
 
-    yield take(actions.web3.newBlockArrived.getType());
+    yield take(actions.web3.newBlockArrived);
   }
 }
 

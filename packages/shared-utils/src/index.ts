@@ -27,3 +27,4 @@ export * from "./utils/types";
 export * from "./utils/opaque-types";
 export * from "./utils/enums";
 export * from "./utils/formatters";
+export * from "./utils/isNonNullable";

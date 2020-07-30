@@ -1,15 +1,22 @@
 import { InlineIcon } from "@neufund/design-system";
 import { ETransactionDirection, TTxHistory } from "@neufund/shared-modules";
-import { ECurrency, ENumberOutputFormat } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import {
+  assertNever,
+  ECurrency,
+  ENumberOutputFormat,
+  makeTid,
+  TDataTestId,
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 
 import { ETheme, Money } from "../../shared/formatters/Money";
+import { useButtonRole } from "../../shared/hooks/useButtonRole";
 import { EInlineIconFill } from "../../shared/icons";
-import { TransactionData, TransactionName } from "../../shared/transaction";
+import { TransactionName } from "../../shared/transaction";
 
-import transactionIcon from "../../../assets/img/inline_icons/tx_icon_placeholder.svg";
+import incomingTransactionIcon from "../../../assets/img/inline_icons/tx_in.svg";
+import outgoingTransactionIcon from "../../../assets/img/inline_icons/tx_out.svg";
 import * as styles from "./TransactionsHistory.module.scss";
 
 export type TTransactionProps = {
@@ -17,35 +24,70 @@ export type TTransactionProps = {
   transaction: TTxHistory;
 };
 
-export const Transaction: React.FunctionComponent<TTransactionProps> = ({
+type TTransactionLogoProps = {
+  transactionDirection: ETransactionDirection;
+};
+
+const TransactionLogo: React.FunctionComponent<TTransactionLogoProps> = ({
+  transactionDirection,
+}) => {
+  switch (transactionDirection) {
+    case ETransactionDirection.IN:
+      return (
+        <div className={styles.transactionLogoWrapper}>
+          <InlineIcon
+            svgIcon={incomingTransactionIcon}
+            fill={EInlineIconFill.FILL_OUTLINE}
+            className={styles.transactionLogo}
+          />
+        </div>
+      );
+    case ETransactionDirection.OUT:
+      return (
+        <div className={styles.transactionLogoWrapper}>
+          <InlineIcon
+            svgIcon={outgoingTransactionIcon}
+            fill={EInlineIconFill.FILL_OUTLINE}
+            className={styles.transactionLogo}
+          />
+        </div>
+      );
+    default:
+      assertNever(transactionDirection, "invalid transaction direction");
+  }
+};
+
+export const Transaction: React.FunctionComponent<TTransactionProps & TDataTestId> = ({
   showTransactionDetails,
   transaction,
+  "data-test-id": dataTestId,
 }) => {
   const isIncomeTransaction = transaction.transactionDirection === ETransactionDirection.IN;
-
+  const clickableRowProps = useButtonRole(() => showTransactionDetails(transaction.id));
   return (
-    <ul
+    <li
       className={styles.transactionListItem}
       key={transaction.id}
-      onClick={() => showTransactionDetails(transaction.id)}
       data-test-id={`transactions-history-row transactions-history-${transaction.txHash.slice(
         0,
         10,
       )}`}
+      {...clickableRowProps}
     >
-      <div className={styles.transactionLogo}>
-        <InlineIcon svgIcon={transactionIcon} fill={EInlineIconFill.FILL_OUTLINE} />
-      </div>
+      <TransactionLogo transactionDirection={transaction.transactionDirection} />
       <div className={styles.transactionData}>
-        <TransactionData
-          top={<TransactionName transaction={transaction} />}
-          bottom={
-            <FormattedDate value={transaction.date} year="numeric" month="long" day="2-digit" />
-          }
-        />
+        <span
+          className={styles.transactionDataTitle}
+          data-test-id={makeTid(dataTestId, "large-value")}
+        >
+          <TransactionName transaction={transaction} />
+        </span>
+        <span className={styles.transactionDataDate} data-test-id={makeTid(dataTestId, "value")}>
+          <FormattedDate value={transaction.date} year="numeric" month="long" day="2-digit" />
+        </span>
       </div>
       <div className={styles.transactionAmount}>
-        <span className={cn(styles.amount, { [styles.amountIn]: isIncomeTransaction })}>
+        <span className={styles.amount}>
           {!isIncomeTransaction && "-"}
           <Money
             inputFormat={transaction.amountFormat}
@@ -67,6 +109,6 @@ export const Transaction: React.FunctionComponent<TTransactionProps> = ({
           </span>
         )}
       </div>
-    </ul>
+    </li>
   );
 };

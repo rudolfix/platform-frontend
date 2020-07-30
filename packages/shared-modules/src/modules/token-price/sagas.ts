@@ -1,5 +1,15 @@
-import { call, delay, fork, neuTakeLatestUntil, put, SagaGenerator, take } from "@neufund/sagas";
+import {
+  call,
+  delay,
+  fork,
+  neuTakeLatestUntil,
+  put,
+  SagaGenerator,
+  select,
+  take,
+} from "@neufund/sagas";
 import { convertFromUlps, StringableActionCreator } from "@neufund/shared-utils";
+import { isEqual } from "lodash/fp";
 
 import { neuGetBindings } from "../../utils";
 import { contractsModuleApi } from "../contracts/module";
@@ -7,6 +17,7 @@ import { coreModuleApi } from "../core/module";
 import { tokenPriceActions } from "./actions";
 import { TOKEN_REFRESH_DELAY } from "./constants";
 import { ITokenPriceStateData } from "./reducer";
+import { selectTokenPriceData } from "./selectors";
 
 export function* loadTokenPriceDataAsync(): SagaGenerator<ITokenPriceStateData> {
   const { contractsService } = yield* neuGetBindings({
@@ -51,10 +62,12 @@ function* tokenPriceMonitor(
   while (true) {
     try {
       logger.info("Querying for tokenPrice");
-
+      const oldTokenPriceData = yield* select(selectTokenPriceData);
       const tokenPriceData = yield* call(loadTokenPriceDataAsync);
 
-      yield put(tokenPriceActions.saveTokenPrice(tokenPriceData));
+      if (!isEqual(oldTokenPriceData, tokenPriceData)) {
+        yield put(tokenPriceActions.saveTokenPrice(tokenPriceData));
+      }
     } catch (e) {
       logger.error(e, "Token Price Oracle Failed");
     }

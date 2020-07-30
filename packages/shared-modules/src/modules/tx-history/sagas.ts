@@ -1,5 +1,6 @@
 import {
   all,
+  call,
   delay,
   fork,
   neuCall,
@@ -10,13 +11,23 @@ import {
   take,
   takeLatest,
 } from "@neufund/sagas";
-import { ECurrency, StringableActionCreator, subtractBigNumbers } from "@neufund/shared-utils";
+import {
+  ECurrency,
+  isNonNullable,
+  StringableActionCreator,
+  subtractBigNumbers,
+} from "@neufund/shared-utils";
 
+import {
+  authModuleAPI,
+  coreModuleApi,
+  EModuleStatus,
+  IUser,
+  notificationUIModuleApi,
+  TAuthModuleState,
+} from "../..";
 import { createMessage } from "../../messages";
 import { neuGetBindings } from "../../utils";
-import { authModuleAPI, IUser, TAuthModuleState } from "../auth/module";
-import { coreModuleApi } from "../core/module";
-import { notificationUIModuleApi } from "../notification-ui/module";
 import { selectEurEquivalent } from "../token-price/selectors";
 import { txHistoryActions } from "./actions";
 import { TX_LIMIT, TX_REFRESH_DELAY } from "./constants";
@@ -27,10 +38,18 @@ import {
 } from "./lib/http/analytics-api/interfaces";
 import { ETxHistoryMessage } from "./messages";
 import { TTxHistoryModuleState } from "./module";
-import { selectLastTransactionId, selectTimestampOfLastChange } from "./selectors";
+import { initialState } from "./reducer";
+import { selectTimestampOfLastChange, selectTxHistoryState } from "./selectors";
 import { symbols } from "./symbols";
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
-import { getCurrencyFromTokenSymbol, getDecimalsFormat, getTxUniqueId } from "./utils";
+import {
+  convertTxHistory,
+  convertTxHistoryNext,
+  getCurrencyFromTokenSymbol,
+  getDecimalsFormat,
+  getTxUniqueId,
+  mergeTxHistory,
+} from "./utils";
 
 type TGlobalDependencies = unknown;
 
@@ -304,19 +323,18 @@ export function* mapAnalyticsApiTransactionResponse(
       });
       logger.warn(`Transaction with unknown type received ${transaction.type}`);
   }
-
   return tx;
 }
 
 export function* mapAnalyticsApiTransactionsResponse(
   _: TGlobalDependencies,
   transactions: readonly TAnalyticsTransaction[],
-): Generator<any, any, any> {
-  const txHistoryTransactions: ReadonlyArray<TTxHistory | undefined> = yield all(
+): SagaGenerator<TTxHistory[]> {
+  const txHistoryTransactions: ReadonlyArray<TTxHistory | undefined> = yield* all(
     transactions.map(tx => neuCall(mapAnalyticsApiTransactionResponse, tx)),
   );
 
-  return txHistoryTransactions.filter(Boolean);
+  return txHistoryTransactions.filter(isNonNullable);
 }
 
 export function* loadTransactionsHistoryNext(): Generator<any, any, any> {
@@ -326,14 +344,15 @@ export function* loadTransactionsHistoryNext(): Generator<any, any, any> {
   });
 
   try {
-    const lastTransactionId: string | undefined = yield select(selectLastTransactionId);
+    const txHistoryState = yield* select(selectTxHistoryState);
 
     const {
       transactions,
       beforeTransaction: newLastTransactionId,
-    }: TAnalyticsTransactionsResponse = yield analyticsApi.getTransactionsList(
+    }: TAnalyticsTransactionsResponse = yield call(
+      analyticsApi.getTransactionsList,
       TX_LIMIT,
-      lastTransactionId,
+      txHistoryState.lastTransactionId,
     );
 
     const processedTransactions: TTxHistory[] = yield neuCall(
@@ -341,7 +360,12 @@ export function* loadTransactionsHistoryNext(): Generator<any, any, any> {
       transactions,
     );
 
-    yield put(txHistoryActions.appendTransactions(processedTransactions, newLastTransactionId));
+    const newTxHistoryState = convertTxHistoryNext(
+      processedTransactions,
+      txHistoryState,
+      newLastTransactionId,
+    );
+    yield put(txHistoryActions.setTransactions(newTxHistoryState));
   } catch (e) {
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -364,19 +388,27 @@ export function* loadTransactionsHistory(): Generator<any, any, any> {
       transactions,
       beforeTransaction: lastTransactionId,
       version: newTimestampOfLastChange,
-    }: TAnalyticsTransactionsResponse = yield analyticsApi.getTransactionsList(TX_LIMIT);
+    }: TAnalyticsTransactionsResponse = yield call(analyticsApi.getTransactionsList, TX_LIMIT);
 
-    const processedTransactions = yield neuCall(mapAnalyticsApiTransactionsResponse, transactions);
+    const timestampOfLastChange = yield select(selectTimestampOfLastChange);
 
-    yield put(
-      txHistoryActions.setTransactions(
+    // Only set new transactions when what we have in the store differs
+    // from what we have get from the api
+    if (timestampOfLastChange !== newTimestampOfLastChange) {
+      const processedTransactions = yield* neuCall(
+        mapAnalyticsApiTransactionsResponse,
+        transactions,
+      );
+
+      const newTxHistoryState = convertTxHistory(
         processedTransactions,
         lastTransactionId,
         newTimestampOfLastChange,
-      ),
-    );
-
-    yield put(txHistoryActions.startWatchingForNewTransactions());
+      );
+      yield put(txHistoryActions.setTransactions(newTxHistoryState));
+    } else {
+      yield put(txHistoryActions.setModuleStatus(EModuleStatus.IDLE));
+    }
   } catch (e) {
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -386,7 +418,7 @@ export function* loadTransactionsHistory(): Generator<any, any, any> {
 
     logger.error(e, "Error while loading transaction history");
 
-    yield put(txHistoryActions.setTransactions([], undefined, undefined));
+    yield put(txHistoryActions.setTransactions(initialState));
   }
 }
 
@@ -394,22 +426,21 @@ export function* watchTransactions(
   _: TGlobalDependencies,
   refreshOnAction: StringableActionCreator<any, any, any> | undefined,
 ): Generator<any, any, any> {
-  const { logger, analyticsApi } = yield* neuGetBindings({
+  const { logger, analyticsApi } = yield* call(neuGetBindings, {
     logger: coreModuleApi.symbols.logger,
     analyticsApi: symbols.analyticsApi,
   });
-
   while (true) {
     try {
       if (refreshOnAction) {
-        yield* take(refreshOnAction);
+        yield take(refreshOnAction);
       } else {
         yield delay(TX_REFRESH_DELAY);
       }
 
-      const timestampOfLastChange: number | undefined = yield select(selectTimestampOfLastChange);
+      const txHistory = yield select(selectTxHistoryState);
 
-      if (timestampOfLastChange === undefined) {
+      if (txHistory.timestampOfLastChange === undefined) {
         logger.error(
           new Error("Transaction latest version can't be undefined. Stopping transaction polling"),
         );
@@ -420,14 +451,15 @@ export function* watchTransactions(
         version: newTimestampOfLastChange,
         transactions,
         beforeTransaction: lastTransactionId,
-      }: TAnalyticsTransactionsResponse = yield analyticsApi.getUpdatedTransactions(
-        timestampOfLastChange,
+      }: TAnalyticsTransactionsResponse = yield call(
+        analyticsApi.getUpdatedTransactions,
+        txHistory.timestampOfLastChange,
       );
 
-      // check if version is higher than existing and of we have new transactions
+      // check if version is higher than existing and if we have new transactions
       if (
         newTimestampOfLastChange !== undefined &&
-        newTimestampOfLastChange > timestampOfLastChange &&
+        newTimestampOfLastChange > txHistory.timestampOfLastChange &&
         transactions.length > 0
       ) {
         const processedTransactions: TTxHistory[] = yield neuCall(
@@ -435,13 +467,15 @@ export function* watchTransactions(
           transactions,
         );
 
-        yield put(
-          txHistoryActions.updateTransactions(
-            processedTransactions,
-            lastTransactionId,
-            newTimestampOfLastChange,
-          ),
+        const newTxHistoryState = mergeTxHistory(
+          txHistory,
+          lastTransactionId,
+          newTimestampOfLastChange,
+          processedTransactions,
         );
+        yield put(txHistoryActions.setTransactions(newTxHistoryState));
+      } else {
+        yield put(txHistoryActions.setModuleStatus(EModuleStatus.IDLE));
       }
     } catch (e) {
       // Log error and continue looping
@@ -462,7 +496,7 @@ export function setupTXHistorySagas(config: TSetupSagasConfig): () => SagaGenera
     yield fork(
       neuTakeLatestUntil,
       txHistoryActions.startWatchingForNewTransactions,
-      txHistoryActions.stopWatchingForNewTransactions,
+      [txHistoryActions.stopWatchingForNewTransactions],
       watchTransactions,
       config.refreshOnAction,
     );

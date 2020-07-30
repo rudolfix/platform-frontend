@@ -17,6 +17,7 @@ export {
 } from "./types";
 
 export { ETxHistoryMessage } from "./messages";
+export { EModuleStatus } from "./reducer";
 
 const MODULE_ID = generateSharedModuleId("tx-history");
 

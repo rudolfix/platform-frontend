@@ -76,3 +76,31 @@ export const takeWithCount = ({ count, actionCreator, actionPayload }: TTakeWith
     { count, expectedEffect: actionCreator, matchedReturn: actionPayload },
     takeMatcher,
   );
+
+/*
+ * a utility function to provide delay(x) effect in redux-saga-test-plan
+ * @see https://github.com/jfairbank/redux-saga-test-plan/issues/257
+ * */
+export const provideDelay = () => ({
+  call: (effect: CallEffectDescriptor<any>, next: Function) => {
+    if (effect.fn.name === "delayP") {
+      return null;
+    } else {
+      return next();
+    }
+  },
+});
+
+export const provideDelayWithCount = ({ count }: { count: number }) => {
+  let loopCount = 0;
+  return {
+    call: (effect: CallEffectDescriptor<any>, next: Function) => {
+      if (effect.fn.name === "delayP" && loopCount < count) {
+        loopCount += 1;
+        return null;
+      } else {
+        return next();
+      }
+    },
+  };
+};

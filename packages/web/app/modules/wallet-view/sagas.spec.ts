@@ -1,205 +1,51 @@
+import { callWithCount, takeWithCount, throwError } from "@neufund/sagas";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import {
   authModuleAPI,
-  EKycInstantIdProvider,
-  EKycRequestStatus,
-  EKycRequestType,
-  EUserType,
-  EWalletSubType,
-  EWalletType,
-  IUserState,
-  IWalletStateData,
+  EModuleStatus,
   kycApi,
   tokenPriceModuleApi,
+  txHistoryApi,
   walletApi,
 } from "@neufund/shared-modules";
-import { convertFromUlps, ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
+import { convertFromUlps } from "@neufund/shared-utils";
 import { combineReducers } from "redux";
 
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
-import { IConnectedWeb3State, web3Reducer } from "../web3/reducer";
-import { loadWalletView, populateWalletData } from "./sagas";
-import { EBalanceViewType } from "./types";
+import { generalPendingTxFixture } from "../tx/utils";
+import { web3Reducer } from "../web3/reducer";
+import { walletViewReducer } from "./reducer";
+import {
+  loadInitialWalletView,
+  populateBalanceData,
+  populateTxHistory,
+  populateWalletData,
+  walletViewController,
+} from "./sagas";
+import {
+  emptyWalletData,
+  ethTransfer,
+  neuroSend,
+  neuTransfer,
+  pendingTx,
+  resultBalanceData,
+  testBankAccount,
+  testEthAddress,
+  testKyc,
+  testTokenPrice,
+  testUser,
+  testWallet,
+  testWeb3,
+  walletData,
+} from "./sagas.specFixtures";
+import { TWalletViewReadyState } from "./types";
 
-const emptyWalletData = [
-  {
-    name: EBalanceViewType.ETH,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.NEUR,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.ICBM_ETH,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.ICBM_NEUR,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.LOCKED_ICBM_ETH,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.LOCKED_ICBM_NEUR,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-];
-
-const walletData = [
-  {
-    name: EBalanceViewType.ETH,
-    hasFunds: true,
-    amount: "386635441865000003000",
-    euroEquivalentAmount: convertFromUlps("7.185643883006235505906790797322021e+22").toString(),
-  },
-  {
-    name: EBalanceViewType.NEUR,
-    hasFunds: true,
-    amount: "87654",
-    euroEquivalentAmount: convertFromUlps("87654").toString(),
-  },
-  {
-    name: EBalanceViewType.ICBM_ETH,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.ICBM_NEUR,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-  {
-    name: EBalanceViewType.LOCKED_ICBM_ETH,
-    hasFunds: true,
-    amount: "23456",
-    euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
-  },
-  {
-    name: EBalanceViewType.LOCKED_ICBM_NEUR,
-    hasFunds: false,
-    amount: "0",
-    euroEquivalentAmount: "0",
-  },
-];
-
-const wallet = {
-  loading: false,
-  error: undefined,
-  data: {
-    euroTokenLockedWallet: {
-      LockedBalance: "0",
-      neumarksDue: "0",
-      unlockDate: "0",
-    },
-    etherTokenLockedWallet: {
-      LockedBalance: "0",
-      neumarksDue: "0",
-      unlockDate: "0",
-    },
-
-    etherTokenBalance: "0",
-    euroTokenBalance: "0",
-    etherBalance: "0",
-    neuBalance: "0",
-
-    euroTokenICBMLockedWallet: {
-      LockedBalance: "0",
-      neumarksDue: "0",
-      unlockDate: "0",
-    },
-    etherTokenICBMLockedWallet: {
-      LockedBalance: "0",
-      neumarksDue: "0",
-      unlockDate: "0",
-    },
-    etherTokenUpgradeTarget: "0x295a803de79cd256ff544682a51435e549a080b2",
-    euroTokenUpgradeTarget: "0x295a803de79cd256ff544682a51435e549a080b2",
-    neumarkAddress: "0x295a803de79cd256ff544682a51435e549a080b2",
-  } as IWalletStateData,
+const testStateCommon = {
+  user: testUser,
+  web3: testWeb3,
+  kyc: testKyc,
 };
-
-const tokenPrice = {
-  loading: false,
-  tokenPriceData: {
-    etherPriceEur: "185.85062580774007",
-    neuPriceEur: convertFromUlps("0.14549197443137551").toString(),
-    eurPriceEther: "0.00538066522861476",
-    priceOutdated: false,
-  },
-};
-
-const user = {
-  data: {
-    backupCodesVerified: true,
-    language: "en",
-    latestAcceptedTosIpfs: "QmP8jRt4NEQo51Kn1tbEyD6kVs4vBGge5vJZsNzU8rATVD",
-    type: "investor",
-    userId: "0x0D54192b7C8F126DCd946Ffd03E336B24052EdF2",
-    verifiedEmail: "0x0d541@neufund.org",
-    walletSubtype: "METAMASK",
-    walletType: "BROWSER",
-  },
-} as IUserState;
-
-const kyc = ({
-  status: {
-    inProhibitedRegion: false,
-    instantIdProvider: "none",
-    originCountry: ECountries.BRAZIL,
-    recommendedInstantIdProvider: EKycInstantIdProvider.ONFIDO,
-    status: EKycRequestStatus.ACCEPTED,
-    type: EKycRequestType.INDIVIDUAL,
-    supportedInstantIdProviders: [EKycInstantIdProvider.ID_NOW, EKycInstantIdProvider.ONFIDO],
-  },
-  claims: {
-    isVerified: true,
-    isSophisticatedInvestor: false,
-    hasBankAccount: true,
-    isAccountFrozen: false,
-  },
-  individualData: {
-    isHighIncome: false,
-    isPoliticallyExposed: false,
-    zipCode: "11000",
-    city: "Berlin",
-    street: "Michaelkirchstr. 56",
-    id: "0x0D54192b7C8F126DCd946Ffd03E336B24052EdF2",
-    placeOfBirth: "DE",
-    nationality: "DE",
-    lastName: "Goldsmith",
-    firstName: "Peter",
-    country: "DE",
-    birthDate: "2000-1-1",
-  },
-} as unknown) as ReturnType<typeof kycApi.reducerMap.kyc>;
-
-const web3 = {
-  connected: true,
-  wallet: {
-    address: "0x0D54192b7C8F126DCd946Ffd03E336B24052EdF2",
-    walletType: EWalletType.BROWSER,
-    walletSubType: EWalletSubType.METAMASK,
-  },
-  web3Available: false,
-} as IConnectedWeb3State;
 
 describe("Wallet View", () => {
   describe("populateWalletData()", () => {
@@ -214,17 +60,30 @@ describe("Wallet View", () => {
             web3: web3Reducer,
           }),
           {
-            tokenPrice,
-            user,
-            kyc,
-            wallet,
-            web3,
+            ...testStateCommon,
+            tokenPrice: testTokenPrice,
+            wallet: {
+              ...testWallet,
+              data: {
+                ...testWallet.data,
+                etherTokenBalance: "0",
+                euroTokenBalance: "0",
+                etherBalance: "0",
+                neuBalance: "0",
+
+                etherTokenICBMLockedWallet: {
+                  LockedBalance: "0",
+                  neumarksDue: "0",
+                  unlockDate: "0",
+                },
+              },
+            },
           },
         )
         .returns(emptyWalletData)
         .run();
     });
-    it("will populate wallet data, some have funds anywhere", async () => {
+    it("will populate wallet data, some have funds", async () => {
       await expectSaga(populateWalletData)
         .withReducer(
           combineReducers({
@@ -235,101 +94,36 @@ describe("Wallet View", () => {
             web3: web3Reducer,
           }),
           {
-            tokenPrice,
-            user,
-            kyc,
-            web3,
-            wallet: {
-              loading: false,
-              error: undefined,
-              data: {
-                ...wallet.data,
-                etherTokenBalance: "3000",
-                euroTokenBalance: "87654",
-                etherBalance: "386635441865000000000",
-                neuBalance: "0",
-                etherTokenICBMLockedWallet: {
-                  LockedBalance: "23456",
-                  neumarksDue: "0",
-                  unlockDate: "0",
-                },
-              } as IWalletStateData,
-            },
+            ...testStateCommon,
+            tokenPrice: testTokenPrice,
+            wallet: testWallet,
           },
         )
         .returns(walletData)
         .run();
     });
   });
-  describe("loadWalletView()", () => {
-    const ethAddress = "0x295a803de79cd256ff544682a51435e549a080b2" as EthereumAddressWithChecksum;
-    const bankAccount = {
-      hasBankAccount: true,
-      details: {
-        bankAccountNumberLast4: "1234",
-        bankName: "mBank",
-        name: "Lorem Ipsum",
-        isSepa: true,
-        swiftCode: "33212",
-      },
-    } as const;
-
-    it("loadWalletView", async () => {
-      const context = {
-        apiKycService: {
-          getBankAccount: () => {},
-        },
-        notificationCenter: {
-          error: () => {},
-        },
-        logger: {
-          error: () => {},
-          info: () => {},
-        },
-      };
-
-      const resultBalanceData = [
-        {
-          name: EBalanceViewType.ETH,
-          hasFunds: true,
-          amount: "386635441865000003000",
-          euroEquivalentAmount: convertFromUlps(
-            "7.185643883006235505906790797322021e+22",
-          ).toString(),
-        },
-        {
-          name: EBalanceViewType.NEUR,
-          hasFunds: true,
-          amount: "87654",
-          euroEquivalentAmount: convertFromUlps("87654").toString(),
-        },
-        {
-          name: EBalanceViewType.LOCKED_ICBM_ETH,
-          hasFunds: true,
-          amount: "23456",
-          euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
-        },
-      ];
-
-      await expectSaga(loadWalletView)
+  describe("loadInitialWalletView()", () => {
+    it("loadInitialWalletView success", async () => {
+      await expectSaga(loadInitialWalletView)
         .withState({
-          user: {
-            data: {
-              type: EUserType.INVESTOR,
-              verifiedEmail: "sdafas@dsafasdf.dd",
-              backupCodesVerified: true,
+          ...testStateCommon,
+          txHistory: {
+            transactionsByHash: {
+              [ethTransfer.id]: ethTransfer,
+              [neuTransfer.id]: neuTransfer,
+              [neuroSend.id]: neuroSend,
             },
+            transactionsOrder: ["1117_0_256", "132_0_8", "132_0_1"],
+            lastTransactionId: "132_0_1",
+            timestampOfLastChange: 1225,
+            status: EModuleStatus.IDLE,
           },
-          web3: {
-            connected: true,
-            wallet: { address: ethAddress },
-          },
-          kyc: {
-            bankAccount,
-            status: { status: EKycRequestStatus.ACCEPTED },
-            claims: {
-              isVerified: true,
-              isAccountFrozen: false,
+          txMonitor: {
+            txs: {
+              pendingTransaction: generalPendingTxFixture(
+                "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+              ),
             },
           },
         })
@@ -342,16 +136,167 @@ describe("Wallet View", () => {
         .put(
           actions.walletView.walletViewSetData({
             userIsFullyVerified: true,
-            userAddress: ethAddress,
+            userAddress: testEthAddress,
             balanceData: resultBalanceData,
             totalBalanceEuro: convertFromUlps(
               "7.185643883006235950603418691957129192e+22",
             ).toString(),
-            bankAccount: bankAccount,
+            bankAccount: testBankAccount,
             processState: EProcessState.SUCCESS,
+            transactionsHistoryPaginated: {
+              transactions: [ethTransfer, neuTransfer, neuroSend],
+              canLoadMore: true,
+              isLoading: false,
+            },
+            pendingTransaction: pendingTx,
           }),
         )
+        .returns(EProcessState.SUCCESS)
         .run();
     });
+    it("loadInitialWalletView failure", async () => {
+      await expectSaga(loadInitialWalletView)
+        .provide([
+          [matchers.getContext("deps"), context],
+          [matchers.call.fn(walletApi.sagas.loadWalletDataSaga), throwError(new Error("oi wei"))],
+          [matchers.call.fn(kycApi.sagas.loadBankAccountDetails), undefined],
+          [matchers.call.fn(populateWalletData), walletData],
+        ])
+        .not.put(actions.walletView.walletViewSetData({} as any))
+        .returns(EProcessState.ERROR)
+        .run();
+    });
+  });
+  describe("walletViewController", () => {
+    const newState = {
+      userIsFullyVerified: true,
+      userAddress: testEthAddress,
+      balanceData: resultBalanceData,
+      totalBalanceEuro: convertFromUlps("7.185643883006235950603418691957129192e+22").toString(),
+      bankAccount: testBankAccount,
+      processState: EProcessState.SUCCESS,
+      transactionsHistoryPaginated: {
+        transactions: [ethTransfer, neuTransfer, neuroSend],
+        canLoadMore: true,
+        isLoading: false,
+      },
+      pendingTransaction: pendingTx,
+    } as TWalletViewReadyState & { processState: EProcessState.SUCCESS };
+
+    const txHistoryReturn = {
+      transactionsHistoryPaginated: {
+        transactions: [ethTransfer, neuTransfer, neuroSend],
+        canLoadMore: true,
+        isLoading: false,
+      },
+      pendingTransaction: pendingTx,
+    };
+
+    it.only(
+      "loads inital view data " +
+        "and then loops on receiving specified actions and reloads the view data",
+      async () => {
+        await expectSaga(walletViewController)
+          .withReducer(
+            combineReducers({
+              tokenPrice: tokenPriceModuleApi.reducer.tokenPrice,
+              user: authModuleAPI.reducer.user,
+              kyc: kycApi.reducerMap.kyc,
+              wallet: walletApi.reducer.wallet,
+              web3: web3Reducer,
+              walletView: walletViewReducer,
+            }),
+            {
+              ...testStateCommon,
+              tokenPrice: testTokenPrice,
+              wallet: testWallet,
+              walletView: {
+                userIsFullyVerified: true,
+                userAddress: testEthAddress,
+                balanceData: resultBalanceData,
+                totalBalanceEuro: convertFromUlps(
+                  "7.185643883006235950603418691957129192e+22",
+                ).toString(),
+                bankAccount: testBankAccount,
+                processState: EProcessState.SUCCESS,
+                transactionsHistoryPaginated: {
+                  transactions: [ethTransfer, neuTransfer, neuroSend],
+                  canLoadMore: true,
+                  isLoading: false,
+                },
+                pendingTransaction: pendingTx,
+              },
+            },
+          )
+          .provide([
+            [matchers.call.fn(loadInitialWalletView), EProcessState.SUCCESS],
+            {
+              take: takeWithCount({
+                count: 1,
+                actionCreator: actions.txTransactions.upgradeSuccessful,
+                actionPayload: {},
+              }),
+            },
+            {
+              take: takeWithCount({
+                count: 1,
+                actionCreator: tokenPriceModuleApi.actions.saveTokenPrice,
+                actionPayload: {},
+              }),
+              call: callWithCount({
+                count: 1,
+                expectedFunction: populateTxHistory,
+                functionReturn: txHistoryReturn,
+              }),
+            },
+            {
+              take: takeWithCount({
+                count: 1,
+                actionCreator: txHistoryApi.actions.setTransactions,
+                actionPayload: {},
+              }),
+              call: callWithCount({
+                count: 1,
+                expectedFunction: populateTxHistory,
+                functionReturn: txHistoryReturn,
+              }),
+            },
+            {
+              take: takeWithCount({
+                count: 1,
+                actionCreator: actions.txMonitor.setPendingTxs,
+                actionPayload: {},
+              }),
+              call: callWithCount({
+                count: 1,
+                expectedFunction: populateTxHistory,
+                functionReturn: txHistoryReturn,
+              }),
+            },
+          ])
+          .call(loadInitialWalletView, undefined)
+          .put(txHistoryApi.actions.startWatchingForNewTransactions())
+
+          //start looping
+          .take(actions.txTransactions.upgradeSuccessful)
+          .call(populateBalanceData)
+          .put(actions.walletView.walletViewSetData(newState))
+
+          .take(tokenPriceModuleApi.actions.saveTokenPrice)
+          .call(populateBalanceData)
+          .call(populateTxHistory)
+          .put(actions.walletView.walletViewSetData(newState))
+
+          .take(txHistoryApi.actions.setTransactions)
+          .call(populateTxHistory)
+          .put(actions.walletView.walletViewSetData(newState))
+
+          .take(actions.txMonitor.setPendingTxs)
+          .call(populateTxHistory)
+          .put(actions.walletView.walletViewSetData(newState))
+
+          .run();
+      },
+    );
   });
 });

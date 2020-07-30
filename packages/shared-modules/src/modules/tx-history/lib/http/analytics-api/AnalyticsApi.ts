@@ -10,11 +10,11 @@ const ANALYTICS_API_ROOT = "/api/analytics-api";
 export class AnalyticsApi {
   constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
-  getTransactionsList(
+  getTransactionsList = (
     limit: number,
     lastTransactionId?: string,
-  ): Promise<TAnalyticsTransactionsResponse> {
-    return this.httpClient
+  ): Promise<TAnalyticsTransactionsResponse> =>
+    this.httpClient
       .get<TAnalyticsTransactionsResponse>({
         baseUrl: ANALYTICS_API_ROOT,
         url: `/transactions/me`,
@@ -24,10 +24,11 @@ export class AnalyticsApi {
         },
       })
       .then(r => r.body);
-  }
 
-  getUpdatedTransactions(timestampOfLastChange: number): Promise<TAnalyticsTransactionsResponse> {
-    return this.httpClient
+  getUpdatedTransactions = (
+    timestampOfLastChange: number,
+  ): Promise<TAnalyticsTransactionsResponse> =>
+    this.httpClient
       .get<TAnalyticsTransactionsResponse>({
         baseUrl: ANALYTICS_API_ROOT,
         url: `/transactions/new/me`,
@@ -36,5 +37,4 @@ export class AnalyticsApi {
         },
       })
       .then(r => r.body);
-  }
 }

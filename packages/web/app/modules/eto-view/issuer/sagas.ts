@@ -1,16 +1,18 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import {
+  EJurisdiction,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { DataUnavailableError } from "@neufund/shared-utils";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions, TActionFromCreator } from "../../actions";
 import { loadIssuerEto } from "../../eto-flow/sagas";
 import { selectIssuerEtoWithCompanyAndContract } from "../../eto-flow/selectors";
-import { loadEtoWithCompanyAndContract, loadEtoWithCompanyAndContractById } from "../../eto/sagas";
-import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import {
@@ -93,7 +95,7 @@ export function* loadIssuerEtoPreview(
   yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
-      loadEtoWithCompanyAndContract,
+      etoModuleApi.sagas.loadEtoWithCompanyAndContract,
       payload.previewCode,
     );
     yield* etoFlowBackwardsCompat(eto);
@@ -122,7 +124,7 @@ export function* loadIssuerPreviewByIdEtoView(
 ): Generator<any, void, any> {
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
-      loadEtoWithCompanyAndContractById,
+      etoModuleApi.sagas.loadEtoWithCompanyAndContractById,
       payload.etoId,
     );
     yield* etoFlowBackwardsCompat(eto);

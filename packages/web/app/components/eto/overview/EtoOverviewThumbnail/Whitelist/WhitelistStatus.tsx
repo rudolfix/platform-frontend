@@ -1,12 +1,6 @@
+import { WholeEur } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 
 import * as styles from "./WhitelistStatus.module.scss";
 
@@ -27,14 +21,7 @@ const WhitelistStatus: React.FunctionComponent<IInvestmentWidgetProps> = ({
         <FormattedMessage
           id="eto-overview-thumbnail.whitelist.amount-signed-up"
           values={{
-            amount: (
-              <Money
-                value={pledgedAmount ? pledgedAmount.toString() : "0"}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ECurrency.EUR}
-              />
-            ),
+            amount: <WholeEur value={pledgedAmount ? pledgedAmount.toString() : "0"} />,
           }}
         />
       </div>

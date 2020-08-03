@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import ReactDropzone, { DropzoneProps, ImageFile } from "react-dropzone";
 import { FormattedMessage } from "react-intl-phraseapp";

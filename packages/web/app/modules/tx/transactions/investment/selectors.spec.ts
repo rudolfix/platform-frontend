@@ -107,10 +107,9 @@ describe("selectMaximumInvestment", () => {
   });
 
   it("should use entire wallet for for nEURWallet", () => {
-    const euroValueUlps = convertToUlps("1212200.93");
     const state = {
       investmentFlow: {
-        euroValueUlps,
+        euroValue: "1212200.93",
         investmentType: EInvestmentType.NEur,
       },
       ...walletState,
@@ -122,10 +121,10 @@ describe("selectMaximumInvestment", () => {
   });
 
   it("should use user value for for nEURWallet", () => {
-    const euroValueUlps = convertToUlps("1200.93");
+    const euroValue = "1200.93";
     const state = {
       investmentFlow: {
-        euroValueUlps,
+        euroValue,
         investmentType: EInvestmentType.NEur,
       },
       ...walletState,
@@ -133,14 +132,14 @@ describe("selectMaximumInvestment", () => {
 
     const investmentAmount = selectMaximumInvestment(state);
 
-    expect(investmentAmount).eq(euroValueUlps);
+    expect(investmentAmount).eq(convertToUlps(euroValue));
   });
 
   it("should use entire wallet for for LockednEURWallet", () => {
-    const euroValueUlps = convertToUlps("707880.19");
+    const euroValue = "707880.19";
     const state = {
       investmentFlow: {
-        euroValueUlps,
+        euroValue,
         investmentType: EInvestmentType.ICBMnEuro,
       },
       ...walletState,
@@ -152,10 +151,10 @@ describe("selectMaximumInvestment", () => {
   });
 
   it("should use user value for for LockednEURWallet", () => {
-    const euroValueUlps = convertToUlps("880.19");
+    const euroValue = "880.19";
     const state = {
       investmentFlow: {
-        euroValueUlps,
+        euroValue,
         investmentType: EInvestmentType.ICBMnEuro,
       },
       ...walletState,
@@ -163,6 +162,6 @@ describe("selectMaximumInvestment", () => {
 
     const investmentAmount = selectMaximumInvestment(state);
 
-    expect(investmentAmount).eq(euroValueUlps);
+    expect(investmentAmount).eq(convertToUlps(euroValue));
   });
 });

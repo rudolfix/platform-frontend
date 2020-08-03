@@ -1,15 +1,15 @@
+import {
+  EAbbreviatedNumberOutputFormat,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "@neufund/shared-utils";
 import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { MoneyRange } from "./MoneyRange";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "./utils";
 
 describe("MoneyRange", () => {
   it("renders money range", () => {
@@ -70,7 +70,7 @@ describe("MoneyRange", () => {
     const component = shallow(
       <MoneyRange
         outputFormat={ENumberOutputFormat.FULL}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         valueType={ECurrency.EUR}
         valueFrom={"222"}
         valueUpto={"1236525"}
@@ -82,7 +82,7 @@ describe("MoneyRange", () => {
   it("renders money range as INTEGER output", () => {
     const component = shallow(
       <MoneyRange
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         valueType={ECurrency.EUR}
         valueFrom={"222"}
@@ -96,7 +96,7 @@ describe("MoneyRange", () => {
     const component = mount(
       wrapWithIntl(
         <MoneyRange
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
           valueType={ECurrency.EUR}
           valueFrom={"22222"}
@@ -111,7 +111,7 @@ describe("MoneyRange", () => {
     const component = mount(
       wrapWithIntl(
         <MoneyRange
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
           valueType={ECurrency.EUR}
           valueFrom={"22222"}
@@ -126,7 +126,7 @@ describe("MoneyRange", () => {
     const component = mount(
       wrapWithIntl(
         <MoneyRange
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
           valueType={ECurrency.EUR}
           valueFrom={"22222"}

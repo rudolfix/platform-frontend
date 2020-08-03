@@ -11,6 +11,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 
+import org.neufund.mobile.custom_modules.RNProtectScreenPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
 
           // Push notifications packages
           packages.add(new RNNotificationsPackage(MainApplication.this));
+          packages.add(new RNProtectScreenPackage());
+
           return packages;
         }
 

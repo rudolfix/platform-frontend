@@ -30,6 +30,7 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
         gestureEnabled: true,
         cardOverlayEnabled: true,
         headerStatusBarHeight:
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           navigation.dangerouslyGetState().routes.indexOf(route) > 0 ? 0 : undefined,
       })}
       mode="modal"

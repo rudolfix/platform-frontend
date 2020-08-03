@@ -1,16 +1,10 @@
-import { Button, EButtonLayout, Table, TokenIcon } from "@neufund/design-system";
+import { Button, EButtonLayout, Eth, Neu, Table, TokenIcon } from "@neufund/design-system";
 import { trimAddress } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { Tooltip } from "../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
@@ -73,22 +67,8 @@ const prepareRows = (
       </Tooltip>
     ),
     derivationPath: account.derivationPath,
-    balanceETH: (
-      <Money
-        value={account.balanceETH}
-        inputFormat={ENumberInputFormat.ULPS}
-        valueType={ECurrency.ETH}
-        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-      />
-    ),
-    balanceNEU: (
-      <Money
-        value={account.balanceNEU}
-        inputFormat={ENumberInputFormat.ULPS}
-        valueType={ECurrency.NEU}
-        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-      />
-    ),
+    balanceETH: <Eth value={account.balanceETH} />,
+    balanceNEU: <Neu value={account.balanceNEU} />,
     actions: (
       <Button
         layout={EButtonLayout.SECONDARY}

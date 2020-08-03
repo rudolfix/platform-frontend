@@ -3,6 +3,11 @@ import { IEthManager, IHttpClient, ISingleKeyStorage } from "../../core/module";
 import { SignatureAuthApi } from "./signature/SignatureAuthApi";
 import { UsersApi } from "./users/UsersApi";
 
+export const privateSymbols = {
+  jwtTimingThreshold: createLibSymbol<number>("jwtTimingThreshold"),
+  jwtRefreshThreshold: createLibSymbol<number>("jwtRefreshThreshold"),
+};
+
 export const symbols = {
   apiUserService: createLibSymbol<UsersApi>("apiUserService"),
 

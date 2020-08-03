@@ -1,26 +1,20 @@
+import { WholeEurShort } from "@neufund/design-system";
+import {
+  EEtoState,
+  EETOStateOnChain,
+  EEtoSubState,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  EEtoSubState,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../../modules/eto/types";
-import { isOnChain } from "../../../../modules/eto/utils";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
-import { CounterWidget } from "../EtoOverviewStatus/CounterWidget";
+import { CounterWidget } from "../EtoOverviewStatus";
 import { InvestmentStatusWidget } from "../EtoOverviewStatus/InvestmentWidget/InvestmentStatusWidget";
 import { EndTimeWidget } from "../shared/EndTimeWidget";
 import { GreenInfo, Info } from "./Info";
-import { Whitelist } from "./Whitelist/Whitelist";
+import { Whitelist } from "./Whitelist";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContractReadonly;
@@ -43,7 +37,10 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
             ? EETOStateOnChain.Whitelist
             : EETOStateOnChain.Public;
 
-        if (!isOnChain(eto) || eto.contract.startOfStates[nextState] === undefined) {
+        if (
+          !etoModuleApi.utils.isOnChain(eto) ||
+          eto.contract.startOfStates[nextState] === undefined
+        ) {
           throw new Error("Next state should be defined as this point");
         }
 
@@ -106,14 +103,7 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
             <FormattedMessage
               id="eto-overview-thumbnail.signing.raised-amount"
               values={{
-                totalAmount: (
-                  <Money
-                    value={eto.contract!.totalInvestment.totalEquivEurUlps}
-                    inputFormat={ENumberInputFormat.ULPS}
-                    valueType={ECurrency.EUR}
-                    outputFormat={ENumberOutputFormat.FULL}
-                  />
-                ),
+                totalAmount: <WholeEurShort value={eto.contract!.totalInvestment.totalEquivEur} />,
               }}
             />
           </Info>
@@ -132,14 +122,7 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
             <FormattedMessage
               id="eto-overview-thumbnail.success.raised-amount"
               values={{
-                totalAmount: (
-                  <Money
-                    value={eto.contract!.totalInvestment.totalEquivEurUlps}
-                    inputFormat={ENumberInputFormat.ULPS}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
-                ),
+                totalAmount: <WholeEurShort value={eto.contract!.totalInvestment.totalEquivEur} />,
               }}
             />
           }

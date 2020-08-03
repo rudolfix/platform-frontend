@@ -8,6 +8,7 @@ import Close from "assets/close.svg";
 import Device from "assets/device.svg";
 import Home from "assets/home.svg";
 import Investments from "assets/investments.svg";
+import Lock from "assets/lock.svg";
 import Logout from "assets/logout.svg";
 import Pending from "assets/pending.svg";
 import Placeholder from "assets/placeholder.svg";
@@ -16,7 +17,9 @@ import QrCode from "assets/qr-code.svg";
 import RightArrow from "assets/right-arrow.svg";
 import Share from "assets/share.svg";
 import Eth from "assets/tokens/eth.svg";
+import Icbm from "assets/tokens/icbm.svg";
 import NEur from "assets/tokens/n-eur.svg";
+import Neu from "assets/tokens/neu.svg";
 import Wallet from "assets/wallet.svg";
 import Yes from "assets/yes.svg";
 
@@ -31,12 +34,15 @@ enum EIconType {
   RIGHT_ARROW = "right-arrow",
   YES = "yes",
   N_EUR = "n-eur",
+  ICBM = "icbm",
   ETH = "eth",
   QR_CODE = "qr-code",
   BACKUP = "backup",
   DEVICE = "device",
   LOGOUT = "logout",
   PENDING = "pending",
+  LOCK = "lock",
+  NEU = "neu",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -50,6 +56,7 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.PORTFOLIO]: Investments,
   [EIconType.LOGOUT]: Logout,
   [EIconType.N_EUR]: NEur,
+  [EIconType.ICBM]: Icbm,
   [EIconType.PENDING]: Pending,
   [EIconType.PLACEHOLDER]: Placeholder,
   [EIconType.PORTFOLIO]: Investments,
@@ -59,6 +66,8 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.SHARE]: Share,
   [EIconType.WALLET]: Wallet,
   [EIconType.YES]: Yes,
+  [EIconType.LOCK]: Lock,
+  [EIconType.NEU]: Neu,
 };
 
 type TSvgIconProps = React.ComponentProps<typeof Close>;

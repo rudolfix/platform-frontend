@@ -1,8 +1,8 @@
+import { YupTS } from "@neufund/shared-modules";
 import { yupToFormErrors } from "formik";
 import { memoize } from "lodash";
 import { NumberSchema } from "yup";
 
-import * as YupTS from "../../../../../lib/yup-ts.unsafe";
 import { EAdditionalValidationDataNotifications } from "../../../../../modules/tx/validator/reducer";
 import { ethereumAddressFormValidation } from "./EtherAddressFormRow/EtherAddressFormRow";
 import { ITransferData } from "./TransferLayout/TransferLayout";

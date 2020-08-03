@@ -4,6 +4,7 @@ import { toast, ToastContainer as ToastifyContainer } from "react-toastify";
 import { TOAST_COMPONENT_DELAY } from "../../config/constants";
 import { TDataTestId, ToastWithTestData, TTranslatedString } from "../../types";
 
+// tslint:disable-next-line:no-submodule-imports
 import "react-toastify/dist/ReactToastify.css";
 
 const ToastContainer = () => <ToastifyContainer autoClose={TOAST_COMPONENT_DELAY} />;

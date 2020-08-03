@@ -1,24 +1,5 @@
 import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
-import BigNumber from "bignumber.js";
-import * as cn from "classnames";
-import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
-
-import { ITxData } from "../../../../lib/web3/types";
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
-import { actions } from "../../../../modules/actions";
-import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
-import {
-  selectBankRedeemMinAmount,
-  selectInitialAmount,
-  selectRedeemFeeUlps,
-} from "../../../../modules/bank-transfer-flow/selectors";
-import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
-import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { FormatNumber } from "../../../shared/formatters/FormatNumber";
+import { walletApi, YupTS } from "@neufund/shared-modules";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -26,12 +7,30 @@ import {
   ERoundingMode,
   formatNumber,
   selectDecimalPlaces,
-} from "../../../shared/formatters/utils";
+  toFixedPrecision,
+} from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
+import cn from "classnames";
+import * as React from "react";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { compose } from "recompose";
+
+import { ITxData } from "../../../../lib/web3/types";
+import { actions } from "../../../../modules/actions";
+import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
+import {
+  selectBankRedeemMinAmount,
+  selectInitialAmount,
+  selectRedeemFee,
+} from "../../../../modules/bank-transfer-flow/selectors";
+import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
+import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
+import { FormatNumber } from "../../../shared/formatters/FormatNumber";
 import { Form, FormLabel, FormMaskedNumberInput } from "../../../shared/forms/index";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
-import { formatEuroValueToString } from "../../../shared/utils";
 import { VerifiedBankAccount } from "../../../wallet/bank-account/VerifiedBankAccount";
 import { CalculatedFee } from "./CalculatedFee";
 import { TotalRedeemed } from "./TotalRedeemed";
@@ -58,6 +57,17 @@ export interface IReedemData {
   amount: string | undefined;
 }
 
+const formatEuroValueToString = (value: string) =>
+  toFixedPrecision({
+    value: value,
+    roundingMode: ERoundingMode.DOWN,
+    inputFormat: ENumberInputFormat.ULPS,
+    decimalPlaces: selectDecimalPlaces(
+      ECurrency.EUR_TOKEN,
+      ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+    ),
+  });
+
 const getValidators = (minAmount: string, neuroAmount: string) =>
   YupTS.object({
     amount: YupTS.number().enhance(v =>
@@ -80,7 +90,7 @@ const getValidators = (minAmount: string, neuroAmount: string) =>
                 minAmount: formatNumber({
                   value: minAmount,
                   roundingMode: ERoundingMode.UP,
-                  inputFormat: ENumberInputFormat.ULPS,
+                  inputFormat: ENumberInputFormat.DECIMAL,
                   decimalPlaces: selectDecimalPlaces(
                     ECurrency.EUR_TOKEN,
                     ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
@@ -163,9 +173,9 @@ const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
           </section>
 
           <FormMaskedNumberInput
-            storageFormat={ENumberInputFormat.FLOAT}
+            storageFormat={ENumberInputFormat.DECIMAL}
             valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             name="amount"
             data-test-id="bank-transfer.reedem-init.redeem-form-label"
             returnInvalidValues={true}
@@ -250,7 +260,7 @@ const BankTransferRedeemInit = compose<TComponentProps, {}>(
     stateToProps: state => ({
       neuroAmount: walletApi.selectors.selectLiquidEuroTokenBalance(state),
       neuroEuroAmount: walletApi.selectors.selectLiquidEuroTokenBalance(state),
-      bankFee: selectRedeemFeeUlps(state),
+      bankFee: selectRedeemFee(state),
       minAmount: selectBankRedeemMinAmount(state),
       initialAmount: selectInitialAmount(state),
     }),

@@ -1,10 +1,10 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { EEtoDocumentType } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { EEtoDocumentType } from "../../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../../modules/actions";
 import {
   selectNomineeAcceptIshaUploadedFileName,

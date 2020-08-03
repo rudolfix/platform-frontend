@@ -1,15 +1,15 @@
-import { createActionFactory } from "@neufund/shared-utils";
-
 import {
   TCompanyEtoData,
+  TEtoProducts,
   TEtoSpecsData,
+  TEtoWithCompanyAndContractReadonly,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
+} from "@neufund/shared-modules";
+import { createActionFactory } from "@neufund/shared-utils";
 
 export const etoFlowActions = {
+  loadIssuerView: createActionFactory("ETO_FLOW_LOAD_ISSUER_VIEW"),
   loadIssuerEto: createActionFactory("ETO_FLOW_LOAD_ISSUER_ETO"),
   loadDataStop: createActionFactory("ETO_FLOW_LOAD_DATA_STOP"),
   loadProducts: createActionFactory("ETO_FLOW_LOAD_PRODUCTS"),

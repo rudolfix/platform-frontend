@@ -1,5 +1,15 @@
-import { call, delay, fork, neuTakeLatestUntil, put, SagaGenerator, take } from "@neufund/sagas";
-import { Q18, StringableActionCreator } from "@neufund/shared-utils";
+import {
+  call,
+  delay,
+  fork,
+  put,
+  SagaGenerator,
+  select,
+  take,
+  takeLatestUntil,
+} from "@neufund/sagas";
+import { convertFromUlps, StringableActionCreator } from "@neufund/shared-utils";
+import { isEqual } from "lodash/fp";
 
 import { neuGetBindings } from "../../utils";
 import { contractsModuleApi } from "../contracts/module";
@@ -7,6 +17,7 @@ import { coreModuleApi } from "../core/module";
 import { tokenPriceActions } from "./actions";
 import { TOKEN_REFRESH_DELAY } from "./constants";
 import { ITokenPriceStateData } from "./reducer";
+import { selectTokenPriceData } from "./selectors";
 
 export function* loadTokenPriceDataAsync(): SagaGenerator<ITokenPriceStateData> {
   const { contractsService } = yield* neuGetBindings({
@@ -30,9 +41,9 @@ export function* loadTokenPriceDataAsync(): SagaGenerator<ITokenPriceStateData> 
       .then(r =>
         Object.assign(
           contractsModuleApi.utils.numericValuesToString({
-            etherPriceEur: r[0][0].div(Q18),
-            neuPriceEur: r[0][1].div(Q18),
-            eurPriceEther: r[0][2].div(Q18),
+            etherPriceEur: convertFromUlps(r[0][0].toString()).toString(),
+            neuPriceEur: convertFromUlps(r[0][1].toString()).toString(),
+            eurPriceEther: convertFromUlps(r[0][2].toString()).toString(),
           }),
           { priceOutdated: false },
         ),
@@ -51,10 +62,12 @@ function* tokenPriceMonitor(
   while (true) {
     try {
       logger.info("Querying for tokenPrice");
-
+      const oldTokenPriceData = yield* select(selectTokenPriceData);
       const tokenPriceData = yield* call(loadTokenPriceDataAsync);
 
-      yield put(tokenPriceActions.saveTokenPrice(tokenPriceData));
+      if (!isEqual(oldTokenPriceData, tokenPriceData)) {
+        yield put(tokenPriceActions.saveTokenPrice(tokenPriceData));
+      }
     } catch (e) {
       logger.error(e, "Token Price Oracle Failed");
     }
@@ -74,7 +87,7 @@ type TSetupSagasConfig = {
 export function setupTokenPriceSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   return function*(): SagaGenerator<void> {
     yield fork(
-      neuTakeLatestUntil,
+      takeLatestUntil,
       tokenPriceActions.watchTokenPriceStart,
       tokenPriceActions.watchTokenPriceStop,
       tokenPriceMonitor,

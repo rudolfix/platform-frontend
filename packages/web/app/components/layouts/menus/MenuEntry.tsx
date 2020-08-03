@@ -1,6 +1,6 @@
 import { ButtonBase } from "@neufund/design-system";
 import { assertNever } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { match, NavLink } from "react-router-dom";
 
@@ -114,6 +114,7 @@ export const MenuEntryDisabled: React.FunctionComponent<IMenuEntryDisabled &
         : cn(styles.dropdownMenuItem, styles.dropdownMenuItemDisabled)
     }
     data-test-id={dataTestId}
+    aria-disabled
   >
     <MenuEntryContent
       menuRenderingType={menuRenderingType}

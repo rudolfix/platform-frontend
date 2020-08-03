@@ -1,7 +1,8 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { StateFromReducersMapObject } from "redux";
 import { createSelector } from "reselect";
 
-import { IUser } from "../lib/users/interfaces";
+import { EUserType, IUser } from "../lib/users/interfaces";
 import { userReducerMap } from "./reducer";
 
 type TState = StateFromReducersMapObject<typeof userReducerMap>;
@@ -18,4 +19,20 @@ const selectVerifiedUserEmail = createSelector(
 
 const selectIsUserEmailVerified = (state: TState): boolean => !!selectVerifiedUserEmail(state);
 
-export { selectUser, selectIsUserEmailVerified, selectVerifiedUserEmail };
+const selectUserType = createSelector(
+  selectUser,
+  (user: IUser | undefined): EUserType | undefined => user?.type,
+);
+
+const selectUserId = createSelector(
+  selectUser,
+  (user: IUser | undefined): EthereumAddressWithChecksum | undefined => user?.userId,
+);
+
+export {
+  selectUser,
+  selectIsUserEmailVerified,
+  selectVerifiedUserEmail,
+  selectUserId,
+  selectUserType,
+};

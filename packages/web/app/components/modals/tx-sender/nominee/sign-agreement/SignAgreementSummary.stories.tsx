@@ -1,10 +1,10 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testCompany, testContract, testEto } from "../../../../../../test/fixtures";
 import { ETxType } from "../../../../../lib/web3/types";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { withModalBody } from "../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { SignNomineeAgreementSummaryLayout } from "./SignAgreementSummary";
 

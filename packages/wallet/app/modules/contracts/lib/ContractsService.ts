@@ -2,12 +2,19 @@ import {
   coreModuleApi,
   IContractsService,
   IERC20TokenAdapter,
+  ISnapshotableTokenAdapter,
+  IFeeDisbursalAdapter,
   IICBMLockedAccountAdapter,
   ILockedAccountAdapter,
   ILogger,
   IRateOracleAdapter,
   IIdentityRegistryAdapter,
   TLibSymbolType,
+  IETOTermsAdapter,
+  IETOCommitmentAdapter,
+  ITokenControllerAdapter,
+  IControllerGovernanceAdapter,
+  IEquityTokenAdapter,
 } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
@@ -20,11 +27,18 @@ import * as knownInterfaces from "lib/contracts/knownInterfaces.json";
 
 import { walletEthModuleApi } from "modules/eth/module";
 
+import { ControllerGovernanceAdapterFactory } from "./ControllerGovernanceAdapter";
 import { ERC20TokenAdapterFactory } from "./ERC20TokenAdapter";
+import { ETOCommitmentAdapterFactory } from "./ETOCommitmentAdapter";
+import { ETOTermsAdapterFactory } from "./ETOTermsAdapter";
+import { EquityTokenAdapterFactory } from "./EquityTokenAdapter";
+import { FeeDisbursalAdapterFactory } from "./FeeDisbursalAdapter";
 import { ICBMLockedAccountAdapterFactory } from "./ICBMLockedAccountAdapter";
 import { IdentityRegistryAdapterFactory } from "./IdentityRegistryAdapter";
 import { LockedAccountAdapterFactory } from "./LockedAccountAdapter";
 import { RateOracleAdapterFactory } from "./RateOracleAdapter";
+import { SnapshotableTokenAdapterFactory } from "./SnapshotableTokenAdapter";
+import { TokenControllerAdapterFactory } from "./TokenControllerAdapter";
 import { privateSymbols } from "./symbols";
 
 /**
@@ -37,14 +51,16 @@ export class ContractsService implements IContractsService {
     typeof privateSymbols.universeContractAddress
   >;
   private readonly ethManager: TLibSymbolType<typeof walletEthModuleApi.symbols.ethManager>;
-
-  public neumark!: IERC20TokenAdapter;
+  private etoCommitmentCache: { [key: string]: IETOCommitmentAdapter } = {};
+  public neumark!: ISnapshotableTokenAdapter;
   public euroToken!: IERC20TokenAdapter;
   public etherToken!: IERC20TokenAdapter;
   public euroLock!: ILockedAccountAdapter;
   public etherLock!: ILockedAccountAdapter;
   public icbmEuroLock!: IICBMLockedAccountAdapter;
   public icbmEtherLock!: IICBMLockedAccountAdapter;
+
+  public feeDisbursal!: IFeeDisbursalAdapter;
 
   public identityRegistry!: IIdentityRegistryAdapter;
 
@@ -88,6 +104,7 @@ export class ContractsService implements IContractsService {
       icbmEtherLockAddress,
       tokenExchangeRateOracleAddress,
       identityRegistryAddress,
+      feeDisbursalAddress,
     ] = await this.universe.getManySingletons([
       // tokens
       knownInterfaces.neumark,
@@ -99,6 +116,7 @@ export class ContractsService implements IContractsService {
       knownInterfaces.icbmEtherLock,
       knownInterfaces.tokenExchangeRateOracle,
       knownInterfaces.identityRegistry,
+      knownInterfaces.feeDisbursal,
     ]);
 
     [
@@ -111,8 +129,9 @@ export class ContractsService implements IContractsService {
       this.icbmEtherLock,
       this.rateOracle,
       this.identityRegistry,
+      this.feeDisbursal,
     ] = await Promise.all([
-      create(ERC20TokenAdapterFactory, neumarkAddress, provider),
+      create(SnapshotableTokenAdapterFactory, neumarkAddress, provider),
       create(ERC20TokenAdapterFactory, euroTokenAddress, provider),
       create(ERC20TokenAdapterFactory, etherTokenAddress, provider),
       create(LockedAccountAdapterFactory, euroLockAddress, provider),
@@ -121,9 +140,40 @@ export class ContractsService implements IContractsService {
       create(ICBMLockedAccountAdapterFactory, icbmEtherLockAddress, provider),
       create(RateOracleAdapterFactory, tokenExchangeRateOracleAddress, provider),
       create(IdentityRegistryAdapterFactory, identityRegistryAddress, provider),
+      create(FeeDisbursalAdapterFactory, feeDisbursalAddress, provider),
     ]);
 
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
+  }
+
+  public async getETOCommitmentContract(address: string): Promise<IETOCommitmentAdapter> {
+    if (address in this.etoCommitmentCache) {
+      return Promise.resolve(this.etoCommitmentCache[address]);
+    }
+    const provider = await this.ethManager.getInternalProvider();
+    const commitment = create(ETOCommitmentAdapterFactory, address, provider);
+    if (commitment) {
+      this.etoCommitmentCache[address] = commitment;
+    }
+    return commitment;
+  }
+
+  public async getEtoTerms(address: string): Promise<IETOTermsAdapter> {
+    const provider = await this.ethManager.getInternalProvider();
+    return create(ETOTermsAdapterFactory, address, provider);
+  }
+
+  public async getTokenController(address: string): Promise<ITokenControllerAdapter> {
+    const provider = await this.ethManager.getInternalProvider();
+    return create(TokenControllerAdapterFactory, address, provider);
+  }
+  public async getControllerGovernance(address: string): Promise<IControllerGovernanceAdapter> {
+    const provider = await this.ethManager.getInternalProvider();
+    return create(ControllerGovernanceAdapterFactory, address, provider);
+  }
+  public async getEquityToken(address: string): Promise<IEquityTokenAdapter> {
+    const provider = await this.ethManager.getInternalProvider();
+    return create(EquityTokenAdapterFactory, address, provider);
   }
 }
 

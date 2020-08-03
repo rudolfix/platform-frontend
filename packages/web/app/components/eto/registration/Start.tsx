@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
@@ -8,8 +7,9 @@ import { selectIssuerEtoLoading } from "../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 
 const EtoRegistrationPanel = React.lazy(() =>

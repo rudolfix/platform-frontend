@@ -1,22 +1,25 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import {
-  EthereumHDPath,
   EthereumAddressWithChecksum,
+  EthereumHDPath,
   toEthereumChecksumAddress,
+  assertError,
 } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
-import { injectable, inject } from "inversify";
+import { inject, injectable } from "inversify";
 
 import { DeviceInformation } from "modules/device-information/DeviceInformation";
 import { deviceInformationModuleApi } from "modules/device-information/module";
 import { EthModuleError } from "modules/eth/errors";
 
+import { EPlatform } from "utils/Platform";
+
 import {
-  ISecureStorage,
-  TSecureReference,
   AsyncSecureStorage,
+  ISecureStorage,
   KeychainSecureStorage,
+  TSecureReference,
 } from "./SecureStorage";
 import { isMnemonic, isPrivateKey } from "./utils";
 
@@ -45,7 +48,7 @@ class SecretNotAMnemonicError extends EthSecureEnclaveError {
 }
 
 class FailedToDerivePrivateKey extends EthSecureEnclaveError {
-  constructor(derivationPath: EthereumHDPath) {
+  constructor(derivationPath: EthereumHDPath, public reason?: Error) {
     super(`Failed to derive private key for a path ${derivationPath}`);
   }
 }
@@ -82,7 +85,7 @@ class EthSecureEnclave {
     // on the iOS simulator we have to simulate the storage, real devices and the android emulator
     // can emulate this
     const useAsyncStorageFallback =
-      __DEV__ && (await this.deviceInformation.isEmulator()) && platform === "ios";
+      __DEV__ && (await this.deviceInformation.isEmulator()) && platform === EPlatform.IOS;
 
     if (useAsyncStorageFallback) {
       this.logger.info("Creating a non secure async storage");
@@ -95,7 +98,7 @@ class EthSecureEnclave {
       // prevents it from working with the android face recognition. Once this is solved, biometry should
       // always be used.
       // https://github.com/oblador/react-native-keychain/issues/318
-      const useBiometry = platform !== "android";
+      const useBiometry = platform !== EPlatform.Android;
       this.secureStorage = new KeychainSecureStorage(useBiometry);
     }
     return this.secureStorage;
@@ -193,7 +196,9 @@ class EthSecureEnclave {
       const hdNode = utils.HDNode.fromMnemonic(secret).derivePath(derivationPath);
       return this.addSecret(hdNode.privateKey);
     } catch (e) {
-      throw new FailedToDerivePrivateKey(derivationPath);
+      assertError(e);
+
+      throw new FailedToDerivePrivateKey(derivationPath, e);
     }
   }
 

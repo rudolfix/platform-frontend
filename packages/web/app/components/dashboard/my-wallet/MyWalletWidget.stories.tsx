@@ -17,7 +17,7 @@ const props = {
     euroTokenAmount: convertToUlps("100"),
     ethAmount: convertToUlps("100"),
     ethEuroAmount: convertToUlps("100"),
-    totalAmount: convertToUlps("100"),
+    totalAmount: "100",
     isIcbmWalletConnected: false,
     isLockedWalletConnected: false,
   },

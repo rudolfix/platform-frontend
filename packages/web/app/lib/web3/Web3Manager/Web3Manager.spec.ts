@@ -2,7 +2,7 @@ import { EWalletSubType, EWalletType, noopLogger } from "@neufund/shared-modules
 import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { spy } from "sinon";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import {
   dummyConfig,

@@ -1,12 +1,12 @@
 import { createStore, getSagaExtension, SagaMiddleware } from "@neufund/sagas";
 import {
+  coalesceProviders,
   expectSaga as expectSagaNative,
   matchers,
   providers,
   SagaType,
 } from "@neufund/sagas/tests";
 import { Container } from "inversify";
-import { coalesceProviders } from "redux-saga-test-plan/lib/expectSaga/providers/helpers";
 
 import { getLoadContextExtension } from "../extensions";
 import { INeuModule } from "../types";

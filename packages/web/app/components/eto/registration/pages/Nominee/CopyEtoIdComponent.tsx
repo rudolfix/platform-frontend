@@ -1,10 +1,10 @@
+import { EEtoFormTypes } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { branch, compose, renderNothing, setDisplayName } from "recompose";
 
 import { externalRoutes } from "../../../../../config/externalRoutes";
 import { selectUserId } from "../../../../../modules/auth/selectors";
-import { EEtoFormTypes } from "../../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../../store";
 import { AccountAddress } from "../../../../shared/AccountAddress";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";

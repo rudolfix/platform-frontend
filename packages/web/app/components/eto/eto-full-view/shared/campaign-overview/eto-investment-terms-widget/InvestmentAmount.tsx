@@ -1,16 +1,18 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-
-import { TEtoInvestmentCalculatedValues } from "../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
-import { getEtoEurMaxTarget, getEtoEurMinTarget } from "../../../../../../modules/eto/utils";
-import { Entry } from "../../../../../shared/Entry";
-import { MoneyRange } from "../../../../../shared/formatters/MoneyRange";
+import {
+  etoModuleApi,
+  TEtoInvestmentCalculatedValues,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
-} from "../../../../../shared/formatters/utils";
+} from "@neufund/shared-utils";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+
+import { Entry } from "../../../../../shared/Entry";
+import { MoneyRange } from "../../../../../shared/formatters/MoneyRange";
 import { Tooltip } from "../../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../../shared/tooltips/TooltipBase";
 import { ToBeAnnounced } from "../../../../shared/ToBeAnnouncedTooltip";
@@ -45,7 +47,7 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
       <MoneyRange
         valueFrom={minInvestmentAmount ? minInvestmentAmount.toString() : undefined}
         valueUpto={maxInvestmentAmount ? maxInvestmentAmount.toString() : undefined}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         valueType={ECurrency.EUR}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         defaultValue={<ToBeAnnounced />}
@@ -62,7 +64,7 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
                   <MoneyRange
                     valueFrom={minTargetAmount ? minTargetAmount.toString() : undefined}
                     valueUpto={maxTargetAmount ? maxTargetAmount.toString() : undefined}
-                    inputFormat={ENumberInputFormat.FLOAT}
+                    inputFormat={ENumberInputFormat.DECIMAL}
                     valueType={ECurrency.EUR}
                     outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
                   />
@@ -77,8 +79,8 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
 };
 
 const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ eto }) => {
-  const minTarget = getEtoEurMinTarget(eto);
-  const maxTarget = getEtoEurMaxTarget(eto);
+  const minTarget = etoModuleApi.utils.getEtoEurMinTarget(eto);
+  const maxTarget = etoModuleApi.utils.getEtoEurMaxTarget(eto);
 
   return (
     <Entry

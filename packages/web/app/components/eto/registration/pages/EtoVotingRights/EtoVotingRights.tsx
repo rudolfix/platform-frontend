@@ -1,5 +1,8 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { TPartialEtoSpecData } from "@neufund/shared-modules";
 import {
+  ENumberInputFormat,
+  ENumberOutputFormat,
   MAX_RESTRICTED_ACT_VOTING_DURATION,
   MAX_VOTING_DURATION,
   MAX_VOTING_FINALIZATION_DURATION,
@@ -10,8 +13,6 @@ import {
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { ENumberInputFormat, ENumberOutputFormat } from "../../../../shared/formatters/utils";
 import { FormFieldLabel } from "../../../../shared/forms/fields/FormFieldLabel";
 import { FormStaticRadioButton } from "../../../../shared/forms/fields/FormStaticRadioButton";
 import {
@@ -130,7 +131,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={readonly}
                 name="generalVotingDurationDays"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 placeholder="e.g. 10"
               />
@@ -149,7 +150,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={readonly}
                 name="restrictedActVotingDurationDays"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 placeholder="e.g. 14"
               />
@@ -162,7 +163,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={readonly}
                 name="shareholdersVotingQuorum"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 suffix={
                   <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
@@ -177,7 +178,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={true}
                 name="votingMajorityFraction"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 prefix={
                   <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
@@ -201,7 +202,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={readonly}
                 name="votingFinalizationDurationDays"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
               />
             </div>
@@ -246,7 +247,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
               <FormMaskedNumberInput
                 disabled={true}
                 name="votingMajorityFraction"
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 prefix={
                   <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />

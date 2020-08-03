@@ -6,14 +6,14 @@
 function loadStories() {
 	require('../app/components/modals/SignerModal/SignerModal.stories');
 	require('../app/components/screens/HomeScreen/EtoCard.stories');
-	require('../app/components/screens/WalletScreen/TransactionSection/PendingTransaction.stories');
-	require('../app/components/screens/WalletScreen/TransactionSection/SuccessfulTransaction.stories');
-	require('../app/components/screens/WalletScreen/TransactionSection/Transactions.stories');
+	require('../app/components/screens/WalletScreen/Transactions/PendingTransaction.stories');
+	require('../app/components/screens/WalletScreen/Transactions/SuccessfulTransaction.stories');
 	require('../app/components/shared/Icon.stories');
 	require('../app/components/shared/LineBreak.stories');
 	require('../app/components/shared/Link.stories');
 	require('../app/components/shared/LoadingIndicator.stories');
 	require('../app/components/shared/Touchable.stories');
+	require('../app/components/shared/animations/Skeleton.stories');
 	require('../app/components/shared/asset/Asset.stories');
 	require('../app/components/shared/buttons/Button.stories');
 	require('../app/components/shared/buttons/ButtonIcon.stories');
@@ -28,6 +28,7 @@ function loadStories() {
 	require('../app/components/shared/modal-header/ModalStackHeaderLevel2.stories');
 	require('../app/components/shared/modals/BottomSheetModal.stories');
 	require('../app/components/shared/panel/Panel.stories');
+	require('../app/components/shared/shadow/Shadow.stories');
 	require('../app/components/shared/typography/BoldText.stories');
 	require('../app/components/shared/typography/MenuLabel.stories');
 	require('../app/components/shared/typography/Text.stories');
@@ -37,14 +38,14 @@ function loadStories() {
 const stories = [
 	'../app/components/modals/SignerModal/SignerModal.stories',
 	'../app/components/screens/HomeScreen/EtoCard.stories',
-	'../app/components/screens/WalletScreen/TransactionSection/PendingTransaction.stories',
-	'../app/components/screens/WalletScreen/TransactionSection/SuccessfulTransaction.stories',
-	'../app/components/screens/WalletScreen/TransactionSection/Transactions.stories',
+	'../app/components/screens/WalletScreen/Transactions/PendingTransaction.stories',
+	'../app/components/screens/WalletScreen/Transactions/SuccessfulTransaction.stories',
 	'../app/components/shared/Icon.stories',
 	'../app/components/shared/LineBreak.stories',
 	'../app/components/shared/Link.stories',
 	'../app/components/shared/LoadingIndicator.stories',
 	'../app/components/shared/Touchable.stories',
+	'../app/components/shared/animations/Skeleton.stories',
 	'../app/components/shared/asset/Asset.stories',
 	'../app/components/shared/buttons/Button.stories',
 	'../app/components/shared/buttons/ButtonIcon.stories',
@@ -59,6 +60,7 @@ const stories = [
 	'../app/components/shared/modal-header/ModalStackHeaderLevel2.stories',
 	'../app/components/shared/modals/BottomSheetModal.stories',
 	'../app/components/shared/panel/Panel.stories',
+	'../app/components/shared/shadow/Shadow.stories',
 	'../app/components/shared/typography/BoldText.stories',
 	'../app/components/shared/typography/MenuLabel.stories',
 	'../app/components/shared/typography/Text.stories',

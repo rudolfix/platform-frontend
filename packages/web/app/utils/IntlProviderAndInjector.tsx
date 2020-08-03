@@ -1,9 +1,10 @@
-import { ContainerContext, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 
 import languageEn from "../../intl/locales/en-en.json";
+import { IIntlProps, injectIntlHelpers } from "../components/shared/hocs/injectIntlHelpers.unsafe";
+import { ContainerContext } from "../components/shared/InversifyProvider";
 import { symbols } from "../di/symbols";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
 

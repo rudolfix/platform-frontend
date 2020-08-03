@@ -26,7 +26,6 @@ export class StorageSchema<DataType> implements IStorageSchema<DataType> {
 
   /**
    * @param {DataType} data - validate data with YUP
-   * returns boolean promise
    */
   async validate(data: DataType): Promise<DataType> {
     return this.schema.validate(data);

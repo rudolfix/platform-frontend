@@ -1,4 +1,26 @@
 import {
+  EAssetType,
+  EEtoDocumentLanguage,
+  EEtoDocumentType,
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  EETOStateOnChain,
+  EFundingRound,
+  EJurisdiction,
+  EOfferingDocumentSubtype,
+  EOfferingDocumentType,
+  EProductName,
+  ESocialChannelType,
+  ETagAlongVotingRule,
+  IEtoFilesInfo,
+  TCompanyEtoData,
+  TEtoDocumentTemplates,
+  TEtoFormType,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import {
+  convertFromUlps,
+  ECurrency,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
@@ -6,31 +28,7 @@ import {
 } from "@neufund/shared-utils";
 import { createStore, Store } from "redux";
 
-import { ECurrency } from "../app/components/shared/formatters/utils";
 import { IConfig } from "../app/config/getConfig";
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-  EFundingRound,
-  ESocialChannelType,
-  ETagAlongVotingRule,
-  TCompanyEtoData,
-} from "../app/lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EEtoDocumentLanguage,
-  EEtoDocumentType,
-  IEtoFilesInfo,
-  TEtoDocumentTemplates,
-  TEtoFormType,
-} from "../app/lib/api/eto/EtoFileApi.interfaces";
-import {
-  EAssetType,
-  EJurisdiction,
-  EOfferingDocumentSubtype,
-  EOfferingDocumentType,
-  EProductName,
-} from "../app/lib/api/eto/EtoProductsApi.interfaces";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../app/modules/eto/types";
 
 import companyBanner from "./assets/company-banner.png";
 import companyPreviewCardBanner from "./assets/company-preview-banner.png";
@@ -608,7 +606,7 @@ export const etoDocuments: TEtoDocumentTemplates = {
 export const testContract = {
   timedState: EETOStateOnChain.Signing,
   totalInvestment: {
-    totalEquivEurUlps: "3.240447910281246044e+24",
+    totalEquivEur: convertFromUlps("3.240447910281246044e+24").toString(),
     totalTokensInt: "10010705",
     totalInvestors: "3",
     euroTokenBalance: "3.2374649e+24",
@@ -671,6 +669,7 @@ export const testEto: TEtoWithCompanyAndContractReadonly = {
   equityTokenSymbol: toEquityTokenSymbol("QTT"),
   equityTokensPerShare: 10000,
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc" as EthereumAddressWithChecksum,
+  equityTokenContractAddress: "0x84A89a974273bD6C99DB2A2Dcd07C97e8C3E295f",
   existingShareCapital: 40976,
   shareCapitalCurrencyCode: "EUR",
   newShareNominalValue: 1,

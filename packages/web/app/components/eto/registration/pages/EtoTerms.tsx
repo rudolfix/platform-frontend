@@ -1,5 +1,17 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ILogger } from "@neufund/shared-modules";
+import {
+  EAssetType,
+  EEtoFormTypes,
+  EOfferingDocumentType,
+  etoFormIsReadonly,
+  EtoProductSchema,
+  getEtoTermsSchema,
+  ILogger,
+  TEtoProduct,
+  TEtoProducts,
+  TEtoSpecsData,
+  YupTS,
+} from "@neufund/shared-modules";
 import { DeepReadonly, RequiredByKeys } from "@neufund/shared-utils";
 import { FormikConsumer } from "formik";
 import * as React from "react";
@@ -8,16 +20,6 @@ import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";
 
 import { symbols } from "../../../../di/symbols";
-import { getEtoTermsSchema, TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
-import {
-  EAssetType,
-  EOfferingDocumentType,
-  EtoProductSchema,
-  TEtoProduct,
-  TEtoProducts,
-} from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
   selectAvailableProducts,
@@ -25,7 +27,6 @@ import {
   selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import {

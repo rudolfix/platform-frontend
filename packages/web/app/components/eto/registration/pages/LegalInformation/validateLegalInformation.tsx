@@ -1,10 +1,9 @@
-import { customSchemas } from "@neufund/shared-modules";
+import { customSchemas, EtoLegalInformationType } from "@neufund/shared-modules";
 import { MIN_COMPANY_SHARE_CAPITAL } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
-import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { convertAndValidatePipeline } from "../../../../shared/forms/utils";
 import {
   convert,

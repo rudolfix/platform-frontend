@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 export type TNEurRedeemAdditionalDetails = {
   amount: string;
@@ -22,4 +22,4 @@ export const NeurRedeemAdditionalDataSchema = YupTS.object({
   tokenDecimals: YupTS.number(),
 });
 
-export type TNeurRedeemAdditionalData = YupTS.TypeOf<typeof NeurRedeemAdditionalDataSchema>;
+export type TNeurRedeemAdditionalData = TypeOfYTS<typeof NeurRedeemAdditionalDataSchema>;

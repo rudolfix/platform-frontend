@@ -8,7 +8,7 @@ import {
   KycBeneficialOwnerSchema,
 } from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";

@@ -7,6 +7,7 @@ import { Redirect, Route } from "react-router-dom";
 import { branch, compose, renderComponent } from "recompose";
 
 import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
+import { userHasKycAndEmailVerified } from "../../../modules/eto-flow/selectors";
 import { selectWalletTypeFromQueryString } from "../../../modules/routing/selectors";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
@@ -17,6 +18,7 @@ interface IStateProps {
   userType?: EUserType;
   walletType: EWalletType;
   routerState: RouterState;
+  userHasKycAndEmailVerified: boolean;
 }
 
 interface IExternalProps {
@@ -110,6 +112,7 @@ export const OnlyAuthorizedRoute = compose<IComponentProps & IExternalProps, IEx
       userType: selectUserType(state),
       walletType: selectWalletTypeFromQueryString(state),
       routerState: state.router,
+      userHasKycAndEmailVerified: userHasKycAndEmailVerified(state),
     }),
   }),
   branch<IStateProps>(

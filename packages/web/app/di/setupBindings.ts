@@ -1,6 +1,8 @@
 import {
   authModuleAPI,
+  bookbuildingModuleApi,
   coreModuleApi,
+  etoModuleApi,
   kycApi,
   SignatureAuthApi,
   TLibSymbolType,
@@ -8,11 +10,6 @@ import {
 import { Container, ContainerModule } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
-import { EtoApi } from "../lib/api/eto/EtoApi";
-import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
-import { EtoNomineeApi } from "../lib/api/eto/EtoNomineeApi";
-import { EtoPledgeApi } from "../lib/api/eto/EtoPledgeApi";
-import { EtoProductApi } from "../lib/api/eto/EtoProductApi";
 import { FileStorageApi } from "../lib/api/file-storage/FileStorageApi";
 import {
   richTextEditorUploadAdapterFactory,
@@ -110,26 +107,6 @@ export function setupBindings(config: IConfig): ContainerModule {
       .to(Web3Manager)
       .inSingletonScope();
 
-    bind<EtoApi>(symbols.apiEtoService)
-      .to(EtoApi)
-      .inSingletonScope();
-
-    bind<EtoPledgeApi>(symbols.apiEtoPledgeService)
-      .to(EtoPledgeApi)
-      .inSingletonScope();
-
-    bind<EtoProductApi>(symbols.apiEtoProductService)
-      .to(EtoProductApi)
-      .inSingletonScope();
-
-    bind<EtoFileApi>(symbols.apiEtoFileService)
-      .to(EtoFileApi)
-      .inSingletonScope();
-
-    bind<EtoNomineeApi>(symbols.apiEtoNomineeService)
-      .to(EtoNomineeApi)
-      .inSingletonScope();
-
     bind(symbols.fileStorageService)
       .to(FileStorageApi)
       .inSingletonScope();
@@ -219,10 +196,28 @@ export const createGlobalDependencies = (container: Container) => ({
   logger: container.get<TLibSymbolType<typeof coreModuleApi.symbols.logger>>(
     coreModuleApi.symbols.logger,
   ),
+  detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
 
+  // forward kyc service
   apiKycService: container.get<TLibSymbolType<typeof kycApi.symbols.kycApi>>(kycApi.symbols.kycApi),
 
-  detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
+  // forward eto services
+  apiEtoService: container.get<TLibSymbolType<typeof etoModuleApi.symbols.etoApi>>(
+    etoModuleApi.symbols.etoApi,
+  ),
+  apiEtoProductService: container.get<TLibSymbolType<typeof etoModuleApi.symbols.etoProductApi>>(
+    etoModuleApi.symbols.etoProductApi,
+  ),
+  apiEtoFileService: container.get<TLibSymbolType<typeof etoModuleApi.symbols.etoFileApi>>(
+    etoModuleApi.symbols.etoFileApi,
+  ),
+  apiEtoNomineeService: container.get<TLibSymbolType<typeof etoModuleApi.symbols.etoNomineeApi>>(
+    etoModuleApi.symbols.etoNomineeApi,
+  ),
+
+  apiEtoPledgeService: container.get<
+    TLibSymbolType<typeof bookbuildingModuleApi.symbols.etoPledgeApi>
+  >(bookbuildingModuleApi.symbols.etoPledgeApi),
 
   // blockchain & wallets
   contractsService: container.get<ContractsService>(symbols.contractsService),
@@ -242,11 +237,6 @@ export const createGlobalDependencies = (container: Container) => ({
   userStorage: container.get<ObjectStorage<string>>(symbols.userStorage),
 
   // apis
-  apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
-  apiEtoPledgeService: container.get<EtoPledgeApi>(symbols.apiEtoPledgeService),
-  apiEtoProductService: container.get<EtoProductApi>(symbols.apiEtoProductService),
-  apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
-  apiEtoNomineeService: container.get<EtoNomineeApi>(symbols.apiEtoNomineeService),
   apiUserTxService: container.get<UsersTxApi>(symbols.usersTxApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),

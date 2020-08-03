@@ -1,9 +1,9 @@
+import { TCompanyEtoData } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { TCompanyEtoData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { CommonHtmlProps } from "../../../../../types";
 import { Container, EColumnSpan } from "../../../../layouts/Container";
 import { DashboardHeading } from "../../../../shared/DashboardHeading";

@@ -1,9 +1,11 @@
-import { createMount, tid } from "@neufund/shared-utils/tests";
+import { convertFromUlps } from "@neufund/shared-utils";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import noop from "lodash/noop";
 import * as React from "react";
 
+import { createMount } from "../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../test/integrationTestUtils.unsafe";
 import { MyWalletWidgetComponentLayout } from "./MyWalletWidget";
 
@@ -28,7 +30,7 @@ describe("<MyWalletWidget />", () => {
         euroTokenAmount: "7.1827e+22",
         ethAmount: "5.9097167491542e+22",
         ethEuroAmount: "0",
-        totalAmount: "7.1827e+22",
+        totalAmount: convertFromUlps("7.1827e+22").toString(),
         isIcbmWalletConnected: false,
         isLockedWalletConnected: true,
       },
@@ -57,8 +59,8 @@ describe("<MyWalletWidget />", () => {
       data: {
         euroTokenAmount: "3.6e+22",
         ethAmount: "648200000000000000",
-        ethEuroAmount: "1.2964e+23",
-        totalAmount: "1.6564e+23",
+        ethEuroAmount: convertFromUlps("1.2964e+23").toString(),
+        totalAmount: convertFromUlps("1.6564e+23").toString(),
         isIcbmWalletConnected: false,
         isLockedWalletConnected: false,
       },
@@ -78,7 +80,7 @@ describe("<MyWalletWidget />", () => {
         euroTokenAmount: "3.649e+22",
         ethAmount: "1648200000000000000",
         ethEuroAmount: "3.2964e+23",
-        totalAmount: "3.6613e+23",
+        totalAmount: convertFromUlps("3.6613e+23").toString(),
         isIcbmWalletConnected: false,
         isLockedWalletConnected: false,
       },
@@ -118,7 +120,7 @@ describe("<MyWalletWidget />", () => {
         .find(tid("my-wallet-widget-total"))
         .find(tid("value"))
         .text(),
-    ).to.eq("366 130.00"); //329 640.00 + 36 490.00
+    ).to.eq("366 130"); //329 640.00 + 36 490.00
     expect(
       component
         .find(tid("my-wallet-widget-total"))

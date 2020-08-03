@@ -1,3 +1,4 @@
+import { invariant } from "@neufund/shared-utils";
 import * as React from "react";
 import { InteractionManager, StyleSheet } from "react-native";
 import * as Yup from "yup";
@@ -21,6 +22,8 @@ import { oneOfSchema } from "utils/yupSchemas";
 const ethereumPrivateKeyUISchema = walletEthModuleApi.utils
   .ethereumPrivateKey()
   .transform(value => {
+    invariant(typeof value === "string", "String expected");
+
     // Some tools generate private key without hex prefix
     // to allow importing such invalid private keys
     // add hex prefix manually if it doesn't exist
@@ -59,6 +62,7 @@ const ImportAccountScreenForm: React.FunctionComponent<TExternalProps> = ({
     (ref: TComponentRefType<typeof TextAreaInput>) => {
       // focus needs to be done after all stack related animations have been finished
       // otherwise the input got's blurred almost immediately
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       InteractionManager.runAfterInteractions(() => {
         // only focus input if the view is still focused
         if (ref && navigation.isFocused()) {

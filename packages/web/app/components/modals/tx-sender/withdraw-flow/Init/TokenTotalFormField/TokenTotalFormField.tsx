@@ -1,13 +1,9 @@
-import * as cn from "classnames";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { DataRow } from "../../../../../shared/DataRow";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../../shared/formatters/utils";
 import {
   ESize,
   ETextPosition,
@@ -37,7 +33,7 @@ const TokenTotalFormField: React.FunctionComponent<{
         textPosition={ETextPosition.RIGHT}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         icon={ethIcon}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
       />
     }
   />

@@ -1,10 +1,17 @@
-import * as cn from "classnames";
+import {
+  calculateTimeLeft,
+  localTime,
+  timeZone,
+  utcTime,
+  weekdayLocal,
+  weekdayUTC,
+} from "@neufund/shared-utils";
+import cn from "classnames";
 import { Moment } from "moment";
 import * as React from "react";
 
 import { TTranslatedString } from "../../types";
 import { FancyTimeLeft } from "./TimeLeft.unsafe";
-import { calculateTimeLeft, localTime, timeZone, utcTime, weekdayLocal, weekdayUTC } from "./utils";
 
 import * as styles from "./TimeLeftWithUTC.module.scss";
 

@@ -1,6 +1,6 @@
 import { Button } from "@neufund/design-system";
-import { EquityToken } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import { ENumberInputFormat, ENumberOutputFormat, EquityToken } from "@neufund/shared-utils";
+import cn from "classnames";
 import { FormikErrors, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -15,7 +15,6 @@ import { isValidFormNumber } from "../../../../../../modules/tx/validator/transf
 import { isAddressValid } from "../../../../../../modules/web3/utils";
 import { DataRow } from "../../../../../shared/DataRow";
 import { Money } from "../../../../../shared/formatters/Money";
-import { ENumberInputFormat, ENumberOutputFormat } from "../../../../../shared/formatters/utils";
 import { Form } from "../../../../../shared/forms";
 import { TransferHeader } from "../../shared/TransferHeader";
 import { EtherAddressFormRow } from "../EtherAddressFormRow/EtherAddressFormRow";

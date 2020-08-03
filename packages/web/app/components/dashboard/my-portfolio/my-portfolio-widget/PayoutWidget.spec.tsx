@@ -1,4 +1,5 @@
-import { createMount, tid } from "@neufund/shared-utils/tests";
+import { investorPortfolioModuleApi } from "@neufund/shared-modules";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
@@ -11,8 +12,10 @@ import * as hoocs from "../../../../utils/react-connected-components/withActionW
 stub(hoocs, "withActionWatcher").callsFake(() => (Component: React.ComponentType) => Component);
 
 // tslint:disable-next-line:ordered-imports
+import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
-import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
+
 import * as buttonLink from "../../../shared/buttons/ButtonLink";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { IncomingPayoutPendingBase } from "./IncomingPayoutPending";
@@ -27,49 +30,54 @@ describe("PayoutWidget", () => {
       <div data-test-id={props["data-test-id"]} />
     ));
 
+    stubs.selectRouterState = stub(walletSelectors, "selectRouterState").returns({ location: {} });
+
     stubs.selectEtherTokenIncomingPayout = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectEtherTokenIncomingPayout",
     ).returns("0");
     stubs.selectEuroTokenIncomingPayout = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectEuroTokenIncomingPayout",
     ).returns("0");
-    stubs.selectIncomingPayoutError = stub(investorPortfolio, "selectIncomingPayoutError").returns(
-      undefined,
-    );
+    stubs.selectIncomingPayoutError = stub(
+      investorPortfolioModuleApi.selectors,
+      "selectIncomingPayoutError",
+    ).returns(undefined);
     stubs.selectIncomingPayoutSnapshotDate = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectIncomingPayoutSnapshotDate",
     ).returns(undefined);
     stubs.selectIsIncomingPayoutLoading = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectIsIncomingPayoutLoading",
     ).returns(undefined);
     stubs.selectIsIncomingPayoutNotInitialized = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectIsIncomingPayoutNotInitialized",
     ).returns(undefined);
     stubs.selectIsIncomingPayoutPending = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectIsIncomingPayoutPending",
     ).returns(undefined);
-    stubs.selectPayoutAvailable = stub(investorPortfolio, "selectPayoutAvailable").returns(
-      undefined,
-    );
-    stubs.selectTokensDisbursal = stub(investorPortfolio, "selectTokensDisbursal").returns(
-      undefined,
-    );
+    stubs.selectPayoutAvailable = stub(
+      investorPortfolioModuleApi.selectors,
+      "selectPayoutAvailable",
+    ).returns(undefined);
+    stubs.selectTokensDisbursal = stub(
+      investorPortfolioModuleApi.selectors,
+      "selectTokensDisbursal",
+    ).returns(undefined);
     stubs.selectTokensDisbursalError = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectTokensDisbursalError",
     ).returns(undefined);
     stubs.selectTokensDisbursalIsLoading = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectTokensDisbursalIsLoading",
     ).returns(undefined);
     stubs.selectTokensDisbursalNotInitialized = stub(
-      investorPortfolio,
+      investorPortfolioModuleApi.selectors,
       "selectTokensDisbursalNotInitialized",
     ).returns(undefined);
   });

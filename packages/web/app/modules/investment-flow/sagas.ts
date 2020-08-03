@@ -1,9 +1,17 @@
 import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+  walletApi,
+} from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
+  convertFromUlps,
   convertToUlps,
+  ECurrency,
   extractNumber,
   nonNullable,
   subtractBigNumbers,
@@ -11,24 +19,11 @@ import {
 import BigNumber from "bignumber.js";
 
 import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
-import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETxType, ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import {
-  selectEtoById,
-  selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContractById,
-} from "../eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
-import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
-import {
-  selectCalculatedContribution,
-  selectCalculatedEtoTicketSizesUlpsById,
-  selectIsWhitelisted,
-} from "../investor-portfolio/selectors";
 import { neuCall } from "../sagasUtils";
 import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
 import {
@@ -44,7 +39,7 @@ import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 import {
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
-  selectInvestmentEurValueUlps,
+  selectInvestmentEurValue,
   selectInvestmentType,
   selectIsICBMInvestment,
   selectWallets,
@@ -58,10 +53,13 @@ export function* processCurrencyValue(
 
   const value = action.payload.value && convertToUlps(extractNumber(action.payload.value));
   const curr = action.payload.currency;
+  const eurValue = selectInvestmentEurValue(state);
   const oldVal =
     curr === ECurrency.ETH
       ? selectInvestmentEthValueUlps(state)
-      : selectInvestmentEurValueUlps(state);
+      : eurValue
+      ? convertToUlps(eurValue)
+      : eurValue;
 
   // stop if value has not changed. allows editing fractions without overriding user input.
   if (compareBigNumbers(oldVal || "0", value || "0") === 0) return;
@@ -87,13 +85,19 @@ export function* computeAndSetCurrencies(value: string, currency: ECurrency): an
         yield put(
           actions.investmentFlow.setEthValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
         );
-        yield put(actions.investmentFlow.setEurValue(eurVal.toFixed(0, BigNumber.ROUND_UP)));
+        yield put(
+          actions.investmentFlow.setEurValue(
+            convertFromUlps(eurVal.toFixed(0, BigNumber.ROUND_UP)).toString(),
+          ),
+        );
         return;
       case ECurrency.EUR_TOKEN:
         const ethVal = valueAsBigNumber.mul(eurPriceEther);
         yield put(actions.investmentFlow.setEthValue(ethVal.toFixed(0, BigNumber.ROUND_UP)));
         yield put(
-          actions.investmentFlow.setEurValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
+          actions.investmentFlow.setEurValue(
+            convertFromUlps(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)).toString(),
+          ),
         );
         return;
     }
@@ -144,13 +148,19 @@ export function* investEntireBalance(): any {
 function validateInvestment(state: TAppGlobalState): EInvestmentErrorState | undefined {
   const investmentFlow = state.investmentFlow;
 
-  const euroValue = investmentFlow.euroValueUlps;
-  const etherValue = investmentFlow.ethValueUlps;
+  const euroValue = convertToUlps(selectInvestmentEurValue(state));
+  const etherValue = selectInvestmentEthValueUlps(state);
 
   const wallet = walletApi.selectors.selectWalletData(state);
 
-  const contribs = selectCalculatedContribution(state, investmentFlow.etoId);
-  const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(state, investmentFlow.etoId);
+  const contribs = investorPortfolioModuleApi.selectors.selectCalculatedContribution(
+    state,
+    investmentFlow.etoId,
+  );
+  const ticketSizes = investorPortfolioModuleApi.selectors.selectCalculatedEtoTicketSizesUlpsById(
+    state,
+    investmentFlow.etoId,
+  );
 
   if (!contribs || !euroValue || !wallet || !ticketSizes) return;
 
@@ -205,8 +215,9 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
   yield put(actions.investmentFlow.setErrorState());
   let state: TAppGlobalState = yield select();
-  const eto = selectEtoById(state, state.investmentFlow.etoId);
-  const value = state.investmentFlow.euroValueUlps;
+  const eto = etoModuleApi.selectors.selectEtoById(state, state.investmentFlow.etoId);
+  const eurValue = selectInvestmentEurValue(state);
+  const value = eurValue ? convertToUlps(eurValue).toString() : eurValue;
 
   if (value && compareBigNumbers(value, "0") < 0) {
     return yield put(
@@ -217,7 +228,12 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);
 
-      const contribution = yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
+      const contribution = yield neuCall(
+        investorPortfolioModuleApi.sagas.loadComputedContributionFromContract,
+        eto,
+        value,
+        isICBM,
+      );
 
       yield put(actions.investorEtoTicket.setCalculatedContribution(eto.etoId, contribution));
 
@@ -246,7 +262,9 @@ function* start(
 ): Generator<any, any, any> {
   const { etoId } = action.payload;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
-    yield* select((state: TAppGlobalState) => selectEtoWithCompanyAndContractById(state, etoId)),
+    yield* select((state: TAppGlobalState) =>
+      etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId),
+    ),
   );
 
   yield put(actions.investmentFlow.resetInvestment());
@@ -289,13 +307,14 @@ export function* selectInitialInvestmentType(): Generator<any, void, any> {
 function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> {
   const state: TAppGlobalState = yield select();
   const etoId = yield* select(selectInvestmentEtoId);
-  const etoOnChainState = yield* select(selectEtoOnChainStateById, etoId);
+  const etoOnChainState = yield* select(etoModuleApi.selectors.selectEtoOnChainStateById, etoId);
 
   const activeTypes: WalletSelectionData[] = [];
 
   // no regular investment if not whitelisted in pre eto
   if (
-    (etoOnChainState === EETOStateOnChain.Whitelist && selectIsWhitelisted(state, etoId)) ||
+    (etoOnChainState === EETOStateOnChain.Whitelist &&
+      investorPortfolioModuleApi.selectors.selectIsWhitelisted(state, etoId)) ||
     etoOnChainState !== EETOStateOnChain.Whitelist
   ) {
     //eth wallet
@@ -307,7 +326,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
       );
       activeTypes.push({
         balanceEth: liquidEthBalance,
-        balanceEur: liquidEthEurBalance,
+        balanceEur: convertFromUlps(liquidEthEurBalance).toString(),
         type: EInvestmentType.Eth,
         name: "ETH Balance",
         enabled: true,
@@ -322,7 +341,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
     if (hasBalance(balanceNEur) && neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
       activeTypes.push({
         balanceNEuro: balanceNEur,
-        balanceEur: balanceNEur,
+        balanceEur: convertFromUlps(balanceNEur).toString(),
         type: EInvestmentType.NEur,
         name: "nEUR Balance",
         enabled: true,
@@ -350,7 +369,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
       type: EInvestmentType.ICBMEth,
       name: "ICBM Balance",
       balanceEth: icbmBalanceEth,
-      balanceEur: lockedEthEurBalance,
+      balanceEur: convertFromUlps(lockedEthEurBalance).toString(),
       icbmBalanceEth: lockedIcbmBalanceEth,
       icbmBalanceEur: lockedIcbmEthEurBalance,
       enabled: hasIcbmEthBalance,
@@ -370,7 +389,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
       type: EInvestmentType.ICBMnEuro,
       name: "ICBM Balance",
       balanceNEuro: icbmEuroBalance,
-      balanceEur: icbmEuroBalance,
+      balanceEur: convertFromUlps(icbmEuroBalance).toString(),
       icbmBalanceNEuro: lockedIcbmEuroBalance,
       icbmBalanceEur: lockedIcbmEuroBalance,
       enabled: hasIcbmEuroBalance,
@@ -409,12 +428,12 @@ export function* recalculateCurrencies(): any {
 
   const curr = getCurrencyByInvestmentType(type);
   const ethVal = selectInvestmentEthValueUlps(s);
-  const eurVal = selectInvestmentEurValueUlps(s);
+  const eurVal = selectInvestmentEurValue(s);
 
   if (curr === ECurrency.ETH && ethVal) {
     yield call(computeAndSetCurrencies, ethVal, curr);
   } else if (eurVal) {
-    yield call(computeAndSetCurrencies, eurVal, curr);
+    yield call(computeAndSetCurrencies, convertToUlps(eurVal).toString(), curr);
   }
 }
 

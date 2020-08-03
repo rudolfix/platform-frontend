@@ -3,7 +3,7 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { selectRegisterWalletType } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { shouldNeverHappen } from "../../shared/NeverComponent";
 import { RegisterBrowserWallet } from "./RegisterBrowserWallet/RegisterBrowserWallet";

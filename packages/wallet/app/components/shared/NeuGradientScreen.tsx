@@ -12,7 +12,7 @@ const NeuGradientScreen: React.FunctionComponent<TExternalProps> = ({
   contentContainerStyle,
   ...props
 }) => (
-  <Screen statusBarStyle={EStatusBarStyle.DARK_BLUEY_GRAY} {...props}>
+  <Screen statusBarStyle={EStatusBarStyle.DARK_BLUEY_GRAY} bounces={false} {...props}>
     <NeuLinearGradient style={[styles.gradient, contentContainerStyle, style]}>
       {children}
     </NeuLinearGradient>

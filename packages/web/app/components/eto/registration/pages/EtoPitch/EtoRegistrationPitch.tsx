@@ -1,11 +1,8 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { EtoPitchType, TPartialEtoSpecData } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import {
-  EtoPitchType,
-  TPartialEtoSpecData,
-} from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
 import {
   ArrayOfKeyValueFields,

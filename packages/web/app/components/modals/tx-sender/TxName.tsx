@@ -45,6 +45,8 @@ const TxName: React.FunctionComponent<IProps> = ({ type }) => {
       return <FormattedMessage id="nominee-sign-isha.title" />;
     case ETxType.SHAREHOLDER_RESOLUTIONS_VOTE:
       return <FormattedMessage id="shareholder-resolution-voting.title" />;
+    case ETxType.EXECUTE_RESOLUTION:
+      return <FormattedMessage id="governance.publish-update" />;
     default:
       return assertNever(type);
   }

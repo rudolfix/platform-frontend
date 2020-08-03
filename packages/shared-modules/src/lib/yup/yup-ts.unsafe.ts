@@ -2,6 +2,8 @@ import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 import { mapValues } from "lodash";
 import * as Yup from "yup";
 
+import { TTranslatedString } from "../../messages";
+
 const object = <T extends {}>(objectShape: T) => new ObjectYTS(objectShape);
 const string = <T extends string>() => new StringYTS<T>();
 const url = () => new StringYTS().enhance((v: Yup.StringSchema) => v.url());
@@ -13,19 +15,12 @@ export type TypeOfYTS<T extends YTS<any>> = DeepReadonly<T["_T"]>;
 
 export type SchemaYTS<T> = ObjectYTS<T>;
 
+const SET_TO_TRUE = "This field must be set to true";
+const WYSIWYG_MAX_LENGTH = "Visual text editor maximum allowed length reached";
+
 export function isYTS(schema: any): schema is SchemaYTS<any> {
   return schema instanceof YTS;
 }
-
-export const YupTS = {
-  object,
-  string,
-  url,
-  array,
-  number,
-  boolean,
-  isYTS,
-};
 
 type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOfYTS<P[K]> };
 
@@ -101,3 +96,31 @@ export class ArrayYTS<T extends YTS<any>> extends YTS<Array<TypeOfYTS<T>>> {
     return this.validator;
   }
 }
+
+export const wysiwygString = () => new WysiwygStringYTS();
+export const onlyTrue = (message?: TTranslatedString) =>
+  new BooleanYTS().enhance(v =>
+    v.test("isTrue", message || SET_TO_TRUE, value => value === undefined || value === true),
+  );
+
+export class WysiwygStringYTS extends YTS<string> {
+  constructor() {
+    super(Yup.string().meta({ isWysiwyg: true }));
+  }
+
+  max(limit: number): YTS<string> {
+    return this.enhance(v => v.max(limit, WYSIWYG_MAX_LENGTH));
+  }
+}
+
+export const YupTS = {
+  object,
+  string,
+  url,
+  array,
+  number,
+  boolean,
+  isYTS,
+  onlyTrue,
+  wysiwygString,
+};

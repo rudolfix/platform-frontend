@@ -1,12 +1,12 @@
-import { createActionFactory, Dictionary } from "@neufund/shared-utils";
-
-import { EEtoDocumentType } from "../../lib/api/eto/EtoFileApi.interfaces";
 import {
+  EEtoDocumentType,
   SignedISHAStatus,
   TEtoWithCompanyAndContract,
   TEtoWithCompanyAndContractReadonly,
   TOfferingAgreementsStatus,
-} from "../eto/types";
+} from "@neufund/shared-modules";
+import { createActionFactory, Dictionary } from "@neufund/shared-utils";
+
 import {
   ENomineeEtoSpecificTask,
   ENomineeFlowError,

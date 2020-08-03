@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { noopLogger } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import WalletConnectMock from "@walletconnect/react-native";
@@ -13,8 +15,8 @@ import {
 import { EWalletConnectAdapterEvents, TWalletConnectAdapterEmit } from "./types";
 import { toWalletConnectUri } from "./utils";
 
-const promisifyEvent = <T extends EWalletConnectAdapterEvents>(emitter: EventEmitter2, type: T) => {
-  return new Promise<Extract<TWalletConnectAdapterEmit, { type: T }>>(resolve => {
+const promisifyEvent = <T extends EWalletConnectAdapterEvents>(emitter: EventEmitter2, type: T) =>
+  new Promise<Extract<TWalletConnectAdapterEmit, { type: T }>>(resolve => {
     emitter.once(type, (error, payload, meta) => {
       // given that we don't have a proper typings for connected keys
       // for tests purpose we can just force cast
@@ -27,7 +29,6 @@ const promisifyEvent = <T extends EWalletConnectAdapterEvents>(emitter: EventEmi
       } as Extract<TWalletConnectAdapterEmit, { type: T }>);
     });
   });
-};
 
 const mockWalletConnect = <T extends EventEmitter2>(walletConnectInstance: T): T => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

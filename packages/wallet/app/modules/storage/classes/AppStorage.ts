@@ -1,5 +1,7 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import { invariant } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
+import { ValidationError } from "yup";
 
 import { symbols } from "modules/storage/symbols";
 import { IStorageItem } from "modules/storage/types/IStorageItem";
@@ -65,7 +67,6 @@ class AppStorage<DataType> {
   async setItem(key: string, value: DataType): Promise<void> {
     this.logger.info(`Setting a storage item for: ${key}`);
 
-    // get the schema by id
     const schema = this.schema;
 
     if (!schema) {
@@ -82,7 +83,9 @@ class AppStorage<DataType> {
     try {
       await schema.validate(storageItem.data);
     } catch (error) {
-      throw new SchemaMismatchError(schema, error.errors);
+      invariant(error instanceof ValidationError, "Invalid error object received");
+
+      throw new SchemaMismatchError(schema, error.errors.toString());
     }
 
     let data;
@@ -124,8 +127,10 @@ class AppStorage<DataType> {
     const schema = this.schema;
 
     // try to parse json, if not throw an error
-    let deserialized;
+    let deserialized: IStorageItem<DataType>;
     try {
+      // TODO: Valid whether parsed value is expected one
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       deserialized = JSON.parse(value);
     } catch (error) {
       throw new ApplicationStorageError(error);

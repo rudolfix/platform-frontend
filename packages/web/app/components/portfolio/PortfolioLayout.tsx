@@ -1,8 +1,11 @@
+import {
+  ITokenDisbursal,
+  TEtoWithCompanyAndContractReadonly,
+  TETOWithInvestorTicket,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { ITokenDisbursal, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { Container } from "../layouts/Container";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { Heading } from "../shared/Heading";

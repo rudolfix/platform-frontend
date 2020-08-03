@@ -29,7 +29,7 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
     etherPriceEur: "2542.22",
     gasCostEth: convertToUlps("0.124"),
     investmentEth: convertToUlps("120"),
-    investmentEur: convertToUlps("22506"),
+    investmentEur: "22506",
     isIcbm: false,
     tokenDecimals: 18,
   },

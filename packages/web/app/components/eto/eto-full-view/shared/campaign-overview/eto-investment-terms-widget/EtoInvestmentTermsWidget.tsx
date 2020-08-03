@@ -1,17 +1,27 @@
-import { divideBigNumbers } from "@neufund/shared-utils";
+import { EquityTokenPriceEuro, Percentage, WholeEur } from "@neufund/design-system";
+import {
+  canShowDocument,
+  EAssetType,
+  EEtoDocumentType,
+  EJurisdiction,
+  IEtoDocument,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import {
+  divideBigNumbers,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+  ESpecialNumber,
+  selectUnits,
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-} from "../../../../../../lib/api/eto/EtoFileApi.interfaces";
-import { canShowDocument } from "../../../../../../lib/api/eto/EtoFileUtils";
-import { EAssetType, EJurisdiction } from "../../../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../../../../modules/actions";
 import { getDocumentByType } from "../../../../../../modules/eto-documents/utils";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
 import { appConnect } from "../../../../../../store";
 import { DocumentButton } from "../../../../../shared/DocumentLink";
 import { Entry } from "../../../../../shared/Entry";
@@ -19,17 +29,8 @@ import { FormatNumber } from "../../../../../shared/formatters/FormatNumber";
 import { FormatNumberRange } from "../../../../../shared/formatters/FormatNumberRange";
 import { Money } from "../../../../../shared/formatters/Money";
 import { MoneyRange } from "../../../../../shared/formatters/MoneyRange";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-  ESpecialNumber,
-  selectUnits,
-} from "../../../../../shared/formatters/utils";
 import { Panel } from "../../../../../shared/Panel";
-import { Percentage } from "../../../../../shared/Percentage";
-import { Tooltip } from "../../../../../shared/tooltips/Tooltip";
+import { Tooltip } from "../../../../../shared/tooltips";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../../../shared/ToBeAnnouncedTooltip";
 import { InvestmentAmount } from "./InvestmentAmount";
 
@@ -110,11 +111,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />}
               value={
-                <Money
+                <WholeEur
                   value={eto.preMoneyValuationEur ? eto.preMoneyValuationEur.toString() : undefined}
-                  inputFormat={ENumberInputFormat.FLOAT}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.INTEGER}
                   defaultValue={<ToBeAnnouncedTooltip />}
                 />
               }
@@ -129,7 +127,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                       eto.existingShareCapital ? eto.existingShareCapital.toString() : undefined
                     }
                     outputFormat={ENumberOutputFormat.INTEGER}
-                    inputFormat={ENumberInputFormat.FLOAT}
+                    inputFormat={ENumberInputFormat.DECIMAL}
                     defaultValue={<ToBeAnnounced />}
                   />
                   {` ${eto.company.shareCapitalCurrencyCode}`}
@@ -145,7 +143,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                     <FormatNumber
                       value={eto.authorizedCapital.toString()}
                       outputFormat={ENumberOutputFormat.INTEGER}
-                      inputFormat={ENumberInputFormat.FLOAT}
+                      inputFormat={ENumberInputFormat.DECIMAL}
                       defaultValue={<ToBeAnnounced />}
                     />
                     {` ${eto.company.shareCapitalCurrencyCode}`}
@@ -162,7 +160,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                     <FormatNumber
                       value={eto.newShareNominalValue.toString()}
                       outputFormat={ENumberOutputFormat.INTEGER}
-                      inputFormat={ENumberInputFormat.FLOAT}
+                      inputFormat={ENumberInputFormat.DECIMAL}
                       defaultValue={<ToBeAnnounced />}
                     />
                     {` ${eto.company.shareCapitalCurrencyCode}`}
@@ -180,7 +178,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                   }
                   valueUpto={eto.newSharesToIssue ? eto.newSharesToIssue.toString() : undefined}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                   defaultValue={<ToBeAnnounced />}
                 />
               }
@@ -195,7 +193,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                   <FormatNumber
                     value={eto.newSharesToIssueInWhitelist.toString()}
                     outputFormat={ENumberOutputFormat.INTEGER}
-                    inputFormat={ENumberInputFormat.FLOAT}
+                    inputFormat={ENumberInputFormat.DECIMAL}
                     defaultValue={<ToBeAnnounced />}
                   />
                 }
@@ -208,7 +206,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                 <Money
                   value={newSharePrice ? newSharePrice.toString() : undefined}
                   valueType={EPriceFormat.SHARE_PRICE}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                   outputFormat={ENumberOutputFormat.FULL}
                   defaultValue={<ToBeAnnounced />}
                 />
@@ -237,7 +235,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                 <FormatNumber
                   value={eto.equityTokensPerShare ? eto.equityTokensPerShare.toString() : undefined}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                   defaultValue={<ToBeAnnounced />}
                 />
               }
@@ -246,7 +244,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.token-price" />}
               value={
-                <Money
+                <EquityTokenPriceEuro
                   value={
                     newSharePrice && eto.equityTokensPerShare
                       ? divideBigNumbers(
@@ -255,9 +253,6 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                         )
                       : undefined
                   }
-                  inputFormat={ENumberInputFormat.FLOAT}
-                  valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-                  outputFormat={ENumberOutputFormat.FULL}
                   defaultValue={<ToBeAnnounced />}
                 />
               }
@@ -266,14 +261,14 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             {!!eto.whitelistDiscountFraction && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.whitelist-discount" />}
-                value={<Percentage>{eto.whitelistDiscountFraction}</Percentage>}
+                value={<Percentage value={eto.whitelistDiscountFraction.toString()} />}
                 data-test-id="eto-public-view-whitelist-discount"
               />
             )}
             {!!eto.publicDiscountFraction && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.public-discount" />}
-                value={<Percentage>{eto.publicDiscountFraction}</Percentage>}
+                value={<Percentage value={eto.publicDiscountFraction.toString()} />}
                 data-test-id="eto-public-view-public-discount"
               />
             )}
@@ -294,7 +289,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                   valueUpto={
                     eto.maxTicketEur ? eto.maxTicketEur.toString() : ESpecialNumber.UNLIMITED
                   }
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                   valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   defaultValue={<ToBeAnnounced />}

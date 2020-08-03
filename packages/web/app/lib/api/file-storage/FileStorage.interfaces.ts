@@ -1,4 +1,4 @@
-import * as YupTS from "../../yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 export const FileDescriptionType = YupTS.object({
   type: YupTS.string(),
@@ -7,6 +7,6 @@ export const FileDescriptionType = YupTS.object({
 
 export const FileDescriptionValidator = FileDescriptionType.toYup();
 
-export type TFileDescription = YupTS.TypeOf<typeof FileDescriptionType>;
+export type TFileDescription = TypeOfYTS<typeof FileDescriptionType>;
 
 export type TFileType = "image";

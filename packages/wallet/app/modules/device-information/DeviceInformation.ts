@@ -1,7 +1,8 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
-import { Platform, PlatformOSType } from "react-native";
 import { getUniqueId, isEmulator } from "react-native-device-info";
+
+import { EPlatform, Platform } from "utils/Platform";
 
 /**
  * @class DeviceInformation
@@ -45,7 +46,7 @@ export class DeviceInformation {
    * Returns device platform
    * @returns {string} ios or android
    */
-  getPlatform(): PlatformOSType {
+  getPlatform(): EPlatform {
     this.logger.info("Get the device platform");
 
     return Platform.OS;

@@ -1,4 +1,5 @@
-import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
+import { EJurisdiction } from "@neufund/shared-modules";
+
 import { ELogoutReason } from "../auth/types";
 
 export type TLoginRouterState = { logoutReason: ELogoutReason } | undefined;

@@ -1,5 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 export const EtoViewNomineeActions = {
   loadNomineeEtoView: createActionFactory(

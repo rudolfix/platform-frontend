@@ -1,14 +1,13 @@
 import { EButtonLayout, EIconPosition } from "@neufund/design-system";
-import { nonNullable } from "@neufund/shared-utils";
+import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { appRoutes } from "../../../appRoutes";
-import { ButtonLink } from "../../../shared/buttons/ButtonLink";
+import { ButtonLink } from "../../../shared/buttons";
 import { ETheme } from "../../../shared/formatters/Money";
 import { MoneyWithLessThan } from "../../../shared/formatters/MoneyWithLessThan";
-import { ENumberInputFormat, ENumberOutputFormat } from "../../../shared/formatters/utils";
 
 import arrowRight from "../../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./PayoutWidget.module.scss";

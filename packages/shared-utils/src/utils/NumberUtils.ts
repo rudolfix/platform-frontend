@@ -21,14 +21,22 @@ export function isLessThanOrEqualToZero(value: TBigNumberVariants): boolean {
   return bigNumberValue.lessThanOrEqualTo("0");
 }
 
-/**
- * Multiplies a given value by 100
- */
 export const toPercentage = (value: TBigNumberVariants) => multiplyBigNumbers([value, "100"]);
 
+/**
+ <<<<<<< HEAD
+ * Converts ULPS to DECIMAL
+ * @param value
+ * @param decimals, 18 default is for Ether
+ */
 export const convertFromUlps = (value: TBigNumberVariants, decimals = 18) =>
   new BigNumber(value).div(new BigNumber("10").pow(decimals));
 
+/**
+ * Converts DECIMAL to ULPS
+ * @param value
+ * @param decimals, 18 default is for Ether
+ */
 export const convertToUlps = (value: TBigNumberVariants, decimals = 18) =>
   new BigNumber("10")
     .pow(decimals)

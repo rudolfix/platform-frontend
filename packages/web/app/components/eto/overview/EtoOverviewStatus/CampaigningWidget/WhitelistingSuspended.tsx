@@ -1,12 +1,7 @@
+import { WholeEur } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { Message } from "../Message";
 
 type TWhitelistingLimitSuspended = {
@@ -33,14 +28,7 @@ export const WhitelistingSuspended: React.FunctionComponent<TWhitelistingLimitSu
       <FormattedMessage
         id="shared-component.eto-overview.whitelist.success.summary"
         values={{
-          totalAmount: (
-            <Money
-              value={pledgedAmount ? pledgedAmount.toString() : undefined}
-              inputFormat={ENumberInputFormat.FLOAT}
-              valueType={ECurrency.EUR}
-              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            />
-          ),
+          totalAmount: <WholeEur value={pledgedAmount ? pledgedAmount.toString() : undefined} />,
           totalInvestors: investorsCount,
         }}
       />

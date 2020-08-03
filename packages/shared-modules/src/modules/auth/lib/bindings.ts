@@ -6,12 +6,14 @@ import { AuthModuleError } from "../errors";
 import { AuthBinaryHttpClient } from "./http/AuthBinaryHttpClient";
 import { AuthJsonHttpClient } from "./http/AuthJsonHttpClient";
 import { SignatureAuthApi } from "./signature/SignatureAuthApi";
-import { symbols } from "./symbols";
+import { privateSymbols, symbols } from "./symbols";
 import { UsersApi } from "./users/UsersApi";
 
 type TSetupContainerConfig = {
   jwtStorageSymbol: TLibSymbol<ISingleKeyStorage<string>>;
   ethManagerSymbol: TLibSymbol<IEthManager>;
+  jwtRefreshThreshold: number;
+  jwtTimingThreshold: number;
 };
 
 class JWTStorageNotProvidedError extends AuthModuleError {
@@ -28,6 +30,14 @@ class EthManagerNotProvidedError extends AuthModuleError {
 
 export function setupContainerModule(config: TSetupContainerConfig): ContainerModule {
   return new ContainerModule(bind => {
+    bind<TLibSymbolType<typeof privateSymbols.jwtRefreshThreshold>>(
+      privateSymbols.jwtRefreshThreshold,
+    ).toConstantValue(config.jwtRefreshThreshold);
+
+    bind<TLibSymbolType<typeof privateSymbols.jwtTimingThreshold>>(
+      privateSymbols.jwtTimingThreshold,
+    ).toConstantValue(config.jwtTimingThreshold);
+
     bind<TLibSymbolType<typeof symbols.signatureAuthApi>>(symbols.signatureAuthApi)
       .to(SignatureAuthApi)
       .inSingletonScope();

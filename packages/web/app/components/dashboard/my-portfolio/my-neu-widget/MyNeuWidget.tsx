@@ -1,32 +1,17 @@
 import { EButtonLayout } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
+import { investorPortfolioModuleApi, walletApi } from "@neufund/shared-modules";
+import { ECurrency } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
-import {
-  selectIncomingPayoutError,
-  selectIncomingPayoutEurEquiv,
-  selectIsIncomingPayoutLoading,
-  selectIsIncomingPayoutNotInitialized,
-  selectIsIncomingPayoutPending,
-  selectPayoutAvailable,
-  selectTokensDisbursalError,
-  selectTokensDisbursalEurEquivTotal,
-  selectTokensDisbursalIsLoading,
-  selectTokensDisbursalNotInitialized,
-} from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { ButtonLink } from "../../../shared/buttons/ButtonLink";
-import { ECurrency } from "../../../shared/formatters/utils";
-import {
-  ELoadingIndicator,
-  LoadingIndicator,
-} from "../../../shared/loading-indicator/LoadingIndicator";
+import { ButtonLink } from "../../../shared/buttons";
+import { withContainer } from "../../../shared/hocs/withContainer";
+import { ELoadingIndicator, LoadingIndicator } from "../../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ETheme } from "../../../shared/transaction/TransactionData";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
@@ -110,18 +95,24 @@ export const MyNeuWidget = compose<TComponentProps, {}>(
     stateToProps: state => ({
       isLoading:
         walletApi.selectors.selectIsLoading(state) ||
-        (selectIsIncomingPayoutNotInitialized(state) && selectIsIncomingPayoutLoading(state)) ||
-        (selectTokensDisbursalNotInitialized(state) && selectTokensDisbursalIsLoading(state)),
+        (investorPortfolioModuleApi.selectors.selectIsIncomingPayoutNotInitialized(state) &&
+          investorPortfolioModuleApi.selectors.selectIsIncomingPayoutLoading(state)) ||
+        (investorPortfolioModuleApi.selectors.selectTokensDisbursalNotInitialized(state) &&
+          investorPortfolioModuleApi.selectors.selectTokensDisbursalIsLoading(state)),
       error:
         !!walletApi.selectors.selectWalletError(state) ||
-        selectIncomingPayoutError(state) ||
-        selectTokensDisbursalError(state),
+        investorPortfolioModuleApi.selectors.selectIncomingPayoutError(state) ||
+        investorPortfolioModuleApi.selectors.selectTokensDisbursalError(state),
       balanceNeu: walletApi.selectors.selectNeuBalance(state),
       balanceEur: walletApi.selectors.selectNeuBalanceEuroAmount(state),
-      isPayoutPending: selectIsIncomingPayoutPending(state),
-      isPayoutAvailable: selectPayoutAvailable(state),
-      tokensDisbursalEurEquiv: selectTokensDisbursalEurEquivTotal(state),
-      incomingPayoutEurEquiv: selectIncomingPayoutEurEquiv(state),
+      isPayoutPending: investorPortfolioModuleApi.selectors.selectIsIncomingPayoutPending(state),
+      isPayoutAvailable: investorPortfolioModuleApi.selectors.selectPayoutAvailable(state),
+      tokensDisbursalEurEquiv: investorPortfolioModuleApi.selectors.selectTokensDisbursalEurEquivTotal(
+        state,
+      ),
+      incomingPayoutEurEquiv: investorPortfolioModuleApi.selectors.selectIncomingPayoutEurEquiv(
+        state,
+      ),
     }),
     dispatchToProps: dispatch => ({
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),

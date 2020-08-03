@@ -1,5 +1,4 @@
-import { useField, useFormikContext } from "formik";
-import { FieldMetaProps } from "formik/dist/types";
+import { FieldMetaProps, useField, useFormikContext } from "formik";
 import * as React from "react";
 import { InputProps } from "reactstrap";
 

@@ -2,7 +2,7 @@ import { DeepReadonly } from "@neufund/shared-utils";
 
 import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { AppReducer } from "../../store";
-import { actions } from "../actions";
+import { investmentFlowActions as actions } from "./actions";
 
 export enum EInvestmentType {
   Eth = "ETH",
@@ -20,7 +20,7 @@ export enum EInvestmentErrorState {
 
 export interface IInvestmentFlowState {
   etoId: string;
-  euroValueUlps: string;
+  euroValue: string;
   ethValueUlps: string;
   investmentType: EInvestmentType | undefined;
   wallets: WalletSelectionData[];
@@ -30,7 +30,7 @@ export interface IInvestmentFlowState {
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
   etoId: "",
-  euroValueUlps: "",
+  euroValue: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.Eth,
   wallets: [],
@@ -42,41 +42,41 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
   action,
 ): DeepReadonly<IInvestmentFlowState> => {
   switch (action.type) {
-    case actions.investmentFlow.resetInvestment.getType():
+    case actions.resetInvestment.getType():
       return investmentFlowInitialState;
-    case actions.investmentFlow.selectInvestmentType.getType():
+    case actions.selectInvestmentType.getType():
       return {
         ...investmentFlowInitialState,
         etoId: state.etoId,
         wallets: state.wallets,
         investmentType: action.payload.type,
       };
-    case actions.investmentFlow.setEtoId.getType():
+    case actions.setEtoId.getType():
       return {
         ...state,
         etoId: action.payload.etoId,
       };
-    case actions.investmentFlow.setErrorState.getType():
+    case actions.setErrorState.getType():
       return {
         ...state,
         errorState: action.payload.errorState,
       };
-    case actions.investmentFlow.setEthValue.getType():
+    case actions.setEthValue.getType():
       return {
         ...state,
         ethValueUlps: action.payload.value,
       };
-    case actions.investmentFlow.setEurValue.getType():
+    case actions.setEurValue.getType():
       return {
         ...state,
-        euroValueUlps: action.payload.value,
+        euroValue: action.payload.value,
       };
-    case actions.investmentFlow.setIsInputValidated.getType():
+    case actions.setIsInputValidated.getType():
       return {
         ...state,
         isValidatedInput: action.payload.isValidated,
       };
-    case actions.investmentFlow.setWallets.getType():
+    case actions.setWallets.getType():
       return {
         ...state,
         wallets: action.payload.wallets,

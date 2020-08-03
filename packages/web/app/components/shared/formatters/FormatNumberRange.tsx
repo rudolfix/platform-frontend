@@ -1,18 +1,18 @@
-import { assertNever } from "@neufund/shared-utils";
-import * as cn from "classnames";
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-
-import { TBigNumberVariants } from "../../../lib/web3/types";
-import { TTranslatedString } from "../../../types";
 import {
+  assertNever,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   ESpecialNumber,
   formatNumber,
   THumanReadableFormat,
-} from "./utils";
+} from "@neufund/shared-utils";
+import cn from "classnames";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+
+import { TBigNumberVariants } from "../../../lib/web3/types";
+import { TTranslatedString } from "../../../types";
 
 import * as styles from "./FormatNumber.module.scss";
 
@@ -45,7 +45,7 @@ export const FormatNumberRange: React.FunctionComponent<INumberRangeProps> = ({
   defaultValue = "",
   roundingMode = ERoundingMode.UP,
   decimalPlaces = 4,
-  inputFormat = ENumberInputFormat.FLOAT,
+  inputFormat = ENumberInputFormat.DECIMAL,
   outputFormat = ENumberOutputFormat.FULL,
   isPrice = false,
   separator = "–", //todo nowrap before (?)

@@ -6,8 +6,8 @@ import { EHeadlineLevel, Headline } from "components/shared/typography/Headline"
 import { spacingStyles } from "styles/spacings";
 
 type TExternalProps = {
-  heading: string;
-  subHeading?: string;
+  heading: React.ReactNode;
+  subHeading?: React.ReactNode;
 } & React.ComponentProps<typeof View>;
 
 const Section: React.FunctionComponent<TExternalProps> = ({

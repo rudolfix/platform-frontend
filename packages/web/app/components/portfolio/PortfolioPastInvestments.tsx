@@ -1,29 +1,21 @@
-import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { nonNullable, withContainer } from "@neufund/shared-utils";
+import { Button, EButtonLayout, Eur, Neu, Table, TokenDetails } from "@neufund/design-system";
+import { investorPortfolioModuleApi, TETOWithInvestorTicket } from "@neufund/shared-modules";
+import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
-import { Money } from "../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-} from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { withContainer } from "../shared/hocs/withContainer";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { PanelRounded } from "../shared/Panel";
-import { Tooltip } from "../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../shared/tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 import { WarningAlert } from "../shared/WarningAlert";
 
 import * as styles from "./PortfolioLayout.module.scss";
@@ -92,34 +84,25 @@ const prepareTableRowData = (
         quantity: (
           <FormatNumber
             value={investorTicket.equityTokenInt}
-            inputFormat={ENumberInputFormat.FLOAT}
+            inputFormat={ENumberInputFormat.DECIMAL}
             outputFormat={ENumberOutputFormat.INTEGER}
           />
         ),
         value: (
-          <Money
-            value={investorTicket.equivEurUlps}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
-            data-test-id="past-investments-invested-amount"
-          />
+          <Eur value={investorTicket.equivEur} data-test-id="past-investments-invested-amount" />
         ),
         price: (
-          <Money
-            value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-            outputFormat={ENumberOutputFormat.FULL}
+          <Eur
+            value={investorPortfolioModuleApi.utils.getTokenPrice(
+              investorTicket.equityTokenInt,
+              investorTicket.equivEur,
+            )}
             data-test-id="past-investments-token-price"
           />
         ),
         reward: (
-          <Money
+          <Neu
             value={investorTicket.rewardNmkUlps.toString()}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.NEU}
-            outputFormat={ENumberOutputFormat.FULL}
             data-test-id="past-investments-asset-neu-reward"
           />
         ),

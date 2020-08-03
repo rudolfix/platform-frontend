@@ -1,11 +1,12 @@
+import {
+  EEtoFormTypes,
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  etoFormIsReadonly,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../lib/api/eto/EtoApiUtils";
 import {
   selectIsGeneralEtoLoading,
   selectIssuerCompany,
@@ -13,7 +14,6 @@ import {
   selectIssuerEtoState,
   userHasKycAndEmailVerified,
 } from "../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../modules/eto-flow/types";
 import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,

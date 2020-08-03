@@ -1,9 +1,9 @@
+import { TEtoSpecsData } from "@neufund/shared-modules";
 import { withParams } from "@neufund/shared-utils";
 
 import { appRoutes } from "../../../../../components/appRoutes";
 import { etherscanAddressLink } from "../../../../../components/appRouteUtils";
 import { e2eRoutes } from "../../../../../components/testing/e2eRoutes";
-import { TEtoSpecsData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { assertIsExternalLink } from "../../../../utils/assertions";
 import { etoFixtureAddressByName, tid } from "../../../../utils/index";
 import { getEto } from "../../../../utils/userHelpers";

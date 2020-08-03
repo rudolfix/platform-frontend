@@ -1,8 +1,8 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appRoutes } from "../../appRoutes";
 import { EMenuEntryType, TMenuEntry } from "./MenuEntry";
 
@@ -68,35 +68,53 @@ export const investorMenuData = (): TMenuEntry[] => {
   }
 };
 
-export const issuerMenuData = (userHasKycAndVerifiedEmail: boolean): TMenuEntry[] => [
-  {
-    type: EMenuEntryType.LINK,
-    key: "issuer-dashboard",
-    to: appRoutes.dashboard,
-    menuName: <FormattedMessage id="menu.dashboard" />,
-  },
-  {
-    type: EMenuEntryType.LINK,
-    key: "eto-page",
-    to: appRoutes.etoIssuerView,
-    disabled: !userHasKycAndVerifiedEmail,
-    menuName: <FormattedMessage id="menu.eto-page" />,
-  },
-  {
-    type: EMenuEntryType.LINK,
-    key: "documents",
-    to: appRoutes.documents,
-    disabled: !userHasKycAndVerifiedEmail,
-    menuName: <FormattedMessage id="menu.documents-page" />,
-  },
-  {
-    type: EMenuEntryType.LINK,
-    key: "wallet",
-    to: appRoutes.wallet,
-    menuName: <FormattedMessage id="menu.wallet" />,
-    "data-test-id": "authorized-layout-wallet-button",
-  },
-];
+export const issuerMenuData = (
+  userHasKycAndVerifiedEmail: boolean,
+  enableGovernanceTab: boolean,
+): TMenuEntry[] => {
+  const items: TMenuEntry[] = [
+    {
+      type: EMenuEntryType.LINK,
+      key: "issuer-dashboard",
+      to: appRoutes.dashboard,
+      menuName: <FormattedMessage id="menu.dashboard" />,
+    },
+    {
+      type: EMenuEntryType.LINK,
+      key: "eto-page",
+      to: appRoutes.etoIssuerView,
+      disabled: !userHasKycAndVerifiedEmail,
+      menuName: <FormattedMessage id="menu.eto-page" />,
+    },
+    {
+      type: EMenuEntryType.LINK,
+      key: "documents",
+      to: appRoutes.documents,
+      disabled: !userHasKycAndVerifiedEmail,
+      menuName: <FormattedMessage id="menu.documents-page" />,
+    },
+    {
+      type: EMenuEntryType.LINK,
+      key: "wallet",
+      to: appRoutes.wallet,
+      menuName: <FormattedMessage id="menu.wallet" />,
+      "data-test-id": "authorized-layout-wallet-button",
+    },
+  ];
+
+  if (process.env.NF_CYPRESS_RUN === "1" || process.env.ISSUER_GOVERNANCE_ENABLED === "1") {
+    items.splice(3, 0, {
+      type: EMenuEntryType.LINK,
+      key: "governance",
+      to: appRoutes.governance,
+      disabled: !userHasKycAndVerifiedEmail || !enableGovernanceTab,
+      menuName: <FormattedMessage id="menu.governance-page" />,
+      "data-test-id": "dashboard-governance-tab",
+    });
+  }
+
+  return items;
+};
 
 export const nomineeMenuData = (
   nomineeEto: TEtoWithCompanyAndContractReadonly | undefined,

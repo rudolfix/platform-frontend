@@ -1,9 +1,9 @@
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import { Formik } from "formik";
 import * as React from "react";
 
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../formatters/utils";
 import { FormMaskedNumberInput } from "./FormMaskedNumberInput";
 
 describe("FormMaskedNumberInput", () => {
@@ -15,7 +15,7 @@ describe("FormMaskedNumberInput", () => {
       <Formik initialValues={{ testField: testValue }} onSubmit={() => {}}>
         <FormMaskedNumberInput
           name="testField"
-          storageFormat={ENumberInputFormat.FLOAT}
+          storageFormat={ENumberInputFormat.DECIMAL}
           outputFormat={ENumberOutputFormat.FULL}
           valueType={ECurrency.EUR}
           showUnits={true}
@@ -41,7 +41,7 @@ describe("FormMaskedNumberInput", () => {
       <Formik initialValues={{ testField: initialValue }} onSubmit={() => {}}>
         <FormMaskedNumberInput
           name="testField"
-          storageFormat={ENumberInputFormat.FLOAT}
+          storageFormat={ENumberInputFormat.DECIMAL}
           outputFormat={ENumberOutputFormat.FULL}
           valueType={ECurrency.EUR}
           showUnits={true}

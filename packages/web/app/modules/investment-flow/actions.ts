@@ -1,7 +1,6 @@
-import { createActionFactory } from "@neufund/shared-utils";
+import { createActionFactory, ECurrency } from "@neufund/shared-utils";
 
 import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
-import { ECurrency } from "../../components/shared/formatters/utils";
 import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 
 export const investmentFlowActions = {

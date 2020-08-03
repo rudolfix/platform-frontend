@@ -1,31 +1,29 @@
-import { toEquityTokenSymbol } from "@neufund/shared-utils";
+import { ECurrency, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
 
 import { EIconType } from "components/shared/Icon";
+
+import { createToken } from "utils/createToken";
 
 import { Asset, EAssetType } from "./Asset";
 
 storiesOf("Molecules|Asset", module)
   .add("normal", () => (
     <Asset
-      tokenImage={EIconType.N_EUR}
+      icon={EIconType.N_EUR}
       name="NEur"
-      token={toEquityTokenSymbol("NEUR")}
-      balance="15 000"
-      analogBalance="15 000"
-      analogToken={toEquityTokenSymbol("EUR")}
+      token={createToken(toEquityTokenSymbol("NEUR"), "15 000", 0)}
+      analogToken={createToken(ECurrency.EUR, "15 000", 0)}
       type={EAssetType.NORMAL}
     />
   ))
   .add("reserved", () => (
     <Asset
-      tokenImage={EIconType.ETH}
+      icon={EIconType.ETH}
       name="ETH"
-      token={toEquityTokenSymbol("ETH")}
-      balance="1000"
-      analogBalance="15 000"
-      analogToken={toEquityTokenSymbol("EUR")}
+      token={createToken(toEquityTokenSymbol("ETH"), "1000", 0)}
+      analogToken={createToken(ECurrency.EUR, "15 000", 0)}
       type={EAssetType.RESERVED}
     />
   ));

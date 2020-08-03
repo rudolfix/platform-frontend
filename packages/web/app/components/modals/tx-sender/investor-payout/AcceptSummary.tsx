@@ -1,5 +1,5 @@
 import { Button } from "@neufund/design-system";
-import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
+import { EthereumAddressWithChecksum, selectUnits } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
@@ -11,7 +11,6 @@ import { TAcceptPayoutAdditionalData } from "../../../../modules/tx/transactions
 import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { commitmentStatusLink } from "../../../appRouteUtils";
-import { selectUnits } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ExternalLink } from "../../../shared/links";
 import { AcceptTransactionDetails } from "./AcceptTransactionDetails";

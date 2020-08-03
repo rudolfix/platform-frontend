@@ -1,4 +1,6 @@
-import * as cn from "classnames";
+import { InlineIcon } from "@neufund/design-system";
+import { ENumberOutputFormat, makeTid } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,24 +9,30 @@ import { TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
 import { ETxType } from "../../../lib/web3/types";
 import { TDataTestId } from "../../../types";
 import { Money } from "../../shared/formatters/Money";
-import { ENumberOutputFormat } from "../../shared/formatters/utils";
-import { TransactionData, TransactionName } from "../../shared/transaction";
+import { EInlineIconFill } from "../../shared/icons";
+import { TransactionName } from "../../shared/transaction";
 
-import txPending from "../../../assets/img/Pending.svg";
+import txPending from "../../../assets/img/inline_icons/tx_pending.svg";
 import * as styles from "./TransactionsHistory.module.scss";
 
 const PendingTransactionLabel = () => (
-  <div className={styles.pendingTransactionLabel}>
+  <span className={styles.pendingTransactionLabel}>
     <FormattedMessage id="modals.shared.tx-status-label.pending" />
-  </div>
+  </span>
 );
 
 type TPendingTransactionProps = {
   transaction: TxPendingWithMetadata;
 };
 
-const PendingTransactionIcon = () => (
-  <img src={txPending} className={styles.pendingTransactionIcon} alt="" />
+const TransactionLogo: React.FunctionComponent = () => (
+  <div className={styles.transactionLogoWrapper}>
+    <InlineIcon
+      svgIcon={txPending}
+      fill={EInlineIconFill.FILL_OUTLINE}
+      className={cn(styles.transactionLogo, styles.pendingTransactionLogo)}
+    />
+  </div>
 );
 
 export const PendingTransaction: React.FunctionComponent<TPendingTransactionProps &
@@ -36,9 +44,7 @@ export const PendingTransaction: React.FunctionComponent<TPendingTransactionProp
           className={cn(styles.transactionListItem, styles.pendingTransactionItem)}
           data-test-id={dataTestId}
         >
-          <div className={styles.transactionLogo}>
-            <PendingTransactionIcon />
-          </div>
+          <TransactionLogo />
           <div className={styles.transactionData}>
             <FormattedMessage id="wallet.tx-list.name.nominee-sign-tha" />
             <PendingTransactionLabel />
@@ -52,22 +58,26 @@ export const PendingTransaction: React.FunctionComponent<TPendingTransactionProp
           className={cn(styles.transactionListItem, styles.pendingTransactionItem)}
           data-test-id={dataTestId}
         >
-          <div className={styles.transactionLogo}>
-            <PendingTransactionIcon />
-          </div>
+          <TransactionLogo />
           <div className={styles.transactionData}>
-            <TransactionData
-              top={<TransactionName transaction={transaction.transactionAdditionalData} />}
-              bottom={
-                <FormattedDate
-                  value={transaction.transactionTimestamp}
-                  year="numeric"
-                  month="long"
-                  day="2-digit"
-                />
-              }
-            />
-            <PendingTransactionLabel />
+            <span
+              className={styles.transactionDataTitle}
+              data-test-id={makeTid(dataTestId, "large-value")}
+            >
+              <TransactionName transaction={transaction.transactionAdditionalData} />
+            </span>
+            <span
+              className={styles.transactionDataDate}
+              data-test-id={makeTid(dataTestId, "value")}
+            >
+              <FormattedDate
+                value={transaction.transactionTimestamp}
+                year="numeric"
+                month="long"
+                day="2-digit"
+              />
+              <PendingTransactionLabel />
+            </span>
           </div>
           <div className={styles.transactionAmount}>
             <Money

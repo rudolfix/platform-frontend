@@ -1,7 +1,7 @@
+import { EEtoState } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { ETOFormsProgressSectionComponent } from "./ETOFormsProgressSection";
 
 const data = {

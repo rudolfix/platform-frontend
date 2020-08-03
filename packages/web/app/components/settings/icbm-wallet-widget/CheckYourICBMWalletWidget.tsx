@@ -1,7 +1,7 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";

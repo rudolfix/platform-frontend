@@ -1,5 +1,4 @@
 import { Button, EButtonLayout, InlineIcon } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
@@ -15,9 +14,10 @@ import { Container, EColumnSpan } from "../../layouts/Container";
 import { EContentWidth } from "../../layouts/Content";
 import { Layout, TContentExternalProps } from "../../layouts/Layout";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { ExternalLink } from "../../shared/links";
 import { EWarningAlertSize, WarningAlert } from "../../shared/WarningAlert";
 import { getMessageTranslation } from "../../translatedMessages/messages";

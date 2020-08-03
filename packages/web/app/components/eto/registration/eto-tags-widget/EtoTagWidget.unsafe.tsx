@@ -1,5 +1,5 @@
 import { VirtualizedSelect } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
 import { differenceWith } from "lodash/fp";
 import * as React from "react";

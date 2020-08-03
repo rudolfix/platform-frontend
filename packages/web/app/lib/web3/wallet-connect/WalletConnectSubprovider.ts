@@ -1,7 +1,7 @@
 import WalletConnect from "@walletconnect/browser";
 import WalletConnectQRCodeModal from "@walletconnect/qrcode-modal";
 import { IConnector, IWCRpcConnectionOptions } from "@walletconnect/types";
-import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
+import HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
 
 export class WalletConnectSubprovider extends HookedWalletSubprovider {
   private _connected = false;

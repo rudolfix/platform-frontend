@@ -1,23 +1,17 @@
+import { WholeEurShort } from "@neufund/design-system";
+import {
+  bookbuildingModuleApi,
+  EWhitelistingState,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
 
 import { selectIsAuthorized, selectIsInvestor } from "../../../../../modules/auth/selectors";
-import { selectBookbuildingStats } from "../../../../../modules/bookbuilding-flow/selectors";
-import {
-  calculateWhitelistingState,
-  EWhitelistingState,
-} from "../../../../../modules/bookbuilding-flow/utils";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-} from "../../../../shared/formatters/utils";
-import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../../../shared/loading-indicator";
 import { GreyInfo, Info } from "../Info";
 import { WhitelistStatus } from "./WhitelistStatus";
 
@@ -83,12 +77,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
               id="eto-overview-thumbnail.whitelist.committed-amount"
               values={{
                 pledgedAmount: (
-                  <Money
-                    value={pledgedAmount ? pledgedAmount.toString() : null}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
+                  <WholeEurShort value={pledgedAmount ? pledgedAmount.toString() : null} />
                 ),
               }}
             />
@@ -114,12 +103,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
               id="eto-overview-thumbnail.whitelist.committed-amount"
               values={{
                 pledgedAmount: (
-                  <Money
-                    value={pledgedAmount ? pledgedAmount.toString() : null}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
+                  <WholeEurShort value={pledgedAmount ? pledgedAmount.toString() : null} />
                 ),
               }}
             />
@@ -136,7 +120,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
 const Whitelist = compose<IProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
-      const stats = selectBookbuildingStats(state, props.eto.etoId);
+      const stats = bookbuildingModuleApi.selectors.selectBookbuildingStats(state, props.eto.etoId);
 
       return {
         pledgedAmount: stats ? stats.pledgedAmount : null,
@@ -151,7 +135,7 @@ const Whitelist = compose<IProps, IExternalProps>(
       const bookbuildingLimitReached = eto.maxPledges - investorsCount <= 0;
 
       return {
-        whitelistingState: calculateWhitelistingState({
+        whitelistingState: bookbuildingModuleApi.utils.calculateWhitelistingState({
           canEnableBookbuilding: eto.canEnableBookbuilding,
           whitelistingIsActive: eto.isBookbuilding,
           bookbuildingLimitReached,

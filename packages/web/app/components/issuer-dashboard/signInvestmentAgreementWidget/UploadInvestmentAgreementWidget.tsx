@@ -1,17 +1,15 @@
 import { Button, ButtonGroup, EButtonLayout } from "@neufund/design-system";
+import { EETOStateOnChain, etoModuleApi, IEtoDocument } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
 
-import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectIssuerEtoPreviewCode,
   selectIssuerEtoTemplates,
   selectUploadedInvestmentAgreement,
 } from "../../../modules/eto-flow/selectors";
-import { selectEtoOnChainState } from "../../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
 import { EColumnSpan } from "../../layouts/Container";
@@ -20,7 +18,7 @@ import {
   DashboardCenteredWidget,
   DashboardLinkWidget,
 } from "../../shared/dashboard-widget/DashboardWidget";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { SignInvestmentAgreement } from "./SignInvestmentAgreement";
 
@@ -91,7 +89,7 @@ export const UploadInvestmentAgreement = compose<
       const etoTemplates = selectIssuerEtoTemplates(state)!;
       if (previewCode) {
         return {
-          stateOnChain: selectEtoOnChainState(state, previewCode)!,
+          stateOnChain: etoModuleApi.selectors.selectEtoOnChainState(state, previewCode)!,
           agreementTemplate: etoTemplates.investmentSummaryTemplate,
           uploadedAgreement: selectUploadedInvestmentAgreement(state),
         };

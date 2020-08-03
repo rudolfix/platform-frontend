@@ -1,5 +1,5 @@
 import { applyCharactersLimit } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormGroup } from "reactstrap";
 

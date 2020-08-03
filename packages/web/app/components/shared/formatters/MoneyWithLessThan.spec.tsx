@@ -1,9 +1,14 @@
+import {
+  ECurrency,
+  ENumberFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "@neufund/shared-utils";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
 import { MoneyWithLessThan } from "./MoneyWithLessThan";
-import { ECurrency, ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "./utils";
 
 describe("MoneyWithLessThan", () => {
   it("should format money as ETH with full decimals according to `Neufund Language` style guide", () => {
@@ -50,7 +55,7 @@ describe("MoneyWithLessThan", () => {
       <MoneyWithLessThan
         value={"0.015"}
         valueType={ENumberFormat.PERCENTAGE}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
       />,
     );
@@ -63,7 +68,7 @@ describe("MoneyWithLessThan", () => {
       <MoneyWithLessThan
         value="0.0099"
         valueType={ENumberFormat.PERCENTAGE}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
       />,
     );

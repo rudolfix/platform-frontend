@@ -1,9 +1,9 @@
 import { Button, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { TSocialChannelsType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";

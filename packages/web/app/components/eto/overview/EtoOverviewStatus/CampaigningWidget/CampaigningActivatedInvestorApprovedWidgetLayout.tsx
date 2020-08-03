@@ -1,21 +1,11 @@
-import { Button, EButtonSize, EButtonWidth } from "@neufund/design-system";
-import * as cn from "classnames";
+import { Button, EButtonSize, EButtonWidth, WholeEur } from "@neufund/design-system";
+import { generateCampaigningValidation } from "@neufund/shared-modules";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
-import {
-  CheckboxLayout,
-  EInputSize,
-  Form,
-  FormMaskedNumberInput,
-} from "../../../../shared/forms/index";
+import { CheckboxLayout, EInputSize, Form, FormMaskedNumberInput } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/tooltips";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -74,12 +64,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
         <div className={styles.label} data-test-id="campaigning-your-commitment">
           <FormattedMessage id="eto-overview.campaigning.your-commitment" />
           <br />
-          <Money
-            value={pledgedAmount}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
+          <WholeEur value={pledgedAmount} />
         </div>
         <div className={styles.value}>
           <button
@@ -116,7 +101,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
               <FormMaskedNumberInput
                 wrapperClassName="mb-0"
                 size={EInputSize.SMALL}
-                storageFormat={ENumberInputFormat.FLOAT}
+                storageFormat={ENumberInputFormat.DECIMAL}
                 valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.INTEGER}
                 name="amount"

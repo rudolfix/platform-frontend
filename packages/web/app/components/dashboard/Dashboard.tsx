@@ -1,5 +1,4 @@
 import { kycApi } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
@@ -11,6 +10,7 @@ import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { DashboardTitle } from "./DashboardTitle";
 import { EtoList } from "./eto-list/EtoList";
 import { MyPortfolioWidget } from "./my-portfolio/MyPortfolioWidget";

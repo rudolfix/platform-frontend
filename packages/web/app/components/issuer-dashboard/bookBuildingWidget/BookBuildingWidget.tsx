@@ -1,16 +1,16 @@
+import {
+  bookbuildingModuleApi,
+  EETOStateOnChain,
+  EWhitelistingState,
+  IBookBuildingStats,
+  TEtoInvestmentCalculatedValues,
+} from "@neufund/shared-modules";
 import { assertNever, InvariantError, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 
-import { TEtoInvestmentCalculatedValues } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { actions } from "../../../modules/actions";
 import { selectIsAuthorized, selectIsInvestor } from "../../../modules/auth/selectors";
-import { selectBookbuildingStats } from "../../../modules/bookbuilding-flow/selectors";
-import {
-  calculateWhitelistingState,
-  EWhitelistingState,
-} from "../../../modules/bookbuilding-flow/utils";
 import {
   selectCanEnableBookBuilding,
   selectIsBookBuilding,
@@ -20,13 +20,12 @@ import {
   selectMaxPledges,
 } from "../../../modules/eto-flow/selectors";
 import { selectIssuerEtoInvestmentCalculatedValues } from "../../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
@@ -148,7 +147,7 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
         etoId,
         investmentCalculatedValues: selectIssuerEtoInvestmentCalculatedValues(state),
         bookBuildingEnabled: selectIsBookBuilding(state),
-        bookBuildingStats: selectBookbuildingStats(state, etoId),
+        bookBuildingStats: bookbuildingModuleApi.selectors.selectBookbuildingStats(state, etoId),
         maxPledges: selectMaxPledges(state),
         canEnableBookbuilding: selectCanEnableBookBuilding(state),
         onChainState: selectIssuerEtoOnChainState(state),
@@ -207,7 +206,7 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
       const bookbuildingLimitReached = maxPledges - bookBuildingStats.investorsCount <= 0;
 
       return {
-        whitelistingState: calculateWhitelistingState({
+        whitelistingState: bookbuildingModuleApi.utils.calculateWhitelistingState({
           canEnableBookbuilding: canEnableBookbuilding,
           whitelistingIsActive: bookBuildingEnabled,
           bookbuildingLimitReached,

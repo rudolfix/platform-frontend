@@ -11,16 +11,16 @@ const TOKEN_ICON_SIZE = 32;
 /**
  * A wrapper component which provides access to an externally provided token icons
  */
-const TokenImage: React.FunctionComponent<TImageProps> = ({ style, ...props }) => {
-  return <Image {...props} style={[styles.tokenIcon, style]} accessibilityIgnoresInvertColors />;
-};
+const TokenImage: React.FunctionComponent<TImageProps> = ({ style, ...props }) => (
+  <Image {...props} style={[styles.tokenIcon, style]} accessibilityIgnoresInvertColors />
+);
 
 /**
  * A wrapper component which provides access to an externally provided token icons
  */
-const TokenIcon: React.FunctionComponent<TIconProps> = ({ style, ...props }) => {
-  return <Icon {...props} style={[styles.tokenIcon, style]} accessibilityIgnoresInvertColors />;
-};
+const TokenIcon: React.FunctionComponent<TIconProps> = ({ style, ...props }) => (
+  <Icon {...props} style={[styles.tokenIcon, style]} accessibilityIgnoresInvertColors />
+);
 
 const styles = StyleSheet.create({
   tokenIcon: {
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { TokenIcon, TokenImage };
+export { TokenIcon, TokenImage, TOKEN_ICON_SIZE };

@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { TypeOfYTS, YupTS } from "../../../../../lib/yup/yup-ts.unsafe";
 import { authModuleAPI } from "../../../../auth/module";

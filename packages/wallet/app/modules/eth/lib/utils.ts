@@ -14,9 +14,7 @@ const PRIVATE_KEY_LENGTH = 66;
 const SHORT_MNEMONICS_WORDS_COUNT = 12;
 const LONG_MNEMONICS_WORDS_COUNT = 24;
 
-const addHexPrefix = (data: string) => {
-  return data.startsWith("0x") ? data : "0x" + data;
-};
+const addHexPrefix = (data: string) => (data.startsWith("0x") ? data : "0x" + data);
 
 /**
  * Check if a give wallet is an HDWallet
@@ -31,13 +29,10 @@ const isHdWallet = (wallet: TWalletMetadata): wallet is THDWalletMetadata =>
  *
  * @param privateKey - A possible private key
  */
-const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey => {
-  return (
-    isString(privateKey) &&
-    !!/^0x[0-9a-f]*$/i.exec(privateKey) &&
-    privateKey.length === PRIVATE_KEY_LENGTH
-  );
-};
+const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey =>
+  isString(privateKey) &&
+  !!/^0x[0-9a-f]*$/i.exec(privateKey) &&
+  privateKey.length === PRIVATE_KEY_LENGTH;
 
 /**
  * Check if a given value is a valid mnemonic

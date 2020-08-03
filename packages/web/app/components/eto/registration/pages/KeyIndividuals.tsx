@@ -6,25 +6,25 @@ import {
   getValidationSchema,
   isRequired,
 } from "@neufund/design-system";
-import * as cn from "classnames";
+import {
+  EEtoFormTypes,
+  EtoKeyIndividualsType,
+  TEtoKeyIndividualType,
+  TPartialCompanyEtoData,
+} from "@neufund/shared-modules";
+import cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoKeyIndividualsType,
-  TEtoKeyIndividualType,
-  TPartialCompanyEtoData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerCompany,
   selectIssuerEtoLoading,
   selectIssuerEtoSaving,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { FormField, FormTextArea } from "../../../shared/forms";

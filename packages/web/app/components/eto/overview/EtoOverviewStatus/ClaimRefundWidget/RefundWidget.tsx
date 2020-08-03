@@ -1,21 +1,17 @@
 import { Button } from "@neufund/design-system";
-import { EUserType } from "@neufund/shared-modules";
+import {
+  EETOStateOnChain,
+  EUserRefundStatus,
+  EUserType,
+  IInvestorTicket,
+  investorPortfolioModuleApi,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
 import { selectUserType } from "../../../../../modules/auth/selectors";
-import { EETOStateOnChain } from "../../../../../modules/eto/types";
-import {
-  selectHasInvestorTicket,
-  selectInvestorTicket,
-} from "../../../../../modules/investor-portfolio/selectors";
-import {
-  EUserRefundStatus,
-  IInvestorTicket,
-} from "../../../../../modules/investor-portfolio/types";
-import { getRefundStatus } from "../../../../../modules/investor-portfolio/utils";
 import { appConnect } from "../../../../../store";
 
 import * as style from "./RefundWidget.module.scss";
@@ -80,8 +76,11 @@ const RefundWidgetLayout: React.FunctionComponent<TComponentProps> = ({
 export const RefundWidget = compose<TComponentProps, IExternalProps>(
   appConnect<IStateProps, IDispatchProps, IExternalProps>({
     stateToProps: (state, props) => ({
-      doesInvestorInvest: selectHasInvestorTicket(state, props.etoId),
-      investorTicket: selectInvestorTicket(state, props.etoId),
+      doesInvestorInvest: investorPortfolioModuleApi.selectors.selectHasInvestorTicket(
+        state,
+        props.etoId,
+      ),
+      investorTicket: investorPortfolioModuleApi.selectors.selectInvestorTicket(state, props.etoId),
       userType: selectUserType(state),
     }),
     dispatchToProps: (dispatch, ownProps) => ({
@@ -89,7 +88,7 @@ export const RefundWidget = compose<TComponentProps, IExternalProps>(
     }),
   }),
   withProps<IWithProps, IExternalProps & IStateProps & IDispatchProps>(props => ({
-    claimStatus: getRefundStatus(
+    claimStatus: investorPortfolioModuleApi.utils.getRefundStatus(
       props.timedState,
       props.userType,
       props.doesInvestorInvest,

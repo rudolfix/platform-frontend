@@ -1,8 +1,9 @@
 import { ILogger } from "@neufund/shared-modules";
-import { EthereumAddress } from "@neufund/shared-utils";
+import { assertError, EthereumAddress } from "@neufund/shared-utils";
 import WalletConnect from "@walletconnect/react-native";
 import { IWalletConnectSession } from "@walletconnect/types";
 import { EventEmitter2 } from "eventemitter2";
+import { number, string, object } from "yup";
 
 import { TWalletConnectPeer } from "modules/wallet-connect/types";
 
@@ -41,6 +42,11 @@ export type TSessionDetails = {
   approveSession: (chainId: number, address: EthereumAddress) => WalletConnectAdapter;
   rejectSession: () => void;
 };
+
+const basicPayloadSchema = object({
+  id: number(),
+  method: string(),
+});
 
 /**
  * Wraps wallet connect class to simplify interface and to provide type safety
@@ -108,6 +114,8 @@ class WalletConnectAdapter extends EventEmitter2 {
         result,
       });
     } catch (error) {
+      assertError(error);
+
       this.walletConnect.rejectRequest({
         id,
         error: error ?? new Error("Request rejected"),
@@ -119,6 +127,14 @@ class WalletConnectAdapter extends EventEmitter2 {
     this.walletConnect.on(CALL_REQUEST_EVENT, async (error, payload) => {
       if (error) {
         this.logger.error(error, "Wallet connect call request error");
+        return;
+      }
+
+      if (!basicPayloadSchema.isValidSync(payload)) {
+        this.logger.warn(
+          `Invalid payload received from wallet connect "${CALL_REQUEST_EVENT}" event`,
+        );
+
         return;
       }
 
@@ -135,7 +151,12 @@ class WalletConnectAdapter extends EventEmitter2 {
               },
             );
           } catch (e) {
-            this.handleCallSigningError(payload.id, new InvalidJSONRPCPayloadError(payload.method));
+            assertError(e);
+
+            this.handleCallSigningError(
+              payload.id,
+              new InvalidJSONRPCPayloadError(payload.method, e),
+            );
           }
           break;
 
@@ -154,7 +175,12 @@ class WalletConnectAdapter extends EventEmitter2 {
               },
             );
           } catch (e) {
-            this.handleCallSigningError(payload.id, new InvalidJSONRPCPayloadError(payload.method));
+            assertError(e);
+
+            this.handleCallSigningError(
+              payload.id,
+              new InvalidJSONRPCPayloadError(payload.method, e),
+            );
           }
           break;
 

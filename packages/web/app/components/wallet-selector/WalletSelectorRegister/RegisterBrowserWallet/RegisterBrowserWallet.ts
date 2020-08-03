@@ -1,5 +1,4 @@
 import { EUserType } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
 import { Location } from "history";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
@@ -14,8 +13,9 @@ import {
 import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { BrowserWalletError } from "../../shared/browser-wallet/BrowserWalletError";

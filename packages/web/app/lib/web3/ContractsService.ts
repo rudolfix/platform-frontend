@@ -2,7 +2,7 @@ import { IContractsService, ILogger } from "@neufund/shared-modules";
 import { EthereumAddress, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { inject, injectable } from "inversify";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
@@ -18,6 +18,7 @@ import { IdentityRegistry } from "../contracts/IdentityRegistry";
 import { IEquityToken } from "../contracts/IEquityToken";
 import { IERC223Token } from "../contracts/IERC223Token";
 import { ITokenController } from "../contracts/ITokenController";
+import { ITokenControllerHook } from "../contracts/ITokenControllerHook";
 import { ITokenExchangeRateOracle } from "../contracts/ITokenExchangeRateOracle";
 import { IVotingCenter } from "../contracts/IVotingCenter";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
@@ -25,6 +26,7 @@ import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
 import { PlatformTerms } from "../contracts/PlatformTerms";
 import { Universe } from "../contracts/Universe";
+import { PatchedETOCommitment } from "./patched-contracts/ETOCommitment";
 import { Web3Manager } from "./Web3Manager/Web3Manager";
 
 @injectable()
@@ -145,7 +147,7 @@ export class ContractsService implements IContractsService {
   async getETOCommitmentContract(etoId: string): Promise<ETOCommitment> {
     if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId];
 
-    const contract = await create(ETOCommitment, this.web3, etoId);
+    const contract = await create(PatchedETOCommitment, this.web3, etoId);
     this.etoCommitmentCache[etoId] = contract;
     return contract;
   }
@@ -191,6 +193,10 @@ export class ContractsService implements IContractsService {
     const contract = await create(ITokenController, this.web3, controllerAddress);
     this.tokenControllerCache[controllerAddress] = contract;
     return contract;
+  }
+
+  async getTokenControllerHook(equityTokenContractAddress: string): Promise<ITokenControllerHook> {
+    return await create(ITokenControllerHook, this.web3, equityTokenContractAddress);
   }
 }
 

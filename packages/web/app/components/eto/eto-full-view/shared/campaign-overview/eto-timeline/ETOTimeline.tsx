@@ -1,8 +1,7 @@
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
-import { isOnChain } from "../../../../../../modules/eto/utils";
 import { Container, EColumnSpan } from "../../../../../layouts/Container";
 import { DashboardHeading } from "../../../../../shared/DashboardHeading";
 import { Panel } from "../../../../../shared/Panel";
@@ -25,8 +24,8 @@ const ETOTimeline: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
       <EtoTimeline
         state={eto.state}
         subState={eto.subState}
-        currentState={isOnChain(eto) ? eto.contract.timedState : undefined}
-        startOfStates={isOnChain(eto) ? eto.contract.startOfStates : undefined}
+        currentState={etoModuleApi.utils.isOnChain(eto) ? eto.contract.timedState : undefined}
+        startOfStates={etoModuleApi.utils.isOnChain(eto) ? eto.contract.startOfStates : undefined}
       />
     </Panel>
   </Container>

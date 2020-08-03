@@ -1,5 +1,6 @@
+import { ESocialChannelType } from "@neufund/shared-modules";
+
 import { IPerson } from "../../app/components/shared/PeopleSwiperWidget";
-import { ESocialChannelType } from "../../app/lib/api/eto/EtoApi.interfaces.unsafe";
 
 export const zoe: IPerson = {
   description:

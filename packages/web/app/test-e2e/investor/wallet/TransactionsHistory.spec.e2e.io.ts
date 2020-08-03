@@ -1,4 +1,5 @@
-import { generateRandomEthereumAddress } from "../../../modules/web3/utils";
+import { generateRandomEthereumAddress } from "@neufund/shared-modules";
+
 import { goToWallet, loginFixtureAccount, tid } from "../../utils/index";
 import { doWithdraw } from "./pending-transactions/utils";
 

@@ -3,6 +3,7 @@ import React from "react";
 import Config from "react-native-config";
 
 import { QRCode } from "components/QRCode";
+import { AccountBackupScreen } from "components/screens/AccountBackupScreen/AccountBackupScreen";
 import { SwitchFixtureScreen } from "components/screens/FixtureScreen/SwitchFixtureScreen";
 import { WalletConnectSessionScreen } from "components/screens/WalletConnectSessionScreen/WalletConnectSessionScreen";
 import { WebView } from "components/screens/WebViewScreen/WebViewScreen";
@@ -23,6 +24,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
         ...TransitionPresets.ModalPresentationIOS,
         gestureEnabled: true,
         cardOverlayEnabled: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         headerStatusBarHeight: navigation.dangerouslyGetState().routes.includes(route)
           ? 0
           : undefined,
@@ -37,6 +39,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name={EAppRoutes.qrCode}
         component={QRCode}
@@ -45,6 +48,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
           header: ModalStackHeaderLevel2,
         }}
       />
+
       <Stack.Screen
         name={EAppRoutes.walletConnectSession}
         component={WalletConnectSessionScreen}
@@ -53,6 +57,16 @@ const AppAuthRouter: React.FunctionComponent = () => (
           header: ModalStackHeaderLevel1,
         }}
       />
+
+      <Stack.Screen
+        name={EAppRoutes.accountBackup}
+        component={AccountBackupScreen}
+        options={{
+          title: "Account backup",
+          header: ModalStackHeaderLevel1,
+        }}
+      />
+
       {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
         <Stack.Screen
           name={EAppRoutes.switchToFixture}
@@ -60,6 +74,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
           options={{ header: ModalStackHeaderLevel2, title: "Switch account" }}
         />
       )}
+
       <Stack.Screen
         name={EAppRoutes.webView}
         component={WebView}

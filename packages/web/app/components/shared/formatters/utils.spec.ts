@@ -1,13 +1,10 @@
-import { formatMoney } from "@neufund/shared-utils";
-import BigNumber from "bignumber.js";
-import { expect } from "chai";
-
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
+  formatMoney,
   formatNumber,
   formatThousands,
   isEmptyValue,
@@ -17,7 +14,9 @@ import {
   selectDecimalPlaces,
   stripNumberFormatting,
   toFixedPrecision,
-} from "./utils";
+} from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
+import { expect } from "chai";
 
 describe("formatNumber", () => {
   /* formatNumber only formats numbers (!),
@@ -31,7 +30,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: "a_string",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -39,7 +38,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: "123,123.67",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -47,7 +46,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: "123 123.67",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -55,7 +54,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: "123.123,67",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -63,7 +62,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: "",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -71,7 +70,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: NaN as any,
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -82,7 +81,7 @@ describe("formatNumber", () => {
         formatNumber({
           value: null as any,
           decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-          inputFormat: ENumberInputFormat.FLOAT,
+          inputFormat: ENumberInputFormat.DECIMAL,
           outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
         }),
     ).to.throw();
@@ -90,7 +89,7 @@ describe("formatNumber", () => {
       formatNumber({
         value: [] as any,
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
       }),
     ).to.throw();
@@ -106,7 +105,7 @@ describe("formatNumber", () => {
   it("should accept number as input", () => {
     expect(
       formatNumber({
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: "12524.002",
       }),
     ).to.eq("12 524.002");
@@ -114,7 +113,7 @@ describe("formatNumber", () => {
   it("should accept BigNumber as input", () => {
     expect(
       formatNumber({
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: new BigNumber("123456.9898"),
       }),
     ).to.eq("123 456.9898");
@@ -129,7 +128,7 @@ describe("formatNumber", () => {
   it("should format number supplied as FLOAT", () => {
     expect(
       formatNumber({
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: "124203.52300",
       }),
     ).to.eq("124 203.523");
@@ -187,14 +186,14 @@ describe("formatNumber", () => {
     expect(
       formatNumber({
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: "1000000.00",
       }),
     ).to.eq("1 000 000");
     expect(
       formatNumber({
         outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: "1000000",
       }),
     ).to.eq("1 000 000");
@@ -211,7 +210,7 @@ describe("formatNumber", () => {
     expect(
       formatNumber({
         outputFormat: EAbbreviatedNumberOutputFormat.LONG,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         value: "1242.303",
       }),
     ).to.eq("1 242.303");
@@ -257,21 +256,21 @@ describe("toFixedPrecision", () => {
       toFixedPrecision({
         value: "1242.21621",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
       }),
     ).to.eq("1242.2163");
     expect(
       toFixedPrecision({
         value: "346342.235",
         decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
       }),
     ).to.eq("346342.24");
     expect(
       toFixedPrecision({
         value: new BigNumber("346342.235"),
         decimalPlaces: selectDecimalPlaces(ECurrency.EUR_TOKEN),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
       }),
     ).to.eq("346342.24");
   });
@@ -281,7 +280,7 @@ describe("toFixedPrecision", () => {
       toFixedPrecision({
         value: "1242.21621134341",
         decimalPlaces: 13,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
       }),
     ).to.eq("1242.2162113434100");
   });
@@ -291,7 +290,7 @@ describe("toFixedPrecision", () => {
       toFixedPrecision({
         value: "1242.21621134341",
         decimalPlaces: selectDecimalPlaces(ECurrency.ETH),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         isPrice: false,
         roundingMode: ERoundingMode.DOWN,
       }),
@@ -300,7 +299,7 @@ describe("toFixedPrecision", () => {
       toFixedPrecision({
         value: "346342.235412415",
         decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         isPrice: false,
         roundingMode: ERoundingMode.DOWN,
       }),

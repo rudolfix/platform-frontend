@@ -1,8 +1,8 @@
 import {
   compareBigNumbers,
   convertToUlps,
+  ERoundingMode,
   ETH_DECIMALS,
-  ETHEREUM_ADDRESS_LENGTH,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
@@ -11,7 +11,6 @@ import {
 } from "@neufund/shared-utils";
 import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 
-import { ERoundingMode } from "../../components/shared/formatters/utils";
 import { TBigNumberVariants } from "../../lib/web3/types";
 
 export function makeEthereumAddressChecksummed(
@@ -19,8 +18,6 @@ export function makeEthereumAddressChecksummed(
 ): EthereumAddressWithChecksum {
   return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress));
 }
-
-export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
 
 /**
  * @method generateRandomPrivateKey
@@ -74,5 +71,5 @@ export const doesUserWithdrawMinimal = (
   minNEuro: TBigNumberVariants,
 ): boolean => {
   if (value === "") return false;
-  return compareBigNumbers(convertToUlps(value || "0"), minNEuro) >= 0;
+  return compareBigNumbers(value || "0", minNEuro) >= 0;
 };

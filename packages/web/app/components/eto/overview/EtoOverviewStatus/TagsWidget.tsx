@@ -1,11 +1,14 @@
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { keyBy } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
-import { EEtoDocumentType, IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { etherscanAddressLink, etoPublicViewLink } from "../../../appRouteUtils";
 import { TagWithFallback } from "../../../shared/Tag";

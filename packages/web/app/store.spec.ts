@@ -42,9 +42,9 @@ describe("Store", () => {
       txMonitor: { txs: { oooTransactions: [] } },
       bankTransferFLow: {
         state: "uninitialized",
-        minEuroUlps: "",
+        minEuro: "",
         reference: "",
-        bankFeeUlps: "",
+        bankFee: "",
       },
       contracts: {
         platformTermsConstants: {
@@ -122,7 +122,7 @@ describe("Store", () => {
         showBeneficialOwnerModal: false,
       },
       profile: { isEmailTemporaryCancelled: false },
-      investorTickets: {
+      investorPortfolio: {
         calculatedContributions: {},
         initialCalculatedContributions: {},
         investorEtoTickets: {},
@@ -180,7 +180,7 @@ describe("Store", () => {
       gas: { loading: false },
       investmentFlow: {
         etoId: "",
-        euroValueUlps: "",
+        euroValue: "",
         ethValueUlps: "",
         investmentType: "ETH",
         wallets: [],

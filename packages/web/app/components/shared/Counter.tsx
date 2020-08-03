@@ -1,5 +1,5 @@
-import * as cn from "classnames";
-import * as moment from "moment";
+import cn from "classnames";
+import moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

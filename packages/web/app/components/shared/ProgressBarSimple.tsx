@@ -1,6 +1,6 @@
 import { invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../types";

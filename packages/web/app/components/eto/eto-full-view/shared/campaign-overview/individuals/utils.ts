@@ -1,4 +1,4 @@
-import { TEtoKeyIndividualType } from "../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoKeyIndividualType } from "@neufund/shared-modules";
 
 export const areThereIndividuals = (
   individual: TEtoKeyIndividualType | undefined,

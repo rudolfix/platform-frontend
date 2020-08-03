@@ -1,4 +1,4 @@
-import * as cn from "classnames";
+import cn from "classnames";
 import { connect, Field, FieldProps, getIn } from "formik";
 import * as React from "react";
 

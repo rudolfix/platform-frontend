@@ -1,6 +1,7 @@
-import { Q18 } from "@neufund/shared-utils";
+import { convertFromUlps, Q18 } from "@neufund/shared-utils";
 import { expect } from "chai";
 
+import { TWalletModuleState } from "./module";
 import {
   selectICBMLockedEuroTotalAmount,
   selectLiquidEuroTotalAmount,
@@ -12,7 +13,6 @@ import {
   selectTotalEuroBalance,
   selectTotalEuroTokenBalance,
 } from "./selectors";
-import { TWalletModuleState } from "./types";
 
 describe("Wallet > selectors", () => {
   const etherLockedBalance = Q18.mul("23.11");
@@ -92,10 +92,12 @@ describe("Wallet > selectors", () => {
     );
 
     expect(selectTotalEuroBalance(fullStateMock)).to.be.eq(
-      totalEther
-        .mul("10")
-        .add(totalEuro)
-        .toString(),
+      convertFromUlps(
+        totalEther
+          .mul("10")
+          .add(totalEuro)
+          .toString(),
+      ).toString(),
     );
 
     expect(selectNeuBalance(fullStateMock)).to.eq(Q18.mul("1000").toString());

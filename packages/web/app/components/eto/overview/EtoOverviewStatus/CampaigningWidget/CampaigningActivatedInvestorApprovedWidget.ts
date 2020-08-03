@@ -1,3 +1,5 @@
+import { IPledge } from "@neufund/shared-modules";
+import { ECurrency } from "@neufund/shared-utils";
 import {
   compose,
   lifecycle,
@@ -7,10 +9,8 @@ import {
   withStateHandlers,
 } from "recompose";
 
-import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { actions } from "../../../../../modules/actions";
 import { appConnect } from "../../../../../store";
-import { ECurrency } from "../../../../shared/formatters/utils";
 import {
   CampaigningActivatedInvestorApprovedWidgetLayout,
   CampaigningFormState,

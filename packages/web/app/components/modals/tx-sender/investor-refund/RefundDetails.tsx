@@ -1,14 +1,9 @@
+import { Eth, Eur, EurToken } from "@neufund/design-system";
 import { isZero } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxType } from "../../../../lib/web3/types";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -29,12 +24,9 @@ const RefundTransactionDetails: TransactionDetailsComponent<ETxType.INVESTOR_REF
       <InfoRow
         caption={<FormattedMessage id="user-refund-flow.amount.neur" />}
         value={
-          <Money
+          <EurToken
             data-test-id="modals.tx-sender.user-refund-flow.amount.neur"
             value={additionalData.amountEurUlps}
-            valueType={ECurrency.EUR_TOKEN}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
         }
       />
@@ -44,12 +36,9 @@ const RefundTransactionDetails: TransactionDetailsComponent<ETxType.INVESTOR_REF
       <InfoRow
         caption={<FormattedMessage id="user-refund-flow.amount.eth" />}
         value={
-          <Money
+          <Eth
             data-test-id="modals.tx-sender.user-refund-flow.amount.eth"
             value={additionalData.amountEth}
-            valueType={ECurrency.ETH}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
         }
       />
@@ -61,19 +50,9 @@ const RefundTransactionDetails: TransactionDetailsComponent<ETxType.INVESTOR_REF
         caption={<FormattedMessage id="user-refund-flow.cost" />}
         value={
           <>
-            <Money
-              value={additionalData.costEurUlps}
-              valueType={ECurrency.EUR}
-              inputFormat={ENumberInputFormat.ULPS}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
+            <Eur value={additionalData.costEur} />
             {" ≈ "}
-            <Money
-              value={additionalData.costUlps}
-              valueType={ECurrency.ETH}
-              inputFormat={ENumberInputFormat.ULPS}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
+            <Eth value={additionalData.costUlps} />
           </>
         }
       />

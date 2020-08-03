@@ -1,6 +1,5 @@
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
-
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 
 export type TUnlockAdditionalData = {
   neumarksDue: string;
@@ -16,4 +15,4 @@ export const UnlockAdditionalDataSchema = YupTS.object({
   lockedWalletBalance: YupTS.string(),
 });
 
-export type TUnlockAdditionalDataYTS = YupTS.TypeOf<typeof UnlockAdditionalDataSchema>;
+export type TUnlockAdditionalDataYTS = TypeOfYTS<typeof UnlockAdditionalDataSchema>;

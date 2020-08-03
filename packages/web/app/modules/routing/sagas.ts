@@ -1,22 +1,22 @@
-import { Effect, fork, put, SagaGenerator, select } from "@neufund/sagas";
+import { all, Effect, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { EUserType, routingModuleApi } from "@neufund/shared-modules";
 import { LocationChangeAction, RouterState } from "connected-react-router";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsAuthorized, selectUserType } from "../auth/selectors";
 import { waitForAppInit } from "../init/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { routes } from "./routes";
+import { routeEffects } from "./routeEffects";
 
 type TRouteActions = {
   // "undefined" is for backwards compatibility,
   // see comments in the ./routeDefinitions.ts
-  notAuth: undefined | Effect;
-  investor: undefined | Effect;
-  issuer: undefined | Effect;
-  nominee: undefined | Effect;
+  notAuth: undefined | Array<Effect> | Effect;
+  investor: undefined | Array<Effect> | Effect;
+  issuer: undefined | Array<Effect> | Effect;
+  nominee: undefined | Array<Effect> | Effect;
 };
 
 export const GREYP_PREVIEW_CODE = "e2b6949e-951d-4e99-ac11-534fdad86a80";
@@ -60,8 +60,8 @@ export function* router(
   payload: RouterState,
 ): Generator<any, any, any> {
   try {
-    for (const route of routes) {
-      const routeMatch = yield route(payload);
+    for (const effect of routeEffects) {
+      const routeMatch = yield effect(payload);
       if (routeMatch) {
         return;
       }
@@ -81,22 +81,26 @@ export function* routeInternal(routeActions: TRouteActions): Generator<any, any,
   const userType = yield select(selectUserType);
 
   if (!userIsAuthorized) {
-    yield routeActions.notAuth !== undefined ? routeActions.notAuth : undefined;
+    yield routeActions.notAuth;
     return true;
   }
 
-  if (userIsAuthorized && userType === EUserType.INVESTOR) {
-    yield routeActions.investor !== undefined ? routeActions.investor : undefined;
-    return true;
+  let userTypeActions;
+
+  if (userType === EUserType.INVESTOR) {
+    userTypeActions = routeActions.investor;
+  } else if (userType === EUserType.ISSUER) {
+    userTypeActions = routeActions.issuer;
+  } else if (userType === EUserType.NOMINEE) {
+    userTypeActions = routeActions.nominee;
   }
 
-  if (userIsAuthorized && userType === EUserType.ISSUER) {
-    yield routeActions.issuer !== undefined ? routeActions.issuer : undefined;
-    return true;
-  }
-
-  if (userIsAuthorized && userType === EUserType.NOMINEE) {
-    yield routeActions.nominee !== undefined ? routeActions.nominee : undefined;
+  if (actions) {
+    if (Array.isArray(userTypeActions)) {
+      yield all(userTypeActions);
+    } else {
+      yield userTypeActions;
+    }
     return true;
   }
 }

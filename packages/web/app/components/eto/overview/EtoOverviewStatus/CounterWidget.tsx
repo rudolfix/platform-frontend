@@ -1,9 +1,9 @@
+import { EETOStateOnChain } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedDate, FormattedTime } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps, withStateHandlers } from "recompose";
 
-import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { TTranslatedString } from "../../../../types";
 import { Counter } from "../../../shared/Counter";
 import { generalStateToName } from "../../../shared/eto-state/ETOState";

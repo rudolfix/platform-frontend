@@ -1,14 +1,14 @@
-import { storiesOf } from "@storybook/react";
-import * as React from "react";
-
-import { ECurrencySymbol, EMoneyTransfer, ETheme, Money } from "./Money";
-import { MoneyRange } from "./MoneyRange";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
-} from "./utils";
+} from "@neufund/shared-utils";
+import { storiesOf } from "@storybook/react";
+import * as React from "react";
+
+import { ECurrencySymbol, EMoneyTransfer, ETheme, Money } from "./Money";
+import { MoneyRange } from "./MoneyRange";
 
 const value = "1234567" + "0".repeat(18);
 const value1 = "321" + "0".repeat(18);
@@ -49,7 +49,7 @@ storiesOf("Money", module)
     <>
       <Money
         outputFormat={ENumberOutputFormat.FULL}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         valueType={ECurrency.EUR}
         value={"1234567"}
       />
@@ -58,7 +58,7 @@ storiesOf("Money", module)
   .add("output as Integer", () => (
     <>
       <Money
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         valueType={ECurrency.EUR}
         value={"1234567"}
@@ -68,7 +68,7 @@ storiesOf("Money", module)
   .add("output as LONG abbrev.", () => (
     <>
       <Money
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         valueType={ECurrency.EUR}
         value={"1234567"}
@@ -78,7 +78,7 @@ storiesOf("Money", module)
   .add("output as SHORT abbrev.", () => (
     <>
       <Money
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         valueType={ECurrency.EUR}
         value={"1234567"}
@@ -275,7 +275,7 @@ storiesOf("MoneyRange", module)
     <>
       <MoneyRange
         outputFormat={ENumberOutputFormat.FULL}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         valueType={ECurrency.EUR}
         valueFrom={"222"}
         valueUpto={"1236525"}
@@ -286,7 +286,7 @@ storiesOf("MoneyRange", module)
   .add("with SHORT output form", () => (
     <>
       <MoneyRange
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         valueType={ECurrency.EUR}
         valueFrom={"12365"}
@@ -297,7 +297,7 @@ storiesOf("MoneyRange", module)
   .add("with LONG output form", () => (
     <>
       <MoneyRange
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         valueType={ECurrency.EUR}
         valueFrom={"123525"}

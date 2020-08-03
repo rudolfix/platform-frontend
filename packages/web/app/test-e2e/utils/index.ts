@@ -1,18 +1,18 @@
-import BigNumber from "bignumber.js";
-import { floor } from "lodash";
-
-import { appRoutes } from "../../components/appRoutes";
-import { getRange } from "../../components/shared/formatters/FormatShortNumber";
 import {
   EAbbreviatedNumberOutputFormat,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   formatNumber,
+  getRange,
   stripNumberFormatting,
   THumanReadableFormat,
   toFixedPrecision,
-} from "../../components/shared/formatters/utils";
+} from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
+import { floor } from "lodash";
+
+import { appRoutes } from "../../components/appRoutes";
 import { MOCK_API_URL } from "../config";
 import {
   assertInvestorDashboard,
@@ -264,7 +264,7 @@ export const getFormattedNumber = (
   value: string | undefined,
   roundingMode = ERoundingMode.UP,
   decimalPlaces = 4,
-  inputFormat = ENumberInputFormat.FLOAT,
+  inputFormat = ENumberInputFormat.DECIMAL,
   outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
   isPrice = false,
 ) =>
@@ -284,7 +284,7 @@ export const getShortFormattedNumber = (
   roundingMode = ERoundingMode.UP,
   decimalPlaces = 4,
   outputFormat = EAbbreviatedNumberOutputFormat.LONG,
-  inputFormat = ENumberInputFormat.FLOAT,
+  inputFormat = ENumberInputFormat.DECIMAL,
 ) => {
   const rangeKeys: { [key: number]: string } = {
     1000: "K",

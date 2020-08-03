@@ -3,13 +3,13 @@ import {
   ETransactionType,
   TExtractTxHistoryFromType,
 } from "@neufund/shared-modules";
+import { ECurrency, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
 import { Money } from "../../../shared/formatters/Money";
-import { ECurrency, ENumberOutputFormat } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
 import { EtherscanAddressLink } from "../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../shared/links/ExternalLink";

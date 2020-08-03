@@ -1,11 +1,12 @@
 import { eventChannel } from "@neufund/sagas";
+import { invariant, UnknownObject } from "@neufund/shared-utils";
 import { EventEmitter2 } from "eventemitter2";
 
 type TReduxifyAction = {
   type: string;
-  payload?: object;
+  payload?: UnknownObject;
   error?: Error;
-  meta?: object;
+  meta?: UnknownObject;
 };
 
 /**
@@ -13,21 +14,23 @@ type TReduxifyAction = {
  *
  * @param eventEmitter - A class that extends EventEmitter2
  */
-const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) => {
-  return eventChannel<T>(emitter => {
+const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) =>
+  eventChannel<T>(emitter => {
     const listener = (
-      type: string,
-      error: Error | undefined,
-      payload: object | undefined,
-      meta: object | undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => emitter({ type, payload, error, meta } as any);
+      type: string | string[],
+      error?: Error,
+      payload?: UnknownObject,
+      meta?: UnknownObject,
+    ) => {
+      invariant(typeof type === "string", `Invalid event type. Event ${type.toString()}`);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    eventEmitter.onAny(listener as any);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return emitter({ type, payload, error, meta } as any);
+    };
+
+    eventEmitter.onAny(listener);
 
     return () => eventEmitter.offAny(listener);
   });
-};
 
 export { reduxify };

@@ -1,10 +1,16 @@
-import { addBigNumbers, ETHEREUM_ZERO_ADDRESS, multiplyBigNumbers } from "@neufund/shared-utils";
+import {
+  addBigNumbers,
+  convertFromUlps,
+  ETHEREUM_ZERO_ADDRESS,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { selectEtherPriceEur, selectNeuPriceEur } from "../token-price/selectors";
-import { IWalletState, IWalletStateData, TWalletModuleState } from "./types";
+import { TWalletModuleState } from "./module";
+import { IWalletState, IWalletStateData } from "./types";
 
 export const selectWalletData = (state: TWalletModuleState): IWalletStateData | undefined =>
   state.wallet.data;
@@ -16,12 +22,16 @@ export const selectNeuBalanceEuroAmount = (state: TWalletModuleState): string =>
   multiplyBigNumbers([selectNeuPriceEur(state), selectNeuBalance(state)]);
 
 export const selectNeuBalance = (state: TWalletModuleState): string =>
-  (state.wallet.data && state.wallet.data.neuBalance) || "0";
+  state.wallet.data?.neuBalance ?? "0";
 
+/**
+ * @deprecated Please use `selectNeuBalanceEuroAmount` and convert to proper decimals on formatters level
+ */
 export const selectNeuBalanceEurEquiv = createSelector(
   selectNeuBalance,
   selectNeuPriceEur,
-  (neuBalance, neuPriceEur) => multiplyBigNumbers([neuBalance, neuPriceEur]),
+  (neuBalance, neuPriceEur) =>
+    convertFromUlps(multiplyBigNumbers([neuBalance, neuPriceEur])).toString(),
 );
 
 export const selectNeumarkAddress = (state: TWalletModuleState): string =>
@@ -163,11 +173,13 @@ export const selectTotalEuroTokenBalance = (state: TWalletModuleState) =>
     selectICBMLockedEuroTokenBalance(state),
   ]);
 export const selectTotalEuroBalance = (state: TWalletModuleState) =>
-  addBigNumbers([
-    selectLiquidEuroTotalAmount(state),
-    selectLockedEuroTotalAmount(state),
-    selectICBMLockedEuroTotalAmount(state),
-  ]);
+  convertFromUlps(
+    addBigNumbers([
+      selectLiquidEuroTotalAmount(state),
+      selectLockedEuroTotalAmount(state),
+      selectICBMLockedEuroTotalAmount(state),
+    ]),
+  ).toString();
 
 export const selectEtherLockedNeumarksDue = (state: TWalletModuleState): string =>
   (state.wallet.data &&

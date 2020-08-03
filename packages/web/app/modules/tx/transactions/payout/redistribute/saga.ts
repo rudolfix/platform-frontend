@@ -1,13 +1,12 @@
 import { put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared-utils";
+import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ECurrency, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
-import { ECurrency } from "../../../../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ETxType, ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
-import { ITokenDisbursal } from "../../../../investor-portfolio/types";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
 import { selectEthereumAddress } from "../../../../web3/selectors";

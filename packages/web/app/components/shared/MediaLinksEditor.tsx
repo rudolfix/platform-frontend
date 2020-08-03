@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

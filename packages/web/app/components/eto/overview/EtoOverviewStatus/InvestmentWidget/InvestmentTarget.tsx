@@ -1,24 +1,17 @@
+import { WholeEur } from "@neufund/design-system";
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
-import { getEtoEurMinTarget } from "../../../../../modules/eto/utils";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
-import { Tooltip } from "../../../../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "../../../../shared/tooltips";
 
 type TExternalProps = {
   eto: TEtoWithCompanyAndContractReadonly;
 };
 
 const InvestmentTarget: React.FunctionComponent<TExternalProps> = ({ eto }) => {
-  const target = getEtoEurMinTarget(eto);
+  const target = etoModuleApi.utils.getEtoEurMinTarget(eto);
   const { investmentCalculatedValues } = eto;
   const { minInvestmentAmount } = nonNullable(investmentCalculatedValues);
 
@@ -29,12 +22,9 @@ const InvestmentTarget: React.FunctionComponent<TExternalProps> = ({ eto }) => {
           id="shared-component.eto-overview.investment-stats.target"
           values={{
             amountRaised: (
-              <Money
+              <WholeEur
                 data-test-id="investment-widget-nEur-target"
                 value={target ? target : minInvestmentAmount.toString()}
-                inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.EUR}
-                outputFormat={ENumberOutputFormat.FULL}
               />
             ),
           }}
@@ -48,12 +38,9 @@ const InvestmentTarget: React.FunctionComponent<TExternalProps> = ({ eto }) => {
                 values={{
                   lineBreak: <br />,
                   target: (
-                    <Money
+                    <WholeEur
                       data-test-id="investment-widget-nEur-original-target"
                       value={minInvestmentAmount.toString()}
-                      inputFormat={ENumberInputFormat.FLOAT}
-                      valueType={ECurrency.EUR}
-                      outputFormat={ENumberOutputFormat.FULL}
                     />
                   ),
                 }}

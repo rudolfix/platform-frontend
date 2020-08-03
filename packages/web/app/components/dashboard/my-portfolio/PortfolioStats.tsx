@@ -1,29 +1,29 @@
-import { Button, EButtonLayout, EButtonWidth, TokenIcon } from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonWidth, Eur, TokenIcon } from "@neufund/design-system";
 import {
-  convertToUlps,
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithTokenData,
+} from "@neufund/shared-modules";
+import {
+  convertFromUlps,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
   multiplyBigNumbers,
   nonNullable,
   OmitKeys,
-  withContainer,
 } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsVerifiedInvestor } from "../../../modules/auth/selectors";
-import { selectEtosError, selectTokensLoading } from "../../../modules/eto/selectors";
-import {
-  selectMyAssetsEurEquivTotal,
-  selectMyAssetsWithTokenData,
-} from "../../../modules/investor-portfolio/selectors";
-import { TETOWithTokenData } from "../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../store";
 import { DataRowSeparated } from "../../shared/DataRow";
-import { Money } from "../../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
-import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { withContainer } from "../../shared/hocs/withContainer";
+import { LoadingIndicator } from "../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ESize } from "../../shared/transaction/TransactionData";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -57,16 +57,7 @@ const PortfolioStatsLayoutContainer: React.FunctionComponent<Pick<
           <FormattedMessage id="dashboard.portfolio-stats.title" />
         </h4>
       }
-      value={
-        myAssetsEurEquivTotal && (
-          <Money
-            value={myAssetsEurEquivTotal}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
-          />
-        )
-      }
+      value={myAssetsEurEquivTotal && <Eur value={myAssetsEurEquivTotal} />}
     />
     {children}
   </section>
@@ -124,11 +115,20 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<
             <MoneySuiteWidget
               outputFormat={ENumberOutputFormat.FULL}
               currency={eto.equityTokenSymbol}
-              largeNumber={convertToUlps(eto.tokenData.balance)}
-              value={multiplyBigNumbers([eto.tokenData.tokenPrice, eto.tokenData.balance])}
+              largeNumber={convertFromUlps(
+                eto.tokenData.balanceUlps,
+                eto.tokenData.balanceDecimals,
+              ).toString()}
+              value={multiplyBigNumbers([
+                eto.tokenData.tokenPrice,
+                convertFromUlps(
+                  eto.tokenData.balanceUlps,
+                  eto.tokenData.balanceDecimals,
+                ).toString(),
+              ])}
               currencyTotal={ECurrency.EUR}
               size={ESize.MEDIUM}
-              inputFormat={ENumberInputFormat.ULPS}
+              inputFormat={ENumberInputFormat.DECIMAL}
             />
           }
         />
@@ -152,11 +152,13 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<
 const PortfolioStats = compose<TPortfolioStatsProps, {}>(
   appConnect<TStateProps, TDispatchProps, {}>({
     stateToProps: state => ({
-      myAssets: selectMyAssetsWithTokenData(state),
-      myAssetsEurEquivTotal: selectMyAssetsEurEquivTotal(state),
-      hasError: selectEtosError(state),
+      myAssets: investorPortfolioModuleApi.selectors.selectMyAssetsWithTokenData(state),
+      myAssetsEurEquivTotal: investorPortfolioModuleApi.selectors.selectMyAssetsEurEquivTotal(
+        state,
+      ),
+      hasError: etoModuleApi.selectors.selectEtosError(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
-      isLoading: selectTokensLoading(state),
+      isLoading: etoModuleApi.selectors.selectTokensLoading(state),
     }),
     dispatchToProps: dispatch => ({
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),

@@ -1,5 +1,5 @@
 import { ButtonBase, ButtonGroup } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 

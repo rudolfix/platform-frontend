@@ -1,6 +1,6 @@
+import { IEtoDocument } from "@neufund/shared-modules";
 import * as React from "react";
 
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TTranslatedString } from "../../types";
 import { DocumentTile } from "../shared/Document";
 

@@ -1,19 +1,21 @@
-import { TokenIcon } from "@neufund/design-system";
-import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared-utils";
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-
-import { TEtoEquityTokenInfoType } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { ETxType } from "../../../../lib/web3/types";
-import { FormatNumber } from "../../../shared/formatters/FormatNumber";
-import { Money } from "../../../shared/formatters/Money";
+import { EquityTokenPriceEuro, Eth, Eur, Neu, TokenIcon } from "@neufund/design-system";
+import { TEtoEquityTokenInfoType } from "@neufund/shared-modules";
 import {
+  addBigNumbers,
+  convertFromUlps,
+  divideBigNumbers,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
-  EPriceFormat,
-} from "../../../shared/formatters/utils";
-import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+
+import { ETxType } from "../../../../lib/web3/types";
+import { FormatNumber } from "../../../shared/formatters/FormatNumber";
+import { Money } from "../../../shared/formatters/Money";
+import { CurrencyIcon } from "../../../shared/icons";
 import { TooltipBase } from "../../../shared/tooltips";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -70,7 +72,7 @@ const EquityTokensValue: React.FunctionComponent<IEquityTockenValue> = ({
     <TokenIcon srcSet={{ "1x": equityTokenInfo.equityTokenImage }} alt="" />{" "}
     <Money
       value={equityTokens}
-      inputFormat={ENumberInputFormat.FLOAT}
+      inputFormat={ENumberInputFormat.DECIMAL}
       valueType={equityTokenInfo.equityTokenSymbol}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
@@ -79,33 +81,15 @@ const EquityTokensValue: React.FunctionComponent<IEquityTockenValue> = ({
 
 const EstimatedRewardValue: React.FunctionComponent<IEstimatedReward> = ({ estimatedReward }) => (
   <span>
-    <CurrencyIcon currency={ECurrency.NEU} />{" "}
-    <Money
-      value={estimatedReward}
-      inputFormat={ENumberInputFormat.ULPS}
-      valueType={ECurrency.NEU}
-      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-    />
+    <CurrencyIcon currency={ECurrency.NEU} /> <Neu value={estimatedReward} />
   </span>
 );
 
 const Investment: React.FunctionComponent<IInvestment> = ({ investmentEur, investmentEth }) => (
   <>
-    <Money
-      data-test-id="euro"
-      value={investmentEur}
-      inputFormat={ENumberInputFormat.ULPS}
-      valueType={ECurrency.EUR}
-      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-    />
+    <Eur data-test-id="euro" value={investmentEur} />
     {" ≈ "}
-    <Money
-      data-test-id="eth"
-      value={investmentEth}
-      inputFormat={ENumberInputFormat.ULPS}
-      valueType={ECurrency.ETH}
-      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-    />
+    <Eth data-test-id="eth" value={investmentEth} />
   </>
 );
 
@@ -114,20 +98,14 @@ const TokenPriceAndDiscount: React.FunctionComponent<ITokenPriceAndDiscount> = (
   discount,
 }) => (
   <>
-    <Money
-      data-test-id="token-price"
-      value={actualTokenPrice}
-      inputFormat={ENumberInputFormat.FLOAT}
-      valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-      outputFormat={ENumberOutputFormat.FULL}
-    />
+    <EquityTokenPriceEuro data-test-id="token-price" value={actualTokenPrice} />
     {discount !== null && (
       <>
         {" (-"}
         <FormatNumber
           data-test-id="discount"
           value={discount}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         />
         {"%)"}
@@ -138,21 +116,13 @@ const TokenPriceAndDiscount: React.FunctionComponent<ITokenPriceAndDiscount> = (
 
 const Total: React.FunctionComponent<ITotal> = ({ totalCostEur, totalCostEth }) => (
   <>
-    <Money
+    <Eur
       data-test-id="total-cost-euro"
       value={totalCostEur}
-      inputFormat={ENumberInputFormat.ULPS}
-      valueType={ECurrency.EUR}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
     {" ≈ "}
-    <Money
-      data-test-id="total-cost-eth"
-      value={totalCostEth}
-      inputFormat={ENumberInputFormat.ULPS}
-      valueType={ECurrency.ETH}
-      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-    />
+    <Eth data-test-id="total-cost-eth" value={totalCostEth} />
   </>
 );
 
@@ -161,7 +131,9 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxType.INVEST> 
   className,
   txTimestamp,
 }) => {
-  const gasCostEuro = multiplyBigNumbers([additionalData.gasCostEth, additionalData.etherPriceEur]);
+  const gasCostEuro = convertFromUlps(
+    multiplyBigNumbers([additionalData.gasCostEth, additionalData.etherPriceEur]),
+  ).toString();
   const totalCostEth = addBigNumbers([additionalData.gasCostEth, additionalData.investmentEth]);
   const totalCostEur = addBigNumbers([gasCostEuro, additionalData.investmentEur]);
 
@@ -169,7 +141,6 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxType.INVEST> 
     additionalData.investmentEur,
     additionalData.equityTokens,
   );
-
   const fullTokenPrice = divideBigNumbers(
     additionalData.eto.sharePrice.toString(),
     additionalData.eto.equityTokensPerShare.toString(),
@@ -205,14 +176,7 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxType.INVEST> 
       <InfoRow
         data-test-id="investment-flow.summary.transaction-cost"
         caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
-        value={
-          <Money
-            value={additionalData.gasCostEth}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.ETH}
-            outputFormat={ENumberOutputFormat.FULL}
-          />
-        }
+        value={<Eth value={additionalData.gasCostEth} />}
       />
       <InfoRow
         data-test-id="investment-flow.summary.equity-tokens"

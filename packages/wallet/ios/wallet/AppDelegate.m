@@ -10,13 +10,11 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-// Firebase services
+
 #import <Firebase.h>
-// Package to manage notifications
 #import "RNNotifications.h"
-
-
 #import "RNBootSplash.h"
+#import "RNProtectScreen.h"
 
 @implementation AppDelegate
 
@@ -38,6 +36,8 @@
   rootViewController.view = rootView;
   
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
+  [RNProtectScreen init:@"LaunchScreen" viewController:rootViewController];
+
   
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
@@ -65,6 +65,16 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
   [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+  [RNProtectScreen handleBackgroundState];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+  [RNProtectScreen handleForegroundState];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

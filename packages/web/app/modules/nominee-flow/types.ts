@@ -1,14 +1,13 @@
+import {
+  TEtoWithCompanyAndContractReadonly,
+  TOfferingAgreementsStatus,
+} from "@neufund/shared-modules";
+
 import { ENomineeRequestComponentState } from "../../components/nominee-dashboard/linkToIssuer/types";
 import { EProcessState } from "../../utils/enums/processStates";
-import { TEtoWithCompanyAndContractReadonly, TOfferingAgreementsStatus } from "../eto/types";
 
 export enum ENomineeRequestStatus {
   PENDING = "pending",
-  APPROVED = "approved",
-  REJECTED = "rejected",
-}
-
-export enum ENomineeUpdateRequestStatus {
   APPROVED = "approved",
   REJECTED = "rejected",
 }

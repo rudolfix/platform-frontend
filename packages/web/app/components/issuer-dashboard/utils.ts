@@ -1,8 +1,8 @@
 import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EETOStateOnChain } from "../../modules/eto/types";
+  EETOStateOnChain,
+} from "@neufund/shared-modules";
 
 export enum EEtoStep {
   VERIFICATION = "verification",

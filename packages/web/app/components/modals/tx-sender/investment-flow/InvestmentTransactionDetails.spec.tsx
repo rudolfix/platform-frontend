@@ -1,4 +1,4 @@
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { convertFromUlps, ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
@@ -27,7 +27,7 @@ describe("InvestmentTransactionDetails", () => {
     },
     investmentType: EInvestmentType.NEur,
     investmentEth: "194415356251498492",
-    investmentEur: "44000000000000000000",
+    investmentEur: convertFromUlps("44000000000000000000").toString(),
     gasCostEth: "1200000000000000",
     equityTokens: "73",
     tokenDecimals: ETH_DECIMALS,

@@ -6,6 +6,8 @@ import {
   SentryEvent,
   Severity,
   withScope,
+  // TODO: Move sentry logger to the `web` given it's platform specific
+  // tslint:disable-next-line:no-implicit-dependencies
 } from "@sentry/browser";
 
 import { ILogger, TUser } from "./ILogger";

@@ -1,3 +1,4 @@
+import { UnknownObject } from "@neufund/shared-utils";
 import { IRequiredParamsResult, IQueryParamsResult, IParseURIResult } from "@walletconnect/types";
 import { parseQueryString } from "@walletconnect/utils";
 import * as yup from "yup";
@@ -25,7 +26,7 @@ const parseRequiredParams = (path: string): IRequiredParamsResult => {
 };
 
 const parseQueryParams = (queryString: string): IQueryParamsResult => {
-  const result = parseQueryString(queryString);
+  const result = parseQueryString(queryString) as IQueryParamsResult;
 
   return {
     key: result.key ?? "",
@@ -83,7 +84,7 @@ const isValidWalletConnectUri = (uri: string): uri is TWalletConnectUri => {
  *
  * @throws An error when payload do not match schema
  */
-const parseRPCPayload = <T extends object>(schema: yup.ObjectSchema<T>, value: unknown) =>
+const parseRPCPayload = <T extends UnknownObject>(schema: yup.ObjectSchema<T>, value: unknown) =>
   schema.validateSync(value, { stripUnknown: true });
 
 export {

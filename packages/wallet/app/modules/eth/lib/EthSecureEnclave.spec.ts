@@ -3,6 +3,7 @@ import { toEthereumHDPath } from "@neufund/shared-utils";
 
 import { DeviceInformation } from "modules/device-information/DeviceInformation";
 
+import { EPlatform } from "utils/Platform";
 import { createMock } from "utils/testUtils.specUtils";
 
 import {
@@ -31,7 +32,7 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
 
   const deviceInformation = createMock(DeviceInformation, {
     isEmulator: () => Promise.resolve(false),
-    getPlatform: () => "ios",
+    getPlatform: () => EPlatform.IOS,
   });
 
   const secureEnclave = new EthSecureEnclave(noopLogger, deviceInformation);
@@ -124,7 +125,7 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
         randomMnemonicsReferences.map(reference => secureEnclave.unsafeGetSecret(reference)),
       );
 
-      expect(mnemonics.every(mnemonic => mnemonic !== null && isMnemonic(mnemonic))).toBeTruthy();
+      expect(mnemonics.every(mn => mn !== null && isMnemonic(mn))).toBeTruthy();
       // every mnemonic should be a random new one
       expect(mnemonics.length).toBe(new Set(mnemonics).size);
     });

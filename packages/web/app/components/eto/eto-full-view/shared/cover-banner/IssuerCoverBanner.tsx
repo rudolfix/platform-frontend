@@ -1,7 +1,7 @@
+import { EJurisdiction } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EJurisdiction } from "../../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { ExternalLink } from "../../../../shared/links/ExternalLink";
 import { CoverBannerBase } from "./CoverBannerBase";
 

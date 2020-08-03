@@ -1,6 +1,6 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { TTxHistory } from "./types";
+import { EModuleStatus, ITxHistoryState } from "./reducer";
 
 export const txHistoryActions = {
   // public actions
@@ -20,33 +20,9 @@ export const txHistoryActions = {
   // private actions to mutate the store
   setTransactions: createActionFactory(
     "TX_HISTORY_SET_TRANSACTIONS",
-    (
-      transactions: TTxHistory[],
-      lastTransactionId: string | undefined,
-      timestampOfLastChange: number | undefined,
-    ) => ({
-      transactions,
-      lastTransactionId,
-      timestampOfLastChange,
-    }),
+    (transactionHistory: ITxHistoryState) => transactionHistory,
   ),
-  appendTransactions: createActionFactory(
-    "TX_HISTORY_APPEND_TRANSACTIONS",
-    (transactions: TTxHistory[], lastTransactionId: string | undefined) => ({
-      transactions,
-      lastTransactionId,
-    }),
-  ),
-  updateTransactions: createActionFactory(
-    "TX_HISTORY_UPDATE_TRANSACTIONS",
-    (
-      transactions: TTxHistory[],
-      lastTransactionId: string | undefined,
-      timestampOfLastChange: number | undefined,
-    ) => ({
-      transactions,
-      lastTransactionId,
-      timestampOfLastChange,
-    }),
-  ),
+  setModuleStatus: createActionFactory("TX_HISTORY_SET_MODULE_STATUS", (status: EModuleStatus) => ({
+    status,
+  })),
 };

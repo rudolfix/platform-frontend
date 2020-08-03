@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
 
 import isFunction from "lodash/fp/isFunction";
 import { set } from "mockdate";
@@ -15,7 +15,13 @@ const setupTimeTravel = () => {
 };
 
 const callGuard = (methodName: string) => (...args: any[]) => {
-  throw new Error(`Unexpected call to method: '${methodName}' with args: ${args}`);
+  throw new Error(`Unexpected call to method: '${methodName}' with args: ${args.toString()}`);
+};
+
+type TMOCK<T> = {
+  [P in keyof T]: T[P] extends (...args: any) => any
+    ? jest.Mock<ReturnType<T[P]>, Parameters<T[P]>>
+    : T[P];
 };
 
 /**
@@ -25,7 +31,12 @@ const callGuard = (methodName: string) => (...args: any[]) => {
  * @param clazz - A class to mock
  * @param mockImpl - A mocked methods
  */
-function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): T {
+function createMock<T>(
+  clazz: new (...args: any[]) => T,
+  mockImpl: Partial<T>,
+): T & {
+  MOCK: TMOCK<T>;
+} {
   const methods = clazz.prototype ?? {};
 
   const allMethods = new Set<string>([
@@ -45,11 +56,11 @@ function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): 
         ? jest.fn(userProvidedMock)
         : userProvidedMock;
     } else {
-      mock[methodName] = callGuard(methodName);
+      mock[methodName] = jest.fn(callGuard(methodName));
     }
   });
 
-  return mock;
+  return { ...mock, MOCK: mock };
 }
 
 const RealDate = global.Date;

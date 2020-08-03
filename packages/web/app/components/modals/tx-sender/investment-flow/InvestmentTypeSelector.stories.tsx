@@ -1,3 +1,4 @@
+import { convertFromUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -17,7 +18,7 @@ export const wallets: WalletSelectionData[] = [
   },
   {
     balanceNEuro: "45600000000000000000",
-    balanceEur: "45600000000000000000",
+    balanceEur: convertFromUlps("45600000000000000000").toString(),
     type: EInvestmentType.ICBMnEuro,
     name: "ICBM Wallet",
     hasFunds: true,
@@ -25,7 +26,7 @@ export const wallets: WalletSelectionData[] = [
   },
   {
     balanceEth: "50000000000000000000",
-    balanceEur: "45600000000000000000",
+    balanceEur: convertFromUlps("45600000000000000000").toString(),
     type: EInvestmentType.Eth,
     name: "Eth Wallet",
     hasFunds: true,
@@ -33,7 +34,7 @@ export const wallets: WalletSelectionData[] = [
   },
   {
     balanceNEuro: "45600000000000000000",
-    balanceEur: "45600000000000000000",
+    balanceEur: convertFromUlps("45600000000000000000").toString(),
     type: EInvestmentType.NEur,
     name: "nEur Wallet",
     hasFunds: true,
@@ -57,7 +58,7 @@ storiesOf("Investment/InvestmentTypeSelector", module)
         balanceEur: "0",
         balanceEth: "0",
         icbmBalanceEth: "32112000000000000000000",
-        icbmBalanceEur: "5102275680000000000000000",
+        icbmBalanceEur: convertFromUlps("5102275680000000000000000").toString(),
         type: EInvestmentType.ICBMEth,
         name: "ICBM Wallet",
         hasFunds: true,
@@ -67,7 +68,7 @@ storiesOf("Investment/InvestmentTypeSelector", module)
         balanceNEuro: "0",
         balanceEur: "0",
         icbmBalanceNEuro: "45600000000000000000",
-        icbmBalanceEur: "45600000000000000000",
+        icbmBalanceEur: convertFromUlps("45600000000000000000").toString(),
         type: EInvestmentType.ICBMnEuro,
         name: "ICBM Wallet",
         hasFunds: true,
@@ -75,7 +76,7 @@ storiesOf("Investment/InvestmentTypeSelector", module)
       },
       {
         balanceEth: "50000000000000000000",
-        balanceEur: "45600000000000000000",
+        balanceEur: convertFromUlps("45600000000000000000").toString(),
         type: EInvestmentType.Eth,
         name: "Eth Wallet",
         hasFunds: true,
@@ -83,7 +84,7 @@ storiesOf("Investment/InvestmentTypeSelector", module)
       },
       {
         balanceNEuro: "45600000000000000000",
-        balanceEur: "45600000000000000000",
+        balanceEur: convertFromUlps("45600000000000000000").toString(),
         type: EInvestmentType.NEur,
         name: "nEur Wallet",
         hasFunds: true,

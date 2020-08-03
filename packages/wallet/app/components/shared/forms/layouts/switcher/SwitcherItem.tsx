@@ -18,7 +18,6 @@ enum ESwitcherItemPosition {
 }
 
 type TItemExternalProps = {
-  id: string;
   title: string;
   subTitle?: string;
   isSelected: boolean;
@@ -26,7 +25,6 @@ type TItemExternalProps = {
 } & Omit<TTouchableProps, "activeColor" | "children">;
 
 const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
-  id,
   title,
   subTitle,
   isSelected,

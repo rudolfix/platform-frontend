@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared-utils";
+import { convertFromUlps, Q18 } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -19,7 +19,7 @@ const txData: ITxData = {
 const additionalData: TAdditionalDataByType<typeof ETxType.INVESTOR_REFUND> = {
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc",
   costUlps: Q18.mul("0.04").toString(),
-  costEurUlps: Q18.mul("0.34").toString(),
+  costEur: convertFromUlps(Q18.mul("0.34")).toString(),
   tokenName: "Fifth Force",
   tokenSymbol: "FT",
   amountEth: Q18.mul("150").toString(),

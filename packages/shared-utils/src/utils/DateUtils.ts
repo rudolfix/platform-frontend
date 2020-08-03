@@ -1,3 +1,6 @@
+import jstz from "jstimezonedetect";
+import moment from "moment";
+
 const DAY = 24 * 60 * 60;
 
 /**
@@ -32,5 +35,38 @@ export function minutesToMs(minutes: number): number {
 export function secondsToMs(seconds: number): number {
   return seconds * 1000;
 }
+
+export const calculateTimeLeftUnits = (timeLeft: number): [number, number, number, number] => {
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(timeLeft / day);
+  const hours = Math.floor((timeLeft % day) / hour);
+  const minutes = Math.floor(((timeLeft % day) % hour) / minute);
+  const seconds = Math.floor(((timeLeft % day) % hour) % minute);
+
+  return [days, hours, minutes, seconds];
+};
+
+export const calculateTimeLeft = (
+  value: moment.Moment | Date,
+  asUtc: boolean,
+  unit: moment.unitOfTime.Diff = "seconds",
+) => (asUtc ? moment.utc(value).diff(moment().utc(), unit) : moment(value).diff(moment(), unit));
+
+export const getTomorrowsDate = () =>
+  moment()
+    .utc()
+    .add(1, "day")
+    .startOf("day")
+    .toDate();
+
+export const utcTime = (value: moment.MomentInput) =>
+  moment.utc(value).format("MMMM Do YYYY, HH:mm");
+export const localTime = (value: moment.MomentInput) => moment(value).format("MMMM Do YYYY, HH:mm");
+export const timeZone = () => jstz.determine().name();
+export const weekdayLocal = (date: moment.MomentInput) => moment(date).format("ddd");
+export const weekdayUTC = (date: moment.MomentInput) => moment.utc(date).format("ddd");
 
 export const getCurrentUTCTimestamp = (): number => Math.floor(Date.now() / 1000);

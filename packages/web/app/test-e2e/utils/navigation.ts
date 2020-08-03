@@ -1,4 +1,7 @@
-import { IWindowData, IWindowWithData } from "../../../test/helperTypes";
+import { ITestSettings } from "@neufund/shared-modules";
+
+import { IWindowWithData } from "../../../test/helperTypes";
+import { appRoutes } from "../../components/appRoutes";
 import { assertIssuerEtoView } from "../issuer/eto/view/EtoViewUtils";
 import {
   assertEtoDocuments,
@@ -42,7 +45,7 @@ export const goToDashboardWithRequiredPayoutAmountSet = (
   }
 };
 
-export const goToWalletWithParams = (params: IWindowData = {}) => {
+export const goToWalletWithParams = (params: ITestSettings = {}) => {
   cy.visit("/wallet", {
     onBeforeLoad(win: IWindowWithData): void {
       for (let [key, value] of Object.entries(params)) {
@@ -131,4 +134,9 @@ export const goToRegisterLightWalletWithMockedWeb3 = () => {
       win.ethereum = {};
     },
   });
+};
+
+export const goToGeneralInformation = () => {
+  cy.visit("/governance/general-information");
+  return cy.url().should("contain", appRoutes.governanceGeneralInformation);
 };

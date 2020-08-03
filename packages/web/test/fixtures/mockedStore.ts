@@ -69,7 +69,7 @@ export const mockedStore: DeepPartial<TAppGlobalState> = {
     contracts: { [testEto.previewCode]: testEto.contract },
     displayOrder: [testEto.previewCode],
   },
-  bookBuildingFlow: {
+  bookbuilding: {
     bookbuildingStats: {
       [testEto.etoId]: {
         investorsCount: 10,
@@ -78,7 +78,7 @@ export const mockedStore: DeepPartial<TAppGlobalState> = {
     },
     pledges: {},
   },
-  investorTickets: {
+  investorPortfolio: {
     calculatedContributions: {},
     initialCalculatedContributions: {},
     investorEtoTickets: {},

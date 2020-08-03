@@ -1,7 +1,6 @@
-import { compareBigNumbers, convertToUlps } from "@neufund/shared-utils";
+import { compareBigNumbers, convertToUlps, ECurrency } from "@neufund/shared-utils";
 
 import { IWindowWithData } from "../../../test/helperTypes";
-import { ECurrency } from "../shared/formatters/utils";
 
 const EURO_TOKEN_PAYOUT_THRESHOLD = "1";
 const ETHER_TOKEN_PAYOUT_THRESHOLD = "0.01";

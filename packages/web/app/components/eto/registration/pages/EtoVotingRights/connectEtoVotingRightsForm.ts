@@ -1,3 +1,4 @@
+import { EEtoFormTypes, etoFormIsReadonly, TPartialEtoSpecData } from "@neufund/shared-modules";
 import {
   ADVISORY_BOARD_TEXT_MIN_LENGTH,
   MAX_RESTRICTED_ACT_VOTING_DURATION,
@@ -15,8 +16,6 @@ import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 import * as Yup from "yup";
 
-import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../../modules/actions";
 import {
   selectEtoNominee,
@@ -26,7 +25,6 @@ import {
   selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../../store";
 import {
   convert,

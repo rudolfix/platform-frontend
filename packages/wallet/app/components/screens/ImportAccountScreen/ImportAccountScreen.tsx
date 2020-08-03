@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { SafeAreaScreen } from "components/shared/Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
 import { BodyText } from "components/shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
@@ -25,25 +25,19 @@ type TDispatchProps = {
 const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   authState,
   importExistingAccount,
-}) => {
-  return (
-    <SafeAreaScreen contentContainerStyle={styles.content}>
-      <Headline style={styles.headline} level={EHeadlineLevel.LEVEL2}>
-        Connect an account
-      </Headline>
+}) => (
+  <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
+    <Headline style={styles.headline} level={EHeadlineLevel.LEVEL2}>
+      Connect an account
+    </Headline>
 
-      <BodyText style={styles.paragraph}>
-        Enter your recovery phrase/private key to import and connect your Ethereum wallet to
-        Neufund.
-      </BodyText>
+    <BodyText style={styles.paragraph}>
+      Enter your recovery phrase/private key to import and connect your Ethereum wallet to Neufund.
+    </BodyText>
 
-      <ImportAccountScreenForm
-        authState={authState}
-        importExistingAccount={importExistingAccount}
-      />
-    </SafeAreaScreen>
-  );
-};
+    <ImportAccountScreenForm authState={authState} importExistingAccount={importExistingAccount} />
+  </SafeAreaScreen>
+);
 
 const styles = StyleSheet.create({
   content: {

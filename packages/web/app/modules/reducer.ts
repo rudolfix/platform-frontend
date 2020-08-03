@@ -2,21 +2,18 @@ import { portfolioDownloadAgreementsModalReducer } from "../components/portfolio
 import { accessWalletReducer } from "./access-wallet/reducer";
 import { authReducer } from "./auth/reducer";
 import { bankTransferFlowReducer } from "./bank-transfer-flow/reducer";
-import { bookBuildingFlowReducer } from "./bookbuilding-flow/reducer";
 import { contractsReducer } from "./contracts/reducer";
 import { depositEthModalReducer } from "./deposit-eth-modal/reducer";
 import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
 import { etoNomineeReducer } from "./eto-nominee/reducer";
 import { etoViewReducer } from "./eto-view/shared/reducer";
-import { etoReducer } from "./eto/reducer";
 import { fullPageLoadingReducer } from "./full-page-loading/reducer";
 import { genericModalReducer } from "./generic-modal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbm-wallet-balance-modal/reducer";
 import { immutableStorageReducer } from "./immutable-file/reducer";
 import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investment-flow/reducer";
-import { investorTicketsReducer } from "./investor-portfolio/reducer";
 import { nomineeFlowReducer } from "./nominee-flow/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
@@ -49,17 +46,14 @@ export const appReducers = {
   genericModal: genericModalReducer,
   accessWallet: accessWalletReducer,
   profile: profileReducer,
-  investorTickets: investorTicketsReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
   walletConnect: walletConnectReducer,
   walletView: walletViewReducer,
   notifications: notificationsReducer,
   etoIssuer: etoFlowReducer,
-  bookBuildingFlow: bookBuildingFlowReducer,
   etoDocuments: etoDocumentReducer,
   etoNominee: etoNomineeReducer,
-  eto: etoReducer,
   etoView: etoViewReducer,
   depositEthModal: depositEthModalReducer,
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,

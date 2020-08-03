@@ -66,7 +66,7 @@ const oneOfSchema = <T extends yup.Schema<unknown>>(schemas: T[], message?: Test
         return schemas.some(schema => schema.isValidSync(value));
       },
     })
-    .transform(value => {
+    .transform((value: unknown) => {
       if (isAbsent(value)) {
         return value;
       }
@@ -76,6 +76,7 @@ const oneOfSchema = <T extends yup.Schema<unknown>>(schemas: T[], message?: Test
       return validSchema ? transform(validSchema, value) : value;
     });
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type ObjectInferTypeWithPrimitive<T extends object> = {
   [P in keyof T]: InferTypeWithPrimitive<T[P]>;
 };
@@ -114,8 +115,8 @@ const tupleSchemaTest = <T extends Tuple<yup.Schema<unknown>>>(schemas: T, value
  * schema.isValidSync(["baz", { foo: "bar" }); // false
  * schema.isValidSync([100, 100, 100]); // false
  */
-const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) => {
-  return yup
+const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) =>
+  yup
     .mixed<ObjectInferTypeWithPrimitive<T>>()
     .test({
       name: "tupleSchema",
@@ -123,7 +124,7 @@ const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) => {
       message: "${path} must be a valid tuple",
       test: values => tupleSchemaTest(schemas, values),
     })
-    .transform(values => {
+    .transform((values: unknown[]) => {
       if (isAbsent(values) || !tupleSchemaTest(schemas, values)) {
         return values;
       }
@@ -135,7 +136,6 @@ const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) => {
         return transform(schema, values[i]);
       });
     });
-};
 
 /**
  * A schema that support just single value by reference equality.

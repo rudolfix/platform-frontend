@@ -9,7 +9,7 @@ class ICBMLockedAccountAdapterFactory {
   static connect(
     address: string,
     signerOrProvider: Signer | providers.Provider,
-  ): ICBMLockedAccountAdapter {
+  ): IICBMLockedAccountAdapter {
     return new ICBMLockedAccountAdapter(
       ICBMLockedAccountFactory.connect(address, signerOrProvider),
     );
@@ -17,15 +17,17 @@ class ICBMLockedAccountAdapterFactory {
 }
 
 /**
- * An adapter for ERC20 Tokens to hide implementation differences between web3 and ethers generated contracts interfaces
+ * An adapter for ICBM Locked Accouunt to hide implementation differences between web3 and ethers generated contracts interfaces
  */
 class ICBMLockedAccountAdapter implements IICBMLockedAccountAdapter {
   readonly address: string;
-  readonly currentMigrationTarget: Promise<string>;
 
   constructor(private readonly accountContract: ICBMLockedAccount) {
     this.address = accountContract.address;
-    this.currentMigrationTarget = accountContract.currentMigrationTarget();
+  }
+
+  get currentMigrationTarget(): Promise<string> {
+    return this.accountContract.currentMigrationTarget();
   }
 
   async balanceOf(address: string): Promise<[BigNumber, BigNumber, BigNumber]> {

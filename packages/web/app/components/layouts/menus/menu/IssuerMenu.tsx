@@ -8,8 +8,9 @@ import * as styles from "./Menu.module.scss";
 
 const IssuerMenuLayout: React.FunctionComponent<IIssuerMenuProps> = ({
   userHasKycAndVerifiedEmail,
+  enableGovernanceTab,
 }) => {
-  const data = issuerMenuData(userHasKycAndVerifiedEmail);
+  const data = issuerMenuData(userHasKycAndVerifiedEmail, enableGovernanceTab);
   return (
     <div className={styles.menu}>
       {data.map(entry => (

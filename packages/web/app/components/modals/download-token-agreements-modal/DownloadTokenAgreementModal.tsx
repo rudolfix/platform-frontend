@@ -1,19 +1,19 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import {
+  EEtoDocumentType,
+  etoModuleApi,
+  IEtoDocument,
+  immutableDocumentName,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { map } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  immutableDocumentName,
-} from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectEtoWithCompanyAndContractById } from "../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { appConnect } from "../../../store";
 import { getInvestorDocumentTitles } from "../../documents/utils";
@@ -157,7 +157,9 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectDownloadAgreementModalEtoId(state);
-      const eto = etoId ? selectEtoWithCompanyAndContractById(state, etoId) : undefined;
+      const eto = etoId
+        ? etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId)
+        : undefined;
       return {
         eto,
         isOpen: etoId ? selectDownloadAgrementModalIsOpen(state) : false,

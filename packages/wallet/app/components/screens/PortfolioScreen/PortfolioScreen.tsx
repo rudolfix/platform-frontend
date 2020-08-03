@@ -1,46 +1,59 @@
-import { toEquityTokenSymbol } from "@neufund/shared-utils";
+import { assertNever, UnknownObject } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { LayoutAnimation } from "react-native";
+import { compose } from "recompose";
 
-import { HeaderScreen } from "components/shared/HeaderScreen";
-import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { ErrorBoundaryScreen } from "components/screens/ErrorBoundaryScreen/ErrorBoundaryScreen";
+import { PortfolioScreenLayoutSkeleton } from "components/screens/PortfolioScreen/PortfolioScreenSkeleton";
+import { createErrorBoundary } from "components/shared/error-boundary/ErrorBoundary";
+import { onLifecycle } from "components/shared/hocs/onLifecycle";
 
-import { spacingStyles } from "styles/spacings";
+import { usePrevious } from "hooks/usePrevious";
 
-const PortfolioScreen: React.FunctionComponent = () => (
-  <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"}>
-    <Asset
-      tokenImage="https://documents.neufund.io/0x95137084d1b6F58D177523De894293913394aA12/9066455f-e514-444d-bd4f-44e4df3f2a74.png"
-      name="Nomera Tech"
-      token={toEquityTokenSymbol("NOM")}
-      balance="1000"
-      analogBalance="15 000"
-      analogToken={toEquityTokenSymbol("EUR")}
-      style={styles.asset}
-      type={EAssetType.RESERVED}
-    />
+import { portfolioScreenModuleApi } from "modules/portfolio-screen/module";
+import { EScreenState } from "modules/types";
 
-    {Array.from({ length: 15 }, (_, i) => i).map(i => (
-      <Asset
-        key={i}
-        tokenImage="https://documents.neufund.io/0x74180B56DD74BC56a2E9D5720F39247c55F23328/e36ee175-e8c6-4f8a-9175-1e22b0a8be53.png"
-        name="Greyp"
-        token={toEquityTokenSymbol("GRP")}
-        balance="100"
-        analogBalance="1 000"
-        analogToken={toEquityTokenSymbol("EUR")}
-        style={styles.asset}
-        type={EAssetType.NORMAL}
-      />
-    ))}
-  </HeaderScreen>
-);
+import { appConnect } from "store/utils";
 
-const styles = StyleSheet.create({
-  asset: {
-    ...spacingStyles.mh4,
-    ...spacingStyles.mb2,
-  },
-});
+import { PortfolioScreenLayout } from "./PortfolioScreenLayout";
+
+type TStateProps = ReturnType<typeof portfolioScreenModuleApi.selectors.selectPortfolioScreenData>;
+
+const PortfolioScreenSwitch: React.FunctionComponent<TStateProps> = props => {
+  const previousViewState = usePrevious(props.screenState);
+
+  React.useLayoutEffect(() => {
+    if (previousViewState === EScreenState.LOADING && props.screenState === EScreenState.READY) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    }
+  }, [props.screenState, previousViewState]);
+
+  switch (props.screenState) {
+    case EScreenState.INITIAL:
+    case EScreenState.LOADING:
+      return <PortfolioScreenLayoutSkeleton />;
+
+    case EScreenState.READY:
+    case EScreenState.REFRESHING:
+      return <PortfolioScreenLayout {...props} />;
+
+    case EScreenState.ERROR:
+      return <ErrorBoundaryScreen />;
+
+    default:
+      assertNever(props);
+  }
+};
+
+const PortfolioScreen = compose<TStateProps, UnknownObject>(
+  createErrorBoundary(ErrorBoundaryScreen),
+  appConnect<TStateProps>({
+    stateToProps: state => portfolioScreenModuleApi.selectors.selectPortfolioScreenData(state),
+  }),
+  onLifecycle({
+    onMount: dispatch => dispatch(portfolioScreenModuleApi.actions.loadPortfolioScreen()),
+    onFocus: dispatch => dispatch(portfolioScreenModuleApi.actions.refreshPortfolioScreen()),
+  }),
+)(PortfolioScreenSwitch);
 
 export { PortfolioScreen };

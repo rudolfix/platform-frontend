@@ -1,9 +1,11 @@
 import {
   appConnect as sharedAppConnect,
   setupAuthModule,
+  setupBookbuildingModule,
   setupContractsModule,
   setupCoreModule,
   setupGasModule,
+  setupInvestorPortfolioModule,
   setupKycModule,
   setupTokenPriceModule,
   setupWalletModule,
@@ -28,8 +30,11 @@ import { setupBindings } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
+import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "./modules/auth/constants";
 import { ensurePermissionsArePresentAndRunEffect } from "./modules/auth/jwt/sagas";
+import { setupWebEtoModule } from "./modules/eto/module";
 import { displayErrorModalSaga } from "./modules/generic-modal/sagas";
+import { setupGovernanceModule } from "./modules/governance/module";
 import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
 import { setupInstantIdModule } from "./modules/instant-id/module";
 import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
@@ -68,19 +73,24 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     middlewares: [routerMiddleware(history), reduxLogger(container)],
   };
 
+  const authConfig = {
+    backendRootUrl: config.backendRoot.url,
+    jwtStorageSymbol: symbols.jwtStorage,
+    ethManagerSymbol: symbols.web3Manager,
+    jwtTimingThreshold: AUTH_JWT_TIMING_THRESHOLD,
+    jwtRefreshThreshold: AUTH_TOKEN_REFRESH_THRESHOLD,
+  };
+
   return [
     setupCoreModule({ backendRootUrl: config.backendRoot.url }),
-    setupAuthModule({
-      jwtStorageSymbol: symbols.jwtStorage,
-      ethManagerSymbol: symbols.web3Manager,
-    }),
+    ...setupAuthModule(authConfig),
     setupContractsModule({
       contractsServiceSymbol: symbols.contractsService,
     }),
     setupTokenPriceModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
-    ...setupWalletModule({ waitUntilSmartContractsAreInitialized }),
+    setupWalletModule({ waitUntilSmartContractsAreInitialized }),
     ...setupWebTxHistoryModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
@@ -88,11 +98,18 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupGasModule(),
     setupWebNotificationUIModule(),
     ...setupShareholderResolutionsVotingViewModule(),
-    ...setupKycModule({
+    setupGovernanceModule(),
+    setupKycModule({
       ensurePermissionsArePresentAndRunEffect,
       displayErrorModalSaga,
       waitUntilSmartContractsAreInitialized,
     }),
+    ...setupWebEtoModule(),
+    setupBookbuildingModule({
+      ensurePermissionsArePresentAndRunEffect,
+      refreshOnAction: actions.web3.newBlockArrived,
+    }),
+    setupInvestorPortfolioModule(),
     appModule,
   ];
 };

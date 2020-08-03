@@ -1,7 +1,7 @@
+import { generateRandomEthereumAddress } from "@neufund/shared-modules";
 import { Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
-import { generateRandomEthereumAddress } from "../../../../modules/web3/utils";
 import { assertTxErrorDialogueNoCost } from "../../../utils/assertions";
 import { DEFAULT_PASSWORD } from "../../../utils/constants";
 import { getBalanceRpc, sendEth } from "../../../utils/ethRpcUtils";

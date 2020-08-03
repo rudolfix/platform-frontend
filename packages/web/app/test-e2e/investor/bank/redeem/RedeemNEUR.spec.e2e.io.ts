@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import {
   ECurrency,
   ENumberInputFormat,
@@ -7,17 +5,20 @@ import {
   formatNumber,
   selectDecimalPlaces,
   stripNumberFormatting,
-} from "../../../../components/shared/formatters/utils";
-import { fillForm } from "../../../utils/forms";
+} from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
+
 import {
   assertWallet,
   confirmAccessModal,
+  fillForm,
+  formField,
   getWalletNEurAmount,
   goToWallet,
+  loginFixtureAccount,
   parseAmount,
-} from "../../../utils/index";
-import { formField, tid } from "../../../utils/selectors";
-import { loginFixtureAccount } from "../../../utils/userHelpers";
+  tid,
+} from "../../../utils";
 import { assertBankAccountDetails } from "../assertions";
 
 describe("Redeem", function(): void {
@@ -84,7 +85,7 @@ describe("Redeem", function(): void {
       const nextExpectedValue = formatNumber({
         value: nextValue,
         outputFormat: ENumberOutputFormat.FULL,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
       });
 

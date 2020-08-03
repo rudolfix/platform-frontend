@@ -1,9 +1,8 @@
+import { EEtoDocumentType, EOfferingDocumentType, IEtoDocument } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { SingleColDocumentsLayout } from "./SingleColDocumentWidget";
 
 const documents: IEtoDocument[] = [

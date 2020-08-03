@@ -1,8 +1,7 @@
-import { TModuleState } from "@neufund/shared-modules";
+import { etoModuleApi, TModuleState } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { TAppGlobalState } from "../../store";
-import { selectEtos } from "../eto/selectors";
 import { setupShareholderResolutionsVotingModule } from "./module";
 
 export type TShareholderResolutionsVotingModuleState = TModuleState<
@@ -31,7 +30,7 @@ export const selectShareholderProposalVote = (
  * @todo When backend provides an API use a proper mechanism to get proposal ETO
  */
 export const selectProposalEto = (proposalId: string) => (state: TAppGlobalState) => {
-  const etos = selectEtos(state);
+  const etos = etoModuleApi.selectors.selectEtos(state);
   const proposal = selectProposalById(proposalId)(state);
 
   if (etos && proposal) {

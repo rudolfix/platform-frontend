@@ -1,25 +1,18 @@
-import * as cn from "classnames";
+import { EquityTokenPriceEuro, WholeEur } from "@neufund/design-system";
+import {
+  calcCapFraction,
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import { ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { calcCapFraction } from "../../../../lib/api/eto/EtoUtils";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
-import { getEtoEurMinTarget } from "../../../../modules/eto/utils";
-import {
-  selectShouldShowPublicDiscount,
-  selectShouldShowWhitelistDiscount,
-} from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
-import { Money } from "../../../shared/formatters/Money";
 import { MoneyRange } from "../../../shared/formatters/MoneyRange";
-import {
-  ECurrency,
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-} from "../../../shared/formatters/utils";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
@@ -45,7 +38,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   computedMinCapPercent,
 }) => {
   const shouldShowComputedCap = eto.newSharesToIssue && eto.minimumNewSharesToIssue;
-  const eurMinTarget = getEtoEurMinTarget(eto);
+  const eurMinTarget = etoModuleApi.utils.getEtoEurMinTarget(eto);
 
   return (
     <div className={cn(styles.etoStatsWrapper, styles.groupWrapper)}>
@@ -60,11 +53,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
         </span>
         <span className={styles.value}>
-          <Money
+          <WholeEur
             value={eto.preMoneyValuationEur ? eto.preMoneyValuationEur.toString() : undefined}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.INTEGER}
             defaultValue={<ToBeAnnouncedTooltip />}
             data-test-id="eto-overview.stats.pre-money-valuation"
           />
@@ -75,11 +65,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.target-investment-amount" />
         </span>
         <span className={styles.value}>
-          <Money
+          <WholeEur
             value={eurMinTarget}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.INTEGER}
             defaultValue={<ToBeAnnounced />}
             data-test-id="eto-overview.stats.target-investment-amount"
           />
@@ -93,7 +80,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <MoneyRange
             valueFrom={shouldShowComputedCap ? computedMinCapPercent.toString() : ""}
             valueUpto={shouldShowComputedCap ? computedMaxCapPercent.toString() : ""}
-            inputFormat={ENumberInputFormat.FLOAT}
+            inputFormat={ENumberInputFormat.DECIMAL}
             outputFormat={ENumberOutputFormat.FULL}
             valueType={ENumberFormat.PERCENTAGE}
             defaultValue={<ToBeAnnounced />}
@@ -106,11 +93,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.equity-token-price" />
         </span>
         <span className={styles.value}>
-          <Money
+          <EquityTokenPriceEuro
             value={tokenPrice ? tokenPrice.toString() : undefined}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-            outputFormat={ENumberOutputFormat.FULL}
             defaultValue={<ToBeAnnounced />}
             data-test-id="eto-overview.stats.equity-token-price"
           />
@@ -145,8 +129,14 @@ export const EtoStats = compose<IStateProps & IExternalProps, IExternalProps>(
     stateToProps: (state, props) => {
       const etoData = props.eto;
 
-      const showWhitelistDiscount = selectShouldShowWhitelistDiscount(state, etoData);
-      const showPublicDiscount = selectShouldShowPublicDiscount(state, etoData);
+      const showWhitelistDiscount = investorPortfolioModuleApi.selectors.selectShouldShowWhitelistDiscount(
+        state,
+        etoData,
+      );
+      const showPublicDiscount = investorPortfolioModuleApi.selectors.selectShouldShowPublicDiscount(
+        state,
+        etoData,
+      );
 
       let tokenPrice;
       if (etoData.investmentCalculatedValues) {

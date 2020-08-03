@@ -4,7 +4,7 @@ import { FormattedDate } from "react-intl";
 import { StyleSheet } from "react-native";
 
 import { Link } from "components/shared/Link";
-import { SafeAreaScreen } from "components/shared/Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
 import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { BodyText } from "components/shared/typography/BodyText";
 
@@ -36,7 +36,7 @@ const WalletConnectLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   const navigation = useNavigation();
 
   return (
-    <SafeAreaScreen contentContainerStyle={styles.content}>
+    <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
       {walletConnectPeer ? (
         <>
           <Section

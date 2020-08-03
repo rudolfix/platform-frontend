@@ -9,13 +9,13 @@ class LockedAccountAdapterFactory {
   static connect(
     address: string,
     signerOrProvider: Signer | providers.Provider,
-  ): LockedAccountAdapter {
+  ): ILockedAccountAdapter {
     return new LockedAccountAdapter(LockedAccountFactory.connect(address, signerOrProvider));
   }
 }
 
 /**
- * An adapter for ERC20 Tokens to hide implementation differences between web3 and ethers generated contracts interfaces
+ * An adapter for Locked Account to hide implementation differences between web3 and ethers generated contracts interfaces
  */
 class LockedAccountAdapter implements ILockedAccountAdapter {
   readonly address: string;

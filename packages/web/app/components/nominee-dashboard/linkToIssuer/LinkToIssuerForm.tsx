@@ -1,5 +1,4 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -10,6 +9,7 @@ import { appConnect } from "../../../store";
 import { TDataTestId } from "../../../types";
 import { EKeys } from "../../../utils/enums/keysEnum";
 import { FormError } from "../../shared/forms/layouts/FormError";
+import { IIntlProps, injectIntlHelpers } from "../../shared/hocs/injectIntlHelpers.unsafe";
 import { EMaskedFormError, getMessageTranslation } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { validateEthAddress, validateEthInput } from "./utils";

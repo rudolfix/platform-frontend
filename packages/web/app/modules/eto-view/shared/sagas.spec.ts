@@ -1,8 +1,7 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { EUserType } from "@neufund/shared-modules";
+import { EEtoState, EUserType } from "@neufund/shared-modules";
 
 import { testEto } from "../../../../test/fixtures";
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";
 import { performLoadEtoSideEffects } from "./sagas";

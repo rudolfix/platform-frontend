@@ -1,6 +1,7 @@
-import { Button, EButtonLayout, Table } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import { Button, EButtonLayout, Eur, Table } from "@neufund/design-system";
+import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "@neufund/shared-utils";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,24 +9,16 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
-import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
 import { appConnect } from "../../store";
 import { Container } from "../layouts/Container";
-import { Money } from "../shared/formatters/Money";
 import { MoneyWithLessThan } from "../shared/formatters/MoneyWithLessThan";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  selectUnits,
-} from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
-import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ExternalLink } from "../shared/links/ExternalLink";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { withContainer } from "../shared/hocs/withContainer";
+import { CurrencyIcon } from "../shared/icons";
+import { ExternalLink } from "../shared/links";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { PanelRounded } from "../shared/Panel";
-import { Tooltip } from "../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../shared/tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 import { WarningAlert } from "../shared/WarningAlert";
 
 import * as styles from "./PortfolioLayout.module.scss";
@@ -137,12 +130,7 @@ const prepareTableColumns = (
     Footer: () => (
       <>
         ~
-        <Money
-          value={tokensDisbursalEurEquivTotalDisbursed}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.EUR}
-          outputFormat={ENumberOutputFormat.FULL}
-        />
+        <Eur value={tokensDisbursalEurEquivTotalDisbursed} />
       </>
     ),
   },
@@ -152,12 +140,7 @@ const prepareTableColumns = (
     Footer: () => (
       <>
         ~
-        <Money
-          value={tokensDisbursalEurEquivTotal}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.EUR}
-          outputFormat={ENumberOutputFormat.FULL}
-        />
+        <Eur value={tokensDisbursalEurEquivTotal} />
       </>
     ),
   },

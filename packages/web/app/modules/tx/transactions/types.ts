@@ -1,7 +1,9 @@
+import { SchemaYTS } from "@neufund/shared-modules";
+
 import { ETxType } from "../../../lib/web3/types";
-import { Schema } from "../../../lib/yup-ts.unsafe";
 import { TUserClaimAdditionalData, UserClaimAdditionalDataSchema } from "./claim/types";
 import { EtoSetDateAdditionalDataSchema, TEtoSetDateAdditionalDataSchema } from "./eto-flow/types";
+import { ExecuteResolutionAdditionalDataSchema } from "./governance/types";
 import {
   InvestmentAdditionalDataSchema,
   InvestorSignAgreementSchema,
@@ -27,7 +29,7 @@ import { TUnlockAdditionalDataYTS, UnlockAdditionalDataSchema } from "./unlock/t
 import { TUpgradeAdditionalDataYTS, UpgradeAdditionalDataSchema } from "./upgrade/types";
 import { TWithdrawAdditionalData, WithdrawAdditionalDataSchema } from "./withdraw/types";
 
-export const typeToSchema: Record<ETxType, Schema<unknown>> = {
+export const typeToSchema: Record<ETxType, SchemaYTS<unknown>> = {
   [ETxType.INVEST]: InvestmentAdditionalDataSchema,
   [ETxType.USER_CLAIM]: UserClaimAdditionalDataSchema,
   [ETxType.INVESTOR_REDISTRIBUTE_PAYOUT]: InvestorAcceptPayoutAdditionalDataSchema,
@@ -44,6 +46,7 @@ export const typeToSchema: Record<ETxType, Schema<unknown>> = {
   [ETxType.NOMINEE_RAAA_SIGN]: TokenAgreementContractSchema,
   [ETxType.NOMINEE_THA_SIGN]: TokenAgreementContractSchema,
   [ETxType.SHAREHOLDER_RESOLUTIONS_VOTE]: ShareholderResolutionVoteAdditionalDataSchema,
+  [ETxType.EXECUTE_RESOLUTION]: ExecuteResolutionAdditionalDataSchema,
 };
 export type TTransactionAdditionalData =
   | TInvestmentAdditionalDataYTS

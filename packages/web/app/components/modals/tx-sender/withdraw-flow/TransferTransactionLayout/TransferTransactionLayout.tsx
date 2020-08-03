@@ -1,5 +1,5 @@
 import { Button } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedDate, FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

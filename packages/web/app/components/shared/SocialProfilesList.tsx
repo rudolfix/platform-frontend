@@ -1,13 +1,13 @@
-import { RequiredNonNullable } from "@neufund/shared-utils";
-import * as cn from "classnames";
-import { isEmpty } from "lodash";
-import * as React from "react";
-
 import {
   ESocialChannelType,
   TSocialChannelsType,
   TSocialChannelType,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+} from "@neufund/shared-modules";
+import { RequiredNonNullable } from "@neufund/shared-utils";
+import cn from "classnames";
+import { isEmpty } from "lodash";
+import * as React from "react";
+
 import { InlineIcon } from "./icons";
 import { ExternalLink } from "./links";
 

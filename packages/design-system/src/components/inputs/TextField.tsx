@@ -7,7 +7,7 @@ import {
   getValidationSchema,
   isRequired as isFieldRequired,
 } from "../../utils/yupUtils";
-import { InlineIcon } from "../icons/InlineIcon";
+import { InlineIcon } from "../icons";
 import { eyeStrikedIcon, eyeUnstrikedIcon } from "./icons";
 import { Input } from "./Input";
 import { InputBase } from "./InputBase";
@@ -32,7 +32,7 @@ const transformBack = (value: number | string, charactersLimit?: number) => {
 
 type TFieldProps = {
   name: string;
-  label?: string;
+  label?: React.ReactNode;
   description?: string;
   disabled?: boolean;
   placeholder?: string;

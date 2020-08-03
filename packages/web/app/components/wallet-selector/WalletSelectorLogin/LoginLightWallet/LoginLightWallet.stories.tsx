@@ -1,8 +1,8 @@
-import { IIntlHelpers } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { IIntlHelpers } from "../../../shared/hocs/injectIntlHelpers.unsafe";
 import { TMessage } from "../../../translatedMessages/utils";
 import { LoginLightWalletComponent } from "./LoginLightWallet";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";

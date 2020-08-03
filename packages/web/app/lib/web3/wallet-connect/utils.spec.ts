@@ -1,7 +1,6 @@
-import { EWalletSubType } from "@neufund/shared-modules";
+import { ESignerType, EWalletSubType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
-import { ESignerType } from "../../../../../shared-modules/dist/modules/core/lib/eth/types";
 import {
   WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
   WC_DEFAULT_SIGN_TIMEOUT,

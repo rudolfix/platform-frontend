@@ -1,10 +1,10 @@
+import { EAbbreviatedNumberOutputFormat, ENumberInputFormat } from "@neufund/shared-utils";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { FormatShortNumberRange } from "./FormatShortNumber";
-import { EAbbreviatedNumberOutputFormat, ENumberInputFormat } from "./utils";
 
 describe("FormatShortNumberRange component", () => {
   it("should render numbers in LONG abbreviated form", () => {
@@ -13,7 +13,7 @@ describe("FormatShortNumberRange component", () => {
         <FormatShortNumberRange
           valueFrom={"123"}
           valueUpto={"123426"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -26,7 +26,7 @@ describe("FormatShortNumberRange component", () => {
         <FormatShortNumberRange
           valueFrom={"123456"}
           valueUpto={"3234260"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -40,7 +40,7 @@ describe("FormatShortNumberRange component", () => {
         <FormatShortNumberRange
           valueFrom={"123"}
           valueUpto={"123426"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),
@@ -53,7 +53,7 @@ describe("FormatShortNumberRange component", () => {
         <FormatShortNumberRange
           valueFrom={"123456"}
           valueUpto={"3234260"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),

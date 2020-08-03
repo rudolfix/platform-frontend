@@ -4,7 +4,6 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/typescript",
@@ -19,11 +18,13 @@ module.exports = {
   rules: {
     // turn off some recommended options that don't align with our styleguide
     "require-yield": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
 
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "as-needed"],
     complexity: ["error", { max: 10 }],
     "no-await-in-loop": "error",
     "no-console": "error",
@@ -50,11 +51,16 @@ module.exports = {
     "no-return-await": "error",
     "no-script-url": "error",
     "no-self-compare": "error",
+    "no-shadow": "error",
     "no-sequences": "error",
     "no-unmodified-loop-condition": "error",
     "no-useless-call": "error",
     "no-useless-concat": "error",
     "no-void": "error",
+    "prefer-arrow-callback": [
+      "error",
+      { allowNamedFunctions: true, allowUnboundThis: false }
+    ],
     "prefer-promise-reject-errors": "error",
     "prefer-regex-literals": "error",
     radix: "error",
@@ -87,6 +93,16 @@ module.exports = {
     "@typescript-eslint/no-dupe-class-members": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        caughtErrors: "all",
+        args: "all",
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_"
+      }
+    ],
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-magic-numbers": [
       "error",
@@ -96,6 +112,12 @@ module.exports = {
         ignoreEnums: true,
         ignoreNumericLiteralTypes: true,
         ignoreReadonlyClassProperties: true
+      }
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false
       }
     ],
 
@@ -115,19 +137,27 @@ module.exports = {
         }
       }
     ],
-    "import/no-useless-path-segments": "error",
+    "import/export": "error",
     "import/first": "error",
-    "import/no-duplicates": "error",
     "import/newline-after-import": "error",
+    "import/no-absolute-path": "error",
+    "import/no-default-export": "error",
+    "import/no-duplicates": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-mutable-exports": "error",
     "import/no-named-default": "error",
-    "import/no-default-export": "error"
+    "import/no-nodejs-modules": "error",
+    "import/no-unassigned-import": "error",
+    "import/no-unused-modules": "error",
+    "import/no-useless-path-segments": "error"
   },
   overrides: [
     {
       files: ["**/*.stories.*", "**/*.spec.*", "**/e2e/**"],
       rules: {
         "@typescript-eslint/no-magic-numbers": "off",
-        "@typescript-eslint/unbound-method": "off"
+        "@typescript-eslint/unbound-method": "off",
+        "import/no-nodejs-modules": "off"
       }
     }
   ]

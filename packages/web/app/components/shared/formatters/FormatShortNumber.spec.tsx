@@ -1,10 +1,10 @@
+import { EAbbreviatedNumberOutputFormat, ENumberInputFormat } from "@neufund/shared-utils";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { FormatShortNumber } from "./FormatShortNumber";
-import { EAbbreviatedNumberOutputFormat, ENumberInputFormat } from "./utils";
 
 describe("FormatShortNumber component LONG", () => {
   it("should render number in LONG abbreviated form", () => {
@@ -12,7 +12,7 @@ describe("FormatShortNumber component LONG", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"123"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -25,7 +25,7 @@ describe("FormatShortNumber component LONG", () => {
         <FormatShortNumber
           value={"123.136"}
           decimalPlaces={2}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -37,7 +37,7 @@ describe("FormatShortNumber component LONG", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"123.18"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -49,7 +49,7 @@ describe("FormatShortNumber component LONG", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"12345"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -61,7 +61,7 @@ describe("FormatShortNumber component LONG", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"12354"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -73,7 +73,7 @@ describe("FormatShortNumber component LONG", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"12345678"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
         />,
       ),
@@ -88,7 +88,7 @@ describe("FormatShortNumber component SHORT", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"123"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),
@@ -100,7 +100,7 @@ describe("FormatShortNumber component SHORT", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"12345"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),
@@ -113,7 +113,7 @@ describe("FormatShortNumber component SHORT", () => {
         <FormatShortNumber
           value={"12354"}
           decimalPlaces={2}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),
@@ -125,7 +125,7 @@ describe("FormatShortNumber component SHORT", () => {
       wrapWithIntl(
         <FormatShortNumber
           value={"12345678"}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         />,
       ),

@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { YupTS } from "@neufund/shared-modules";
 
 export type TClaimAdditionalData = {
   etoId: string;

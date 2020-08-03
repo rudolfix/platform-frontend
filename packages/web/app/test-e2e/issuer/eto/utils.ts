@@ -1,4 +1,5 @@
-import { formatThousands } from "../../../components/shared/formatters/utils";
+import { formatThousands } from "@neufund/shared-utils";
+
 import { getJwtToken } from "../../utils";
 import { fillForm } from "../../utils/forms";
 import { confirmAccessModal, tid } from "../../utils/index";
@@ -148,6 +149,9 @@ export const pushEtoDataToAPI = () => {
           ipfs_hash: "QmWSaSKGjYEgt6nrQjpXKzLUFV4Fp9W7HEwTsdxN8vAYyV",
           mime_type: "application/pdf",
           name: "example.pdf",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
       },
       enable_transfer_on_success: true,
@@ -284,6 +288,9 @@ export const pushEtoDataToAPI = () => {
           local_override: false,
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           name: "company_token_holder_agreement_en_SECURITY",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
         investment_memorandum_template: {
           document_type: "investment_memorandum_template",
@@ -292,6 +299,9 @@ export const pushEtoDataToAPI = () => {
           local_override: false,
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           name: "investment_memorandum_template_en",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
         investment_summary_template: {
           document_type: "investment_summary_template",
@@ -300,6 +310,9 @@ export const pushEtoDataToAPI = () => {
           local_override: false,
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           name: "investment_summary_template_en",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
         reservation_and_acquisition_agreement: {
           document_type: "reservation_and_acquisition_agreement",
@@ -308,6 +321,9 @@ export const pushEtoDataToAPI = () => {
           local_override: false,
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           name: "reservation_and_acquisition_agreement_en",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
         termsheet_template: {
           document_type: "termsheet_template",
@@ -316,6 +332,9 @@ export const pushEtoDataToAPI = () => {
           local_override: false,
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           name: "termsheet_template_en",
+          size: 0,
+          owner: "0x0000000000000000000000000000000000000000",
+          created_at: "2017-07-21T17:32:28Z",
         },
       },
       token_tradeable_on_success: false,

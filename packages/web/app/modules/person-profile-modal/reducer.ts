@@ -1,6 +1,6 @@
+import { TSocialChannelsType } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 
-import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
 
 export interface IPersonProfileModalState {

@@ -1,9 +1,18 @@
-import { EKycRequestStatus, EUserType, EWalletType } from "@neufund/shared-modules";
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
+import {
+  EETOStateOnChain,
+  EKycRequestStatus,
+  EUserType,
+  EWalletType,
+} from "@neufund/shared-modules";
+import {
+  convertFromUlps,
+  DeepPartial,
+  ETH_DECIMALS,
+  toEquityTokenSymbol,
+} from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { CombinedState } from "redux";
 
 import {
   dummyEthereumAddress,
@@ -12,7 +21,6 @@ import {
   testEto,
 } from "../../../../../test/fixtures";
 import { ETxType } from "../../../../lib/web3/types";
-import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
@@ -48,9 +56,9 @@ const withdrawTxSenderState = {
   additionalData: {
     to: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
     amount: "5500000000000000000",
-    amountEur: "5500000000000000000",
+    amountEur: convertFromUlps("5500000000000000000").toString(),
     total: "313131232312331212",
-    totalEur: "313131232312331212",
+    totalEur: convertFromUlps("313131232312331212").toString(),
     tokenSymbol: toEquityTokenSymbol("QTT"),
     tokenImage: tokenIcon,
     tokenDecimals: 18,
@@ -77,7 +85,7 @@ const investmentTxSenderState = {
     },
     investmentType: EInvestmentType.NEur,
     investmentEth: "12345678900000000000",
-    investmentEur: "12345678900000000000000",
+    investmentEur: convertFromUlps("12345678900000000000000").toString(),
     gasCostEth: "2000000000000000",
     equityTokens: "500",
     estimatedReward: "40000000000000000000",
@@ -207,14 +215,14 @@ const baseStore = {
     },
     tokenGeneralDiscounts: {
       [testEto.etoId]: {
-        whitelistDiscountFrac: 0.35,
-        whitelistDiscountUlps: "296633323000000000",
+        whitelistDiscount: "0.35",
+        discountedTokenPrice: convertFromUlps("296633323000000000").toString(),
         publicDiscountFrac: 0.25,
         publicDiscountUlps: "339009512000000000",
       },
     },
   },
-  bookBuildingFlow: {
+  bookbuilding: {
     pledges: {},
   },
   investmentFlow: {
@@ -230,12 +238,12 @@ const baseStore = {
       priceOutdated: false,
     },
   },
-  investorTickets: {
+  investorPortfolio: {
     calculatedContributions: {},
     initialCalculatedContributions: {},
     investorEtoTickets: {
       [testEto.etoId]: {
-        equivEurUlps: "123243425",
+        equivEur: convertFromUlps("123243425").toString(),
       },
     },
     tokensDisbursal: { loading: false, error: false },
@@ -243,9 +251,9 @@ const baseStore = {
     tokensPersonalDiscounts: {
       [testEto.etoId]: {
         whitelistDiscountAmountLeft: "-1.043240344598e+23",
-        whitelistDiscountUlps: "2301837474738",
-        whitelistDiscountFrac: 0.5,
-        whitelistDiscountAmountEurUlps: "2301837",
+        discountedTokenPrice: convertFromUlps("2301837474738").toString(),
+        whitelistDiscount: 0.5,
+        whitelistDiscountAmountEur: convertFromUlps("2301837").toString(),
       },
     },
   },
@@ -365,7 +373,7 @@ storiesOf("TxSenderModal, lightWallet ETO_SET_DATE", module)
     withStore(({
       ...lightWalletStore,
       txSender: withdrawTxSenderState,
-    } as unknown) as CombinedState<unknown>),
+    } as unknown) as DeepPartial<TAppGlobalState>),
   )
   .add("ETxSenderState.WATCHING_PENDING_TXS", () => (
     <TxSenderModalComponent

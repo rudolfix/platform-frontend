@@ -4,12 +4,12 @@ module.exports = {
   settings: {
     "import/resolver": {
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"],
-      },
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+      }
     },
     react: {
-      version: "detect",
-    },
+      version: "detect"
+    }
   },
   rules: {
     /**
@@ -27,6 +27,6 @@ module.exports = {
     /**
      * Props
      */
-    "react/jsx-boolean-value": "error",
-  },
+    "react/jsx-boolean-value": "error"
+  }
 };

@@ -1,9 +1,8 @@
-import * as cn from "classnames";
+import { EJurisdiction, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
+import cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { TokenSymbolWidget } from "./TokenSymbolWidget";
 

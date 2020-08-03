@@ -1,7 +1,8 @@
 import { Dictionary } from "@neufund/shared-utils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const store: Dictionary<any> = {};
+type TCredentials = { password: string; name: string };
+
+const store: Dictionary<TCredentials> = {};
 
 const ACCESS_CONTROL = {
   BIOMETRY_CURRENT_SET: "BIOMETRY_CURRENT_SET",
@@ -30,7 +31,7 @@ async function resetInternetCredentials(server: string) {
   return Promise.resolve(null);
 }
 
-async function getInternetCredentials(server: string) {
+async function getInternetCredentials(server: string): Promise<TCredentials | null> {
   const result = store[server] ? store[server] : null;
   return Promise.resolve(result);
 }

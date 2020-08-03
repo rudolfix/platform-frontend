@@ -1,13 +1,12 @@
+import { ILogger } from "@neufund/shared-modules";
 import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared-utils";
-import { Web3Manager } from "@neufund/web/app/lib/web3/Web3Manager/Web3Manager";
 import { IConnector, ISessionStatus } from "@walletconnect/types";
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";
-import * as Web3 from "web3";
-import * as Web3ProviderEngine from "web3-provider-engine";
+import Web3 from "web3";
+import Web3ProviderEngine from "web3-provider-engine";
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
-import { ILogger } from "../../../../../shared-modules/dist/modules/core/lib/logger/ILogger";
 import { WC_DEFAULT_SESSION_REQUEST_TIMEOUT } from "../../../config/constants";
 import { symbols } from "../../../di/symbols";
 import { NullBlockTracker } from "../../api/nullBlockTracker";
@@ -15,6 +14,7 @@ import { WalletError } from "../errors";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
+import { Web3Manager } from "../Web3Manager/Web3Manager";
 import { WalletConnectSubprovider } from "./WalletConnectSubprovider";
 import {
   WalletConnectChainIdError,

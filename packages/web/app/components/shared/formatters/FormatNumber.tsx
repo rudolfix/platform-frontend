@@ -1,14 +1,14 @@
-import * as cn from "classnames";
-import * as React from "react";
-
-import { TBigNumberVariants } from "../../../lib/web3/types";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   formatNumber,
   THumanReadableFormat,
-} from "./utils";
+} from "@neufund/shared-utils";
+import cn from "classnames";
+import * as React from "react";
+
+import { TBigNumberVariants } from "../../../lib/web3/types";
 
 import * as styles from "./FormatNumber.module.scss";
 

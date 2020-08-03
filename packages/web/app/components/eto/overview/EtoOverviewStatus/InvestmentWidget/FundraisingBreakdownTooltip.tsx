@@ -1,12 +1,7 @@
+import { Eth, EurToken } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { Tooltip } from "../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
@@ -25,19 +20,9 @@ const FundraisingBreakdownTooltip: React.FunctionComponent<TExternalProps &
       <>
         <FormattedMessage id="shared-component.eto-overview.fundraising-breakdown" />
         <br />
-        <Money
-          value={euroTokenBalance}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          valueType={ECurrency.EUR_TOKEN}
-        />
+        <EurToken value={euroTokenBalance} />
         <br />
-        <Money
-          value={etherTokenBalance}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          valueType={ECurrency.ETH}
-        />
+        <Eth value={etherTokenBalance} />
       </>
     }
     {...props}

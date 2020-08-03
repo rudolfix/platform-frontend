@@ -1,4 +1,4 @@
-import { ILogger } from "@neufund/shared-modules";
+import { EEtoDocumentType, ILogger } from "@neufund/shared-modules";
 import { Dictionary } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 import defaultTo from "lodash/defaultTo";
@@ -6,7 +6,6 @@ import mapValues from "lodash/mapValues";
 import { array, lazy, object } from "yup"; // for only what you need
 
 import { symbols } from "../../di/symbols";
-import { EEtoDocumentType } from "../api/eto/EtoFileApi.interfaces";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 

@@ -1,7 +1,7 @@
 import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 
 import {

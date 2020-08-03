@@ -11,8 +11,9 @@ import { YellowBox } from "react-native";
 /**
  * Clears the AsyncStorage
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
 (global as any).clearStorage = () => {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   AsyncStorage.clear()
     .then(() => console.log("AsyncStorage cleared"))
     // catch the error and forward to warning to not break the app completely
@@ -20,4 +21,6 @@ import { YellowBox } from "react-native";
 };
 
 // List of annoying warnings that we're ignoring
-YellowBox.ignoreWarnings(["Remote debugger is in a background tab", "Setting a timer"]);
+YellowBox.ignoreWarnings([
+  "Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).",
+]);

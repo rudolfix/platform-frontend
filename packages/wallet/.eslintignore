@@ -1,4 +1,4 @@
-node_modules
+.eslintrc.js
 android
 ios
 app/lib/contracts
@@ -8,6 +8,3 @@ metro.config.js
 react-native.config.js
 scripts
 /storybook/storyLoader.js
-
-// TODO: Remove when eslint gets support for typescript `import type { ... } from '...'`
-app/modules/auth/module.ts

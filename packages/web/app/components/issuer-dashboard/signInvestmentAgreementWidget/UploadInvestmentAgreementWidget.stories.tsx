@@ -1,8 +1,8 @@
+import { EEtoDocumentType, TEtoFormType } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoDocumentType, TEtoFormType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import {
   EtoCompletedWidgetLayout,
   UploadInvestmentAgreementLayout,

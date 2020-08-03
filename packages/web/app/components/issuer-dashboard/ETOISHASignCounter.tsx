@@ -1,18 +1,20 @@
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  IEtoDocument,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import { Moment } from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderNothing } from "recompose";
 
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsIssuer } from "../../modules/auth/selectors";
 import {
   selectIssuerEtoNextStateStartDate,
   selectUploadedInvestmentAgreement,
 } from "../../modules/eto-flow/selectors";
-import { selectEtoOnChainState } from "../../modules/eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { isOnChain } from "../../modules/eto/utils";
 import { appConnect, TAppGlobalState } from "../../store";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
 import { IPanelProps } from "../shared/Panel";
@@ -56,12 +58,14 @@ const ETOISHASignCounter = compose<TProps, IExternalProps & IPanelProps>(
     stateToProps: (state: TAppGlobalState, ownProps: IExternalProps) => {
       const isIssuer = selectIsIssuer(state);
 
-      if (!isIssuer || !isOnChain(ownProps.eto)) {
+      if (!isIssuer || !etoModuleApi.utils.isOnChain(ownProps.eto)) {
         return null;
       }
 
       return {
-        stateOnChain: nonNullable(selectEtoOnChainState(state, ownProps.eto.previewCode)),
+        stateOnChain: nonNullable(
+          etoModuleApi.selectors.selectEtoOnChainState(state, ownProps.eto.previewCode),
+        ),
         uploadedAgreement: selectUploadedInvestmentAgreement(state),
         countdownDate: selectIssuerEtoNextStateStartDate(state),
       };

@@ -5,11 +5,13 @@ import { providers, Signer } from "ethers";
 import { IERC20Token } from "lib/contracts/IERC20Token";
 import { IERC20TokenFactory } from "lib/contracts/IERC20TokenFactory";
 
+import { converters } from "./utils";
+
 class ERC20TokenAdapterFactory {
   static connect(
     address: string,
     signerOrProvider: Signer | providers.Provider,
-  ): ERC20TokenAdapter {
+  ): IERC20TokenAdapter {
     return new ERC20TokenAdapter(IERC20TokenFactory.connect(address, signerOrProvider));
   }
 }
@@ -25,8 +27,7 @@ class ERC20TokenAdapter implements IERC20TokenAdapter {
   }
 
   async balanceOf(address: string): Promise<BigNumber> {
-    const result = await this.tokenContract.balanceOf(address);
-    return new BigNumber(result.toString());
+    return this.tokenContract.balanceOf(address).then(converters.bneToBn);
   }
 }
 

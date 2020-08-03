@@ -24,4 +24,4 @@ const walletConnectModuleApi = {
   },
 };
 
-export { MODULE_ID, setupWalletConnectModule, walletConnectModuleApi };
+export { setupWalletConnectModule, walletConnectModuleApi };

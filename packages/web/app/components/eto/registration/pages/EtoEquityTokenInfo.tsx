@@ -1,14 +1,15 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  EEtoFormTypes,
+  EtoEquityTokenInfoType,
+  etoFormIsReadonly,
+  TPartialEtoSpecData,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoEquityTokenInfoType,
-  TPartialEtoSpecData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerEto,
@@ -16,7 +17,6 @@ import {
   selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { FormField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";

@@ -2,7 +2,7 @@ import { AppReducer } from "@neufund/sagas";
 import { DeepReadonly } from "@neufund/shared-utils";
 
 import { IUser } from "../lib/users/interfaces";
-import { userActions } from "./actions";
+import { userActions, userPrivateActions } from "./actions";
 
 export interface IUserState {
   data: IUser | undefined;
@@ -22,7 +22,7 @@ const userReducer: AppReducer<IUserState, typeof userActions> = (
         ...state,
         data: action.payload.user,
       };
-    case userActions.reset.getType():
+    case userPrivateActions.reset.getType():
       return authInitialState;
     default:
       return state;

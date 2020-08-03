@@ -1,11 +1,11 @@
 import { fork, put, select } from "@neufund/sagas";
+import { investorPortfolioModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
-import { selectMyInvestorTicketByEtoId } from "../../../investor-portfolio/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
@@ -44,7 +44,7 @@ function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
   const etoData = yield select((state: TAppGlobalState) =>
-    selectMyInvestorTicketByEtoId(state, etoId),
+    investorPortfolioModuleApi.selectors.selectMyInvestorTicketByEtoId(state, etoId),
   );
   const costUlps = yield select(selectTxGasCostEthUlps);
   const tokenDecimals = 0;

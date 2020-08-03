@@ -1,5 +1,5 @@
 import { useFieldMeta } from "@neufund/design-system";
-import * as cn from "classnames";
+import cn from "classnames";
 import { FastField, FieldProps, FieldValidator } from "formik";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";

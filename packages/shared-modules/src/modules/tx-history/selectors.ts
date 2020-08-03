@@ -27,6 +27,7 @@ export const selectTXById = (id: string, state: TTxHistoryModuleState) => {
   return undefined;
 };
 
+// todo move this to sagas
 export const selectTxByOrder = createSelector(
   selectTxHistoryState,
   ({ transactionsOrder, transactionsByHash }) => {

@@ -1,12 +1,7 @@
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
+
 import { IEquityToken } from "../../../../../lib/contracts/IEquityToken";
 import { IETOCommitment } from "../../../../../lib/contracts/IETOCommitment";
-import * as YupTS from "../../../../../lib/yup-ts.unsafe";
-
-export enum EAgreementType {
-  RAAA = "raaa",
-  THA = "tha",
-  ISHA = "isha",
-}
 
 export interface IAgreementContractAndHash {
   contract: IEquityToken | IETOCommitment;
@@ -18,4 +13,4 @@ export const TokenAgreementContractSchema = YupTS.object({
   currentAgreementHash: YupTS.string(),
 });
 
-export type TokenAgreementContractSchema = YupTS.TypeOf<typeof TokenAgreementContractSchema>;
+export type TokenAgreementContractSchema = TypeOfYTS<typeof TokenAgreementContractSchema>;

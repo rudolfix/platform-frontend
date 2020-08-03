@@ -1,9 +1,9 @@
+import { TETOWithTokenData } from "@neufund/shared-modules";
 import { convertToUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { TETOWithTokenData } from "../../../modules/investor-portfolio/types";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import {
   PortfolioStatsErrorLayout,
@@ -20,8 +20,9 @@ const myAssets = ([
     equityTokenName: "Storybook",
     equityTokenSymbol: "STR",
     tokenData: {
-      balance: "100",
-      tokenPrice: convertToUlps("0.20"),
+      balanceUlps: "100",
+      balanceDecimals: "0",
+      tokenPrice: "0.20",
     },
   },
   {
@@ -29,8 +30,9 @@ const myAssets = ([
     equityTokenName: "React",
     equityTokenSymbol: "RCT",
     tokenData: {
-      balance: "28",
-      tokenPrice: convertToUlps("3.14"),
+      balanceUlps: "28",
+      balanceDecimals: "0",
+      tokenPrice: "3.14",
     },
   },
   {
@@ -38,8 +40,9 @@ const myAssets = ([
     equityTokenName: "Number 3",
     equityTokenSymbol: "NO3",
     tokenData: {
-      balance: "120",
-      tokenPrice: convertToUlps("4.20"),
+      balanceUlps: "120",
+      balanceDecimals: "0",
+      tokenPrice: "4.20",
     },
   },
 ] as unknown) as TETOWithTokenData[];
@@ -59,10 +62,10 @@ const moreAssets = ([
 
 storiesOf("NDS|Molecules/Dashboard/PortfolioStats", module)
   .add("default", () => (
-    <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={convertToUlps("100")}>
+    <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={"100"}>
       <PortfolioStatsLayout
-        isVerifiedInvestor={true}
-        myAssetsEurEquivTotal={convertToUlps("1234")}
+        isVerifiedInvestor
+        myAssetsEurEquivTotal={"1234"}
         myAssets={myAssets}
         goToPortfolio={action("GO_TO_PORTFOLIO")}
         goToProfile={action("GO_TO_PROFILE")}
@@ -70,10 +73,10 @@ storiesOf("NDS|Molecules/Dashboard/PortfolioStats", module)
     </PortfolioStatsLayoutContainer>
   ))
   .add("more than 3", () => (
-    <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={convertToUlps("100")}>
+    <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={"100"}>
       <PortfolioStatsLayout
-        isVerifiedInvestor={true}
-        myAssetsEurEquivTotal={convertToUlps("1234")}
+        isVerifiedInvestor
+        myAssetsEurEquivTotal={"1234"}
         myAssets={moreAssets}
         goToPortfolio={action("GO_TO_PORTFOLIO")}
         goToProfile={action("GO_TO_PROFILE")}

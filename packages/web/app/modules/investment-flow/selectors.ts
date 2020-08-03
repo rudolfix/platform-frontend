@@ -10,8 +10,7 @@ import { EInvestmentType } from "./reducer";
 export const selectInvestmentEthValueUlps = (state: TAppGlobalState) =>
   state.investmentFlow.ethValueUlps;
 
-export const selectInvestmentEurValueUlps = (state: TAppGlobalState) =>
-  state.investmentFlow.euroValueUlps;
+export const selectInvestmentEurValue = (state: TAppGlobalState) => state.investmentFlow.euroValue;
 
 export const selectInvestmentErrorState = (state: TAppGlobalState) =>
   state.investmentFlow.errorState;

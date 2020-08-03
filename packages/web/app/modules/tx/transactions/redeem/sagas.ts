@@ -14,8 +14,8 @@ import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { EBankTransferType } from "../../../bank-transfer-flow/reducer";
 import {
-  selectBankFeeUlps,
   selectIsBankAccountVerified,
+  selectRedeemFee,
 } from "../../../bank-transfer-flow/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
@@ -73,7 +73,7 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     throw new Error("During redeem process user should have bank account");
   }
 
-  const bankFee: string = yield select(selectBankFeeUlps);
+  const bankFee: string = yield select(selectRedeemFee);
   const tokenDecimals = EURO_DECIMALS;
 
   const additionalDetails = {

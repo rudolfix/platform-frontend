@@ -1,11 +1,10 @@
+import { EEtoState, EOfferingDocumentType } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../test/fixtures";
 import { mockedStore } from "../../../test/fixtures/mockedStore";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
 import { EtoDashboardLayout } from "./EtoDashboard";
 import { EEtoStep } from "./utils";

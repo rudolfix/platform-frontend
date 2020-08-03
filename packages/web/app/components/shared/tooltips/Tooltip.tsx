@@ -1,6 +1,6 @@
 import { InlineIcon } from "@neufund/design-system";
 import { makeTid } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../../types";

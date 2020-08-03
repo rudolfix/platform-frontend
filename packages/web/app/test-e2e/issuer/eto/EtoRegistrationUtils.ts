@@ -1,9 +1,9 @@
+import { TPartialCompanyEtoData } from "@neufund/shared-modules";
 import { createUser } from "@neufund/shared-modules/tests";
 import { toCamelCase, toSnakeCase, withParams } from "@neufund/shared-utils";
 import { isFunction } from "lodash/fp";
 
 import { etoRegisterRoutes } from "../../../components/eto/registration/routes";
-import { TPartialCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { confirmAccessModal } from "../../utils";
 import { assertIssuerDashboard } from "../../utils/assertions";
 import { cyPromise } from "../../utils/cyPromise";

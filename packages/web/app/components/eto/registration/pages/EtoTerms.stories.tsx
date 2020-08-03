@@ -1,10 +1,9 @@
-import { noopLogger } from "@neufund/shared-modules";
+import { noopLogger, TEtoProducts } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto, testProduct } from "../../../../../test/fixtures";
-import { TEtoProducts } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { Panel } from "../../../shared/Panel";
 import { EtoRegistrationTermsLayout } from "./EtoTerms";
 

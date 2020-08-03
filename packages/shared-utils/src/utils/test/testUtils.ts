@@ -14,13 +14,14 @@ export interface IMockFns<T> {
   reMock: (newMock: Partial<T>) => void;
 }
 
+export const callGuard = (methodName: string) => (...args: any[]) => {
+  throw new Error(`Unexpected call to method: '${methodName}' with args: ${args}`);
+};
+
 export function createMock<T>(
   clazz: new (...args: any[]) => T,
   mockImpl: Partial<T>,
 ): T & IMockFns<T> {
-  const callGuard = (methodName: string) => (...args: any[]) => {
-    throw new Error(`Unexpected call to method: '${methodName}' with args: ${args}`);
-  };
   // @todo: createMock can wrap whole object in proxy and prevent any access to not defined props
 
   const methods = clazz.prototype;

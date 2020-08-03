@@ -1,5 +1,5 @@
 import { EKycRequestStatus, kycApi } from "@neufund/shared-modules";
-import { DataUnavailableError, nonNullable, withContainer } from "@neufund/shared-utils";
+import { DataUnavailableError, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, withProps } from "recompose";
@@ -11,6 +11,7 @@ import {
 import { selectWalletType } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { PanelRounded } from "../../shared/Panel";
 import { OnboardingKycPending } from "./OnboardingKycPending";
 import { OnboardingStep } from "./OnboardingStep";

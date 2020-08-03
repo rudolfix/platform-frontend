@@ -1,34 +1,14 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { FormikConsumer } from "formik";
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
-import { branch, renderNothing, setDisplayName } from "recompose";
-import { compose } from "redux";
-
-import {
-  EtoInvestmentTermsType,
-  TEtoSpecsData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import {
   calcCapFraction,
   calcInvestmentAmount,
   calcNumberOfTokens,
   calcShareAndTokenPrice,
-} from "../../../../lib/api/eto/EtoUtils";
-import { TBigNumberVariants } from "../../../../lib/web3/types";
-import { actions } from "../../../../modules/actions";
-import {
-  selectIssuerEto,
-  selectIssuerEtoLoading,
-  selectIssuerEtoSaving,
-  selectIssuerEtoState,
-} from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
-import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
-import { appConnect } from "../../../../store";
-import { TTranslatedString } from "../../../../types";
+  EEtoFormTypes,
+  etoFormIsReadonly,
+  EtoInvestmentTermsType,
+  TEtoSpecsData,
+} from "@neufund/shared-modules";
 import {
   ECurrency,
   ENumberFormat,
@@ -40,7 +20,25 @@ import {
   selectUnits,
   THumanReadableFormat,
   TValueFormat,
-} from "../../../shared/formatters/utils";
+} from "@neufund/shared-utils";
+import { FormikConsumer } from "formik";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
+import { branch, renderNothing, setDisplayName } from "recompose";
+import { compose } from "redux";
+
+import { TBigNumberVariants } from "../../../../lib/web3/types";
+import { actions } from "../../../../modules/actions";
+import {
+  selectIssuerEto,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
+  selectIssuerEtoState,
+} from "../../../../modules/eto-flow/selectors";
+import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
+import { appConnect } from "../../../../store";
+import { TTranslatedString } from "../../../../types";
 import { FormField, FormHighlightGroup, FormMaskedNumberInput, Input } from "../../../shared/forms";
 import {
   convert,
@@ -96,7 +94,7 @@ const CalculatorField: React.FunctionComponent<ICalculatorField> = ({
     name={name}
     value={formatNumber({
       value,
-      inputFormat: ENumberInputFormat.FLOAT,
+      inputFormat: ENumberInputFormat.DECIMAL,
       outputFormat: outputFormat,
       decimalPlaces: selectDecimalPlaces(valueType, outputFormat),
     })}
@@ -287,7 +285,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
     <Section>
       <FormMaskedNumberInput
         name="preMoneyValuationEur"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
         valueType={ECurrency.EUR}
         showUnits={true}
@@ -298,7 +296,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="existingShareCapital"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
         placeholder="Amount of share capital"
@@ -313,7 +311,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="newShareNominalValue"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
         valueType={ECurrency.EUR}
         showUnits={false}
@@ -323,7 +321,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="newShareNominalValueEur"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
         valueType={ECurrency.EUR}
         showUnits={true}
@@ -333,7 +331,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="authorizedCapital"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
         placeholder="Amount of share capital"
@@ -341,7 +339,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="minimumNewSharesToIssue"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
@@ -351,7 +349,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="newSharesToIssue"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
@@ -362,7 +360,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       {process.env.NF_SHOW_PUBLIC_DISCOUNT_FRACTION === "1" && (
         <FormMaskedNumberInput
           name="publicDiscountFraction"
-          storageFormat={ENumberInputFormat.FLOAT}
+          storageFormat={ENumberInputFormat.DECIMAL}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           showUnits={true}
           valueType={ENumberFormat.PERCENTAGE}
@@ -373,7 +371,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       )}
       <FormMaskedNumberInput
         name="newSharesToIssueInWhitelist"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />
@@ -383,7 +381,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="whitelistDiscountFraction"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         showUnits={true}
         valueType={ENumberFormat.PERCENTAGE}
@@ -393,7 +391,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="newSharesToIssueInFixedSlots"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-to-be-issued-in-fixed-slots" />
@@ -403,7 +401,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
       />
       <FormMaskedNumberInput
         name="fixedSlotsMaximumDiscountFraction"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         showUnits={true}
         valueType={ENumberFormat.PERCENTAGE}

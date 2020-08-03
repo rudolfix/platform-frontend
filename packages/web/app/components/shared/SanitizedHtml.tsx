@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as sanitizeHtml from "sanitize-html";
+import sanitizeHtml from "sanitize-html";
 
 import { CommonHtmlProps } from "../../types";
 

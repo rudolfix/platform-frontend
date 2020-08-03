@@ -1,7 +1,7 @@
-import { ContainerContext } from "@neufund/shared-utils";
 import { Container } from "inversify";
 import * as React from "react";
 
+import { ContainerContext } from "../../components/shared/InversifyProvider";
 import { symbols } from "../../di/symbols";
 import { appConnect, AppGlobalDispatch } from "../../store";
 import {

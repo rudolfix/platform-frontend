@@ -2,27 +2,29 @@
   "name": "@neufund/eslint-config",
   "version": "1.0.0",
   "description": "Shared ESLint config",
-  "main": "index.js",
+  "main": "base.js",
   "license": "MIT",
   "private": true,
   "scripts": {
+    "lint": "echo Nothing to lint",
+    "lint:fix": "echo Nothing to lint:fix",
     "prepare": "echo Nothing to prepare"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.20.2",
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-react-native-a11y": "^2.0.0",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5",
     "eslint-plugin-react-native": "^3.8.1"
   },
   "peerDependencies": {
-    "eslint": ">=6"
+    "eslint": ">=7"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.3.1"
   }
 }

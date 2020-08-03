@@ -1,7 +1,7 @@
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { convertFromUlps, ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
@@ -34,7 +34,7 @@ const props = {
     },
     investmentType: EInvestmentType.NEur,
     investmentEth: "12345678900000000000",
-    investmentEur: "12345678900000000000000",
+    investmentEur: convertFromUlps("12345678900000000000000").toString(),
     gasCostEth: "2000000000000000",
     equityTokens: "500",
     estimatedReward: "40000000000000000000",

@@ -1,5 +1,4 @@
 import { EUserType } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -12,6 +11,7 @@ import { onEnterAction } from "../../utils/react-connected-components/OnEnterAct
 import { Layout } from "../layouts/Layout";
 import { CheckYourICBMWalletWidget } from "../settings/icbm-wallet-widget/CheckYourICBMWalletWidget";
 import { DashboardHeading } from "../shared/DashboardHeading";
+import { withContainer } from "../shared/hocs/withContainer";
 
 interface IStateProps {
   userType?: EUserType;

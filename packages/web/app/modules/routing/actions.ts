@@ -1,3 +1,4 @@
+import { EJurisdiction } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 import { goBack, push, replace } from "connected-react-router";
 import { LocationDescriptorObject, Path } from "history";
@@ -6,7 +7,6 @@ import { appRoutes } from "../../components/appRoutes";
 import { etoPublicViewByIdLink, etoPublicViewLink } from "../../components/appRouteUtils";
 import { kycRoutes } from "../../components/kyc/routes";
 import { profileRoutes } from "../../components/settings/routes";
-import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TLoginRouterState } from "./types";
 
 export const routingActions = {

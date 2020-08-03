@@ -1,18 +1,36 @@
-import { Platform, StyleSheet } from "react-native";
+import { nonNullable } from "@neufund/shared-utils";
+import { StyleSheet } from "react-native";
 
-const fonts = Platform.select({
-  default: {
-    robotoRegular: {
-      fontFamily: "Roboto-Regular",
-    },
-    robotoMedium: {
-      fontFamily: "Roboto-Medium",
-    },
-    montserratSemiBold: {
-      fontFamily: "Montserrat-SemiBold",
-    },
+import { EPlatform, Platform } from "utils/Platform";
+
+const customFonts = {
+  robotoRegular: {
+    fontFamily: "Roboto-Regular",
   },
-});
+  robotoMedium: {
+    fontFamily: "Roboto-Medium",
+  },
+  montserratSemiBold: {
+    fontFamily: "Montserrat-SemiBold",
+  },
+};
+
+const fonts = nonNullable(
+  Platform.select({
+    [EPlatform.IOS]: {
+      ...customFonts,
+      systemDefaultMonospace: {
+        fontFamily: "Menlo",
+      },
+    },
+    [EPlatform.Android]: {
+      ...customFonts,
+      systemDefaultMonospace: {
+        fontFamily: "monospace",
+      },
+    },
+  }),
+);
 
 /**
  * Typography styles should match the design system typography.
@@ -80,6 +98,11 @@ const typographyStyles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 16,
     letterSpacing: 0.2,
+  },
+  code: {
+    ...fonts.systemDefaultMonospace,
+    fontSize: 14,
+    lineHeight: 24,
   },
 });
 

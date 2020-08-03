@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   NativeSyntheticEvent,
-  Platform,
   StyleSheet,
   TextInput as NativeTextInput,
   TextInputFocusEventData,
@@ -20,6 +19,8 @@ import {
 } from "styles/colors";
 import { roundness } from "styles/common";
 import { typographyStyles } from "styles/typography";
+
+import { EPlatform, Platform } from "utils/Platform";
 
 type TNativeTextInputProps = Omit<React.ComponentProps<typeof NativeTextInput>, "editable">;
 type TExternalProps = { disabled?: boolean; invalid?: boolean } & TNativeTextInputProps;
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         paddingBottom: 14,
       },
       // android adds additional line-height so padding needs to be calculated separately
-      android: {
+      [EPlatform.Android]: {
         paddingTop: 13,
         paddingBottom: 5,
       },

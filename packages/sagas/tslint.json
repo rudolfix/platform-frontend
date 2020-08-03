@@ -1,3 +1,6 @@
 {
-  "extends": ["@neufund/shared-utils/tslint.json"]
+  "extends": ["@neufund/shared-utils/tslint.json"],
+  "rules": {
+    "no-submodule-imports": [true, "lodash", "redux-saga", "redux-saga-test-plan"]
+  }
 }

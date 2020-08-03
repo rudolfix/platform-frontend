@@ -1,4 +1,5 @@
-import { findLast, floor } from "lodash";
+import { getRange } from "@neufund/shared-utils";
+import { floor } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -23,16 +24,6 @@ enum ERangeKey {
   MILLION = "million",
 }
 
-type TRangeDescriptor = {
-  divider: number;
-  key: ERangeKey;
-};
-
-const ranges: TRangeDescriptor[] = [
-  { divider: 1e3, key: ERangeKey.THOUSAND },
-  { divider: 1e6, key: ERangeKey.MILLION },
-];
-
 const translationKeys = {
   [ERangeKey.MILLION]: {
     [THumanReadableFormat.LONG]: (
@@ -51,14 +42,6 @@ const translationKeys = {
     ),
   },
 };
-
-function getRange(number: number, divider?: number): TRangeDescriptor | undefined {
-  if (divider) {
-    return ranges.find(range => range.divider === divider);
-  }
-
-  return findLast(ranges, range => number / range.divider >= 1);
-}
 
 const ToHumanReadableForm: React.FunctionComponent<TExternalProps> = ({
   number,

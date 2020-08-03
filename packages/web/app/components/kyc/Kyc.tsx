@@ -4,9 +4,8 @@ import {
   EKycRequestType,
   kycApi,
 } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
@@ -18,8 +17,9 @@ import { appRoutes } from "../appRoutes";
 import { EContentWidth } from "../layouts/Content";
 import { FullscreenProgressLayout } from "../layouts/FullscreenProgressLayout";
 import { TContentExternalProps } from "../layouts/Layout";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../shared/hocs/withContainer";
 
 const KycLayout = React.lazy(() => import("./KycLayout").then(imp => ({ default: imp.KycLayout })));
 

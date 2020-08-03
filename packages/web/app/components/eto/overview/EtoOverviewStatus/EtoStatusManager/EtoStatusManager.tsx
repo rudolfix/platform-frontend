@@ -1,19 +1,15 @@
-import { withContainer } from "@neufund/shared-utils";
-import * as React from "react";
-import { compose } from "recompose";
-
-import { selectEtoOnChainStateById } from "../../../../../modules/eto/selectors";
 import {
   EETOStateOnChain,
   EEtoSubState,
+  etoModuleApi,
+  investorPortfolioModuleApi,
   TEtoWithCompanyAndContractReadonly,
-} from "../../../../../modules/eto/types";
-import { isOnChain } from "../../../../../modules/eto/utils";
-import {
-  selectInitialMaxCapExceeded,
-  selectIsEligibleToPreEto,
-} from "../../../../../modules/investor-portfolio/selectors";
+} from "@neufund/shared-modules";
+import * as React from "react";
+import { compose } from "recompose";
+
 import { appConnect } from "../../../../../store";
+import { withContainer } from "../../../../shared/hocs/withContainer";
 import { CampaigningActivatedWidget } from "../CampaigningWidget/CampaigningActivatedWidget";
 import { ClaimWidget } from "../ClaimRefundWidget/ClaimWidget";
 import { RefundWidget } from "../ClaimRefundWidget/RefundWidget";
@@ -44,7 +40,9 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
   isEmbedded,
 }) => {
   // It's possible for contract to be undefined if eto is not on chain yet
-  const timedState = isOnChain(eto) ? eto.contract.timedState : EETOStateOnChain.Setup;
+  const timedState = etoModuleApi.utils.isOnChain(eto)
+    ? eto.contract.timedState
+    : EETOStateOnChain.Setup;
   const isEtoActive =
     (isEligibleToPreEto && timedState === EETOStateOnChain.Whitelist) ||
     timedState === EETOStateOnChain.Public;
@@ -109,7 +107,7 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
           etoId={eto.etoId}
           tokenName={eto.equityTokenName || ""}
           totalInvestors={eto.contract!.totalInvestment.totalInvestors}
-          totalEquivEurUlps={eto.contract!.totalInvestment.totalEquivEurUlps}
+          totalEquivEur={eto.contract!.totalInvestment.totalEquivEur}
           timedState={timedState}
         />
       );
@@ -127,9 +125,17 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
 export const EtoStatusManager = compose<IStateProps & IExternalProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => ({
-      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
-      isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
-      maxCapExceeded: selectInitialMaxCapExceeded(state, props.eto.etoId),
+      isEligibleToPreEto: investorPortfolioModuleApi.selectors.selectIsEligibleToPreEto(
+        state,
+        props.eto.etoId,
+      ),
+      isPreEto:
+        etoModuleApi.selectors.selectEtoOnChainStateById(state, props.eto.etoId) ===
+        EETOStateOnChain.Whitelist,
+      maxCapExceeded: investorPortfolioModuleApi.selectors.selectInitialMaxCapExceeded(
+        state,
+        props.eto.etoId,
+      ),
     }),
   }),
   withContainer(EtoStatusManagerContainer),

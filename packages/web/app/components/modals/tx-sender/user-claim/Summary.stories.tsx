@@ -1,7 +1,7 @@
+import { TETOWithInvestorTicket } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { UserClaimSummaryComponent } from "./Summary";
 
@@ -28,9 +28,9 @@ storiesOf("User Claim Summary", module)
             equityTokenInt: "100",
             amountEth: "1",
             amountEurUlps: "40",
-            equivEurUlps: "1",
+            equivEur: "1",
             rewardNmkUlps: "1",
-            sharesInt: "1",
+            shares: "1",
             tokenPrice: "1",
             neuRate: "1",
             claimedOrRefunded: true,

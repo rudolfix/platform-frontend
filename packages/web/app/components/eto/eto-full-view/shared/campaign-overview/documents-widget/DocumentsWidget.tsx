@@ -1,15 +1,15 @@
+import {
+  canShowDocument,
+  IEtoDocument,
+  ignoredTemplatesPublicView,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import { IEtoDocument } from "../../../../../../lib/api/eto/EtoFileApi.interfaces";
-import {
-  canShowDocument,
-  ignoredTemplatesPublicView,
-} from "../../../../../../lib/api/eto/EtoFileUtils";
 import { actions } from "../../../../../../modules/actions";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
 import { appConnect } from "../../../../../../store";
 import { CommonHtmlProps } from "../../../../../../types";
 import { getInvestorDocumentTitles } from "../../../../../documents/utils";

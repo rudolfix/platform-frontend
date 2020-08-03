@@ -34,7 +34,8 @@ export function* logoutUser({
   yield put(actions.web3.personalWalletDisconnected());
 
   // reset app state and restart sagas here
-  yield put(authModuleAPI.actions.reset());
+  yield* call(authModuleAPI.sagas.resetUser);
+
   yield put(actions.auth.logoutDone());
 
   logger.info("user has been logged out");

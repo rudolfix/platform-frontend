@@ -1,11 +1,5 @@
 import { EUserType } from "@neufund/shared-modules";
-import { minutesToMs, secondsToMs } from "@neufund/shared-utils";
-
-export const AUTH_JWT_TIMING_THRESHOLD = secondsToMs(10);
-
-export const AUTH_INACTIVITY_THRESHOLD =
-  process.env.NF_CYPRESS_RUN === "1" ? minutesToMs(5) : minutesToMs(10);
-export const INACTIVITY_THROTTLE_THRESHOLD = secondsToMs(5);
+import { minutesToMs } from "@neufund/shared-utils";
 
 // If running in cypress wait for a short time
 export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME =

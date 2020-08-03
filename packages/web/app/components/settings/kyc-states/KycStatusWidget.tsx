@@ -1,7 +1,7 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import { EKycInstantIdStatus, EKycRequestStatus, EKycRequestType } from "@neufund/shared-modules";
 import { InvariantError } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";

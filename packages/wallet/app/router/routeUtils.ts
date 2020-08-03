@@ -20,6 +20,7 @@ export type RootStackParamList = {
   [EAppRoutes.unlockAccount]: undefined;
   [EAppRoutes.importFixture]: undefined;
   [EAppRoutes.switchToFixture]: undefined;
+  [EAppRoutes.accountBackup]: undefined;
   [EAppRoutes.home]: undefined;
   [EAppRoutes.portfolio]: undefined;
   [EAppRoutes.wallet]: undefined;

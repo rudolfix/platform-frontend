@@ -1,27 +1,27 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  EEtoDocumentType,
+  EEtoState,
+  etoModuleApi,
+  immutableDocumentName,
+  InvalidETOStateError,
+  TEtoDocumentTemplates,
+} from "@neufund/shared-modules";
 import { nonNullable, withParams } from "@neufund/shared-utils";
 import { find } from "lodash";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EEtoDocumentType,
-  immutableDocumentName,
-  TEtoDocumentTemplates,
-} from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoWithCompanyAndContract,
 } from "../../../../modules/eto-flow/selectors";
-import { InvalidETOStateError } from "../../../../modules/eto/errors";
-import { isOnChain } from "../../../../modules/eto/utils";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TEtoSetDateAdditionalData } from "../../../../modules/tx/transactions/eto-flow/types";
 import { appConnect } from "../../../../store";
@@ -159,7 +159,7 @@ const SetEtoDateSummary = compose<IProps, {}>(
         ipfsHash: termsDoc.ipfsHash,
       });
 
-      if (!isOnChain(eto)) {
+      if (!etoModuleApi.utils.isOnChain(eto)) {
         throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
       }
 

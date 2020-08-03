@@ -1,0 +1,15 @@
+{
+  "error-boundary.main-error-message": "An error occurred",
+  "wallet.tx-list.name.eto-icbm-investment": "Invested ICBM Funds in {companyName}",
+  "wallet.tx-list.name.eto-investment": "Invested in {companyName}",
+  "wallet.tx-list.name.eto-refund": "Refunded by {companyName}",
+  "wallet.tx-list.name.eto-tokens-claim": "Claimed {currency} token",
+  "wallet.tx-list.name.neur-destroy": "{currency} Liquidated",
+  "wallet.tx-list.name.neur-purchase": "Purchased {currency}",
+  "wallet.tx-list.name.neur-redeem": "Redeemed {currency}",
+  "wallet.tx-list.name.nominee-sign-tha": "Token Holder Agreement Signed",
+  "wallet.tx-list.name.payout": "Accepted Payout from NEU",
+  "wallet.tx-list.name.redistribute-payout": "Redistributed Payout from NEU",
+  "wallet.tx-list.name.transfer.received": "Received {currency}",
+  "wallet.tx-list.name.transfer.transferred": "Sent {currency}"
+}

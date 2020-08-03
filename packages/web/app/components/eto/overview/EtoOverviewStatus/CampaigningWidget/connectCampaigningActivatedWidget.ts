@@ -1,22 +1,17 @@
+import {
+  bookbuildingModuleApi,
+  EETOStateOnChain,
+  EWhitelistingState,
+  IPledge,
+  TEtoInvestmentCalculatedValues,
+} from "@neufund/shared-modules";
 import { compose, setDisplayName, withProps } from "recompose";
 
-import { TEtoInvestmentCalculatedValues } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import {
   selectIsAuthorized,
   selectIsInvestor,
   selectIsVerifiedInvestor,
 } from "../../../../../modules/auth/selectors";
-import {
-  selectInvestorCount,
-  selectMyPledge,
-  selectPledgedAmount,
-} from "../../../../../modules/bookbuilding-flow/selectors";
-import {
-  calculateWhitelistingState,
-  EWhitelistingState,
-} from "../../../../../modules/bookbuilding-flow/utils";
-import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
 
 interface IExternalProps {
@@ -77,9 +72,9 @@ const connectCampaigningActivatedWidget = (
         isAuthorized: selectIsAuthorized(state),
         isInvestor: selectIsInvestor(state),
         isVerifiedInvestor: selectIsVerifiedInvestor(state),
-        pledgedAmount: selectPledgedAmount(state, props.etoId),
-        investorsCount: selectInvestorCount(state, props.etoId),
-        pledge: selectMyPledge(state, props.etoId),
+        pledgedAmount: bookbuildingModuleApi.selectors.selectPledgedAmount(state, props.etoId),
+        investorsCount: bookbuildingModuleApi.selectors.selectInvestorCount(state, props.etoId),
+        pledge: bookbuildingModuleApi.selectors.selectMyPledge(state, props.etoId),
       }),
     }),
     withProps<IWithProps, IStateProps & IExternalProps>(
@@ -97,7 +92,7 @@ const connectCampaigningActivatedWidget = (
           investorsCount !== undefined ? investorsLimit - investorsCount === 0 : undefined;
 
         return {
-          whitelistingState: calculateWhitelistingState({
+          whitelistingState: bookbuildingModuleApi.utils.calculateWhitelistingState({
             canEnableBookbuilding,
             whitelistingIsActive,
             bookbuildingLimitReached,

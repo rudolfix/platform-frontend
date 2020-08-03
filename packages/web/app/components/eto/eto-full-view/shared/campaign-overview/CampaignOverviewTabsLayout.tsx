@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Route } from "react-router";
+import { Route } from "react-router-dom";
 
 import { TCampaignOverviewTabsData } from "../../../../../modules/eto-view/shared/types";
 import { SwitchConnected } from "../../../../../utils/react-connected-components/connectedRouting";

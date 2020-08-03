@@ -1,13 +1,13 @@
-import * as BigNumber from "bignumber.js";
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
-import * as chaiBignumber from "chai-bignumber";
-import * as crypto from "crypto";
+import BigNumber from "bignumber.js";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+import chaiBignumber from "chai-bignumber";
+import crypto from "crypto";
 import "ignore-styles";
 import { JSDOM } from "jsdom";
-import * as fetch from "node-fetch";
+import fetch from "node-fetch";
 import "reflect-metadata";
-import * as sinonChai from "sinon-chai";
+import sinonChai from "sinon-chai";
 
 chai.config.truncateThreshold = 0;
 interface IGlobalWithWindow extends NodeJS.Global {

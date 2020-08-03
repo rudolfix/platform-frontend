@@ -1,7 +1,9 @@
-import { neuGetContainer, SagaGenerator } from "@neufund/sagas";
-import { Dictionary } from "@neufund/shared-utils";
+import { getContext, SagaGenerator } from "@neufund/sagas";
+import { Dictionary, ETHEREUM_ADDRESS_LENGTH } from "@neufund/shared-utils";
+import { Container } from "inversify";
 import { mapValues } from "lodash/fp";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
+import { randomHex } from "web3-utils";
 
 import {
   TLibSymbol,
@@ -95,6 +97,11 @@ function appConnect<
   );
 }
 
+function* neuGetContainer(): Generator<any, Container, any> {
+  const container: unknown = yield getContext("container");
+  return container as Container;
+}
+
 function* neuGetBindings<B extends Dictionary<TLibSymbol<any>>>(
   bindings: B,
 ): SagaGenerator<TSymbols<B>> {
@@ -103,4 +110,35 @@ function* neuGetBindings<B extends Dictionary<TLibSymbol<any>>>(
   return mapValues(v => container.get<TLibSymbolType<typeof v>>(v), bindings) as TSymbols<B>;
 }
 
-export { createLibSymbol, appConnect, TAppConnectOptions, generateSharedModuleId, neuGetBindings };
+export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
+
+export {
+  createLibSymbol,
+  appConnect,
+  TAppConnectOptions,
+  generateSharedModuleId,
+  neuGetBindings,
+  neuGetContainer,
+};
+
+/**
+ * Helpers for tests
+ */
+export interface ITestSettings {
+  payoutRequiredAmount?: string;
+  disableNotAcceptingEtherCheck?: boolean;
+  forceLowGas?: boolean;
+  forceStandardGas?: boolean;
+  nfISHAConfidentialityAgreementsRequirements?: string;
+  ethereum?: object;
+}
+
+let testSettings: ITestSettings;
+
+export function setTestSettings(settings: ITestSettings): void {
+  testSettings = settings;
+}
+
+export function getTestSettings(): ITestSettings {
+  return testSettings;
+}

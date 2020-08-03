@@ -1,21 +1,21 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  EEtoFormTypes,
+  EtoCompanyInformationType,
+  TPartialCompanyEtoData,
+} from "@neufund/shared-modules";
 import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoCompanyInformationType,
-  TPartialCompanyEtoData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerCompany,
   selectIssuerEtoLoading,
   selectIssuerEtoSaving,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";

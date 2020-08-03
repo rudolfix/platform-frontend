@@ -1,3 +1,4 @@
+import { UnknownObject } from "@neufund/shared-utils";
 import { render } from "@testing-library/react-native";
 import * as React from "react";
 import { Text } from "react-native";
@@ -106,7 +107,9 @@ describe("BaseAnimation", () => {
     // but for the case when we memoize children
     // we need to make sure that it's properly cleared from memory
     // to avoid dangerous memory leaks
-    expect(((instance as unknown) as BaseAnimation<{}>).state.memoizedChildren).toBeUndefined();
+    expect(
+      ((instance as unknown) as BaseAnimation<UnknownObject>).state.memoizedChildren,
+    ).toBeUndefined();
   });
 
   it("should memoize the latest active state children", () => {

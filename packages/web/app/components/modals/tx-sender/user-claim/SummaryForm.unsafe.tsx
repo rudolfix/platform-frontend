@@ -1,9 +1,9 @@
 import { Button } from "@neufund/design-system";
+import { YupTS } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { Form, FormFieldBoolean } from "../../../shared/forms";
 
 const getSummaryFormSchema = () =>

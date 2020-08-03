@@ -1,10 +1,12 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, Animated, StyleSheet } from "react-native";
+import { Animated, KeyboardAvoidingView, StyleSheet } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { baseWhite } from "styles/colors";
+
+import { isIOS } from "utils/Platform";
 
 import { EStatusBarStyle, useStatusBarStyle } from "./hooks/useStatusBarStyle";
 
@@ -17,7 +19,7 @@ type TSafeAreaScreenExternalProps = {
    * In some cases (for .e.g tab navigation screen) safe area top inset
    * should be forced manually to avoid paddingTop jumping after onLayout rerender
    */
-  forceTopInset?: boolean;
+  topInset?: boolean;
 } & TExternalCommonProps &
   React.ComponentProps<typeof Animated.ScrollView>;
 
@@ -26,9 +28,10 @@ type TSafeAreaScreenExternalProps = {
  */
 const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   children,
-  style,
-  statusBarStyle = EStatusBarStyle.WHITE,
-  forceTopInset,
+  statusBarStyle = EStatusBarStyle.INHERIT,
+  topInset,
+  bounces,
+  overScrollMode,
   ...props
 }) => {
   useStatusBarStyle(statusBarStyle);
@@ -36,17 +39,22 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   const headerHeight = useHeaderHeight();
   const insets = useSafeArea();
 
+  const scrollMode = overScrollMode ?? (bounces ? "never" : undefined);
+
   return (
-    <SafeAreaView style={styles.screen} forceInset={forceTopInset ? { top: "always" } : undefined}>
+    <SafeAreaView
+      style={styles.screen}
+      forceInset={topInset !== undefined ? { top: topInset ? "always" : "never" } : undefined}
+    >
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        contentContainerStyle={styles.flex}
+        behavior={isIOS ? "padding" : undefined}
         keyboardVerticalOffset={headerHeight + insets.top}
-        style={styles.flex}
+        style={styles.container}
       >
         <Animated.ScrollView
-          style={[styles.flex, style]}
           keyboardShouldPersistTaps="handled"
+          bounces={bounces}
+          overScrollMode={scrollMode}
           {...props}
         >
           {children}
@@ -57,14 +65,16 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
 };
 
 type TScreenExternalProps = TExternalCommonProps & React.ComponentProps<typeof Animated.ScrollView>;
+
 /**
  * A core screen component stacking together keyboard avoiding and scroll views
  */
 const Screen: React.FunctionComponent<TScreenExternalProps> = ({
   children,
-  style,
-  statusBarStyle = EStatusBarStyle.WHITE,
+  statusBarStyle = EStatusBarStyle.INHERIT,
   contentContainerStyle,
+  bounces,
+  overScrollMode,
   ...props
 }) => {
   useStatusBarStyle(statusBarStyle);
@@ -72,17 +82,20 @@ const Screen: React.FunctionComponent<TScreenExternalProps> = ({
   const headerHeight = useHeaderHeight();
   const insets = useSafeArea();
 
+  const scrollMode = overScrollMode ?? (bounces ? "never" : undefined);
+
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "position" : undefined}
-      contentContainerStyle={styles.flex}
+      behavior={isIOS ? "position" : undefined}
+      contentContainerStyle={styles.container}
       keyboardVerticalOffset={headerHeight + insets.top}
       style={styles.screen}
     >
       <Animated.ScrollView
-        style={[styles.flex, style]}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[styles.flex, contentContainerStyle]}
+        contentContainerStyle={[styles.container, contentContainerStyle]}
+        bounces={bounces}
+        overScrollMode={scrollMode}
         {...props}
       >
         {children}
@@ -96,8 +109,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: baseWhite,
   },
-  flex: {
-    flex: 1,
+  container: {
+    flexGrow: 1,
   },
 });
 

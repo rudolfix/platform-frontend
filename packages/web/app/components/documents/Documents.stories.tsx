@@ -1,13 +1,16 @@
+import {
+  EEtoState,
+  EETOStateOnChain,
+  EOfferingDocumentType,
+  ignoredTemplates,
+  nomineeIgnoredTemplates,
+} from "@neufund/shared-modules";
 import { objectToFilteredArray } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { etoDocuments, etoFilesData, etoTemplates, testEto } from "../../../test/fixtures";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { ignoredTemplates, nomineeIgnoredTemplates } from "../../lib/api/eto/EtoFileUtils";
-import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { EETOStateOnChain } from "../../modules/eto/types";
 import { DocumentsLayout } from "./issuerDocuments/DocumentsLayout";
 import { NomineeDocumentsLayout } from "./nomineeDocuments/NomineeDocumentsLayout";
 

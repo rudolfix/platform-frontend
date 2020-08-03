@@ -30,7 +30,7 @@ type TExternalProps = {
  * A formik wrapper around `FieldLayout` component
  */
 const Field: React.FunctionComponent<TExternalProps> = props => {
-  const [field, meta] = useField(props);
+  const [field, meta] = useField<string>(props);
 
   switch (props.type) {
     case EFieldType.INPUT:

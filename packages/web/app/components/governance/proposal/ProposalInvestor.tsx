@@ -1,10 +1,10 @@
+import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { shareholderResolutionsVotingViewModuleApi } from "../../../modules/shareholder-resolutions-voting-view/module";
 import {
@@ -12,7 +12,7 @@ import {
   TProposal,
 } from "../../../modules/shareholder-resolutions-voting/module";
 import { appConnect } from "../../../store";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { ProposalDetails } from "./ProposalDetails";

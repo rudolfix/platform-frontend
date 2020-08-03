@@ -3,6 +3,7 @@ import {
   TAppConnectOptions,
   TModuleSetup,
 } from "@neufund/shared-modules";
+import { UnknownObject } from "@neufund/shared-utils";
 import { InferableComponentEnhancerWithProps } from "react-redux";
 
 import { TAppGlobalActions, TAppGlobalState } from "./types";
@@ -16,9 +17,9 @@ import { TAppGlobalActions, TAppGlobalState } from "./types";
  * @param options.options.omitDispatch (defaults to true) - Will not pass `dispatch` function to child's when `options.dispatchToProps` is omitted
  */
 export function appConnect<
-  StateToProps = {},
-  DispatchToProps = {},
-  Props = {},
+  StateToProps = UnknownObject,
+  DispatchToProps = UnknownObject,
+  Props = UnknownObject,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Module extends TModuleSetup<any, any, any> | never = never
 >(

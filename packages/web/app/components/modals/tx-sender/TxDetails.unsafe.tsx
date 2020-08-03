@@ -60,6 +60,7 @@ const TxDetails: React.FunctionComponent<IProps & CommonHtmlProps> = props => {
     case ETxType.NOMINEE_THA_SIGN:
     case ETxType.NOMINEE_RAAA_SIGN:
     case ETxType.NOMINEE_ISHA_SIGN:
+    case ETxType.EXECUTE_RESOLUTION:
       return null;
     default:
       return assertNever(type);

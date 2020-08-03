@@ -1,10 +1,9 @@
-import { Button, EButtonLayout } from "@neufund/design-system";
+import { Button, EButtonLayout, Eth, Neu } from "@neufund/design-system";
+import { ECurrency } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { DocumentButton } from "../../shared/DocumentLink";
-import { Money } from "../../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";
 import { CurrencyIcon } from "../../shared/icons/CurrencyIcon";
 import { InfoList } from "../tx-sender/shared/InfoList";
@@ -80,14 +79,7 @@ export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
             <FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />
           </>
         }
-        value={
-          <Money
-            value={neumarksDue}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.NEU}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        }
+        value={<Neu value={neumarksDue} />}
       />
 
       <InfoRow
@@ -98,14 +90,7 @@ export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
             <FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />
           </>
         }
-        value={
-          <Money
-            value={etherBalance}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.ETH}
-          />
-        }
+        value={<Eth value={etherBalance} />}
       />
     </InfoList>
 

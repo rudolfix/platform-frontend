@@ -1,11 +1,7 @@
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { toFixedPrecisionGasCostEth } from "../../../../../modules/tx/user-flow/transfer/utils";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import {
   ESize,
   ETextPosition,
@@ -36,7 +32,7 @@ export const TransactionFeeWidget: React.FunctionComponent<{ cost: string; costE
       largeNumber={cost}
       value={costEur}
       currencyTotal={ECurrency.EUR}
-      inputFormat={ENumberInputFormat.FLOAT}
+      inputFormat={ENumberInputFormat.DECIMAL}
       data-test-id="modals.tx-sender.withdraw-flow.summary.cost"
       theme={ETheme.BLACK}
       size={ESize.MEDIUM}

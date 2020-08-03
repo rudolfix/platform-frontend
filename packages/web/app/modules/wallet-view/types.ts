@@ -1,7 +1,8 @@
 import { TTranslatedString } from "@neufund/design-system";
-import { TBankAccount } from "@neufund/shared-modules";
+import { TBankAccount, txHistoryApi } from "@neufund/shared-modules";
 import { ECurrency, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
+import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { EProcessState } from "../../utils/enums/processStates";
 
 export type TBasicBalanceData = {
@@ -40,6 +41,8 @@ export type TWalletViewReadyState = {
   userAddress: EthereumAddressWithChecksum;
   bankAccount: TBankAccount | undefined;
   userIsFullyVerified: boolean;
+  transactionsHistoryPaginated: ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+  pendingTransaction: TxPendingWithMetadata | null;
 };
 
 export enum EWalletViewError {

@@ -1,34 +1,24 @@
-import { Table, TokenDetails } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
+import { Eur, Neu, Table, TokenDetails } from "@neufund/design-system";
+import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithInvestorTicket,
+} from "@neufund/shared-modules";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
-import { isOnChain } from "../../modules/eto/utils";
-import {
-  selectMyPendingAssetsInvestedTotal,
-  selectMyPendingAssetsRewardTotal,
-} from "../../modules/investor-portfolio/selectors";
-import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
 import { EProjectStatusSize, ETOInvestorState } from "../shared/eto-state/ETOState";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
-import { Money } from "../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-  ERoundingMode,
-} from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { withContainer } from "../shared/hocs/withContainer";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { PanelRounded } from "../shared/Panel";
-import { Tooltip } from "../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../shared/tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 import { WarningAlert } from "../shared/WarningAlert";
 import { PortfolioAssetAction } from "./PortfolioAssetAction";
 
@@ -67,11 +57,8 @@ const prepareTableColumns = (
     Header: <FormattedMessage id="portfolio.section.reserved-assets.table.header.value-eur" />,
     accessor: "value",
     Footer: () => (
-      <Money
+      <Eur
         value={pendingAssetsTotalInvested}
-        inputFormat={ENumberInputFormat.ULPS}
-        valueType={ECurrency.EUR}
-        outputFormat={ENumberOutputFormat.FULL}
         data-test-id="portfolio-reserved-assets-total-invested"
       />
     ),
@@ -80,14 +67,7 @@ const prepareTableColumns = (
     Header: <FormattedMessage id="portfolio.section.reserved-assets.table.header.neu-reward" />,
     accessor: "reward",
     Footer: () => (
-      <Money
-        value={pendingAssetsTotalReward}
-        inputFormat={ENumberInputFormat.ULPS}
-        valueType={ECurrency.NEU}
-        outputFormat={ENumberOutputFormat.FULL}
-        roundingMode={ERoundingMode.DOWN}
-        data-test-id="portfolio-reserved-assets-total-reward"
-      />
+      <Neu value={pendingAssetsTotalReward} data-test-id="portfolio-reserved-assets-total-reward" />
     ),
   },
   { Header: "", accessor: "actions" },
@@ -95,7 +75,7 @@ const prepareTableColumns = (
 
 const prepareTableRowData = (pendingAssets: TETOWithInvestorTicket[]) =>
   pendingAssets.map(({ investorTicket, ...eto }) => {
-    if (!isOnChain(eto)) {
+    if (!etoModuleApi.utils.isOnChain(eto)) {
       throw new Error(`${eto.etoId} should be on chain`);
     }
     const timedState = eto.contract.timedState;
@@ -112,11 +92,8 @@ const prepareTableRowData = (pendingAssets: TETOWithInvestorTicket[]) =>
         </TokenDetails>
       ),
       value: (
-        <Money
-          value={investorTicket.equivEurUlps}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.EUR}
-          outputFormat={ENumberOutputFormat.FULL}
+        <Eur
+          value={investorTicket.equivEur}
           data-test-id="portfolio-reserved-asset-invested-amount"
         />
       ),
@@ -124,26 +101,23 @@ const prepareTableRowData = (pendingAssets: TETOWithInvestorTicket[]) =>
       quantity: (
         <FormatNumber
           value={investorTicket.equityTokenInt}
-          inputFormat={ENumberInputFormat.FLOAT}
+          inputFormat={ENumberInputFormat.DECIMAL}
           outputFormat={ENumberOutputFormat.INTEGER}
           data-test-id="portfolio-reserved-asset-token-balance"
         />
       ),
       price: (
-        <Money
-          value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-          inputFormat={ENumberInputFormat.FLOAT}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.FULL}
+        <Eur
+          value={investorPortfolioModuleApi.utils.getTokenPrice(
+            investorTicket.equityTokenInt,
+            investorTicket.equivEur,
+          )}
           data-test-id="portfolio-reserved-token-price"
         />
       ),
       reward: (
-        <Money
+        <Neu
           value={investorTicket.rewardNmkUlps.toString()}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.NEU}
-          outputFormat={ENumberOutputFormat.FULL}
           data-test-id="portfolio-reserved-asset-neu-reward"
         />
       ),
@@ -188,8 +162,12 @@ const PortfolioReservedAssetsLayout: React.FunctionComponent<TComponentProps> = 
 const PortfolioReservedAssets = compose<TComponentProps, TExternalProps>(
   appConnect<TStateProps, {}, {}>({
     stateToProps: state => ({
-      pendingAssetsTotalInvested: selectMyPendingAssetsInvestedTotal(state),
-      pendingAssetsTotalReward: selectMyPendingAssetsRewardTotal(state),
+      pendingAssetsTotalInvested: investorPortfolioModuleApi.selectors.selectMyPendingAssetsInvestedTotal(
+        state,
+      ),
+      pendingAssetsTotalReward: investorPortfolioModuleApi.selectors.selectMyPendingAssetsRewardTotal(
+        state,
+      ),
     }),
   }),
   withContainer(PortfolioReservedAssetsContainer),

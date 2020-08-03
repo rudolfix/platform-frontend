@@ -1,5 +1,6 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator, select } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
+import { assertError } from "@neufund/shared-utils";
 
 import { authActions } from "modules/auth/actions";
 import { authModuleAPI } from "modules/auth/module";
@@ -50,6 +51,8 @@ function* initStartSaga(): SagaGenerator<void> {
       ),
     );
   } catch (e) {
+    assertError(e);
+
     yield put(initActions.error(e?.message ?? "Unknown error"));
 
     logger.error(e, "App init error");

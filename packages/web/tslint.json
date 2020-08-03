@@ -1,6 +1,16 @@
 {
   "extends": ["@neufund/shared-utils/tslint.json"],
   "rules": {
-    "import-blacklist": [true, "typed-redux-sags", "redux-saga/effects"]
+    "import-blacklist": [true, "typed-redux-sags", "redux-saga/effects"],
+    "no-submodule-imports": [
+      true,
+      "lodash",
+      "@neufund/shared-utils/tests",
+      "@neufund/sagas/tests",
+      "@neufund/shared-modules/tests",
+      "web3-provider-engine/subproviders/rpc",
+      "web3-provider-engine/subproviders/hooked-wallet",
+      "react-hot-loader/root"
+    ]
   }
 }

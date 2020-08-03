@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="org.neufund.mobile">
+  package="org.neufund.mobile" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
-
     <uses-permission android:name="android.permission.VIBRATE"/>
-
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+      android:name="android.permission.READ_PHONE_STATE"
+      tools:node="remove" />
 
   <!--
     `usesCleartextTraffic` is needed for now to unblock release tests in detox

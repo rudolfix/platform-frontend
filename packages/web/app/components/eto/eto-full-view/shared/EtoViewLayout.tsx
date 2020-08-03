@@ -1,9 +1,6 @@
+import { EtoCompanyInformationType, EtoPitchType } from "@neufund/shared-modules";
 import * as React from "react";
 
-import {
-  EtoCompanyInformationType,
-  EtoPitchType,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoViewData } from "../../../../modules/eto-view/shared/types";
 import { WidgetGrid } from "../../../layouts/WidgetGrid";
 import { PersonProfileModal } from "../../../modals/person-profile-modal/PersonProfileModal";

@@ -5,7 +5,10 @@ import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+// eslint-disable-next-line import/no-unassigned-import
 import "./rn-addons";
+// eslint-disable-next-line import/no-relative-parent-imports
+import languageEn from "../app/locales/en-en.json";
 import { loadStories } from "./storyLoader";
 
 // load stories from dynamically generated file
@@ -17,12 +20,13 @@ configure(() => {
 // To find allowed options for getStorybookUI
 
 const StorybookUIRoot = getStorybookUI({
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-var-requires
   asyncStorage: require("@react-native-community/async-storage").default,
 });
 
 const Storybook: React.FunctionComponent = () => {
   React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     InteractionManager.runAfterInteractions(() => {
       // we do have custom logic when to hide splash screen for the normal flow
       // for storybook we can hide just when we have UI ready
@@ -31,7 +35,7 @@ const Storybook: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <IntlProvider locale="en-gb">
+    <IntlProvider locale="en-gb" messages={languageEn}>
       <SafeAreaProvider>
         <StorybookUIRoot />
       </SafeAreaProvider>

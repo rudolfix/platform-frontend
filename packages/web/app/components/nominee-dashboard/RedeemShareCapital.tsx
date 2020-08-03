@@ -1,4 +1,5 @@
-import { Button, EButtonLayout } from "@neufund/design-system";
+import { Button, EButtonLayout, EurToken } from "@neufund/design-system";
+import { EETOStateOnChain } from "@neufund/shared-modules";
 import { DataUnavailableError } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
@@ -7,7 +8,6 @@ import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectStartOfOnchainState } from "../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../modules/eto/types";
 import {
   selectActiveNomineeEto,
   selectCapitalIncrease,
@@ -15,8 +15,6 @@ import {
 } from "../../modules/nominee-flow/selectors";
 import { ERedeemShareCapitalTaskSubstate } from "../../modules/nominee-flow/types";
 import { appConnect } from "../../store";
-import { Money } from "../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 
 import * as styles from "./NomineeDashboard.module.scss";
 
@@ -53,15 +51,7 @@ const RedeemShareCapitalLayout: React.FunctionComponent<TComponentProps> = ({
           id="nominee-flow.redeem-share-capital.text"
           values={{
             companyName,
-            amount: (
-              <Money
-                data-test-id="nominee-redeem-share-capital-amount"
-                value={amount}
-                inputFormat={ENumberInputFormat.ULPS}
-                outputFormat={ENumberOutputFormat.FULL}
-                valueType={ECurrency.EUR_TOKEN}
-              />
-            ),
+            amount: <EurToken data-test-id="nominee-redeem-share-capital-amount" value={amount} />,
           }}
         />
       </p>

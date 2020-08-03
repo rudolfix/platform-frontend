@@ -1,5 +1,13 @@
 import { StringableActionCreator } from "@neufund/sagas";
-import { gasApi, kycApi, txHistoryApi, walletApi } from "@neufund/shared-modules";
+import {
+  bookbuildingModuleApi,
+  etoModuleApi,
+  gasApi,
+  investorPortfolioModuleApi,
+  kycApi,
+  txHistoryApi,
+  walletApi,
+} from "@neufund/shared-modules";
 import { TDictionaryValues } from "@neufund/shared-utils";
 import { LocationChangeAction } from "connected-react-router";
 
@@ -7,22 +15,20 @@ import { portfolioActions } from "../components/portfolio/actions";
 import { accessWalletActions } from "./access-wallet/actions";
 import { authActions } from "./auth/actions";
 import { bankTransferFLowActions } from "./bank-transfer-flow/actions";
-import { bookBuildingFlowActions } from "./bookbuilding-flow/actions";
 import { contractsActions } from "./contracts/actions";
 import { depositModalActions } from "./deposit-eth-modal/actions";
 import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
 import { etoNomineeActions } from "./eto-nominee/actions";
 import { etoViewActions } from "./eto-view/shared/actions";
-import { etoActions } from "./eto/actions";
 import { fullPageLoadingActions } from "./full-page-loading/actions";
 import { genericModalActions } from "./generic-modal/actions";
+import { governanceModuleApi } from "./governance/module";
 import { icbmWalletBalanceModalActions } from "./icbm-wallet-balance-modal/actions";
 import { immutableStorageActions } from "./immutable-file/actions";
 import { initActions } from "./init/actions";
 import { instantIdApi } from "./instant-id/module";
 import { investmentFlowActions } from "./investment-flow/actions";
-import { investorEtoTicketActions } from "./investor-portfolio/actions";
 import { nomineeFlowActions } from "./nominee-flow/actions";
 import { notificationModalActions } from "./notification-modal/actions";
 import { notificationActions } from "./notifications/actions";
@@ -57,7 +63,7 @@ export const actions = {
   routing: routingActions,
   walletSelector: walletSelectorActions,
   web3: web3Actions,
-  investorEtoTicket: investorEtoTicketActions,
+  investorEtoTicket: investorPortfolioModuleApi.actions,
   userAgent: userAgentActions,
   auth: authActions,
   wallet: walletApi.actions,
@@ -68,8 +74,8 @@ export const actions = {
   etoNominee: etoNomineeActions,
   etoView: etoViewActions,
   walletView: walletViewActions,
-  eto: etoActions,
-  bookBuilding: bookBuildingFlowActions,
+  eto: etoModuleApi.actions,
+  bookBuilding: bookbuildingModuleApi.actions,
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
@@ -82,6 +88,7 @@ export const actions = {
   portfolio: portfolioActions,
   nomineeFlow: nomineeFlowActions,
   fullPageLoading: fullPageLoadingActions,
+  governance: governanceModuleApi.actions,
 };
 
 /**

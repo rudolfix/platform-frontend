@@ -1,6 +1,6 @@
 import { applyCharactersLimit, useFieldMeta } from "@neufund/design-system";
 import { invariant } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import cn from "classnames";
 import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

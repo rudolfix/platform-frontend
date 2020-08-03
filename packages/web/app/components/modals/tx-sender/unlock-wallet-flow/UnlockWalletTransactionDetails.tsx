@@ -1,3 +1,4 @@
+import { Eth, EurToken, Neu } from "@neufund/design-system";
 import { walletApi } from "@neufund/shared-modules";
 import {
   ECurrency,
@@ -12,8 +13,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, lifecycle, withState } from "recompose";
 
 import { ETxType } from "../../../../lib/web3/types";
-import { Money } from "../../../shared/formatters/Money";
-import { ENumberInputFormat, ENumberOutputFormat } from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -43,26 +42,16 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.eth-committed" />}
       value={
-        <Money
-          value={additionalData.lockedWalletBalance}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={
-            additionalData.currencyType === ECurrency.ETH ? ECurrency.ETH : ECurrency.EUR_TOKEN
-          }
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
+        additionalData.currencyType === ECurrency.ETH ? (
+          <Eth value={additionalData.lockedWalletBalance} />
+        ) : (
+          <EurToken value={additionalData.lockedWalletBalance} />
+        )
       }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
-      value={
-        <Money
-          value={additionalData.neumarksDue}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.NEU}
-          outputFormat={ENumberOutputFormat.FULL}
-        />
-      }
+      value={<Neu value={additionalData.neumarksDue} />}
     />
     <InfoRow
       caption={
@@ -78,26 +67,16 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
       value={
-        <Money
-          value={returnedAmount}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={
-            additionalData.currencyType === ECurrency.ETH ? ECurrency.ETH : ECurrency.EUR_TOKEN
-          }
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
+        additionalData.currencyType === ECurrency.ETH ? (
+          <Eth value={returnedAmount} />
+        ) : (
+          <EurToken value={returnedAmount} />
+        )
       }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.transaction-cost" />}
-      value={
-        <Money
-          value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.ETH}
-          outputFormat={ENumberOutputFormat.FULL}
-        />
-      }
+      value={<Eth value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])} />}
     />
 
     {txTimestamp && <TimestampRow timestamp={txTimestamp} />}

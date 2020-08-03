@@ -3,7 +3,7 @@ import { authModuleAPI, txHistoryApi } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs, TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
@@ -194,7 +194,7 @@ function* txMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
       logger.error(e, "Error getting pending txs");
     }
 
-    yield take(actions.web3.newBlockArrived.getType());
+    yield take(actions.web3.newBlockArrived);
   }
 }
 

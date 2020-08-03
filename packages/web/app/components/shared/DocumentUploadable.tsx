@@ -1,8 +1,8 @@
 import { ButtonInline } from "@neufund/design-system";
+import { EEtoDocumentType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoDocumentType } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TTranslatedString } from "../../types";
 import { ETOAddDocuments } from "../documents/issuerDocuments/EtoAddDocument";
 import { DocumentTile } from "./Document";

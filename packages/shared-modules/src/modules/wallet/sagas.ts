@@ -3,11 +3,11 @@ import {
   fork,
   neuCall,
   neuTakeEvery,
-  neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   take,
+  takeLatestUntil,
 } from "@neufund/sagas";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import promiseAll from "promise-all";
@@ -23,7 +23,7 @@ import { ILockedWallet, IWalletStateData } from "./types";
 
 type TGlobalDependencies = unknown;
 
-export function* loadWalletDataSaga(_: TGlobalDependencies): Generator<any, any, any> {
+export function* loadWalletDataSaga(): Generator<any, any, any> {
   const { logger, contractsService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     contractsService: contractsModuleApi.symbols.contractsService,
@@ -107,7 +107,7 @@ type TSetupSagasConfig = {
 export function setupWalletSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   return function* walletSagas(): any {
     yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
-    yield neuTakeLatestUntil(
+    yield takeLatestUntil(
       authModuleAPI.actions.setUser,
       walletActions.stopWalletBalanceWatcher,
       walletBalanceWatcher,

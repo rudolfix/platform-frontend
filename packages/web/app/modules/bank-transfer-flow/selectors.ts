@@ -29,22 +29,22 @@ export const selectBankTransferType = createSelector(
 
 export const selectBankTransferMinAmount = createSelector(
   selectBankTransferFlow,
-  bankTransferFlow => bankTransferFlow.minEuroUlps,
+  bankTransferFlow => bankTransferFlow.minEuro,
 );
 
 export const selectBankRedeemMinAmount = createSelector(selectBankTransferFlow, bankTransferFlow =>
-  bankTransferFlow.redeem ? bankTransferFlow.redeem.minEuroUlps : "0",
+  bankTransferFlow.redeem ? bankTransferFlow.redeem.minEuro : "0",
 );
 
 export const selectInitialAmount = (state: TAppGlobalState) => state.txUserFlowRedeem.initialValue;
 
-export const selectBankFeeUlps = createSelector(
+export const selectBankFee = createSelector(
   selectBankTransferFlow,
-  bankTransferFlow => bankTransferFlow.bankFeeUlps || "0",
+  bankTransferFlow => bankTransferFlow.bankFee || "0",
 );
 
-export const selectRedeemFeeUlps = createSelector(selectBankTransferFlow, bankTransferFlow =>
-  bankTransferFlow.redeem ? bankTransferFlow.redeem.bankFeeUlps : "0",
+export const selectRedeemFee = createSelector(selectBankTransferFlow, bankTransferFlow =>
+  bankTransferFlow.redeem ? bankTransferFlow.redeem.bankFee : "0",
 );
 
 /**

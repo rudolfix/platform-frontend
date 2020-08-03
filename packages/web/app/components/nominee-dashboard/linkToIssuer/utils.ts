@@ -1,4 +1,5 @@
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
+
 import {
   ENomineeRequestError,
   ENomineeRequestStatus,

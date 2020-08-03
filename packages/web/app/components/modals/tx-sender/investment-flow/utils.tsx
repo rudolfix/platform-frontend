@@ -1,4 +1,14 @@
-import { assertNever, divideBigNumbers } from "@neufund/shared-utils";
+import { Eth, Eur } from "@neufund/design-system";
+import {
+  assertNever,
+  divideBigNumbers,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  ERoundingMode,
+  selectDecimalPlaces,
+  toFixedPrecision,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 import * as React from "react";
@@ -11,17 +21,6 @@ import {
 } from "../../../../modules/investment-flow/reducer";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
 import { TTranslatedString } from "../../../../types";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-  ERoundingMode,
-  formatNumber,
-  selectDecimalPlaces,
-  toFixedPrecision,
-} from "../../../shared/formatters/utils";
 
 export enum EInvestmentCurrency {
   ETH = ECurrency.ETH,
@@ -68,10 +67,9 @@ export function getInputErrorMessage(
           id="investment-flow.error-message.above-maximum-ticket-size"
           values={{
             maxEurAmount: (
-              <Money
+              <Eur
                 value={maxTicketEur || "0"}
-                inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.EUR}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               />
             ),
@@ -85,21 +83,13 @@ export function getInputErrorMessage(
           values={{
             investmentCurrency,
             minEurAmount: (
-              <Money
+              <Eur
                 value={minTicketEur || "0"}
-                inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.EUR}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               />
             ),
-            minEthAmount: (
-              <Money
-                value={minTicketEth || "0"}
-                inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.ETH}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
-              />
-            ),
+            minEthAmount: <Eth value={minTicketEth || "0"} />,
           }}
         />
       );
@@ -125,15 +115,10 @@ export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERo
     roundingMode: roundingMode,
   });
 
-export function getActualTokenPriceEur(
-  investmentEurUlps: string,
+export const getActualTokenPriceEur = (
+  investmentEur: string,
   equityTokenCount: string | number,
-): string {
-  return formatNumber({
-    value: divideBigNumbers(investmentEurUlps, equityTokenCount.toString()).toString(),
-    decimalPlaces: selectDecimalPlaces(EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN),
-  });
-}
+): string => divideBigNumbers(investmentEur, equityTokenCount.toString()).toString();
 
 export const getTokenPriceDiscount = (fullTokenPrice: string, actualTokenPrice: string) => {
   // round up effective discount

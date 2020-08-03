@@ -1,6 +1,6 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
 import { TKycBankTransferPurpose } from "@neufund/shared-modules";
-import { invariant } from "@neufund/shared-utils";
+import { convertFromUlps, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
@@ -36,11 +36,12 @@ function* start(
 
     const reference: string = yield neuCall(generateReference);
 
-    const minEuroUlps: BigNumber = yield contractsService.euroTokenController
-      .minDepositAmountEurUlps;
+    const minEuro: BigNumber = convertFromUlps(
+      yield contractsService.euroTokenController.minDepositAmountEurUlps,
+    );
 
     yield put(
-      actions.bankTransferFlow.setTransferDetails(transferType, minEuroUlps.toString(), reference),
+      actions.bankTransferFlow.setTransferDetails(transferType, minEuro.toString(), reference),
     );
 
     const isVerified: boolean = yield select(selectIsBankAccountVerified);
@@ -98,7 +99,12 @@ export function* getRedeemData({ contractsService }: TGlobalDependencies): any {
     minEuroUlps: contractsService.euroTokenController.minWithdrawAmountEurUlps,
   });
 
-  yield put(actions.bankTransferFlow.setRedeemData(bankFeeUlps, minEuroUlps.toString()));
+  yield put(
+    actions.bankTransferFlow.setRedeemData(
+      convertFromUlps(bankFeeUlps).toString(),
+      convertFromUlps(minEuroUlps).toString(),
+    ),
+  );
 }
 
 export function* completeBankTransfer({ apiKycService, logger }: TGlobalDependencies): any {

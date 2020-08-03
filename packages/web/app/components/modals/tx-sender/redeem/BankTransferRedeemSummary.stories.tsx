@@ -1,4 +1,3 @@
-import { Q18 } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -13,7 +12,7 @@ storiesOf("BankTransferRedeem/Summary", module)
       confirm={action("CONFIRM")}
       additionalData={{
         amount: "20.50",
-        bankFee: Q18.mul("0.005").toString(),
+        bankFee: "0.005",
         bankAccount: {
           bankName: "mBank",
           accountNumberLast4: "1234",

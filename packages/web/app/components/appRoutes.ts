@@ -4,8 +4,6 @@ export const appRoutes = {
   greypWithJurisdiction: "/:jurisdiction/greyp",
   //--------------------------------//
 
-  proposal: "/governance/proposal/:proposalId",
-
   verify: "/email-verify",
   icbmMigration: "/migrate",
   etherWalletUnlock: "/wallet-unlock-etherlock",
@@ -46,6 +44,17 @@ export const appRoutes = {
   wallet: "/wallet",
   dashboard: "/dashboard",
   documents: "/documents",
+
+  governance: "/governance",
+  governanceOverview: "/governance/overview",
+  governanceGeneralInformation: "/governance/general-information",
+  governanceCapTable: "/governance/cap-table",
+  governanceDividends: "/governance/dividends",
+  governanceTokenManagement: "/governance/token-management",
+  governanceEsop: "/governance/esop",
+  governanceExit: "/governance/exit",
+  proposal: "/governance/proposal/:proposalId",
+
   profile: "/profile",
   demo: "/demo",
   eto: "/eto",
@@ -92,4 +101,4 @@ export const appRoutes = {
    * @deprecated Route with eto jurisdiction should be used instead. This is only for backward compatibility.
    */
   etoPublicViewLegacyRoute: "/eto/view/:previewCode",
-};
+} as const;

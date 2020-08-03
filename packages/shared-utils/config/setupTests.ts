@@ -1,9 +1,9 @@
-import * as BigNumber from "bignumber.js";
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
-import * as chaiBignumber from "chai-bignumber";
-import * as sinonChai from "sinon-chai";
+import BigNumber from "bignumber.js";
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+import chaiBignumber from "chai-bignumber";
 import { JSDOM } from "jsdom";
+import sinonChai from "sinon-chai";
 
 interface IGlobalWithWindow extends NodeJS.Global {
   window: Window;

@@ -1,17 +1,23 @@
-import { EUserType, kycApi } from "@neufund/shared-modules";
-import { createMount, setupFakeClock, tid } from "@neufund/shared-utils/tests";
+import {
+  bookbuildingModuleApi,
+  EETOStateOnChain,
+  etoModuleApi,
+  EUserType,
+  investorPortfolioModuleApi,
+  kycApi,
+} from "@neufund/shared-modules";
+import { setupFakeClock, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
 
+import { createMount } from "../../../../../test/createMount";
 import { testCompany, testContract, testEto } from "../../../../../test/fixtures";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
 import { EAuthStatus } from "../../../../modules/auth/reducer";
 import * as authModuleSelectors from "../../../../modules/auth/selectors";
-import * as bookBuildingFlowSelectors from "../../../../modules/bookbuilding-flow/selectors";
-import * as etoSelectors from "../../../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../../../modules/eto/types";
-import * as investmentPortfolioSelectors from "../../../../modules/investor-portfolio/selectors";
+import * as routingSelectors from "../../../../modules/routing/selectors";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import * as buttonLink from "../../../shared/buttons/ButtonLink";
 import { EtoStatusManager } from "./EtoStatusManager/EtoStatusManager";
 
@@ -63,14 +69,14 @@ describe("EtoStatusManager state change", () => {
 
     stubs = {
       selectIsEligibleToPreEto: stub(
-        investmentPortfolioSelectors,
+        investorPortfolioModuleApi.selectors,
         "selectIsEligibleToPreEto",
       ).returns(false),
-      selectEtoOnChainStateById: stub(etoSelectors, "selectEtoOnChainStateById").returns(
+      selectEtoOnChainStateById: stub(etoModuleApi.selectors, "selectEtoOnChainStateById").returns(
         EETOStateOnChain.Setup,
       ),
       selectInitialMaxCapExceeded: stub(
-        investmentPortfolioSelectors,
+        investorPortfolioModuleApi.selectors,
         "selectInitialMaxCapExceeded",
       ).returns(false),
       selectIsAuthorized: stub(authModuleSelectors, "selectIsAuthorized").returns(auth.status),
@@ -80,25 +86,27 @@ describe("EtoStatusManager state change", () => {
         true,
       ),
       selectKycStatus: stub(kycApi.selectors, "selectKycStatus").returns(true),
-      selectInvestorCount: stub(bookBuildingFlowSelectors, "selectInvestorCount").returns(
+      selectInvestorCount: stub(bookbuildingModuleApi.selectors, "selectInvestorCount").returns(
         undefined,
       ),
-      selectPledgedAmount: stub(bookBuildingFlowSelectors, "selectPledgedAmount").returns(
+      selectPledgedAmount: stub(bookbuildingModuleApi.selectors, "selectPledgedAmount").returns(
         undefined,
       ),
-      selectMyPledge: stub(bookBuildingFlowSelectors, "selectMyPledge").returns(undefined),
+      selectMyPledge: stub(bookbuildingModuleApi.selectors, "selectMyPledge").returns(undefined),
       selectIsUserVerifiedOnBlockchain: stub(
         kycApi.selectors,
         "selectIsUserVerifiedOnBlockchain",
       ).returns(false),
       selectClientCountry: stub(kycApi.selectors, "selectClientCountry").returns(undefined),
-      selectEto: stub(etoSelectors, "selectEto").returns(eto),
-      selectEtoContract: stub(etoSelectors, "selectEtoContract").returns(contract),
-      selectCompany: stub(etoSelectors, "selectCompany").returns(testCompany),
+      selectEto: stub(etoModuleApi.selectors, "selectEto").returns(eto),
+      selectEtoContract: stub(etoModuleApi.selectors, "selectEtoContract").returns(contract),
+      selectCompany: stub(etoModuleApi.selectors, "selectCompany").returns(testCompany),
       selectEtoOnChainNextStateStartDate: stub(
-        etoSelectors,
+        etoModuleApi.selectors,
         "selectEtoOnChainNextStateStartDate",
       ).returns(undefined),
+      selectRouter: stub(routingSelectors, "selectRouter").returns({ location: {} }),
+      selectRouterState: stub(walletSelectors, "selectRouterState").returns({ location: {} }),
     };
   });
 

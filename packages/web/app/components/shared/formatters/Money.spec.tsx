@@ -1,16 +1,16 @@
-import { expect } from "chai";
-import { shallow } from "enzyme";
-import * as React from "react";
-
-import { FormatShortNumber } from "./FormatShortNumber";
-import { ECurrencySymbol, Money } from "./Money";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
-} from "./utils";
+} from "@neufund/shared-utils";
+import { expect } from "chai";
+import { shallow } from "enzyme";
+import * as React from "react";
+
+import { FormatShortNumber } from "./FormatShortNumber";
+import { ECurrencySymbol, Money } from "./Money";
 
 describe("Money", () => {
   it("should format money as ETH with full decimals according to `Neufund Language` style guide", () => {
@@ -44,7 +44,7 @@ describe("Money", () => {
       <Money
         value={"2501234.1944"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
       />,
     );
@@ -57,7 +57,7 @@ describe("Money", () => {
       <Money
         value={"2501234.1"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
       />,
     );
@@ -70,7 +70,7 @@ describe("Money", () => {
       <Money
         value={"2501234.1944"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
       />,
     );
@@ -78,7 +78,7 @@ describe("Money", () => {
       <Money
         value={"2501234.00000"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
       />,
     );
@@ -92,7 +92,7 @@ describe("Money", () => {
       <Money
         value={"2501234.1944"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
       />,
     );
@@ -100,7 +100,7 @@ describe("Money", () => {
       <Money
         value={"2501234.00000"}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
       />,
     );
@@ -115,7 +115,7 @@ describe("Money", () => {
 
     const expectedProps = {
       value: "",
-      inputFormat: ENumberInputFormat.FLOAT,
+      inputFormat: ENumberInputFormat.DECIMAL,
       roundingMode: ERoundingMode.HALF_UP,
       defaultValue: "-",
       decimalPlaces: 0,
@@ -127,7 +127,7 @@ describe("Money", () => {
       <Money
         value={value1}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
       />,
     );
@@ -135,7 +135,7 @@ describe("Money", () => {
       <Money
         value={value2}
         valueType={ECurrency.EUR}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
       />,
     );

@@ -1,9 +1,8 @@
-import { ETH_DECIMALS } from "@neufund/shared-utils";
+import { convertFromUlps, ECurrency, ETH_DECIMALS } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECurrency } from "../../../shared/formatters/utils";
 import { IncomingPayoutAvailable } from "./IncomingPayoutAvailable";
 import { IncomingPayoutPendingLayout } from "./IncomingPayoutPending";
 import { IncomingPayoutWaitingLayout } from "./IncomingPayoutWaiting";
@@ -34,7 +33,7 @@ storiesOf("IncomingPayoutWidget", module)
           timeToFirstDisbursalRecycle: 1675062154000,
           totalDisbursedAmount: "364458900000000000",
           tokenDecimals: ETH_DECIMALS,
-          amountEquivEur: "984609705509027210028",
+          amountEquivEur: convertFromUlps("984609705509027210028").toString(),
         },
         {
           token: ECurrency.ETH,
@@ -42,7 +41,7 @@ storiesOf("IncomingPayoutWidget", module)
           timeToFirstDisbursalRecycle: 1675062154000,
           totalDisbursedAmount: "064458900000000000",
           tokenDecimals: ETH_DECIMALS,
-          amountEquivEur: "97078346877766094590.21980140173352",
+          amountEquivEur: convertFromUlps("97078346877766094590.21980140173352").toString(),
         },
       ]}
     />
@@ -56,7 +55,7 @@ storiesOf("IncomingPayoutWidget", module)
           timeToFirstDisbursalRecycle: 1675062154000,
           totalDisbursedAmount: "364458900000000000",
           tokenDecimals: ETH_DECIMALS,
-          amountEquivEur: "984609705509027210028",
+          amountEquivEur: convertFromUlps("984609705509027210028").toString(),
         },
         {
           token: ECurrency.ETH,
@@ -64,7 +63,7 @@ storiesOf("IncomingPayoutWidget", module)
           timeToFirstDisbursalRecycle: 1675062154000,
           totalDisbursedAmount: "064458900000000000",
           tokenDecimals: ETH_DECIMALS,
-          amountEquivEur: "97078346877766094590.21980140173352",
+          amountEquivEur: convertFromUlps("97078346877766094590.21980140173352").toString(),
         },
       ]}
     />

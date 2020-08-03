@@ -1,7 +1,7 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "recompose";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectActiveNomineeEto } from "../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../store";
 import { NomineeEtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";

@@ -1,4 +1,11 @@
-import { EquityToken, ECurrency } from "@neufund/shared-utils";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EquityToken,
+  ETH_DECIMALS,
+  formatNumber,
+} from "@neufund/shared-utils";
 import * as React from "react";
 
 type TExternalProps = {
@@ -8,9 +15,15 @@ type TExternalProps = {
 };
 
 // TODO: Used to keep money related logic easy to change. Replace with proper formatting when ready
-const Money: React.FunctionComponent<TExternalProps> = ({ value, currency }) => (
+const Money: React.FunctionComponent<TExternalProps> = ({ value, currency, decimalPlaces }) => (
   <>
-    {value} {currency}
+    {formatNumber({
+      value,
+      outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+      inputFormat:
+        decimalPlaces === ETH_DECIMALS ? ENumberInputFormat.ULPS : ENumberInputFormat.DECIMAL,
+    })}{" "}
+    {currency}
   </>
 );
 

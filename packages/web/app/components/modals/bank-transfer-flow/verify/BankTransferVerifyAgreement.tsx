@@ -1,16 +1,10 @@
-import { ButtonArrowRight } from "@neufund/design-system";
+import { ButtonArrowRight, Eur } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, StateHandler, withStateHandlers } from "recompose";
 
 import { selectBankTransferMinAmount } from "../../../../modules/bank-transfer-flow/selectors";
 import { appConnect } from "../../../../store";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { Message } from "../../message/Message";
 import { BankTransferAgreement } from "../shared/BankTransferAgreement";
 
@@ -22,7 +16,7 @@ export enum EBankTransferInitState {
 }
 
 interface IStateProps {
-  minEuroUlps: string;
+  minEuro: string;
 }
 
 interface ILocalState {
@@ -37,7 +31,7 @@ type IProps = IStateProps & { goToAgreement: () => void };
 
 const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
   goToAgreement,
-  minEuroUlps,
+  minEuro,
 }) => (
   <Message
     data-test-id="bank-verification.info"
@@ -47,14 +41,7 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
       <FormattedMessage
         id="bank-verification.info.text"
         values={{
-          min: (
-            <Money
-              value={minEuroUlps}
-              inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.EUR}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
-          ),
+          min: <Eur value={minEuro} />,
         }}
       />
     }
@@ -68,7 +55,7 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
 const BankTransferVerifyAgreement = compose<IProps, {}>(
   appConnect<IStateProps>({
     stateToProps: state => ({
-      minEuroUlps: selectBankTransferMinAmount(state),
+      minEuro: selectBankTransferMinAmount(state),
     }),
   }),
   withStateHandlers<ILocalState, ILocalStateUpdater>(

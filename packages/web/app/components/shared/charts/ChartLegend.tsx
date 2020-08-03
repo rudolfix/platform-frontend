@@ -1,9 +1,8 @@
+import { Percentage } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { OTHERS_NAME } from "../../eto/utils";
-import { Money } from "../formatters/Money";
-import { ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "../formatters/utils";
 
 import * as styles from "./ChartLegend.module.scss";
 
@@ -36,12 +35,7 @@ export const ChartLegend: React.FunctionComponent<IProps> = ({ data }) => (
             ) : (
               data.labels[index]
             )}{" "}
-            <Money
-              value={value.toString()}
-              inputFormat={ENumberInputFormat.FLOAT}
-              outputFormat={ENumberOutputFormat.FULL}
-              valueType={ENumberFormat.PERCENTAGE}
-            />
+            <Percentage value={value.toString()} />
           </div>
         </div>
       )),

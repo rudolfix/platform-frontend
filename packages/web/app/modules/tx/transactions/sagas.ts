@@ -2,6 +2,7 @@ import { fork } from "@neufund/sagas";
 
 import { txUserClaimSagas } from "./claim/sagas";
 import { txEtoSetDateSagas } from "./eto-flow/sagas";
+import { txGovernanceSagas } from "./governance/sagas";
 import { txInvestmentSagas } from "./investment/sagas";
 import { txSignAgreementSagas } from "./nominee/sign-agreement/sagas";
 import { txPayoutSagas } from "./payout/sagas";
@@ -26,6 +27,7 @@ export function* txTransactionsSagasWatcher(): Generator<any, any, any> {
   yield fork(txSignAgreementSagas);
   yield fork(txTokenTransferSagas);
   yield fork(txShareholderResolutionVoteSagas);
+  yield fork(txGovernanceSagas);
 
   // Add new sub sagas here...
 }

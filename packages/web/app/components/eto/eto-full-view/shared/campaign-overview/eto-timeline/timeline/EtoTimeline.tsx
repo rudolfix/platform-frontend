@@ -1,15 +1,15 @@
+import {
+  EEtoState,
+  EETOStateOnChain,
+  EEtoSubState,
+  etoModuleApi,
+  TEtoStartOfStates,
+} from "@neufund/shared-modules";
 import { clamp } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, pure, withHandlers, withProps } from "recompose";
 
-import { EEtoState } from "../../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  EEtoSubState,
-  TEtoStartOfStates,
-} from "../../../../../../../modules/eto/types";
-import { isComingSoon } from "../../../../../../../modules/eto/utils";
 import { Block, EBlockTheme, EndBlock, StartBlock } from "./Block";
 import { DatePoint, Pointer } from "./Point";
 
@@ -80,7 +80,7 @@ const getStartOfState = (state: EETOStateOnChain, startOfStates: TEtoStartOfStat
 };
 
 const getSetupTitle = (state: EEtoState, subState: EEtoSubState | undefined) => {
-  if (isComingSoon(state)) {
+  if (etoModuleApi.utils.isComingSoon(state)) {
     return <FormattedMessage id="eto.status.sub-state.coming-soon" />;
   }
 

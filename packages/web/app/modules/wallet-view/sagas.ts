@@ -1,15 +1,24 @@
-import { all, call, fork, put, select, take } from "@neufund/sagas";
-import { kycApi, tokenPriceModuleApi, walletApi } from "@neufund/shared-modules";
-import { addBigNumbers, compareBigNumbers } from "@neufund/shared-utils";
+import { all, call, fork, put, race, SagaGenerator, select, take } from "@neufund/sagas";
+import { kycApi, tokenPriceModuleApi, txHistoryApi, walletApi } from "@neufund/shared-modules";
+import { addBigNumbers, compareBigNumbers, convertFromUlps } from "@neufund/shared-utils";
 
+import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { neuCall, neuTakeUntil } from "../sagasUtils";
+import { selectPlatformMiningTransaction } from "../tx/monitor/selectors";
 import { selectNEURStatus } from "../wallet/selectors";
 import { ENEURWalletStatus } from "../wallet/types";
 import { selectEthereumAddress } from "../web3/selectors";
-import { EBalanceViewType, EWalletViewError, TBalanceData, TBasicBalanceData } from "./types";
+import { selectWalletViewData } from "./selectors";
+import {
+  EBalanceViewType,
+  EWalletViewError,
+  TBalanceData,
+  TBasicBalanceData,
+  TWalletViewReadyState,
+} from "./types";
 import { hasFunds, isMainBalance } from "./utils";
 
 export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> {
@@ -81,27 +90,55 @@ export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> 
       amount: lockedIcbmNeuroWalletData.amount,
       euroEquivalentAmount: lockedIcbmNeuroWalletData.euroEquivalentAmount,
     },
-  ];
+  ].map(item => ({
+    ...item,
+    euroEquivalentAmount: item.hasFunds
+      ? convertFromUlps(item.euroEquivalentAmount).toString()
+      : item.euroEquivalentAmount,
+  }));
 }
 
-export function* loadWalletView(): Generator<any, void, any> {
+export function* populateBalanceData(): SagaGenerator<{
+  balanceData: TBasicBalanceData[];
+  totalBalanceEuro: string;
+}> {
+  const balanceData = (yield* call(populateWalletData)).filter(
+    (balance: TBasicBalanceData) => isMainBalance(balance) || hasFunds(balance),
+  );
+
+  const totalBalanceEuro = addBigNumbers(
+    balanceData.map((balance: TBalanceData) => balance.euroEquivalentAmount),
+  );
+
+  return { balanceData, totalBalanceEuro };
+}
+
+export function* populateTxHistory(): SagaGenerator<{
+  transactionsHistoryPaginated: ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+  pendingTransaction: TxPendingWithMetadata | null;
+}> {
+  const transactionsHistoryPaginated = yield* select(
+    txHistoryApi.selectors.selectTxHistoryPaginated,
+  );
+
+  const pendingTransaction = yield* select(selectPlatformMiningTransaction);
+  return { transactionsHistoryPaginated, pendingTransaction };
+}
+
+export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
   try {
     yield all([
       neuCall(walletApi.sagas.loadWalletDataSaga),
       neuCall(kycApi.sagas.loadBankAccountDetails),
+      put(txHistoryApi.actions.loadTransactions()),
     ]);
 
     const userIsFullyVerified = yield* select(selectIsUserFullyVerified);
     const userAddress = yield* select(selectEthereumAddress);
     const bankAccount = yield* select(kycApi.selectors.selectBankAccount);
 
-    const balanceData = (yield* call(populateWalletData)).filter(
-      (balance: TBasicBalanceData) => isMainBalance(balance) || hasFunds(balance),
-    );
-
-    const totalBalanceEuro = addBigNumbers(
-      balanceData.map((balance: TBalanceData) => balance.euroEquivalentAmount),
-    );
+    const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
+    const { transactionsHistoryPaginated, pendingTransaction } = yield* call(populateTxHistory);
 
     yield put(
       actions.walletView.walletViewSetData({
@@ -110,9 +147,12 @@ export function* loadWalletView(): Generator<any, void, any> {
         balanceData,
         totalBalanceEuro,
         bankAccount,
+        transactionsHistoryPaginated,
+        pendingTransaction,
         processState: EProcessState.SUCCESS,
       }),
     );
+    return EProcessState.SUCCESS;
   } catch (e) {
     yield put(
       actions.walletView.walletViewSetData({
@@ -120,18 +160,68 @@ export function* loadWalletView(): Generator<any, void, any> {
         errorType: EWalletViewError.GENERIC_ERROR,
       }),
     );
+    return EProcessState.ERROR;
   }
 }
 
 export function* walletViewController(): Generator<any, void, any> {
-  yield neuCall(loadWalletView);
+  try {
+    const initialLoadingResult = yield neuCall(loadInitialWalletView);
 
-  while (true) {
-    yield take([
-      actions.txTransactions.upgradeSuccessful,
-      tokenPriceModuleApi.actions.saveTokenPrice,
-    ]);
-    yield neuCall(loadWalletView);
+    if (initialLoadingResult === EProcessState.SUCCESS) {
+      yield put(txHistoryApi.actions.startWatchingForNewTransactions());
+
+      while (true) {
+        const dataReloadRequired = yield race({
+          icbmUpgrade: take(actions.txTransactions.upgradeSuccessful),
+          tokenPriceData: take(tokenPriceModuleApi.actions.saveTokenPrice),
+          txHistoryData: take(txHistoryApi.actions.setTransactions),
+          pendingTxChange: take(actions.txMonitor.setPendingTxs),
+        });
+        const oldState = yield* select(selectWalletViewData);
+        let newState;
+
+        if (dataReloadRequired.icbmUpgrade) {
+          const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
+          newState = {
+            ...oldState,
+            balanceData,
+            totalBalanceEuro,
+          };
+        } else if (dataReloadRequired.tokenPriceData) {
+          const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
+          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
+            populateTxHistory,
+          );
+
+          newState = {
+            ...oldState,
+            balanceData,
+            totalBalanceEuro,
+            transactionsHistoryPaginated,
+            pendingTransaction,
+          };
+        } else if (dataReloadRequired.txHistoryData || dataReloadRequired.pendingTxChange) {
+          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
+            populateTxHistory,
+          );
+
+          newState = {
+            ...oldState,
+            transactionsHistoryPaginated,
+            pendingTransaction,
+          };
+        }
+
+        yield put(
+          actions.walletView.walletViewSetData(
+            newState as TWalletViewReadyState & { processState: EProcessState.SUCCESS },
+          ),
+        );
+      }
+    }
+  } finally {
+    yield put(txHistoryApi.actions.stopWatchingForNewTransactions());
   }
 }
 

@@ -1,12 +1,11 @@
-import { walletApi } from "@neufund/shared-modules";
-import { createMount, tid } from "@neufund/shared-utils/tests";
+import { investorPortfolioModuleApi, walletApi } from "@neufund/shared-modules";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
-import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
 
+import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
-import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
-import * as buttonLink from "../../../shared/buttons/ButtonLink";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
@@ -16,11 +15,6 @@ describe("MyNeuWidget", () => {
   let stubs: Record<string, SinonStub>;
 
   beforeEach(() => {
-    // stub button link as it uses store under the hood
-    stub(buttonLink, "ButtonLink").callsFake((props: any) => (
-      <div data-test-id={props["data-test-id"]} />
-    ));
-
     stubs = {
       selectIsLoading: stub(walletApi.selectors, "selectIsLoading").returns(undefined),
       selectNeuBalance: stub(walletApi.selectors, "selectNeuBalance").returns(undefined),
@@ -29,40 +23,49 @@ describe("MyNeuWidget", () => {
       ),
       selectWalletError: stub(walletApi.selectors, "selectWalletError").returns(undefined),
 
-      selectIncomingPayoutError: stub(investorPortfolio, "selectIncomingPayoutError").returns(
-        undefined,
-      ),
-      selectIncomingPayoutEurEquiv: stub(investorPortfolio, "selectIncomingPayoutEurEquiv").returns(
-        "0",
-      ),
+      selectIncomingPayoutError: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectIncomingPayoutError",
+      ).returns(undefined),
+      selectIncomingPayoutEurEquiv: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectIncomingPayoutEurEquiv",
+      ).returns("0"),
       selectIsIncomingPayoutLoading: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutLoading",
       ).returns(undefined),
       selectIsIncomingPayoutNotInitialized: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutNotInitialized",
       ).returns(undefined),
       selectIsIncomingPayoutPending: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutPending",
       ).returns(undefined),
-      selectPayoutAvailable: stub(investorPortfolio, "selectPayoutAvailable").returns(undefined),
-      selectTokensDisbursalError: stub(investorPortfolio, "selectTokensDisbursalError").returns(
-        undefined,
-      ),
+      selectPayoutAvailable: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectPayoutAvailable",
+      ).returns(undefined),
+      selectTokensDisbursalError: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectTokensDisbursalError",
+      ).returns(undefined),
       selectTokensDisbursalEurEquivTotal: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalEurEquivTotal",
       ).returns(""),
       selectTokensDisbursalIsLoading: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalIsLoading",
       ).returns(undefined),
       selectTokensDisbursalNotInitialized: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalNotInitialized",
       ).returns(undefined),
+      selectRouterState: stub(walletSelectors, "selectRouterState").returns({
+        location: { pathname: "/" },
+      }),
     };
   });
 
@@ -91,10 +94,7 @@ describe("MyNeuWidget", () => {
     stubs.selectPayoutAvailable.returns(false);
 
     const component = createMount(wrapWithBasicProviders(MyNeuWidget));
-
-    expect(
-      component.find(tid("my-neu-widget-support-link")).find(buttonLink.ButtonLink).length,
-    ).to.eq(1);
+    expect(component.find("ButtonLink" + tid("my-neu-widget-support-link")).length).to.eq(1);
   });
 
   it("shows the available payouts component", () => {

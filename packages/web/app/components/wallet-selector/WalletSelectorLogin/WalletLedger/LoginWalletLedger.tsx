@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
@@ -17,6 +16,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { EContentWidth } from "../../../layouts/Content";
 import { TransitionalLayout, TTransitionalLayoutProps } from "../../../layouts/Layout";
+import { withContainer } from "../../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { LedgerErrorMessage } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";

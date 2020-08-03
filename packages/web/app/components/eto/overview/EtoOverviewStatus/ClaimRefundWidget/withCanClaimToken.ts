@@ -1,14 +1,13 @@
-import { EUserType } from "@neufund/shared-modules";
+import {
+  EETOStateOnChain,
+  EUserType,
+  IInvestorTicket,
+  investorPortfolioModuleApi,
+} from "@neufund/shared-modules";
 import { compose, withProps } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
 import { selectUserType } from "../../../../../modules/auth/selectors";
-import { EETOStateOnChain } from "../../../../../modules/eto/types";
-import {
-  selectHasInvestorTicket,
-  selectInvestorTicket,
-} from "../../../../../modules/investor-portfolio/selectors";
-import { IInvestorTicket } from "../../../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../../../store";
 
 interface IExternalProps {
@@ -34,8 +33,14 @@ export const withCanClaimToken = <T extends IWithProps>(wrapper: React.Component
   compose<T, IExternalProps & Omit<T, keyof IWithProps>>(
     appConnect<IStateProps, IDispatchProps, IExternalProps>({
       stateToProps: (state, props) => ({
-        doesInvestorInvest: selectHasInvestorTicket(state, props.etoId),
-        investorTicket: selectInvestorTicket(state, props.etoId),
+        doesInvestorInvest: investorPortfolioModuleApi.selectors.selectHasInvestorTicket(
+          state,
+          props.etoId,
+        ),
+        investorTicket: investorPortfolioModuleApi.selectors.selectInvestorTicket(
+          state,
+          props.etoId,
+        ),
         userType: selectUserType(state),
       }),
       dispatchToProps: dispatch => ({

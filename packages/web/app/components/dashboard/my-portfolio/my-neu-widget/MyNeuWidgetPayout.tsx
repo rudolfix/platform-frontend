@@ -1,7 +1,7 @@
 import * as React from "react";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
 
-import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailalblePayout";
+import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailablePayout";
 import { MyNeuWidgetPendingPayoutLayout } from "./MyNeuWidgetPendingPayout";
 
 type TExternalProps = {

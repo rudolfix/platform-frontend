@@ -1,4 +1,4 @@
-import * as YupTS from "../../yup-ts.unsafe";
+import { YupTS } from "@neufund/shared-modules";
 
 export interface IImmutableFileId {
   ipfsHash: string;

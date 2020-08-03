@@ -1,10 +1,10 @@
 import { TModuleState } from "../../types";
 import { generateSharedModuleId } from "../../utils";
-import { setupTokenPriceModule } from "../token-price/module";
+import { TPureTokenPriceModuleState } from "../token-price/module";
 import { txHistoryActions } from "./actions";
 import { setupContainerModule } from "./bindings";
 import { txHistoryReducerMap } from "./reducer";
-import { setupTXHistorySagas } from "./sagas";
+import { loadTransactionsHistory, setupTXHistorySagas } from "./sagas";
 import * as selectors from "./selectors";
 
 export {
@@ -17,6 +17,7 @@ export {
 } from "./types";
 
 export { ETxHistoryMessage } from "./messages";
+export { EModuleStatus } from "./reducer";
 
 const MODULE_ID = generateSharedModuleId("tx-history");
 
@@ -31,14 +32,18 @@ const setupTxHistoryModule = (config: Config) => {
     reducerMap: txHistoryReducerMap,
   };
 
-  return [setupTokenPriceModule({ refreshOnAction: undefined }), module];
+  return module;
 };
 
 const txHistoryApi = {
   actions: txHistoryActions,
   selectors,
+  sagas: {
+    loadTransactionsHistory,
+  },
 };
 
 export { setupTxHistoryModule, txHistoryApi };
 
-export type TTxHistoryModuleState = TModuleState<typeof setupTxHistoryModule>;
+export type TPureTxHistoryModuleState = TModuleState<typeof setupTxHistoryModule>;
+export type TTxHistoryModuleState = TPureTxHistoryModuleState & TPureTokenPriceModuleState;

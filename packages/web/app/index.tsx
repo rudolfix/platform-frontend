@@ -6,8 +6,12 @@ import "./components/translatedMessages/yupLocales.sideEffect";
 import "./index.scss";
 
 import { createStore, getSagaExtension } from "@neufund/sagas";
-import { getContextToDepsExtension, getLoadContextExtension } from "@neufund/shared-modules";
-import { InversifyProvider } from "@neufund/shared-utils";
+import {
+  getContextToDepsExtension,
+  getLoadContextExtension,
+  ITestSettings,
+  setTestSettings,
+} from "@neufund/shared-modules";
 import { ConnectedRouter } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { Container } from "inversify";
@@ -19,6 +23,7 @@ import { Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { App } from "./components/App";
+import { InversifyProvider } from "./components/shared/InversifyProvider";
 import { getConfig, IConfig } from "./config/getConfig";
 import { createGlobalDependencies, TGlobalDependencies } from "./di/setupBindings";
 import { reduxLogoutReset } from "./middlewares/redux-logout-reset";
@@ -26,6 +31,9 @@ import { setupAppModule, staticValues, TAppGlobalState } from "./store";
 import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import * as serviceWorker from "./utils/serviceWorker.unsafe";
+
+// set window object as test settings provider for shared modules
+setTestSettings(window as ITestSettings);
 
 export const createAppStore = (history: History, config: IConfig, container: Container) => {
   const appModule = setupAppModule({ history, config, container });

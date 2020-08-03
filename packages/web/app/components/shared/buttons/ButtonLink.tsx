@@ -2,10 +2,11 @@ import { Button } from "@neufund/design-system";
 import { isExternalUrl } from "@neufund/shared-utils";
 import { LocationDescriptor } from "history";
 import * as React from "react";
-import { matchPath } from "react-router";
+import { matchPath } from "react-router-dom";
 import { compose, mapProps, setDisplayName } from "recompose";
 
 import { routingActions } from "../../../modules/routing/actions";
+import { selectRouterState } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 
 type TButtonLinkToProps = {
@@ -54,9 +55,13 @@ const ButtonLink = compose<
 >(
   setDisplayName("ButtonLink"),
   appConnect<TButtonStateProps, TButtonDispatchProps, TButtonLinkToProps>({
-    stateToProps: state => ({
-      currentPath: state.router.location && state.router.location.pathname,
-    }),
+    stateToProps: state => {
+      const routerState = selectRouterState(state);
+
+      return {
+        currentPath: routerState ? routerState.location.pathname : window.location.pathname,
+      };
+    },
     dispatchToProps: (dispatch, { target, to }) => ({
       navigate: () => {
         if (typeof to === "string" && (target === "_blank" || isExternalUrl(to))) {

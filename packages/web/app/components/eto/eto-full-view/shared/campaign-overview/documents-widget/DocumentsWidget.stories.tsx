@@ -1,13 +1,13 @@
+import {
+  EEtoDocumentType,
+  EOfferingDocumentType,
+  TEtoDocumentTemplates,
+} from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../../../test/fixtures";
-import {
-  EEtoDocumentType,
-  TEtoDocumentTemplates,
-} from "../../../../../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { DocumentsWidgetLayout } from "./DocumentsWidget";
 
 const documents: TEtoDocumentTemplates = {

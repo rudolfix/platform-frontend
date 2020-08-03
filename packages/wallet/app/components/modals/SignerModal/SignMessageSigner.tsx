@@ -17,7 +17,7 @@ type TExternalProps = {
   reject: () => void;
 };
 
-const SignMessageSigner: React.FunctionComponent<TExternalProps> = ({ data, ...rest }) => (
+const SignMessageSigner: React.FunctionComponent<TExternalProps> = ({ data: _data, ...rest }) => (
   <SignerContainer icon={EIconType.BACKUP} headline="Sign message request" {...rest}>
     <Text style={styles.body}>Please confirm message request.</Text>
   </SignerContainer>

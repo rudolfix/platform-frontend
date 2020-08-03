@@ -1,11 +1,11 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose, withProps } from "recompose";
 
 import { EContentWidth } from "../../layouts/Content";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 
 const UnsubscriptionModule = React.lazy(() =>
   import("./UnsubscriptionModule").then(imp => ({ default: imp.UnsubscriptionModule })),

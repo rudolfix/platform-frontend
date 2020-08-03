@@ -1,4 +1,4 @@
-import * as cn from "classnames";
+import cn from "classnames";
 import { times } from "lodash/fp";
 import * as React from "react";
 

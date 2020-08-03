@@ -1,4 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
@@ -14,7 +15,6 @@ import {
   selectNewPreEtoStartDate,
   selectPreEtoStartDate,
 } from "../../../eto-flow/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";

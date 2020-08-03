@@ -7,7 +7,7 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { EColumnSpan } from "../layouts/Container";
 import { DashboardCenteredWidget } from "../shared/dashboard-widget/DashboardWidget";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../shared/errorBoundary/ErrorBoundaryPanel";
 
 interface IDispatchProps {

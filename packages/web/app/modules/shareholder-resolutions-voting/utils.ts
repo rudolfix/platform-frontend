@@ -9,7 +9,7 @@ import {
   unixTimestampToTimestamp,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import * as Web3Utils from "web3-utils";
+import Web3Utils from "web3-utils";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { makeEthereumAddressChecksummed } from "../web3/utils";

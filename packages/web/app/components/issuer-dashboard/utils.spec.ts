@@ -1,10 +1,10 @@
-import { expect } from "chai";
-
 import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EETOStateOnChain } from "../../modules/eto/types";
+  EETOStateOnChain,
+} from "@neufund/shared-modules";
+import { expect } from "chai";
+
 import { EEtoStep, selectEtoStep } from "./utils";
 
 describe("selectEtoStep", () => {

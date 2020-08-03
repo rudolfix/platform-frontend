@@ -1,9 +1,9 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../../../test/fixtures";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
 import { EtoInvestmentTermsWidgetLayout } from "./EtoInvestmentTermsWidget";
 
 const eto: TEtoWithCompanyAndContractReadonly = {

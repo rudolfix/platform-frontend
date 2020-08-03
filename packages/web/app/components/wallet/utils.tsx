@@ -5,6 +5,7 @@ import {
   NeuroIconWithLock,
   TTranslatedString,
 } from "@neufund/design-system";
+import { ECurrency } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -18,7 +19,6 @@ import {
   TBalanceActions,
   TBalanceData,
 } from "../../modules/wallet-view/types";
-import { ECurrency } from "../shared/formatters/utils";
 
 export const createBalanceUiData = (balance: TBalanceData, balanceActions: TBalanceActions) => ({
   logo: balanceSymbols[balance.name],

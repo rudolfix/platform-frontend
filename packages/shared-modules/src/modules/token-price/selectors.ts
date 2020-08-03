@@ -1,29 +1,32 @@
 import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared-utils";
-import { StateFromReducersMapObject } from "redux";
 
-import { ITokenPriceStateData, tokenPriceReducerMap } from "./reducer";
+import { TTokenPriceModuleState } from "./module";
+import { ITokenPriceStateData } from "./reducer";
 
-type TModuleState = StateFromReducersMapObject<typeof tokenPriceReducerMap>;
+export const selectTokenPriceData = (
+  state: TTokenPriceModuleState,
+): ITokenPriceStateData | undefined => state.tokenPrice.tokenPriceData;
 
-export const selectTokenPriceData = (state: TModuleState): ITokenPriceStateData | undefined =>
-  state.tokenPrice.tokenPriceData;
-
-export const selectEtherPriceEur = (state: TModuleState): string => {
+export const selectEtherPriceEur = (state: TTokenPriceModuleState): string => {
   const data = selectTokenPriceData(state);
   return data?.etherPriceEur || "0";
 };
 
-export const selectNeuPriceEur = (state: TModuleState): string => {
+export const selectNeuPriceEur = (state: TTokenPriceModuleState): string => {
   const data = selectTokenPriceData(state);
   return data?.neuPriceEur || "0";
 };
 
-export const selectEurPriceEther = (state: TModuleState): string => {
+export const selectEurPriceEther = (state: TTokenPriceModuleState): string => {
   const data = selectTokenPriceData(state);
   return data?.eurPriceEther || "0";
 };
 
-export const selectEurEquivalent = (state: TModuleState, amount: string, currency: ECurrency) => {
+export const selectEurEquivalent = (
+  state: TTokenPriceModuleState,
+  amount: string,
+  currency: ECurrency,
+) => {
   switch (currency) {
     case ECurrency.NEU:
       return multiplyBigNumbers([selectNeuPriceEur(state), amount]);

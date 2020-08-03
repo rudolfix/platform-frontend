@@ -1,15 +1,17 @@
+import { ITokenDisbursal } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ITokenDisbursal } from "../../investor-portfolio/types";
 import { ETokenType } from "../types";
 
 export const txTransactionsActions = {
   /* Transaction Flows */
   startWithdrawEth: () => createSimpleAction("TRANSACTIONS_START_WITHDRAW_ETH"),
   startUpgrade: (tokenType: ETokenType) => createAction("TRANSACTIONS_START_UPGRADE", tokenType),
-  upgradeSuccessful: (tokenType: ETokenType) =>
-    createAction("TRANSACTIONS_UPGRADE_SUCCESSFUL", tokenType),
+  upgradeSuccessful: createActionFactory(
+    "TRANSACTIONS_UPGRADE_SUCCESSFUL",
+    (tokenType: ETokenType) => ({ tokenType }),
+  ),
   startInvestment: createActionFactory("TRANSACTIONS_START_INVESTMENT", (etoId: string) => ({
     etoId,
   })),
@@ -51,6 +53,10 @@ export const txTransactionsActions = {
       proposalId,
       voteInFavor,
     }),
+  ),
+  startPublishResolutionUpdate: createActionFactory(
+    "TRANSACTION_START_PUBLISH_RESOLUTION_UPDATE",
+    (title: string) => ({ title }),
   ),
   // Add here new custom sagas that represent flows
 };

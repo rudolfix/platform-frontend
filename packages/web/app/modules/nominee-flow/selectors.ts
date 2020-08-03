@@ -1,15 +1,15 @@
+import {
+  EETOStateOnChain,
+  IEtoDocument,
+  nomineeIgnoredTemplates,
+  TEtoWithCompanyAndContract,
+  TOfferingAgreementsStatus,
+} from "@neufund/shared-modules";
 import { DataUnavailableError, objectToFilteredArray } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { nomineeIgnoredTemplates } from "../../lib/api/eto/EtoFileUtils";
 import { TAppGlobalState } from "../../store";
 import { selectStartOfOnchainState } from "../eto/selectors";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContract,
-  TOfferingAgreementsStatus,
-} from "../eto/types";
 import { selectRouter } from "../routing/selectors";
 import {
   ENomineeEtoSpecificTask,

@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 
 import { assertMoneyNotEmpty, goToDashboard, tid } from "../../../utils/index";
 import { createAndLoginNewUser } from "../../../utils/userHelpers";

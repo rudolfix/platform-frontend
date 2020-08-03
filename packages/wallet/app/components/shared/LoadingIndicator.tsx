@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { LoadingIndicator };
+export { LoadingIndicator, INDICATOR_SIZE };

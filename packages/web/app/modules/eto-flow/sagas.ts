@@ -1,5 +1,14 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
+import {
+  EEtoState,
+  EJwtPermissions,
+  etoModuleApi,
+  IHttpResponse,
+  InvalidETOStateError,
+  TCompanyEtoData,
+  TEtoProducts,
+  TEtoSpecsData,
+} from "@neufund/shared-modules";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import {
@@ -7,17 +16,9 @@ import {
   createNotificationMessage,
 } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import {
-  EEtoState,
-  TCompanyEtoData,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import { InvalidETOStateError } from "../eto/errors";
-import { loadEtoContract } from "../eto/sagas";
 import { selectActiveNomineeEto } from "../nominee-flow/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
@@ -27,6 +28,7 @@ import {
   selectIssuerEtoWithCompanyAndContract,
   selectNewPreEtoStartDate,
   selectPreEtoStartDateFromContract,
+  userHasKycAndEmailVerified,
 } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
@@ -39,7 +41,7 @@ export function* loadIssuerEto({
     const eto: TEtoSpecsData = yield apiEtoService.getMyEto();
 
     if (eto.state === EEtoState.ON_CHAIN) {
-      yield neuCall(loadEtoContract, eto);
+      yield call(etoModuleApi.sagas.loadEtoContract, eto);
     }
 
     yield put(actions.etoFlow.setEto({ eto, company }));
@@ -122,6 +124,7 @@ export function* saveCompany(
 
     yield apiEtoService.putCompany({ ...currentIssuerCompany, ...action.payload.company });
 
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error(e, "Failed to save company");
@@ -152,6 +155,7 @@ export function* saveEto(
       ...action.payload.eto,
     });
 
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error(e, "Failed to save ETO");
@@ -316,7 +320,18 @@ export function* loadIssuerStep(): Generator<any, any, any> {
   yield put(actions.kyc.kycLoadIndividualDocumentList());
 }
 
+/**
+ * Loads eto to check governance tab visibility
+ */
+export function* loadIssuerView(): Generator<any, any, any> {
+  const userKycAndEmailVerified = yield* select(userHasKycAndEmailVerified);
+  if (userKycAndEmailVerified) {
+    yield neuCall(loadIssuerEto);
+  }
+}
+
 export function* etoFlowSagas(): any {
+  yield fork(neuTakeEvery, etoFlowActions.loadIssuerView, loadIssuerView);
   yield fork(neuTakeEvery, etoFlowActions.loadIssuerEto, loadIssuerEto);
   yield fork(neuTakeEvery, etoFlowActions.saveCompanyStart, saveCompany);
   yield fork(neuTakeEvery, etoFlowActions.saveEtoStart, saveEto);

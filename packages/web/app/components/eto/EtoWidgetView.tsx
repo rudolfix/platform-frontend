@@ -1,18 +1,14 @@
-import * as cn from "classnames";
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
+import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import {
-  selectEtoWidgetError,
-  selectInvestorEtoWithCompanyAndContract,
-} from "../../modules/eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus/EtoOverviewStatus";
 
@@ -59,8 +55,8 @@ const EtoWidgetView = compose<TProps, IRouterParams>(
   createErrorBoundary(() => <Col xs={12} />),
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
-      eto: selectInvestorEtoWithCompanyAndContract(state, props.previewCode),
-      widgetError: selectEtoWidgetError(state.eto),
+      eto: etoModuleApi.selectors.selectInvestorEtoWithCompanyAndContract(state, props.previewCode),
+      widgetError: etoModuleApi.selectors.selectEtoWidgetError(state.eto),
     }),
   }),
   onEnterAction<IRouterParams>({

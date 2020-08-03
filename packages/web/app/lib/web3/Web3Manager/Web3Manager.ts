@@ -8,7 +8,7 @@ import { BigNumber } from "bignumber.js";
 import PollingBlockTracker from "eth-block-tracker";
 import { EventEmitter } from "events";
 import { decorate, inject, injectable } from "inversify";
-import * as Web3 from "web3";
+import Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";

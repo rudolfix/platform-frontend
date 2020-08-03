@@ -1,17 +1,17 @@
-import { Q18, toEquityTokenSymbol } from "@neufund/shared-utils";
+import {
+  EEtoState,
+  EETOStateOnChain,
+  EEtoSubState,
+  IBookBuildingStats,
+  ICalculatedContribution,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import { convertFromUlps, Q18, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
 import { TMockEto } from "../../../../data/etoCompanies";
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  EEtoSubState,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../../modules/eto/types";
-import { ICalculatedContribution } from "../../../../modules/investor-portfolio/types";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { withMockedDate } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { EtoOverviewThumbnail } from "./EtoOverviewThumbnail";
@@ -46,17 +46,20 @@ const withEto = ({
   calculatedContributions?: ICalculatedContribution;
 }) =>
   withStore({
+    jwt: {},
+    user: {},
+    auth: {},
     eto: {
       etos: { [eto.previewCode]: eto },
       companies: { [eto.companyId]: eto.company },
       contracts: { [eto.previewCode]: eto.contract },
     },
-    bookBuildingFlow: bookbuildingStats && {
+    bookbuilding: bookbuildingStats && {
       bookbuildingStats: {
         [eto.etoId]: bookbuildingStats,
       },
     },
-    investorTickets: calculatedContributions && {
+    investorPortfolio: calculatedContributions && {
       calculatedContributions: {
         [eto.etoId]: calculatedContributions,
       },
@@ -83,7 +86,7 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
       brandName: "ICBM Capital Raise",
       url: "https://commit.neufund.org",
       companyPreviewCardBanner: icbmThumbnail,
-      totalAmount: Q18.mul("12500000").toString(),
+      totalAmount: convertFromUlps(Q18.mul("12500000").toString()).toString(),
       id: "icbm",
       categories: ["Technology", "Blockchain"],
       keyQuoteFounder:
@@ -112,7 +115,12 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
       },
     };
 
-    return withEto({ eto });
+    const bookbuildingStats = {
+      pledgedAmount: 100000,
+      investorsCount: rootEto.maxPledges,
+    };
+
+    return withEto({ eto, bookbuildingStats: bookbuildingStats });
   })
   .add("whitelisting (active)", () => {
     const eto = {

@@ -1,9 +1,8 @@
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
-import { getInvestmentCalculatedPercentage } from "../../../modules/eto/utils";
 import { ProgressBarSimple } from "../../shared/ProgressBarSimple";
 
 type TExternalProps = {
@@ -11,7 +10,9 @@ type TExternalProps = {
 };
 
 const InvestmentProgress: React.FunctionComponent<TExternalProps> = ({ eto }) => {
-  const currentInvestmentProgressPercentage = nonNullable(getInvestmentCalculatedPercentage(eto));
+  const currentInvestmentProgressPercentage = nonNullable(
+    etoModuleApi.utils.getInvestmentCalculatedPercentage(eto),
+  );
 
   const progressBn = new BigNumber(currentInvestmentProgressPercentage);
   const progress = progressBn.greaterThan("100") ? "100" : progressBn.toString();

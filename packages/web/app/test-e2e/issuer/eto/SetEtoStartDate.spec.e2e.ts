@@ -1,6 +1,6 @@
-import * as moment from "moment";
+import { utcTime, weekdayUTC } from "@neufund/shared-utils";
+import moment from "moment";
 
-import { utcTime, weekdayUTC } from "../../../components/shared/utils";
 import { closeModal, confirmAccessModal } from "../../utils/index";
 import { goToIssuerDashboard } from "../../utils/navigation";
 import { tid } from "../../utils/selectors";

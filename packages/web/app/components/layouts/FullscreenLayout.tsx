@@ -1,10 +1,10 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
 import { selectIsAuthorized } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { TDataTestId, TTranslatedString } from "../../types";
+import { withContainer } from "../shared/hocs/withContainer";
 import { Content } from "./Content";
 import { HeaderFullscreen, THeaderFullscreenProps } from "./header/HeaderFullscreen";
 import { TContentExternalProps } from "./Layout";

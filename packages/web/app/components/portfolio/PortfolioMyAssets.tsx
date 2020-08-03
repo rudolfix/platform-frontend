@@ -1,35 +1,32 @@
-import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
-import { multiplyBigNumbers, withContainer } from "@neufund/shared-utils";
+import { Button, EButtonLayout, Eur, Table, TokenDetails } from "@neufund/design-system";
+import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithTokenData,
+  walletApi,
+} from "@neufund/shared-modules";
+import {
+  convertFromUlps,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { selectEtosError } from "../../modules/eto/selectors";
-import {
-  selectMyAssetsEurEquivTotalWithNeu,
-  selectMyAssetsWithTokenData,
-} from "../../modules/investor-portfolio/selectors";
-import { TETOWithTokenData } from "../../modules/investor-portfolio/types";
 import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
-import { Money } from "../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-} from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { withContainer } from "../shared/hocs/withContainer";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { PanelRounded } from "../shared/Panel";
-import { Tooltip } from "../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../shared/tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 import { WarningAlert } from "../shared/WarningAlert";
 
 import neuIcon from "../../assets/img/neu_icon.svg";
@@ -79,14 +76,7 @@ const prepareTableColumns = (totalEurEquiv: string) => [
   {
     Header: <FormattedMessage id="portfolio.section.my-assets.table.header.current-value" />,
     accessor: "value",
-    Footer: () => (
-      <Money
-        value={totalEurEquiv}
-        inputFormat={ENumberInputFormat.ULPS}
-        valueType={ECurrency.EUR}
-        outputFormat={ENumberOutputFormat.FULL}
-      />
-    ),
+    Footer: () => <Eur value={totalEurEquiv} />,
   },
   { Header: "", accessor: "actions" },
 ];
@@ -119,22 +109,8 @@ const prepareTableRowData = (
               outputFormat={ENumberOutputFormat.FULL}
             />
           ),
-          value: (
-            <Money
-              value={neuValue}
-              inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.EUR}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
-          ),
-          currentPrice: (
-            <Money
-              value={neuPrice}
-              inputFormat={ENumberInputFormat.FLOAT}
-              valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
-          ),
+          value: <Eur value={neuValue} />,
+          currentPrice: <Eur value={neuPrice} />,
           actions: (
             <Button
               layout={EButtonLayout.PRIMARY}
@@ -149,7 +125,7 @@ const prepareTableRowData = (
 
   const assets = myAssets
     .filter(v => v.tokenData)
-    .filter(v => !new BigNumber(v.tokenData.balance).isZero())
+    .filter(v => !new BigNumber(v.tokenData.balanceUlps).isZero())
     .map(
       ({
         previewCode,
@@ -174,30 +150,23 @@ const prepareTableRowData = (
         quantity: (
           <span data-test-id={`portfolio-my-assets-token-balance-${etoId}`}>
             <FormatNumber
-              value={tokenData.balance}
-              inputFormat={ENumberInputFormat.FLOAT}
+              value={tokenData.balanceUlps}
+              inputFormat={ENumberInputFormat.DECIMAL}
               outputFormat={ENumberOutputFormat.INTEGER}
             />
           </span>
         ),
 
         value: (
-          <Money
-            value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
+          <Eur
+            value={multiplyBigNumbers([
+              tokenData.tokenPrice,
+              convertFromUlps(tokenData.balanceUlps, tokenData.balanceDecimals),
+            ])}
           />
         ),
 
-        currentPrice: (
-          <Money
-            value={tokenData.tokenPrice}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-            outputFormat={ENumberOutputFormat.FULL}
-          />
-        ),
+        currentPrice: <Eur value={tokenData.tokenPrice} />,
         actions: (
           <>
             <Button
@@ -281,9 +250,9 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
       neuPrice: selectNeuPriceEur(state),
       neumarkAddress: walletApi.selectors.selectNeumarkAddress(state),
       neuValue: walletApi.selectors.selectNeuBalanceEurEquiv(state),
-      myAssets: selectMyAssetsWithTokenData(state)!,
-      hasError: selectEtosError(state),
-      totalEurEquiv: selectMyAssetsEurEquivTotalWithNeu(state),
+      myAssets: investorPortfolioModuleApi.selectors.selectMyAssetsWithTokenData(state)!,
+      hasError: etoModuleApi.selectors.selectEtosError(state),
+      totalEurEquiv: investorPortfolioModuleApi.selectors.selectMyAssetsEurEquivTotalWithNeu(state),
     }),
     dispatchToProps: dispatch => ({
       startTokenTransfer: (tokenAddress: string, tokenImage: string) =>

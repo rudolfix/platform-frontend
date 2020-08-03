@@ -1,5 +1,9 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared-modules";
+import {
+  EJwtPermissions,
+  ENomineeUpdateRequestStatus,
+  TNomineeRequestResponse,
+} from "@neufund/shared-modules";
 
 import {
   EEtoNomineeRequestMessages,
@@ -10,11 +14,10 @@ import {
   createNotificationMessage,
 } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectEtoNominee } from "../eto-flow/selectors";
-import { ENomineeUpdateRequestStatus, TNomineeRequestStorage } from "../nominee-flow/types";
+import { TNomineeRequestStorage } from "../nominee-flow/types";
 import { etoApiDataToNomineeRequests } from "../nominee-flow/utils";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";

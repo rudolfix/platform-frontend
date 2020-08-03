@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Panel } from "../Panel";
 
-import * as styles from "./ErrorBoundary.module.scss";
+import * as styles from "./ErrorBoundaryPanel.module.scss";
 
 export const ErrorBoundaryPanel: React.FunctionComponent = () => (
   <Panel className={styles.panel}>

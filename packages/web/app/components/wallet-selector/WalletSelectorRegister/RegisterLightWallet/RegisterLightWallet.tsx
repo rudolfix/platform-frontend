@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
@@ -13,6 +12,7 @@ import {
 import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
+import { withContainer } from "../../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { TMessage } from "../../../translatedMessages/utils";

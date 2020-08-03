@@ -4,6 +4,7 @@ import * as React from "react";
 import { ETxType } from "../../../../lib/web3/types";
 import { SetEtoDateSummary } from "../eto-flow/SetDateSummary";
 import { SignInvestmentAgreementSummary } from "../eto-flow/SignInvestmentAgreementSummary";
+import { GovernanceResolutionSummary } from "../governance/GovernanceResolutionSummary";
 import { InvestmentSummary } from "../investment-flow/Summary";
 import { InvestorAcceptPayoutSummary } from "../investor-payout/AcceptSummary";
 import { InvestorRedistributePayoutSummary } from "../investor-payout/RedistributeSummary";
@@ -51,6 +52,8 @@ const SummaryComponent: React.FunctionComponent<TExternalProps> = ({ type }) => 
     case ETxType.TRANSFER_TOKENS:
     case ETxType.WITHDRAW:
       return <TransferSummary />;
+    case ETxType.EXECUTE_RESOLUTION:
+      return <GovernanceResolutionSummary />;
     default:
       return assertNever(type, "Unknown Transaction Type");
   }

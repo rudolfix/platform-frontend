@@ -1,7 +1,7 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { EtoWidget } from "./EtoWidgetView";
 
 storiesOf("ETO/EtoWidgetView", module).add("widget not found", () => (

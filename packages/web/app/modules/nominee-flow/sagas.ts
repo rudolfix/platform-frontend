@@ -1,5 +1,17 @@
-import { all, fork, put, select, take } from "@neufund/sagas";
-import { kycApi, walletApi } from "@neufund/shared-modules";
+import { all, call, fork, put, select, take } from "@neufund/sagas";
+import {
+  EAgreementType,
+  EEtoAgreementStatus,
+  EEtoState,
+  EETOStateOnChain,
+  etoModuleApi,
+  IssuerIdInvalid,
+  kycApi,
+  NomineeRequestExists,
+  TEtoWithCompanyAndContract,
+  TNomineeRequestResponse,
+  walletApi,
+} from "@neufund/shared-modules";
 import { Dictionary, InvariantError, nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { cloneDeep, isEmpty } from "lodash/fp";
@@ -13,21 +25,11 @@ import {
 } from "../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EEtoState, TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IssuerIdInvalid, NomineeRequestExists } from "../../lib/api/eto/EtoNomineeApi";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { selectIsBankAccountVerified } from "../bank-transfer-flow/selectors";
-import {
-  getEtoContract,
-  loadAgreementsStatus,
-  loadCapitalIncrease,
-  loadInvestmentAgreement,
-} from "../eto/sagas";
-import { selectEtoSubStateEtoEtoWithContract } from "../eto/selectors";
-import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
-import { isOnChain } from "../eto/utils";
+import { loadAgreementsStatus } from "../eto/sagas";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import {
   neuCall,
@@ -36,7 +38,6 @@ import {
   neuTakeLatestUntil,
   neuTakeOnly,
 } from "../sagasUtils";
-import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";
 import {
   initalNomineeTaskStatus,
   initialEtoSpecificTaskData,
@@ -87,7 +88,7 @@ export function* initNomineeEtoSpecificTasks(
       [ENomineeEtoSpecificTask.ACCEPT_ISHA]: ENomineeTaskStatus.NOT_DONE,
     };
 
-    if (isOnChain(eto)) {
+    if (etoModuleApi.utils.isOnChain(eto)) {
       yield put(actions.nomineeFlow.nomineeLoadEtoAgreementsStatus(eto));
       yield neuTakeOnly(actions.nomineeFlow.nomineeSetAgreementsStatus, {
         previewCode: eto.previewCode,
@@ -111,7 +112,7 @@ export function* initNomineeEtoSpecificTasks(
       }
     }
 
-    if (isOnChain(eto) && eto.contract.timedState >= EETOStateOnChain.Signing) {
+    if (etoModuleApi.utils.isOnChain(eto) && eto.contract.timedState >= EETOStateOnChain.Signing) {
       yield neuCall(
         nomineeFlowLoadInvestmentAgreement,
         actions.nomineeFlow.nomineeLoadSignedInvestmentAgreement(eto.etoId, eto.previewCode),
@@ -124,7 +125,7 @@ export function* initNomineeEtoSpecificTasks(
       }
     }
 
-    if (isOnChain(eto) && eto.contract.timedState > EETOStateOnChain.Signing) {
+    if (etoModuleApi.utils.isOnChain(eto) && eto.contract.timedState > EETOStateOnChain.Signing) {
       nomineeEtoSpecificTasks[ENomineeEtoSpecificTask.ACCEPT_ISHA] = ENomineeTaskStatus.DONE;
     }
 
@@ -250,7 +251,7 @@ export function* nomineeFlowLoadInvestmentAgreement(
     payload: { etoId, previewCode },
   }: TActionFromCreator<typeof actions.nomineeFlow.nomineeLoadSignedInvestmentAgreement>,
 ): Generator<any, any, any> {
-  const url = yield neuCall(loadInvestmentAgreement, etoId);
+  const url = yield neuCall(etoModuleApi.sagas.loadInvestmentAgreement, etoId);
   yield put(actions.nomineeFlow.nomineeSetInvestmentAgreementHash(previewCode, url));
 }
 
@@ -325,7 +326,7 @@ export function* getNomineeTaskRedeemShareCapitalData(
   previewCode: string,
 ): Generator<any, any, any> {
   const capitalIncrease: string = yield neuCall(
-    loadCapitalIncrease,
+    etoModuleApi.sagas.loadCapitalIncrease,
     actions.eto.loadCapitalIncrease(etoId, previewCode),
   );
   const walletBalance: string = yield select(walletApi.selectors.selectLiquidEuroTokenBalance);
@@ -490,9 +491,9 @@ export function* loadNomineeEto(
   eto: TEtoWithCompanyAndContract,
 ): Generator<any, any, any> {
   if (eto.state === EEtoState.ON_CHAIN) {
-    eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+    eto.contract = yield call(etoModuleApi.sagas.getEtoContract, eto.etoId, eto.state);
   }
-  eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
+  eto.subState = yield select(etoModuleApi.selectors.selectEtoSubStateEtoEtoWithContract, eto);
   return eto;
 }
 

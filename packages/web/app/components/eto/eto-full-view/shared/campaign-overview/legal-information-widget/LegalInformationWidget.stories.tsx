@@ -1,8 +1,8 @@
+import { TCompanyEtoData } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testCompany } from "../../../../../../../test/fixtures";
-import { TCompanyEtoData } from "../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { LegalInformationWidget } from "./LegalInformationWidget";
 
 const emptyShareholders = {

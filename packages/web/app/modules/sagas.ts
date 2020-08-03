@@ -4,17 +4,14 @@ import { TGlobalDependencies } from "../di/setupBindings";
 import { actions } from "./actions";
 import { authSagas } from "./auth/sagas";
 import { bankTransferFlowSaga } from "./bank-transfer-flow/sagas";
-import { bookBuildingFlowSagas } from "./bookbuilding-flow/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoNomineeSagas } from "./eto-nominee/sagas";
 import { etoViewSagas } from "./eto-view/shared/sagas";
-import { etoSagas } from "./eto/sagas";
 import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
 import { immutableFileSagas } from "./immutable-file/sagas";
 import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
-import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { marketingUnsubscribeView } from "./marketing-unsubscribe-view/sagas";
 import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notification-modal/sagas";
@@ -83,12 +80,6 @@ function* allSagas(): Generator<any, any, any> {
       neuTakeUntil,
       [actions.init.startServices, actions.init.restartServices],
       actions.init.stopServices,
-      investorTicketsSagas,
-    ),
-    fork(
-      neuTakeUntil,
-      [actions.init.startServices, actions.init.restartServices],
-      actions.init.stopServices,
       profileSagas,
     ),
     fork(
@@ -125,19 +116,7 @@ function* allSagas(): Generator<any, any, any> {
       neuTakeUntil,
       [actions.init.startServices, actions.init.restartServices],
       actions.init.stopServices,
-      etoSagas,
-    ),
-    fork(
-      neuTakeUntil,
-      [actions.init.startServices, actions.init.restartServices],
-      actions.init.stopServices,
       etoNomineeSagas,
-    ),
-    fork(
-      neuTakeUntil,
-      [actions.init.startServices, actions.init.restartServices],
-      actions.init.stopServices,
-      bookBuildingFlowSagas,
     ),
     fork(
       neuTakeUntil,

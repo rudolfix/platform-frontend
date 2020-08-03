@@ -3,6 +3,7 @@ import { ETransactionType } from "@neufund/shared-modules";
 import { ETxType } from "../../lib/web3/types";
 import { TClaimAdditionalData } from "./transactions/claim/types";
 import { TEtoSetDateAdditionalData } from "./transactions/eto-flow/types";
+import { TExecuteResolutionAdditionalData } from "./transactions/governance/types";
 import { TInvestmentAdditionalData } from "./transactions/investment/types";
 import { TAcceptPayoutAdditionalData } from "./transactions/payout/accept/types";
 import { TRedistributePayoutAdditionalData } from "./transactions/payout/redistribute/types";
@@ -84,6 +85,11 @@ type TTxSenderShareholderResolutionVote = ITxTypeWithData<
   TShareholderResolutionVoteAdditionalData
 >;
 
+type TTxExecuteResolution = ITxTypeWithData<
+  ETxType.EXECUTE_RESOLUTION,
+  TExecuteResolutionAdditionalData
+>;
+
 export type TSpecificTransactionState =
   | TTxSenderSignInvestmentAgreementState
   | TTxSenderUpgradeState
@@ -100,7 +106,8 @@ export type TSpecificTransactionState =
   | TTxSenderNomineeSignRAAAState
   | TTxSenderTokenTransferState
   | TTxSenderNomineeSignISHAState
-  | TTxSenderShareholderResolutionVote;
+  | TTxSenderShareholderResolutionVote
+  | TTxExecuteResolution;
 
 export type TAdditionalDataByType<T extends ETxType> = Extract<
   TSpecificTransactionState,

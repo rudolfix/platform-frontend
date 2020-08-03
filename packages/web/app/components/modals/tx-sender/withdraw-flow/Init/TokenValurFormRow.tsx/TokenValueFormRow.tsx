@@ -1,22 +1,18 @@
-import { EquityToken } from "@neufund/shared-utils";
-import * as cn from "classnames";
+import { Eur } from "@neufund/design-system";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EquityToken,
+} from "@neufund/shared-utils";
+import cn from "classnames";
 import { FormikErrors, FormikTouched } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EAdditionalValidationDataNotifications } from "../../../../../../modules/tx/validator/reducer";
 import { isValidFormNumber } from "../../../../../../modules/tx/validator/transfer/utils";
-import { Money } from "../../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../../shared/formatters/utils";
-import {
-  EInputTheme,
-  FormFieldBoolean,
-  FormMaskedNumberInput,
-} from "../../../../../shared/forms/index";
+import { EInputTheme, FormFieldBoolean, FormMaskedNumberInput } from "../../../../../shared/forms";
 import { hasNotification } from "../utils";
 
 import * as styles from "../../Transfer.module.scss";
@@ -45,7 +41,7 @@ const TokenValueFormRow: React.FunctionComponent<{
       label={<FormattedMessage id="modal.transfer.sent.amount" />}
       labelClassName={styles.label}
       className="text-right"
-      storageFormat={ENumberInputFormat.FLOAT}
+      storageFormat={ENumberInputFormat.DECIMAL}
       valueType={tokenSymbol}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
       data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
@@ -68,15 +64,12 @@ const TokenValueFormRow: React.FunctionComponent<{
       {tokenSymbol === ECurrency.ETH && (
         <small>
           {"= "}
-          <Money
+          <Eur
             value={
               isValidFormNumber(valueEuro)
                 ? valueEuro
                 : "0" /* Show 0 if form is invalid due of initially populated state */
             }
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
         </small>
       )}

@@ -1,16 +1,24 @@
 # Auth module
 
 Manages all common authentication/authorization related logic. Stores the jwt token and user
-information in the store.
+information in the store. Refreshes JWT token when when it's close to expire.
 
 ### API
 
 Exposes `authJsonHttpClient` and `authBinaryHttpClient` as symbols to make authorized http calls.
 
 Exposes utility sagas to handle lifetime of a JWT token (`loadJwt`, `createJwt`, `setJwt`,
-`escalateJwt`, `refreshJWT`)
+`escalateJwt`)
 
-Allows to get access to the underline jwt token with `selectJwt` selector.
+Allows getting access to the underline jwt token with `selectJwt` selector.
+
+Module consumer should handle these effects to work properly:
+
+- `authModuleAPI.actions.jwtTimeout` - dispatched when JWT token timeouts and app needs to clear and
+  logout user state.
+
+- `authModuleAPI.sagas.resetUser` - should be called by consumer during logout so auth module can
+  properly cleanup state and stop watchers.
 
 ### Tech notes
 

@@ -74,12 +74,10 @@ describe("Payouts", () => {
 
     cy.get(tid(`asset-portfolio.payout-eur_t`)).within(() => {
       cy.get(tid("asset-portfolio.payout.accept-payout")).should("be.disabled");
-      cy.get(tid("asset-portfolio.payout.redistribute-payout")).should("be.disabled");
     });
 
     cy.get(tid(`asset-portfolio.payout-eth`)).within(() => {
       cy.get(tid("asset-portfolio.payout.accept-payout")).should("be.disabled");
-      cy.get(tid("asset-portfolio.payout.redistribute-payout")).should("be.disabled");
     });
 
     cy.get(tid("asset-portfolio.payout.accept-all-payouts")).should("be.disabled");

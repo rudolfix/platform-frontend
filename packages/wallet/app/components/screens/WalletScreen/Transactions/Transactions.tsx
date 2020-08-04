@@ -13,7 +13,8 @@ import { spacingStyles } from "styles/spacings";
 import { ItemSeparatorComponent } from "./ItemSeparatorComponent";
 import { getTxUniqueId } from "./utils";
 
-type TFlatList = React.ComponentProps<typeof Animated.FlatList>;
+declare class TypedFlatList extends Animated.FlatList<TTransaction> {}
+type TFlatList = React.ComponentProps<typeof TypedFlatList>;
 
 type TExternalProps = {
   onTransactionPress: (transaction: TTransaction) => void;
@@ -27,14 +28,17 @@ type TSeparatorProps = {
   leadingItem: TTransaction;
 };
 
+const ItemSeparatorComponentContainer: React.FunctionComponent<TSeparatorProps> = ({
+  leadingItem,
+}: TSeparatorProps) =>
+  leadingItem.kind !== ETransactionKind.PENDING ? <ItemSeparatorComponent /> : null;
+
 const Transactions: React.FunctionComponent<TExternalProps> = ({
   onTransactionPress,
   ...props
 }) => (
   <Animated.FlatList
-    ItemSeparatorComponent={({ leadingItem }: TSeparatorProps) =>
-      leadingItem.kind !== ETransactionKind.PENDING ? <ItemSeparatorComponent /> : null
-    }
+    ItemSeparatorComponent={ItemSeparatorComponentContainer}
     keyExtractor={getTxUniqueId}
     onEndReachedThreshold={0.15}
     ListEmptyComponent={ListEmptyComponent}

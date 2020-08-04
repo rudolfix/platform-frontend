@@ -91,15 +91,17 @@ const prepareTableRowData = (
     ),
     actions: (
       <div data-test-id={`asset-portfolio.payout-${disbursal.token}`}>
-        <Button
-          disabled={!isVerifiedInvestor}
-          data-test-id="asset-portfolio.payout.redistribute-payout"
-          onClick={() => redistributePayout(disbursal)}
-          layout={EButtonLayout.SECONDARY}
-          className="mr-3"
-        >
-          <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
-        </Button>
+        {process.env.NF_ALLOW_REDISTRIBUTE_PAYOUTS === "1" && (
+          <Button
+            disabled={!isVerifiedInvestor}
+            data-test-id="asset-portfolio.payout.redistribute-payout"
+            onClick={() => redistributePayout(disbursal)}
+            layout={EButtonLayout.SECONDARY}
+            className="mr-3"
+          >
+            <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
+          </Button>
+        )}
         <Button
           disabled={!isVerifiedInvestor}
           data-test-id="asset-portfolio.payout.accept-payout"

@@ -31,6 +31,7 @@ const Data: React.FunctionComponent<TExternalProps> = ({ data, allowedTypes, onT
     animationRef.current.setValue(0);
 
     Animated.timing(animationRef.current, {
+      useNativeDriver: false,
       toValue: 1,
       duration: 400,
     }).start();

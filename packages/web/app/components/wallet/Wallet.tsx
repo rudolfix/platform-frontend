@@ -1,4 +1,3 @@
-import { txHistoryApi } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -50,10 +49,12 @@ export const WalletLayout: React.FunctionComponent<TReadyStateProps & TDispatchP
   verifyBankAccount,
   bankAccount,
   userIsFullyVerified,
-  transactionsHistoryPaginated,
+  transactions,
+  canLoadMoreTx,
   pendingTransaction,
   loadTxHistoryNext,
   showTransactionDetails,
+  transactionHistoryLoading,
 }) => (
   <>
     <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.INHERIT_GRID}>
@@ -108,9 +109,11 @@ export const WalletLayout: React.FunctionComponent<TReadyStateProps & TDispatchP
           />
         </Heading>
         <TransactionsHistory
-          transactionsHistoryPaginated={transactionsHistoryPaginated}
+          transactions={transactions}
+          canLoadMoreTx={canLoadMoreTx}
           pendingTransaction={pendingTransaction}
           loadTxHistoryNext={loadTxHistoryNext}
+          transactionHistoryLoading={transactionHistoryLoading}
           showTransactionDetails={showTransactionDetails}
         />
       </Container>
@@ -127,9 +130,9 @@ export const Wallet = compose<React.FunctionComponent>(
       balanceActions: createBalanceActions(dispatch),
       verifyBankAccount: () =>
         dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY)),
-      loadTxHistoryNext: () => dispatch(txHistoryApi.actions.loadNextTransactions()),
+      loadTxHistoryNext: () => dispatch(actions.walletView.loadNextTransactions()),
       showTransactionDetails: (id: string) =>
-        dispatch(txHistoryApi.actions.showTransactionDetails(id)),
+        dispatch(actions.walletView.showTransactionDetails(id)), //fixme!!
     }),
   }),
   withContainer(WalletContainer),

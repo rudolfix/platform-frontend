@@ -1,9 +1,17 @@
 import { all, call, fork, put, race, SagaGenerator, select, take } from "@neufund/sagas";
-import { kycApi, tokenPriceModuleApi, txHistoryApi, walletApi } from "@neufund/shared-modules";
+import {
+  kycApi,
+  tokenPriceModuleApi,
+  TTxHistory,
+  txHistoryApi,
+  walletApi,
+} from "@neufund/shared-modules";
 import { addBigNumbers, compareBigNumbers, convertFromUlps } from "@neufund/shared-utils";
+import { isEqual } from "lodash/fp";
 
 import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { EProcessState } from "../../utils/enums/processStates";
+import { processStateIsSuccess } from "../../utils/typeGuards";
 import { actions } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { neuCall, neuTakeUntil } from "../sagasUtils";
@@ -114,15 +122,30 @@ export function* populateBalanceData(): SagaGenerator<{
 }
 
 export function* populateTxHistory(): SagaGenerator<{
-  transactionsHistoryPaginated: ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+  transactions: TTxHistory[];
+  canLoadMoreTx: boolean;
+  transactionHistoryLoading: boolean;
   pendingTransaction: TxPendingWithMetadata | null;
 }> {
   const transactionsHistoryPaginated = yield* select(
     txHistoryApi.selectors.selectTxHistoryPaginated,
   );
-
   const pendingTransaction = yield* select(selectPlatformMiningTransaction);
-  return { transactionsHistoryPaginated, pendingTransaction };
+
+  let transactions: TTxHistory[] = [];
+  let canLoadMoreTx = false;
+  let transactionHistoryLoading = false;
+
+  if (
+    transactionsHistoryPaginated !== undefined &&
+    transactionsHistoryPaginated.transactions !== undefined
+  ) {
+    transactions = transactionsHistoryPaginated.transactions;
+    canLoadMoreTx = transactionsHistoryPaginated.canLoadMore;
+    transactionHistoryLoading = transactionsHistoryPaginated.isLoading;
+  }
+
+  return { transactions, canLoadMoreTx, transactionHistoryLoading, pendingTransaction };
 }
 
 export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
@@ -138,7 +161,12 @@ export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
     const bankAccount = yield* select(kycApi.selectors.selectBankAccount);
 
     const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
-    const { transactionsHistoryPaginated, pendingTransaction } = yield* call(populateTxHistory);
+    const {
+      transactions,
+      canLoadMoreTx,
+      transactionHistoryLoading,
+      pendingTransaction,
+    } = yield* call(populateTxHistory);
 
     yield put(
       actions.walletView.walletViewSetData({
@@ -147,8 +175,10 @@ export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
         balanceData,
         totalBalanceEuro,
         bankAccount,
-        transactionsHistoryPaginated,
+        transactions,
+        canLoadMoreTx,
         pendingTransaction,
+        transactionHistoryLoading,
         processState: EProcessState.SUCCESS,
       }),
     );
@@ -166,19 +196,22 @@ export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
 
 export function* walletViewController(): Generator<any, void, any> {
   try {
-    const initialLoadingResult = yield neuCall(loadInitialWalletView);
+    yield neuCall(loadInitialWalletView);
 
-    if (initialLoadingResult === EProcessState.SUCCESS) {
+    const oldState = yield* select(selectWalletViewData);
+
+    if (processStateIsSuccess<TWalletViewReadyState>(oldState)) {
       yield put(txHistoryApi.actions.startWatchingForNewTransactions());
 
       while (true) {
         const dataReloadRequired = yield race({
           icbmUpgrade: take(actions.txTransactions.upgradeSuccessful),
           tokenPriceData: take(tokenPriceModuleApi.actions.saveTokenPrice),
+          txHistoryDataRequest: take(actions.walletView.loadNextTransactions),
           txHistoryData: take(txHistoryApi.actions.setTransactions),
           pendingTxChange: take(actions.txMonitor.setPendingTxs),
         });
-        const oldState = yield* select(selectWalletViewData);
+
         let newState;
 
         if (dataReloadRequired.icbmUpgrade) {
@@ -190,7 +223,7 @@ export function* walletViewController(): Generator<any, void, any> {
           };
         } else if (dataReloadRequired.tokenPriceData) {
           const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
-          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
+          const { transactions, canLoadMoreTx, pendingTransaction } = yield* call(
             populateTxHistory,
           );
 
@@ -198,26 +231,49 @@ export function* walletViewController(): Generator<any, void, any> {
             ...oldState,
             balanceData,
             totalBalanceEuro,
-            transactionsHistoryPaginated,
+            transactions,
+            canLoadMoreTx,
             pendingTransaction,
           };
-        } else if (dataReloadRequired.txHistoryData || dataReloadRequired.pendingTxChange) {
-          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
+        } else if (dataReloadRequired.txHistoryDataRequest) {
+          yield put(txHistoryApi.actions.loadNextTransactions());
+
+          newState = {
+            ...oldState,
+            transactionHistoryLoading: true,
+          };
+        } else if (dataReloadRequired.txHistoryData) {
+          const { transactions, canLoadMoreTx, pendingTransaction } = yield* call(
             populateTxHistory,
           );
 
           newState = {
             ...oldState,
-            transactionsHistoryPaginated,
+            transactions,
+            canLoadMoreTx,
+            pendingTransaction,
+            transactionHistoryLoading: false,
+          };
+        } else if (dataReloadRequired.pendingTxChange) {
+          const { transactions, canLoadMoreTx, pendingTransaction } = yield* call(
+            populateTxHistory,
+          );
+
+          newState = {
+            ...oldState,
+            transactions,
+            canLoadMoreTx,
             pendingTransaction,
           };
+        } else {
+          continue;
         }
 
-        yield put(
-          actions.walletView.walletViewSetData(
-            newState as TWalletViewReadyState & { processState: EProcessState.SUCCESS },
-          ),
-        );
+        // some modules (pendingTx) keep updating the state even if there was no change.
+        // This is to prevent unnecessary renders
+        if (!isEqual(oldState, newState)) {
+          yield put(actions.walletView.walletViewSetData(newState));
+        }
       }
     }
   } finally {

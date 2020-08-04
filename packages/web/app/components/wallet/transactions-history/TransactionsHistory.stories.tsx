@@ -2,9 +2,9 @@ import {
   ETransactionDirection,
   ETransactionStatus,
   ETransactionType,
-  txHistoryApi,
+  TTxHistory,
 } from "@neufund/shared-modules";
-import { ECurrency, ENumberInputFormat } from "@neufund/shared-utils";
+import { ECurrency, ENumberInputFormat, EthereumTxHash } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -50,67 +50,63 @@ const pendingTransactionThaSigning = {
   transaction: {},
 } as TxPendingWithMetadata;
 
-const transactions = {
-  transactions: [
-    {
-      amount: "10000000000000000",
-      amountFormat: ENumberInputFormat.ULPS,
-      blockNumber: 986,
-      date: "2020-05-18T02:19:36Z",
-      id: "986_0_256",
-      logIndex: 256,
-      transactionDirection: ETransactionDirection.IN,
-      transactionIndex: 0,
-      txHash: "0x19485acd853bf0147f96380154a51f52ecedcdc2bf7e6242051314c53aa76cae",
-      currency: ECurrency.ETH,
-      amountEur: "1949018870873095200",
-      type: ETransactionType.TRANSFER,
-      toAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
-      fromAddress: "0x29c57b5F27b249Ab3c11Badf6efc4B2308bc75Dd",
-    },
-    {
-      amount: "100000000000000000000",
-      amountFormat: ENumberInputFormat.ULPS,
-      blockNumber: 126,
-      date: "2020-05-18T02:13:57Z",
-      id: "126_0_256",
-      logIndex: 256,
-      transactionDirection: ETransactionDirection.OUT,
-      transactionIndex: 0,
-      txHash: "0xd92d53effd71fd8f80821e2eb1a82864553dedf0bed322869dfecf586ab60f49",
-      currency: ECurrency.ETH,
-      amountEur: "1.9490188708730952e+22",
-      type: ETransactionType.TRANSFER,
-      toAddress: "0x238f2bEFB74CF762346341a525a4C548f5e2e386",
-      fromAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
-    },
-    {
-      amount: "9.383086134931367e+22",
-      amountFormat: ENumberInputFormat.ULPS,
-      blockNumber: 126,
-      date: "2020-05-18T02:13:57Z",
-      id: "126_0_9",
-      logIndex: 9,
-      transactionDirection: ETransactionDirection.IN,
-      transactionIndex: 0,
-      txHash: "0xd92d53effd71fd8f80821e2eb1a82864553dedf0bed322869dfecf586ab60f49",
-      currency: ECurrency.NEU,
-      amountEur: "1.23533728569715306549307156226995e+22",
-      type: ETransactionType.TRANSFER,
-      toAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
-      fromAddress: "0x238f2bEFB74CF762346341a525a4C548f5e2e386",
-    },
-  ],
-  canLoadMore: false,
-  isLoading: false,
-};
+const transactions = [
+  {
+    amount: "10000000000000000",
+    amountFormat: ENumberInputFormat.ULPS,
+    blockNumber: 986,
+    date: "2020-05-18T02:19:36Z",
+    id: "986_0_256",
+    logIndex: 256,
+    transactionDirection: ETransactionDirection.IN,
+    transactionIndex: 0,
+    txHash: "0x19485acd853bf0147f96380154a51f52ecedcdc2bf7e6242051314c53aa76cae" as EthereumTxHash,
+    currency: ECurrency.ETH,
+    amountEur: "1949018870873095200",
+    type: ETransactionType.TRANSFER,
+    toAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
+    fromAddress: "0x29c57b5F27b249Ab3c11Badf6efc4B2308bc75Dd",
+  },
+  {
+    amount: "100000000000000000000",
+    amountFormat: ENumberInputFormat.ULPS,
+    blockNumber: 126,
+    date: "2020-05-18T02:13:57Z",
+    id: "126_0_256",
+    logIndex: 256,
+    transactionDirection: ETransactionDirection.OUT,
+    transactionIndex: 0,
+    txHash: "0xd92d53effd71fd8f80821e2eb1a82864553dedf0bed322869dfecf586ab60f49" as EthereumTxHash,
+    currency: ECurrency.ETH,
+    amountEur: "1.9490188708730952e+22",
+    type: ETransactionType.TRANSFER,
+    toAddress: "0x238f2bEFB74CF762346341a525a4C548f5e2e386",
+    fromAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
+  },
+  {
+    amount: "9.383086134931367e+22",
+    amountFormat: ENumberInputFormat.ULPS,
+    blockNumber: 126,
+    date: "2020-05-18T02:13:57Z",
+    id: "126_0_9",
+    logIndex: 9,
+    transactionDirection: ETransactionDirection.IN,
+    transactionIndex: 0,
+    txHash: "0xd92d53effd71fd8f80821e2eb1a82864553dedf0bed322869dfecf586ab60f49" as EthereumTxHash,
+    currency: ECurrency.NEU,
+    amountEur: "1.23533728569715306549307156226995e+22",
+    type: ETransactionType.TRANSFER,
+    toAddress: "0x844C5c9cE2Ad620592A5D686Fc8e76866f039c56",
+    fromAddress: "0x238f2bEFB74CF762346341a525a4C548f5e2e386",
+  },
+];
 
 storiesOf("TransactionList", module)
   .add("with a pending transaction of WITHDRAW type", () => (
     <TransactionListLayout
-      transactionsHistoryPaginated={
-        transactions as ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>
-      }
+      transactions={transactions as TTxHistory[]}
+      canLoadMoreTx={true}
+      transactionHistoryLoading={false}
       loadTxHistoryNext={action("load next")}
       pendingTransaction={pendingTransactionGeneral}
       showTransactionDetails={action("show transaction details")}
@@ -118,9 +114,9 @@ storiesOf("TransactionList", module)
   ))
   .add("with a pending transaction of NOMINEE_THA_SIGN type", () => (
     <TransactionListLayout
-      transactionsHistoryPaginated={
-        transactions as ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>
-      }
+      transactions={transactions as TTxHistory[]}
+      canLoadMoreTx={true}
+      transactionHistoryLoading={false}
       loadTxHistoryNext={action("load next")}
       pendingTransaction={pendingTransactionThaSigning}
       showTransactionDetails={action("show transaction details")}

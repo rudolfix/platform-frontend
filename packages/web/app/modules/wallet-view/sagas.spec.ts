@@ -143,11 +143,9 @@ describe("Wallet View", () => {
             ).toString(),
             bankAccount: testBankAccount,
             processState: EProcessState.SUCCESS,
-            transactionsHistoryPaginated: {
-              transactions: [ethTransfer, neuTransfer, neuroSend],
-              canLoadMore: true,
-              isLoading: false,
-            },
+            transactions: [ethTransfer, neuTransfer, neuroSend],
+            canLoadMoreTx: true,
+            transactionHistoryLoading: false,
             pendingTransaction: pendingTx,
           }),
         )
@@ -175,11 +173,9 @@ describe("Wallet View", () => {
       totalBalanceEuro: convertFromUlps("7.185643883006235950603418691957129192e+22").toString(),
       bankAccount: testBankAccount,
       processState: EProcessState.SUCCESS,
-      transactionsHistoryPaginated: {
-        transactions: [ethTransfer, neuTransfer, neuroSend],
-        canLoadMore: true,
-        isLoading: false,
-      },
+      transactions: [ethTransfer, neuTransfer, neuroSend],
+      canLoadMoreTx: true,
+      transactionHistoryLoading: false,
       pendingTransaction: pendingTx,
     } as TWalletViewReadyState & { processState: EProcessState.SUCCESS };
 
@@ -219,11 +215,9 @@ describe("Wallet View", () => {
                 ).toString(),
                 bankAccount: testBankAccount,
                 processState: EProcessState.SUCCESS,
-                transactionsHistoryPaginated: {
-                  transactions: [ethTransfer, neuTransfer, neuroSend],
-                  canLoadMore: true,
-                  isLoading: false,
-                },
+                transactions: [ethTransfer, neuTransfer, neuroSend],
+                canLoadMoreTx: true,
+                transactionHistoryLoading: false,
                 pendingTransaction: pendingTx,
               },
             },

@@ -1,5 +1,5 @@
 import { TTranslatedString } from "@neufund/design-system";
-import { TBankAccount, txHistoryApi } from "@neufund/shared-modules";
+import { TBankAccount, TTxHistory } from "@neufund/shared-modules";
 import { ECurrency, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
@@ -36,12 +36,14 @@ export type TBalanceData = {
 };
 
 export type TWalletViewReadyState = {
-  balanceData: TBalanceData[];
+  balanceData: readonly TBalanceData[];
   totalBalanceEuro: string;
   userAddress: EthereumAddressWithChecksum;
   bankAccount: TBankAccount | undefined;
   userIsFullyVerified: boolean;
-  transactionsHistoryPaginated: ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+  transactions: TTxHistory[];
+  canLoadMoreTx: boolean;
+  transactionHistoryLoading: boolean;
   pendingTransaction: TxPendingWithMetadata | null;
 };
 

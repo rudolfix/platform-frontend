@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { txHistoryApi } from "@neufund/shared-modules";
+import { TTxHistory } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -14,10 +14,12 @@ import { Transaction } from "./Transaction";
 import * as styles from "./TransactionsHistory.module.scss";
 
 type TExternalProps = {
-  transactionsHistoryPaginated: ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+  transactions: TTxHistory[];
+  canLoadMoreTx: boolean;
   pendingTransaction: ReturnType<typeof selectPlatformMiningTransaction>;
   loadTxHistoryNext: () => void;
   showTransactionDetails: (id: string) => void;
+  transactionHistoryLoading: boolean;
 };
 
 export const NoTransactions = () => (
@@ -35,13 +37,15 @@ const TransactionListContainer: React.FunctionComponent = ({ children }) => (
 );
 
 export const TransactionListLayout: React.FunctionComponent<TExternalProps> = ({
-  transactionsHistoryPaginated,
+  transactions,
+  canLoadMoreTx,
   loadTxHistoryNext,
   pendingTransaction,
   showTransactionDetails,
+  transactionHistoryLoading,
 }) => (
   <>
-    {(transactionsHistoryPaginated.transactions || pendingTransaction) && (
+    {(transactions || pendingTransaction) && (
       <ul className={styles.transactionList} data-test-id="transactions-history">
         {pendingTransaction && (
           <PendingTransaction
@@ -50,21 +54,20 @@ export const TransactionListLayout: React.FunctionComponent<TExternalProps> = ({
           />
         )}
 
-        {transactionsHistoryPaginated.transactions &&
-          transactionsHistoryPaginated.transactions.map(transaction => (
-            <Transaction
-              key={transaction.id}
-              transaction={transaction}
-              showTransactionDetails={showTransactionDetails}
-            />
-          ))}
+        {transactions.map(transaction => (
+          <Transaction
+            key={transaction.id}
+            transaction={transaction}
+            showTransactionDetails={showTransactionDetails}
+          />
+        ))}
       </ul>
     )}
-    {transactionsHistoryPaginated.canLoadMore && (
+    {canLoadMoreTx && (
       <Button
         data-test-id="transactions-history-load-more"
         layout={EButtonLayout.LINK}
-        isLoading={transactionsHistoryPaginated.isLoading}
+        isLoading={transactionHistoryLoading}
         onClick={loadTxHistoryNext}
       >
         <FormattedMessage id="wallet.tx-list.load-more" />
@@ -77,14 +80,15 @@ const TransactionsHistory = compose<TExternalProps, TExternalProps>(
   withContainer(TransactionListContainer),
   branch<TExternalProps>(
     props =>
-      props.transactionsHistoryPaginated.transactions === undefined &&
-      props.transactionsHistoryPaginated.isLoading,
+      props.transactionHistoryLoading &&
+      props.transactions.length === 0 &&
+      props.pendingTransaction === null,
     renderComponent(TransactionListLoading),
   ),
   branch<TExternalProps>(
     props =>
-      props.transactionsHistoryPaginated.transactions !== undefined &&
-      props.transactionsHistoryPaginated.transactions.length === 0 &&
+      !props.transactionHistoryLoading &&
+      props.transactions.length === 0 &&
       props.pendingTransaction === null,
     renderComponent(NoTransactions),
   ),

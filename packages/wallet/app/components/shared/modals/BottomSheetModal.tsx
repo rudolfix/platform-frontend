@@ -2,7 +2,7 @@ import { useBackHandler } from "@react-native-community/hooks";
 import noop from "lodash/noop";
 import * as React from "react";
 import { View, Animated, StyleSheet, useWindowDimensions } from "react-native";
-import { useSafeArea } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BaseAnimation } from "components/shared/animations/BaseAnimation";
 
@@ -24,7 +24,7 @@ const BottomSheetModal: React.FunctionComponent<TExternalProps> = ({
   ...rest
 }) => {
   const { height } = useWindowDimensions();
-  const { bottom } = useSafeArea();
+  const { bottom } = useSafeAreaInsets();
   useBackHandler(() => {
     if (isVisible) {
       onDismiss();

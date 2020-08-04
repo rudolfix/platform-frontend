@@ -62,11 +62,14 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
     bounces: false,
     showsVerticalScrollIndicator: false,
     scrollEventThrottle: 16,
-    onScroll: Animated.event([
-      {
-        nativeEvent: { contentOffset: { y: valueRef.current } },
-      },
-    ]),
+    onScroll: Animated.event(
+      [
+        {
+          nativeEvent: { contentOffset: { y: valueRef.current } },
+        },
+      ],
+      { useNativeDriver: false },
+    ),
     style: {
       marginTop: containerMargin,
     },

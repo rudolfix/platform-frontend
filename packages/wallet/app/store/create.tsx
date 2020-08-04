@@ -1,11 +1,24 @@
 import { createStore, getSagaExtension } from "@neufund/sagas";
 import { getLoadContextExtension } from "@neufund/shared-modules";
+import { invariant } from "@neufund/shared-utils";
 import { Container } from "inversify";
+import isFunction from "lodash/fp/isFunction";
 import Config from "react-native-config";
 
 import { setupInitModule } from "modules/init/module";
 
 import { TAppGlobalState } from "./types";
+
+export function getFlipperIntegrationExtension() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
+  const { default: createDebugger } = require("redux-flipper");
+
+  invariant(isFunction(createDebugger), "createDebugger is not a function");
+
+  return {
+    middleware: [createDebugger()],
+  };
+}
 
 export const createAppStore = (container: Container) => {
   // TODO: Take universe address from artifacts meta.json
@@ -25,7 +38,11 @@ export const createAppStore = (container: Container) => {
 
   return createStore<TAppGlobalState>(
     {
-      extensions: [getLoadContextExtension(context.container), getSagaExtension(context)],
+      extensions: [
+        getLoadContextExtension(context.container),
+        getSagaExtension(context),
+        getFlipperIntegrationExtension(),
+      ],
     },
     ...appModule,
   );

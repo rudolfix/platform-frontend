@@ -6,7 +6,7 @@
  */
 
 import AsyncStorage from "@react-native-community/async-storage";
-import { YellowBox } from "react-native";
+import { LogBox } from "react-native";
 
 /**
  * Clears the AsyncStorage
@@ -21,6 +21,6 @@ import { YellowBox } from "react-native";
 };
 
 // List of annoying warnings that we're ignoring
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   "Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).",
 ]);

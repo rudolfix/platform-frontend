@@ -4,7 +4,8 @@ import { StyleSheet } from "react-native";
 import { NeuLinearGradient } from "./NeuLinearGradient";
 import { EStatusBarStyle, Screen } from "./Screen";
 
-type TExternalProps = React.ComponentProps<typeof Screen>;
+type TExternalProps = Omit<React.ComponentProps<typeof Screen>, "style"> &
+  Pick<React.ComponentProps<typeof NeuLinearGradient>, "style">;
 
 const NeuGradientScreen: React.FunctionComponent<TExternalProps> = ({
   children,

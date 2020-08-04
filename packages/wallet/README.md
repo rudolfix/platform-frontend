@@ -56,12 +56,6 @@ yarn start:android:release
 
 ```
 
-#### Start react devtools for component tree debugging
-
-```bash
-yarn start:devtools
-```
-
 #### Cleaning
 
 Often it's required to clean app artifacts (metro bundler cache, watchman cache, ios build folder /
@@ -111,6 +105,25 @@ yarn e2e:ios-release
 yarn e2e:android-debug
 yarn e2e:android-release
 ```
+
+## Debugging
+
+For debugging [Flipper](https://fbflipper.com/) is the best choice. It includes a build in doctor
+tool that will help you with installing missing pieces (ios `idb` cli tool, correct paths to SDK's,
+etc).
+
+Our app additionally has support for the following flipper plugins:
+
+- [redux-debugger](https://classic.yarnpkg.com/en/package/flipper-plugin-redux-debugger)
+
+You can install plugins though Flipper desktop app:
+
+```
+Manage Plugins > Install Plugins > search "redux-debugger" > Install
+```
+
+Unfortunately Flipper doesn't support code debugging, given that, good old Chrome Dev Tools are the
+most useful.
 
 ## Releasing
 

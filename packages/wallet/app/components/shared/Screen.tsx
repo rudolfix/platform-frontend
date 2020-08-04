@@ -1,7 +1,7 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
 import { Animated, KeyboardAvoidingView, StyleSheet } from "react-native";
-import { useSafeArea } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { baseWhite } from "styles/colors";
@@ -37,7 +37,7 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   useStatusBarStyle(statusBarStyle);
 
   const headerHeight = useHeaderHeight();
-  const insets = useSafeArea();
+  const insets = useSafeAreaInsets();
 
   const scrollMode = overScrollMode ?? (bounces ? "never" : undefined);
 
@@ -80,7 +80,7 @@ const Screen: React.FunctionComponent<TScreenExternalProps> = ({
   useStatusBarStyle(statusBarStyle);
 
   const headerHeight = useHeaderHeight();
-  const insets = useSafeArea();
+  const insets = useSafeAreaInsets();
 
   const scrollMode = overScrollMode ?? (bounces ? "never" : undefined);
 

@@ -56,9 +56,11 @@ export const txPayoutSagas = function*(): Generator<any, any, any> {
     actions.txTransactions.startInvestorPayoutAccept,
     investorPayoutAcceptSaga,
   );
-  yield fork(
-    neuTakeLatest,
-    actions.txTransactions.startInvestorPayoutRedistribute,
-    investorPayoutRedistributeSaga,
-  );
+  if (process.env.NF_ALLOW_REDISTRIBUTE_PAYOUTS === "1") {
+    yield fork(
+      neuTakeLatest,
+      actions.txTransactions.startInvestorPayoutRedistribute,
+      investorPayoutRedistributeSaga,
+    );
+  }
 };

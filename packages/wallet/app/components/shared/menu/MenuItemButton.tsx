@@ -24,15 +24,13 @@ const MenuItemButton: React.FunctionComponent<TMenuItem> = ({ heading, icon, onP
     accessibilityTraits="button"
     onPress={onPress}
   >
-    <>
-      <Icon style={st(styles.icon, [color, { color }])} type={icon} />
+    <Icon style={st(styles.icon, [color, { color }])} type={icon} />
 
-      <View style={st(styles.wrapper)}>
-        <BodyText style={st(styles.heading, [color, { color }])} numberOfLines={1}>
-          {heading}
-        </BodyText>
-      </View>
-    </>
+    <View style={st(styles.wrapper)}>
+      <BodyText style={st(styles.heading, [color, { color }])} numberOfLines={1}>
+        {heading}
+      </BodyText>
+    </View>
   </TouchableOpacity>
 );
 

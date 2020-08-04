@@ -110,8 +110,7 @@ export const selectIndividualClientName = (state: TKycModuleState) => {
   return data ? [data.firstName, data.lastName].filter(Boolean).join(" ") : undefined;
 };
 
-export const selectBusinessClientName = (state: TKycModuleState) =>
-  state.kyc.businessData && state.kyc.businessData.name;
+export const selectBusinessClientName = (state: TKycModuleState) => state.kyc.businessData?.name;
 
 export const selectClientName = (state: TKycModuleState) =>
   selectBusinessClientName(state) || selectIndividualClientName(state);

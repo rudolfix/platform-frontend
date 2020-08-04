@@ -16,7 +16,7 @@ export function* loadUser(): SagaGenerator<void> {
 
   yield* call(authModuleAPI.sagas.loadUser);
 
-  yield* neuCall(kycApi.sagas.loadKycRequestData);
+  yield* call(kycApi.sagas.loadKycRequestData);
 }
 
 export function* logoutUser({

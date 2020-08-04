@@ -3,16 +3,19 @@ import React from "react";
 import { ScrollView } from "react-native";
 
 import { MenuItemButton } from "./MenuItemButton";
+import { MenuItemInformative } from "./MenuItemInformative";
 import { MenuItemNavigation } from "./MenuItemNavigation";
 
 type TScrollViewProps = React.ComponentProps<typeof ScrollView>;
 
 enum EMenuItemType {
+  INFORMATIVE = "informative",
   NAVIGATION = "navigation",
   BUTTON = "button",
 }
 
 type TMenuItem =
+  | ({ type: EMenuItemType.INFORMATIVE } & React.ComponentProps<typeof MenuItemInformative>)
   | ({ type: EMenuItemType.NAVIGATION } & React.ComponentProps<typeof MenuItemNavigation>)
   | ({ type: EMenuItemType.BUTTON } & React.ComponentProps<typeof MenuItemButton>);
 
@@ -28,6 +31,9 @@ const Menu: React.FunctionComponent<TExternalProps> = ({ items, ...props }) => (
   <ScrollView accessibilityRole="menu" {...props}>
     {items.map(item => {
       switch (item.type) {
+        case EMenuItemType.INFORMATIVE:
+          return <MenuItemInformative key={item.id} {...item} />;
+
         case EMenuItemType.NAVIGATION:
           return <MenuItemNavigation key={item.id} {...item} />;
 

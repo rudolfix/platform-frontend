@@ -4,6 +4,7 @@ import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 
 import Backup from "assets/backup.svg";
+import Checklist from "assets/checklist.svg";
 import Close from "assets/close.svg";
 import Device from "assets/device.svg";
 import Home from "assets/home.svg";
@@ -41,6 +42,7 @@ enum EIconType {
   DEVICE = "device",
   LOGOUT = "logout",
   PENDING = "pending",
+  CHECKLIST = "Checklist",
   LOCK = "lock",
   NEU = "neu",
 }
@@ -67,6 +69,7 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.WALLET]: Wallet,
   [EIconType.YES]: Yes,
   [EIconType.LOCK]: Lock,
+  [EIconType.CHECKLIST]: Checklist,
   [EIconType.NEU]: Neu,
 };
 

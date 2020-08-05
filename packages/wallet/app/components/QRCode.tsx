@@ -4,22 +4,23 @@ import { compose } from "recompose";
 
 import { QRCodeScanner } from "components/shared/qr-code-scanner/QRCodeScanner";
 
-import { walletConnectActions } from "modules/wallet-connect/actions";
+import { qrCodeScannerModuleApi } from "modules/qr-code-scanner/module";
+
 
 import { appConnect } from "store/utils";
 
 type TDispatchProps = {
-  processURI: (uri: string) => void;
+  onScan: (data: string) => void;
 };
 
-const QRCodeLayout: React.FunctionComponent<TDispatchProps> = ({ processURI }) => (
-  <QRCodeScanner onRead={processURI} />
+const QRCodeLayout: React.FunctionComponent<TDispatchProps> = ({ onScan }) => (
+  <QRCodeScanner onRead={onScan} />
 );
 
 const QRCode = compose<TDispatchProps, UnknownObject>(
   appConnect<UnknownObject, TDispatchProps>({
     dispatchToProps: dispatch => ({
-      processURI: uri => dispatch(walletConnectActions.connectToPeer(uri)),
+      onScan: data => dispatch(qrCodeScannerModuleApi.actions.onScan(data)),
     }),
   }),
 )(QRCodeLayout);

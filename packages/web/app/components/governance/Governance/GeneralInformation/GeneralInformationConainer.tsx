@@ -31,7 +31,7 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
           onClick={() => props.toggleGovernanceUpdateModal(true)}
           data-test-id="governance-add-new-update"
         >
-          Add new
+          <FormattedMessage id="governance.add-new-update"/>
         </Button>
       </div>
     </Container>

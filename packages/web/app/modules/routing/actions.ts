@@ -79,6 +79,9 @@ export const routingActions = {
   // Marketing emails
   goToUnsubscriptionSuccess: () => push(appRoutes.unsubscriptionSuccess),
 
+  //governance
+  goToGovernanceOverview: () => push(appRoutes.governanceOverview),
+
   // other...
   // TODO: Replace with a dedicated 404 page
   goTo404: () => push(appRoutes.root),

@@ -103,7 +103,7 @@ export function* signInUser(
       yield* neuCall(handleAcceptCurrentAgreement);
     }
 
-    yield* neuCall(kycApi.sagas.loadKycRequestData);
+    yield* call(kycApi.sagas.loadKycRequestData);
 
     yield* call(checkForPendingEmailVerification);
 

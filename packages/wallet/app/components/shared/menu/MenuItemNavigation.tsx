@@ -30,25 +30,23 @@ const MenuItemNavigation: React.FunctionComponent<TMenuItem> = ({
     accessibilityTraits="button"
     onPress={onPress}
   >
-    <>
-      <Icon style={st(styles.icon)} type={icon} />
+    <Icon style={st(styles.icon)} type={icon} />
 
-      <View style={st(styles.wrapper)}>
-        <View>
-          <BodyText style={styles.heading} numberOfLines={1}>
-            {heading}
-          </BodyText>
+    <View style={st(styles.wrapper)}>
+      <View>
+        <BodyText style={styles.heading} numberOfLines={1}>
+          {heading}
+        </BodyText>
 
-          {helperText && (
-            <Text style={styles.helperText} numberOfLines={1}>
-              {helperText}
-            </Text>
-          )}
-        </View>
-
-        <Icon style={st(styles.arrowIcon)} type={EIconType.RIGHT_ARROW} />
+        {helperText && (
+          <Text style={styles.helperText} numberOfLines={1}>
+            {helperText}
+          </Text>
+        )}
       </View>
-    </>
+
+      <Icon style={st(styles.arrowIcon)} type={EIconType.RIGHT_ARROW} />
+    </View>
   </TouchableOpacity>
 );
 

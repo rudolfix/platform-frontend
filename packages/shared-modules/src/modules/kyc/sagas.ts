@@ -10,6 +10,7 @@ import {
   SagaGenerator,
   select,
   TActionFromCreator,
+  takeEvery,
 } from "@neufund/sagas";
 
 import { createMessage, TMessage } from "../../messages";
@@ -81,7 +82,7 @@ export function* loadKycStatus(_: TGlobalDependencies): Generator<any, any, any>
   }
 }
 
-export function* loadClientData(_: TGlobalDependencies): Generator<any, any, any> {
+function* loadClientData(): Generator<any, any, any> {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
   });
@@ -136,8 +137,7 @@ function* kycStatusRefreshSaga(_: TGlobalDependencies): Generator<any, any, any>
     }
 
     if (status === EKycRequestStatus.PENDING || status === EKycRequestStatus.OUTSOURCED) {
-      yield neuCall(loadClientData);
-      yield neuCall(loadIdentityClaim);
+      yield call(loadKycRequestData);
       logger.info("KYC refreshed" + status + requestType);
     }
 
@@ -159,7 +159,7 @@ function expandWatchTimeout(): void {
 /**
  * Individual Request
  */
-function* loadIdentityClaim(_: TGlobalDependencies): Generator<any, any, any> {
+function* loadIdentityClaim(): Generator<any, any, any> {
   const { logger, contractsService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     contractsService: contractsModuleApi.symbols.contractsService,
@@ -722,7 +722,7 @@ export function* loadBankAccountDetails(_: TGlobalDependencies): Generator<any, 
   try {
     // bank details depend on claims `hasBankAccount` flag
     // so to have consistent ui we need to reload claims
-    yield neuCall(loadIdentityClaim);
+    yield call(loadIdentityClaim);
 
     const isVerified: boolean = yield select(selectIsUserVerified);
 
@@ -770,11 +770,11 @@ export function* loadBankAccountDetails(_: TGlobalDependencies): Generator<any, 
   }
 }
 
-export function* loadKycRequestData(): Generator<any, any, any> {
+export function* loadKycRequestData(): SagaGenerator<void> {
   // Wait for contracts to init
-  yield waitUntilSmartContractsAreInitialized();
+  yield* call(waitUntilSmartContractsAreInitialized);
 
-  yield all([neuCall(loadClientData), neuCall(loadIdentityClaim)]);
+  yield* all([call(loadClientData), call(loadIdentityClaim)]);
 }
 
 type TEnsurePermissionsArePresentAndRunEffect = (
@@ -804,7 +804,7 @@ export function setupKycSagas(config: TSetupSagasConfig): () => SagaGenerator<vo
   displayErrorModalSaga = config.displayErrorModalSaga;
   waitUntilSmartContractsAreInitialized = config.waitUntilSmartContractsAreInitialized;
   return function* kycSagas(): Generator<any, any, any> {
-    yield fork(neuTakeEvery, kycActions.kycLoadStatusAndData, loadClientData);
+    yield takeEvery(kycActions.kycLoadStatusAndData, loadClientData);
 
     yield fork(neuTakeEvery, kycActions.kycLoadIndividualData, loadIndividualData);
     yield fork(neuTakeEvery, kycActions.kycSubmitPersonalData, submitPersonalData);

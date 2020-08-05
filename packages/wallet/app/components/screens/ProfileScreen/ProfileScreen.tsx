@@ -1,3 +1,4 @@
+import { kycApi } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import React from "react";
 import Config from "react-native-config";
@@ -19,6 +20,8 @@ import { baseRed } from "styles/colors";
 import { Header } from "./Header/Header";
 
 type TStateProps = {
+  clientName: ReturnType<typeof kycApi.selectors.selectClientName>;
+  isUserVerified: ReturnType<typeof kycApi.selectors.selectIsUserVerifiedOnBlockchain>;
   authWallet: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>>;
   walletConnectPeer: ReturnType<typeof walletConnectModuleApi.selectors.selectWalletConnectPeer>;
 };
@@ -33,11 +36,20 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   authWallet,
   walletConnectPeer,
   logout,
+  isUserVerified,
+  clientName,
 }) => {
   const navigation = useNavigationTyped();
 
   const items = React.useMemo(() => {
     const defaultItems: TMenuProps["items"] = [
+      {
+        id: "account-verification",
+        type: EMenuItemType.INFORMATIVE,
+        heading: "Account verification",
+        helperText: isUserVerified ? "Verified" : "Not verified",
+        icon: EIconType.CHECKLIST,
+      },
       {
         id: "account-backup",
         type: EMenuItemType.NAVIGATION,
@@ -78,11 +90,11 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
     }
 
     return defaultItems;
-  }, [authWallet, navigation, walletConnectPeer, logout]);
+  }, [authWallet, navigation, walletConnectPeer, logout, isUserVerified]);
 
   return (
     <SafeAreaScreen topInset statusBarStyle={EStatusBarStyle.WHITE}>
-      <Header name={authWallet.name} address={authWallet.address} />
+      <Header name={clientName ?? authWallet.name} address={authWallet.address} />
 
       <Menu items={items} />
     </SafeAreaScreen>
@@ -91,6 +103,8 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
 
 const ProfileScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
+    clientName: kycApi.selectors.selectClientName(state),
+    isUserVerified: kycApi.selectors.selectIsUserVerifiedOnBlockchain(state),
     authWallet: nonNullable(authModuleAPI.selectors.selectAuthWallet(state)),
     walletConnectPeer: walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
   }),

@@ -1,5 +1,10 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator, select } from "@neufund/sagas";
-import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
+import {
+  coreModuleApi,
+  kycApi,
+  neuGetBindings,
+  tokenPriceModuleApi,
+} from "@neufund/shared-modules";
 import { assertError } from "@neufund/shared-utils";
 
 import { authActions } from "modules/auth/actions";
@@ -61,6 +66,8 @@ function* initStartSaga(): SagaGenerator<void> {
 
 function* initAuthSigned(): SagaGenerator<void> {
   yield* call(walletConnectModuleApi.sagas.tryToConnectExistingSession);
+
+  yield* call(kycApi.sagas.loadKycRequestData);
 }
 
 function* initAuthLogoutDone(): SagaGenerator<void> {

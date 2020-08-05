@@ -329,7 +329,7 @@ PODS:
     - React
   - react-native-config (1.2.0):
     - React
-  - react-native-flipper (0.51.0):
+  - react-native-flipper (0.47.0):
     - React
   - react-native-notifications (3.1.2):
     - React
@@ -682,7 +682,7 @@ SPEC CHECKSUMS:
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-camera: 1f4c5be75a037b5573716a01d84ca0390c162954
   react-native-config: 1ad4712773ff7e867b261be0aab293921d4498f9
-  react-native-flipper: d51909c136225b3ad0bc14b6338e50f3e04e4982
+  react-native-flipper: 6de5b91e6b22bee0ed0a5b8fba6e73d20d3902b0
   react-native-notifications: f56a12d741eeb2fd4d7a418a4689111c50f7cd72
   react-native-randombytes: 3638d24759d67c68f6ccba60c52a7a8a8faa6a23
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033

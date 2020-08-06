@@ -10,6 +10,7 @@ import { BodyText } from "components/shared/typography/BodyText";
 
 import { externalRoutes } from "config/externalRoutes";
 
+import { EQRCodeType } from "modules/qr-code-scanner/types";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
 
 import { EAppRoutes } from "router/appRoutes";
@@ -76,7 +77,11 @@ const WalletConnectLayout: React.FunctionComponent<TStateProps & TDispatchProps>
           <Button
             layout={EButtonLayout.PRIMARY}
             testID="wallet-connect-session-screen.scan-qr"
-            onPress={() => navigation.navigate(EAppRoutes.qrCode)}
+            onPress={() =>
+              navigation.navigate(EAppRoutes.qrCode, {
+                requiredQRCodeType: EQRCodeType.WALLET_CONNECT,
+              })
+            }
           >
             Scan QR code
           </Button>

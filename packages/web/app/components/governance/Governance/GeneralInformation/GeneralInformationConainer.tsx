@@ -5,17 +5,27 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "../../../layouts/Container";
 import { Heading } from "../../../shared/Heading";
 import { GovernanceUpdateModal } from "./GovernanceUpdateModal";
+import { TGovernanceUpdateModalState } from "../../../../modules/governance/reducer";
 
 import plusIcon from "../../../../assets/img/inline_icons/plus_bare.svg";
 import styles from "./GeneralInformation.module.scss";
 
 export type TGeneralInformationContainerProps = {
-  showUpdateModal: boolean;
-  toggleGovernanceUpdateModal: (show: boolean) => void;
-  onUpdatePublish: (title: string) => void;
+  governanceUpdateModalState: TGovernanceUpdateModalState;
+  openGovernanceUpdateModal: ()=> void;
+  closeGovernanceUpdateModal: ()=> void;
+  publish: (title: string)=> void;
+  uploadFile: (file: string) =>void;
 };
 
-export const GeneralInformationContainer: React.FunctionComponent<TGeneralInformationContainerProps> = props => (
+export const GeneralInformationContainer: React.FunctionComponent<TGeneralInformationContainerProps> = ({
+  openGovernanceUpdateModal,
+  closeGovernanceUpdateModal,
+  uploadFile,
+  publish,
+  governanceUpdateModalState,
+  children
+}) => (
   <>
     <Container>
       <div className={styles.titleRow}>
@@ -28,7 +38,7 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
           layout={EButtonLayout.PRIMARY}
           size={EButtonSize.NORMAL}
           svgIcon={plusIcon}
-          onClick={() => props.toggleGovernanceUpdateModal(true)}
+          onClick={openGovernanceUpdateModal}
           data-test-id="governance-add-new-update"
         >
           <FormattedMessage id="governance.add-new-update"/>
@@ -36,12 +46,13 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
       </div>
     </Container>
 
-    {props.children}
+    {children}
 
     <GovernanceUpdateModal
-      isOpen={props.showUpdateModal}
-      onClose={() => props.toggleGovernanceUpdateModal(false)}
-      onPublish={props.onUpdatePublish}
+      closeGovernanceUpdateModal={closeGovernanceUpdateModal}
+      uploadFile={uploadFile}
+      publish={publish}
+      {...governanceUpdateModalState}
     />
   </>
 );

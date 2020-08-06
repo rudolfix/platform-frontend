@@ -2,46 +2,63 @@ import { AppReducer } from "@neufund/sagas";
 import { DeepReadonly } from "@neufund/shared-utils";
 
 import { actions } from "./actions";
-import { IResolution } from "./types";
+import { TResolution } from "./types";
+import { EProcessState } from "../../utils/enums/processStates";
 
-export type TGovernanceViewState = {
-  tabVisible: boolean;
-  resolutions: IResolution[] | undefined;
-  showGovernanceUpdateModal: boolean;
-};
+export enum EModalState {
+  OPEN = "open",
+  CLOSED = "closed"
+}
+
+export type TDocumentUploadState =
+  | { documentUploadStatus: EProcessState.SUCCESS } & { documentHash: string }
+  | { documentUploadStatus: EProcessState.NOT_STARTED | EProcessState.IN_PROGRESS | EProcessState.ERROR }
+
+export type TGovernanceUpdateModalStateOpen = {
+  documentUploadState: TDocumentUploadState,
+  updateTitle: string,
+  publishButtonDisabled: boolean
+}
+
+export type TGovernanceUpdateModalState =
+  | ({ modalState: EModalState.OPEN } & TGovernanceUpdateModalStateOpen)
+  | ({ modalState: EModalState.CLOSED })
+
+export type TGovernanceViewSuccessState = {
+  resolutions: TResolution[];
+  governanceUpdateModalState: TGovernanceUpdateModalState;
+  companyBrandName: string;
+}
+
+export type TGovernanceViewState =
+  | { processState: EProcessState.SUCCESS } & { tabVisible: boolean } & TGovernanceViewSuccessState
+  | { processState: EProcessState.NOT_STARTED | EProcessState.ERROR | EProcessState.IN_PROGRESS } & { tabVisible: boolean }
+
 
 const initialState: TGovernanceViewState = {
   tabVisible: false,
-  resolutions: undefined,
-  showGovernanceUpdateModal: false,
+  processState: EProcessState.NOT_STARTED,
 };
+
+export const initialGovernanceUpdateModalState = {
+  modalState: EModalState.OPEN,
+  documentUploadState: { documentUploadStatus: EProcessState.NOT_STARTED },
+  updateTitle: "",
+  publishButtonDisabled: true
+} as const
 
 export const reducer: AppReducer<TGovernanceViewState, typeof actions> = (
   state = initialState,
   action,
 ): DeepReadonly<TGovernanceViewState> => {
   switch (action.type) {
-    case actions.loadGeneralInformationView.getType():
-      return {
-        ...state,
-        showGovernanceUpdateModal: false,
-      };
     case actions.setGovernanceVisibility.getType():
       return {
         ...state,
         tabVisible: action.payload.tabVisible,
       };
-    case actions.setGovernanceResolutions.getType():
-      return {
-        ...state,
-        resolutions: action.payload.resolutions,
-      };
-    case actions.toggleGovernanceUpdateModal.getType():
-      return {
-        ...state,
-        showGovernanceUpdateModal: !state.showGovernanceUpdateModal,
-      };
-
+    case actions.setGovernanceUpdateData.getType():
+      return action.payload.data
     default:
       return state;
   }

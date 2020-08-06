@@ -1,6 +1,6 @@
-import { all, call, fork, neuCall, put, SagaGenerator, select, take } from "@neufund/sagas";
+import { all, call, fork, neuCall, put, race, SagaGenerator, select, take } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
-import { secondsToMs } from "@neufund/shared-utils";
+import { DataUnavailableError, secondsToMs } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { EGovernanceErrorMessage } from "../../components/translatedMessages/messages";
@@ -11,14 +11,20 @@ import { ITokenControllerHook } from "../../lib/contracts/ITokenControllerHook";
 import { actions as globalActions, TActionFromCreator } from "../actions";
 import { etoFlowActions } from "../eto-flow/actions";
 import { loadIssuerEto } from "../eto-flow/sagas";
-import { selectIssuerEto } from "../eto-flow/selectors";
+import { selectIssuerCompany, selectIssuerEto } from "../eto-flow/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuTakeLatest } from "../sagasUtils";
 import { actions } from "./actions";
 import { GOVERNANCE_CONTRACT_ID } from "./constants";
-import { selectGovernanceVisible } from "./selectors";
-import { EGovernanceControllerState, IResolution } from "./types";
+import { selectGovernanceData, selectGovernanceVisible } from "./selectors";
+import { EGovernanceControllerState, TResolution } from "./types";
 import { convertGovernanceActionNumberToEnum } from "./utils";
+import { EProcessState } from "../../utils/enums/processStates";
+import {
+  EModalState,
+  initialGovernanceUpdateModalState,
+  TGovernanceViewSuccessState
+} from "./reducer";
 
 type TGlobalDependencies = unknown;
 
@@ -56,6 +62,7 @@ function* checkGovernanceVisibility(
       eto.equityTokenContractAddress,
     );
     const controllerState: BigNumber = yield governanceController.state;
+
     const visibility =
       controllerState && controllerState.toString() !== EGovernanceControllerState.SETUP.toString();
     logger.info("Governance visibility:" + visibility);
@@ -75,12 +82,59 @@ function* checkGovernanceCompatibility(eto: TEtoSpecsData): Generator<any, boole
   return contractId[0] === GOVERNANCE_CONTRACT_ID;
 }
 
-export function* loadGeneralInformationView(): Generator<any, void, any> {
+function* loadResolutionForId(
+  governanceController: IControllerGovernance,
+  id: string
+): Generator<any, TResolution, any> {
+  const [action, , startedAt] = yield governanceController.resolution(id);
+
+  return {
+    action: convertGovernanceActionNumberToEnum(action),
+    id,
+    draft: false,
+    startedAt: new Date(secondsToMs(startedAt.toNumber())),
+  };
+}
+
+function* loadResolutions(
+  governanceController: IControllerGovernance,
+): Generator<any, TResolution[], any> {
+  const resolutionsList = yield governanceController.resolutionsList;
+  return yield all(
+    resolutionsList.map((resolutionId: string) => call(loadResolutionForId, governanceController, resolutionId)),
+  );
+}
+
+export function* loadInitialGeneralInformationView(
+  governanceController: IControllerGovernance,
+): Generator<any, void, any> {
+  const resolutions = yield* call(loadResolutions, governanceController)
+
+  const company = yield* select(selectIssuerCompany)
+  if (!company) {
+    throw new DataUnavailableError("loadInitialGeneralInformationView: issuer company cannot be missing at this stage")
+  }
+
+  const oldState = yield* select(selectGovernanceData) //fixme this is only because of tabVisible !!
+
+  const newState = {
+    processState: EProcessState.SUCCESS,
+    tabVisible: oldState.tabVisible,
+    resolutions,
+    companyBrandName: company.brandName,
+    governanceUpdateModalState: { modalState: EModalState.CLOSED }
+  } as const
+
+  yield put(actions.setGovernanceUpdateData(newState))
+} //fixme catch errors
+
+
+function* governanceGeneralInformationViewController() {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
   });
 
-  let eto = yield select(selectIssuerEto);
+  let eto = yield* select(selectIssuerEto);
   if (!eto) {
     yield neuCall(loadIssuerEto);
     // wait for eto to load
@@ -94,37 +148,13 @@ export function* loadGeneralInformationView(): Generator<any, void, any> {
   }
 
   const isGovernanceVisible = yield select(selectGovernanceVisible);
+  const isGovernanceCompatible = yield call(checkGovernanceCompatibility, eto);
+
   if (!isGovernanceVisible) {
     logger.info("Governance not setup");
     yield put(globalActions.routing.goToDashboard());
     return;
-  }
-
-  const isGovernanceCompatible = yield call(checkGovernanceCompatibility, eto);
-
-  if (isGovernanceCompatible) {
-    const governanceController: IControllerGovernance = yield* call(
-      selectGovernanceController,
-      eto.equityTokenContractAddress,
-    );
-    const resolutionsList = yield governanceController.resolutionsList;
-
-    const loadResolutionForId = function*(id: string): Generator<any, IResolution, any> {
-      const [action, , startedAt] = yield governanceController.resolution(id);
-      return {
-        action: convertGovernanceActionNumberToEnum(action),
-        id,
-        draft: false,
-        startedAt: new Date(secondsToMs(startedAt.toNumber())),
-      };
-    };
-
-    const resolutions: IResolution[] = yield all(
-      resolutionsList.map((resolutionId: string) => call(loadResolutionForId, resolutionId)),
-    );
-
-    yield put(actions.setGovernanceResolutions(resolutions));
-  } else {
+  } else if (!isGovernanceCompatible) {
     logger.info("Governance incompatible for ETO: " + eto.etoId);
 
     yield put(globalActions.routing.goToDashboard());
@@ -136,10 +166,51 @@ export function* loadGeneralInformationView(): Generator<any, void, any> {
         },
       ),
     );
+    return;
+  }
+
+  const governanceController: IControllerGovernance = yield* call(
+    selectGovernanceController,
+    eto.equityTokenContractAddress,
+  );
+
+  yield call(loadInitialGeneralInformationView, governanceController)
+
+  const oldState = yield* select(selectGovernanceData)
+  if (processStateIsSuccess<TGovernanceViewSuccessState & { tabVisible: boolean }>(oldState)) {
+
+    while (true) {
+
+      let newState;
+      const updateRequired = yield race({
+        closeGovernanceUpdateModal: take(actions.closeGovernanceUpdateModal),
+        openGovernanceUpdateModal: take(actions.openGovernanceUpdateModal),
+      })
+
+      if (updateRequired.closeGovernanceUpdateModal) {
+        newState = {
+          ...oldState,
+          governanceUpdateModalState: { modalState: EModalState.CLOSED } as const
+        }
+      } else if (updateRequired.openGovernanceUpdateModal) {
+        newState = {
+          ...oldState,
+          governanceUpdateModalState: initialGovernanceUpdateModalState
+        }
+      } else {
+        continue
+      }
+      //fixme check for new data
+      yield put(actions.setGovernanceUpdateData(newState))
+    }
   }
 }
 
+const processStateIsSuccess = <T>(obj: { processState: EProcessState }): obj is { processState: EProcessState.SUCCESS } & T =>
+  obj.processState === EProcessState.SUCCESS
+
+
 export function* governanceModuleSagas(): SagaGenerator<void> {
-  yield fork(neuTakeLatest, actions.loadGeneralInformationView, loadGeneralInformationView);
+  yield fork(neuTakeLatest, actions.loadGeneralInformationView, governanceGeneralInformationViewController);
   yield fork(neuTakeLatest, etoFlowActions.setEto, checkGovernanceVisibility);
 }

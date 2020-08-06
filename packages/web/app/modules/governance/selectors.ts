@@ -1,12 +1,12 @@
 import { TAppGlobalState } from "../../store";
 
-export const selectGovernance = (state: TAppGlobalState) => state.governance;
+export const selectGovernanceData = (state: TAppGlobalState) => state.governance;
 
 export const selectGovernanceVisible = (state: TAppGlobalState) =>
-  selectGovernance(state).tabVisible;
+  selectGovernanceData(state).tabVisible;
 
 export const selectGovernanceResolutions = (state: TAppGlobalState) =>
-  selectGovernance(state).resolutions;
+  selectGovernanceData(state).resolutions;
 
 export const showGovernanceUpdateModal = (state: TAppGlobalState) =>
-  selectGovernance(state).showGovernanceUpdateModal;
+  selectGovernanceData(state).showGovernanceUpdateModal;

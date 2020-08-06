@@ -6,7 +6,6 @@ import { QRCodeScanner } from "components/shared/qr-code-scanner/QRCodeScanner";
 
 import { qrCodeScannerModuleApi } from "modules/qr-code-scanner/module";
 
-
 import { appConnect } from "store/utils";
 
 type TDispatchProps = {

@@ -1,4 +1,4 @@
-import { isValidTransactionRequestUri } from "./transactionRequestUtils";
+import { isValidTransactionRequestUri } from "./utils";
 
 describe("transactionRequestUtils", () => {
   it("isValidTransactionRequest", () => {

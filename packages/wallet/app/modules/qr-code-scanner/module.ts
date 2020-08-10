@@ -13,4 +13,5 @@ const qrCodeScannerModuleApi = {
   actions: qrCodeScannerActions,
 };
 
+export { EQRCodeType } from "./constants";
 export { setupQRCodeScannerModule, qrCodeScannerModuleApi };

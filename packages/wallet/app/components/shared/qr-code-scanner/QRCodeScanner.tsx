@@ -11,7 +11,6 @@ const QRCodeScanner: React.FunctionComponent<TExternalProps> = ({ onRead }) => {
 
   return (
     <RNQRCodeScanner
-      fadeIn
       topViewStyle={styles.topAndBottom}
       bottomViewStyle={styles.topAndBottom}
       cameraStyle={{ width, height }}

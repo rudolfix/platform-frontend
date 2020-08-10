@@ -1,5 +1,6 @@
 import { walletConnectActions } from "./actions";
 import { setupBindings } from "./lib/bindings";
+import { isValidWalletConnectUri } from "./lib/utils";
 import { walletConnectReducerMap } from "./reducer";
 import { tryToConnectExistingSession, walletConnectSaga } from "./sagas";
 import { selectWalletConnectPeer } from "./selectors";
@@ -21,6 +22,9 @@ const walletConnectModuleApi = {
   },
   sagas: {
     tryToConnectExistingSession,
+  },
+  utils: {
+    isValidWalletConnectUri,
   },
 };
 

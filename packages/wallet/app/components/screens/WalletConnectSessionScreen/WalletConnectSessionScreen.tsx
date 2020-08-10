@@ -10,7 +10,7 @@ import { BodyText } from "components/shared/typography/BodyText";
 
 import { externalRoutes } from "config/externalRoutes";
 
-import { EQRCodeType } from "modules/qr-code-scanner/types";
+import { EQRCodeType } from "modules/qr-code-scanner/module";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
 
 import { EAppRoutes } from "router/appRoutes";

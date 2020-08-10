@@ -5,8 +5,7 @@ import { compose } from "recompose";
 
 import { QRCodeScanner } from "components/shared/qr-code-scanner/QRCodeScanner";
 
-import { qrCodeScannerModuleApi } from "modules/qr-code-scanner/module";
-import { EQRCodeType } from "modules/qr-code-scanner/types";
+import { EQRCodeType, qrCodeScannerModuleApi } from "modules/qr-code-scanner/module";
 
 import { EAppRoutes } from "router/appRoutes";
 import { RootStackParamList } from "router/routeUtils";

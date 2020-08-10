@@ -2,7 +2,7 @@ import { NavigationContainerRef, useNavigation } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 
-import { EQRCodeType } from "modules/qr-code-scanner/types";
+import { EQRCodeType } from "modules/qr-code-scanner/module";
 
 import { EAppRoutes } from "./appRoutes";
 

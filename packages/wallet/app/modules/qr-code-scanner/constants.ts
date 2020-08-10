@@ -1,3 +1,6 @@
-const WC_PROTOCOL = "wc";
+enum EQRCodeType {
+  WALLET_CONNECT = "wallet-connect",
+  TRANSFER = "transfer",
+}
 
-export { WC_PROTOCOL };
+export { EQRCodeType };

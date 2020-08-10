@@ -5,6 +5,7 @@ import {
   matchers,
   providers,
   SagaType,
+  testSaga,
 } from "@neufund/sagas/tests";
 import { Container } from "inversify";
 
@@ -74,6 +75,7 @@ const bootstrapModule = <T extends INeuModule<any, any>[]>(modules: T) => {
     runSaga: sagaMiddleware.run,
     container,
     expectSaga,
+    testSaga,
   };
 };
 

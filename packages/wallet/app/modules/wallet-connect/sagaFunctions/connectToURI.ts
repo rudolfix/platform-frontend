@@ -38,7 +38,7 @@ export function* connectToURI(
 
     navigate(EAppRoutes.home);
 
-    const session = yield* call(() => walletConnectManager.createSession(uri));
+    const session = yield* call([walletConnectManager, "createSession"], uri);
 
     yield put(
       signerUIModuleApi.actions.sign({

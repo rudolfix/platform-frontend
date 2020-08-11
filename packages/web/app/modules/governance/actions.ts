@@ -19,12 +19,30 @@ export const actions = {
   openGovernanceUpdateModal: createActionFactory("GOVERNANCE_OPEN_GOVERNANCE_UPDATE_MODAL"),
   setGovernanceUpdateData: createActionFactory(
     "setGovernanceUpdateData",
-    (data:TGovernanceViewState) => ({
+    (data: TGovernanceViewState) => ({
       data
     })
-    ),
+  ),
   uploadFile: createActionFactory(
     "GOVERNANCE_UPLOAD_FILE",
-    (file: string) => ({file})
-  )
+    (file: string) => ({ file })
+  ),
+  onFormChange: createActionFactory(
+    "FORM_ON_CHANGE",
+    (formId: string, fieldPath: string, newValue: string) => ({
+      formId, fieldPath, newValue,
+    }),
+  ),
+  onFormBlur: createActionFactory(
+    "FORM_ON_BLUR",
+    (formId: string, fieldPath: string, newValue: string) => ({
+      formId, fieldPath, newValue,
+    })
+  ),
+  onFormFocus: createActionFactory(
+    "FORM_ON_FOCUS",
+    (formId: string, fieldPath: string, newValue: string) => ({
+      formId, fieldPath, newValue,
+    })
+  ),
 };

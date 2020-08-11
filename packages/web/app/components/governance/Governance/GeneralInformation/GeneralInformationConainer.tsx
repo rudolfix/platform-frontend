@@ -15,7 +15,8 @@ export type TGeneralInformationContainerProps = {
   openGovernanceUpdateModal: ()=> void;
   closeGovernanceUpdateModal: ()=> void;
   publish: (title: string)=> void;
-  uploadFile: (file: string) =>void;
+  uploadFile: (file: File) =>void;
+  updateForm:(formId: string, fieldPath:string,newValue:string) => void
 };
 
 export const GeneralInformationContainer: React.FunctionComponent<TGeneralInformationContainerProps> = ({
@@ -24,7 +25,8 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
   uploadFile,
   publish,
   governanceUpdateModalState,
-  children
+  children,
+  updateForm
 }) => (
   <>
     <Container>
@@ -52,6 +54,7 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
       closeGovernanceUpdateModal={closeGovernanceUpdateModal}
       uploadFile={uploadFile}
       publish={publish}
+      updateForm={updateForm}
       {...governanceUpdateModalState}
     />
   </>

@@ -176,23 +176,43 @@ function* governanceGeneralInformationViewController() {
 
   yield call(loadInitialGeneralInformationView, governanceController)
 
-  const oldState = yield* select(selectGovernanceData)
-  if (processStateIsSuccess<TGovernanceViewSuccessState & { tabVisible: boolean }>(oldState)) {
+  while (true) {
+    const oldState = yield* select(selectGovernanceData)
+    let newState;
+    if (processStateIsSuccess<TGovernanceViewSuccessState & { tabVisible: boolean }>(oldState)) {
 
-    while (true) {
-
-      let newState;
-      const updateRequired = yield race({
+      const update: {
+        updateForm?: ReturnType<typeof actions.onFormChange>,
+        closeGovernanceUpdateModal?: ReturnType<typeof actions.closeGovernanceUpdateModal>,
+        openGovernanceUpdateModal?: ReturnType<typeof actions.openGovernanceUpdateModal>
+      } = yield race({
         closeGovernanceUpdateModal: take(actions.closeGovernanceUpdateModal),
         openGovernanceUpdateModal: take(actions.openGovernanceUpdateModal),
+        updateForm: take(actions.onFormChange)
       })
 
-      if (updateRequired.closeGovernanceUpdateModal) {
+      console.log("update", update, oldState)
+      if (update.updateForm && oldState.governanceUpdateModalState.modalState === EModalState.OPEN) {
+        const { fieldPath, formId, newValue } = update.updateForm.payload
+        console.log("governanceGeneralInformationViewController", fieldPath, formId, newValue)
+        newState = {
+          ...oldState,
+          governanceUpdateModalState: {
+            ...oldState.governanceUpdateModalState,
+            [formId]: {
+              [fieldPath]: {
+                ...oldState.governanceUpdateModalState[formId][fieldPath],
+                value: newValue
+              }
+            }
+          }
+        }
+      } else if (update.closeGovernanceUpdateModal) {
         newState = {
           ...oldState,
           governanceUpdateModalState: { modalState: EModalState.CLOSED } as const
         }
-      } else if (updateRequired.openGovernanceUpdateModal) {
+      } else if (update.openGovernanceUpdateModal) {
         newState = {
           ...oldState,
           governanceUpdateModalState: initialGovernanceUpdateModalState
@@ -200,6 +220,7 @@ function* governanceGeneralInformationViewController() {
       } else {
         continue
       }
+      console.log("newState", newState)
       //fixme check for new data
       yield put(actions.setGovernanceUpdateData(newState))
     }

@@ -4,6 +4,14 @@ import { DeepReadonly } from "@neufund/shared-utils";
 import { actions } from "./actions";
 import { TResolution } from "./types";
 import { EProcessState } from "../../utils/enums/processStates";
+import { TMessage } from "../../components/translatedMessages/utils";
+
+export   type TTextFieldData<T> = {
+  value: T,
+  error: TMessage | undefined,
+  isValid: boolean,
+  disabled: boolean,
+}
 
 export enum EModalState {
   OPEN = "open",
@@ -16,8 +24,8 @@ export type TDocumentUploadState =
 
 export type TGovernanceUpdateModalStateOpen = {
   documentUploadState: TDocumentUploadState,
-  updateTitle: string,
-  publishButtonDisabled: boolean
+  governanceUpdateTitleForm: { updateTitle: TTextFieldData<string> },
+  publishButtonDisabled: boolean,
 }
 
 export type TGovernanceUpdateModalState =
@@ -43,7 +51,14 @@ const initialState: TGovernanceViewState = {
 export const initialGovernanceUpdateModalState = {
   modalState: EModalState.OPEN,
   documentUploadState: { documentUploadStatus: EProcessState.NOT_STARTED },
-  updateTitle: "",
+  governanceUpdateTitleForm: {
+    updateTitle: {
+      value: "",
+      error: undefined,
+      isValid: false,
+      disabled: false,
+    }
+  },
   publishButtonDisabled: true
 } as const
 

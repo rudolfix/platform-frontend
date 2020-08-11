@@ -1,31 +1,36 @@
-import { Button, EButtonLayout, EButtonSize, EButtonWidth, TextField, } from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonSize, EButtonWidth, TTranslatedString, } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { ModalFooter } from "reactstrap";
-import { Modal } from "../../../modals/Modal";
-import { EMimeType, FormDeprecated } from "../../../shared/forms";
-import { EUploadType, MultiFileUploadComponent } from "../../../shared/MultiFileUpload";
-
-import trashIcon from "../../../../assets/img/inline_icons/delete.svg";
-import styles from "./GovernanceUpdateModal.module.scss";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
+import * as cn from 'classnames'
+
+import { Modal } from "../../../modals/Modal";
+import { EMimeType } from "../../../shared/forms";
+import { EUploadType, MultiFileUploadComponent } from "../../../shared/MultiFileUpload";
 import {
   EModalState,
   TDocumentUploadState,
   TGovernanceUpdateModalState,
-  TGovernanceUpdateModalStateOpen
+  TGovernanceUpdateModalStateOpen, TTextFieldData
 } from "../../../../modules/governance/reducer";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
-import { withFormik } from "formik";
-import { GovernanceUpdateSchema } from "../../../../modules/governance/types";
+// import { GovernanceUpdateSchema } from "../../../../modules/governance/types";
 
-type TGovernanceUpdateModalProps = {
-  closeGovernanceUpdateModal: () => void;
-  publish: (title: string) => void;
-  uploadFile: (file: File) => void;
-} & TGovernanceUpdateModalStateOpen
+import trashIcon from "../../../../assets/img/inline_icons/delete.svg";
+import styles from "./GovernanceUpdateModal.module.scss";
+import { TMessage } from "../../../translatedMessages/utils";
+import { TDataTestId } from "@neufund/shared-utils";
+
+type TGovernanceUpdateModalExternalProps = {
+  uploadFile: (file: File) =>void;
+  closeGovernanceUpdateModal: () =>void;
+  publish: (title: string)=> void;
+  updateForm:(formId: string, fieldPath:string,newValue:string) => void
+}
+
+type TGovernanceUpdateModalProps = TGovernanceUpdateModalExternalProps & TGovernanceUpdateModalStateOpen
 
 type TGovernanceUpdateModalDropzoneProps = {
   uploadFile: (file: File) => void;
@@ -79,79 +84,171 @@ export const GovernanceUpdateModalDocumentDropzone: React.FunctionComponent<TGov
   }
 }
 
+type TFormErrorProps = {
+  name: string,
+  error: TMessage
+} & TDataTestId
+
+type TTextFieldProps = {
+  data: TTextFieldData<string>,
+  path:string,
+  placeholder?:string,
+  labelText:TTranslatedString,
+}& TDataTestId
+
+type TTextInputProps = {
+  name:string,
+  value:string,
+  placeholder:string,
+  isValid:boolean,
+  disabled:boolean,
+}& TDataTestId
+
+type TFormLabelProps = {
+  labelText:TTranslatedString,
+  name:string,
+  disabled:boolean
+}
+
+const FormLabel:React.FunctionComponent<TFormLabelProps> = ({
+  labelText,
+  name,
+  disabled
+}) =>
+  <label htmlFor={name} className={cn(styles.label, { [styles.labelDisabled]: disabled })}>
+    {labelText}
+  </label>
+
+const TextInput:React.FunctionComponent<TTextInputProps> = ({
+  name,
+  value,
+  placeholder = "",
+  isValid,
+  disabled,
+  'data-test-id':dataTestId
+}) =>
+  <input
+    type="text"
+    name={name}
+    value={value}
+    aria-describedby={`${name}-description`}
+    aria-invalid={!isValid}
+    disabled={disabled}
+    placeholder={placeholder}
+    data-test-id={dataTestId}
+
+    onChange={()=>undefined}
+  />
+
+
+
+const FormError:React.FunctionComponent<TFormErrorProps> = ({
+  error,
+  'data-test-id':dataTestId
+}) =>
+  <p className={styles.errorMessage} data-test-id={`${dataTestId}-error`} role="alert">
+    {error}
+  </p>
+
+
+
+const TextField:React.FunctionComponent<TTextFieldProps> = ({
+  data: {
+    value,
+    error,
+    isValid,
+    disabled
+  },
+  path,
+  'data-test-id':dataTestId,
+  placeholder = "",
+  labelText,
+}) =>
+  <div>
+    {labelText && <FormLabel
+      name={path}
+      labelText={labelText}
+      disabled={disabled}
+    />}
+    <TextInput
+      name={path}
+      value={value}
+      placeholder={placeholder}
+      isValid={isValid}
+      disabled={disabled}
+      data-test-id={dataTestId}
+    />
+    {error && <FormError
+      name={path}
+      error={error}
+      data-test-id={dataTestId}
+    />}
+  </div>
+
 export const GovernanceUpdateModalBase: React.FunctionComponent<TGovernanceUpdateModalProps> = ({
   publish,
   uploadFile,
   closeGovernanceUpdateModal,
   publishButtonDisabled,
-  updateTitle,
+  governanceUpdateTitleForm,
   documentUploadState,
+  updateForm
 }) => (
   <Modal
     onClose={closeGovernanceUpdateModal}
-    isOpen={true} //fixme try true
+    isOpen={true}
     unmountOnClose
     className={styles.modal}
     bodyClass={styles.modalBody}
-    footer={
-      <ModalFooter>
-        <Button
-          layout={EButtonLayout.SECONDARY}
-          onClick={f => f}
-          className={styles.saveAsDraft}
-          disabled
-        >
-          <FormattedMessage id="common.save-as-draft" />
-        </Button>
 
-        <Button
-          layout={EButtonLayout.PRIMARY}
-          disabled={publishButtonDisabled}
-          onClick={() => publish(updateTitle)} //fixme this should be in the saga
-          data-test-id="general-information-publish"
-        >
-          <FormattedMessage id="common.publish" />
-        </Button>
-      </ModalFooter>
-    }
   >
     <h4 className={styles.title}>
       <FormattedMessage id="governance.update-modal.title" />
     </h4>
-    <FormDeprecated>
+    <form
+      id="governanceUpdateTitleForm"
+      onChange={(e)=>{console.log(e.target.name, "value",e.target.value);updateForm("governanceUpdateTitleForm",e.target.name,e.target.value)}}
+      onBlur={undefined}
+      onFocus={undefined}
+    >
       <TextField
-        label={<FormattedMessage id="form.label.title" />}
-        name="updateTitle"
+        path="updateTitle"
+        data={governanceUpdateTitleForm.updateTitle}
+
+        labelText={<FormattedMessage id="form.label.title" />}
         data-test-id="governance-update-title"
-        value={updateTitle}
       />
-    </FormDeprecated>
+    </form>
 
     <GovernanceUpdateModalDocumentDropzone
       {...documentUploadState}
       uploadFile={uploadFile}
     />
+    <div className={styles.footer}>
+      <Button
+        layout={EButtonLayout.SECONDARY}
+        onClick={f => f}
+        className={styles.saveAsDraft}
+        disabled
+      >
+        <FormattedMessage id="common.save-as-draft" />
+      </Button>
 
+      <Button
+        layout={EButtonLayout.PRIMARY}
+        disabled={publishButtonDisabled}
+        onClick={() => publish("safdasdf")} //fixme this should be in the saga
+        data-test-id="general-information-publish"
+      >
+        <FormattedMessage id="common.publish" />
+      </Button>
+    </div>
   </Modal>
 );
 
-// export const GovernanceUpdateModal = withFormik<
-//   IModalComponentProps & IGovernanceUpdateModalProps,
-//   IResolutionUpdate
-// >({
-//   validationSchema: GovernanceUpdateSchema,
-//   validateOnMount: true,
-//   mapPropsToValues: () => ({ title: "" }),
-//   handleSubmit: f => f,
-// })(GovernanceUpdateModalBase);
 
-
-export const GovernanceUpdateModal = compose<TGovernanceUpdateModalState, {}>(
+export const GovernanceUpdateModal = compose<TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps, TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps>(
   branch<TGovernanceUpdateModalState>(({ modalState }) => modalState === EModalState.CLOSED, renderNothing),
-  branch<TGovernanceUpdateModalState>(({ modalState }) => modalState === EModalState.OPEN,
-    renderComponent(
-      withFormik({
-        validationSchema: GovernanceUpdateSchema,
-        handleSubmit: f => f,
-      })(GovernanceUpdateModalBase)))
+  branch<TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps>(({ modalState }) => modalState === EModalState.OPEN,
+    renderComponent(GovernanceUpdateModalBase))
 )(shouldNeverHappen("GovernanceUpdateModal reached default branch"))

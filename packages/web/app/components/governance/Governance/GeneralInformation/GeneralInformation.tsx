@@ -15,11 +15,6 @@ import { TGovernanceViewState } from "../../../../modules/governance/reducer";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { DeepReadonlyObject } from "@neufund/shared-utils";
 
-// type TStateProps = {
-//   processState: EProcessState;
-//   resolutions: readonly TResolution[];
-//   governanceUpdateModalState: TGovernanceUpdateModalState;
-// };
 type TDispatchProps = {
   openGovernanceUpdateModal: ()=> void;
   closeGovernanceUpdateModal: ()=> void;
@@ -41,8 +36,9 @@ export const GeneralInformation = compose<TGeneralInformationListProps, {}>(
       publish: (title: string) =>
         dispatch(actions.txTransactions.startPublishResolutionUpdate(title)),
       uploadFile: (file: string) =>
-        dispatch(actions.governance.uploadFile(file))
-
+        dispatch(actions.governance.uploadFile(file)),
+      updateForm: (formId: string, fieldPath:string,newValue:string) =>
+        dispatch(actions.governance.onFormChange(formId, fieldPath,newValue)),
     }),
   }),
   branch<TGovernanceViewState>(({ processState }) => processState !== EProcessState.SUCCESS, renderComponent(LoadingIndicator)), // fixme add error state

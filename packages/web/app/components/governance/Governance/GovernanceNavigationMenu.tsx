@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 import { GovernancePages, TGovernancePage } from "./constants";
 
-import styles from "./GovernanceNav.module.scss";
+import styles from "./GovernanceNavigationMenu.module.scss";
 
 export const GovernanceNavigationMenu = () => (
   <div className={styles.wrapper}>

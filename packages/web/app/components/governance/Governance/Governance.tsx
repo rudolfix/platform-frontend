@@ -13,6 +13,8 @@ import { GovernanceContainer } from "./GovernanceContainer";
 import { GovernanceNavigationMenu } from "./GovernanceNavigationMenu";
 import { GovernanceOverview } from "./GovernanceOverview/GovernanceOverview";
 
+import styles from "./Governance.module.scss";
+
 export const GovernanceBase = () => (
   <>
     <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
@@ -24,13 +26,13 @@ export const GovernanceBase = () => (
     <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
       <GovernanceNavigationMenu />
 
-      <Container columnSpan={EColumnSpan.TWO_COL}>
+      <div className={styles.childPageWrapper}>
         <SwitchConnected>
           <Route path={appRoutes.governanceOverview} component={GovernanceOverview} />
           <Route path={appRoutes.governanceGeneralInformation} component={GeneralInformation} />
           <Redirect to={appRoutes.governanceOverview} />
         </SwitchConnected>
-      </Container>
+      </div>
     </Container>
   </>
 );

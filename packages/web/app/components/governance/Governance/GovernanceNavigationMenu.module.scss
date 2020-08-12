@@ -1,4 +1,8 @@
 .wrapper {
+  @include media-breakpoint-down(lg) {
+    display: none;
+  }
+
   width: px-to-rem(256px);
   margin-right: px-to-rem(64px);
 }

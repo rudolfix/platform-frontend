@@ -57,7 +57,14 @@ describe("convertToProposalDetails", () => {
 describe("calculateParticipationPercentage", () => {
   it("should properly calculate proposal participation", () => {
     const proposalWithJustTally = {
-      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+      tally: {
+        against: "2012",
+        inFavor: "4024",
+        tokenVotingPower: "13230000",
+        offchainInFavor: "0",
+        offchainAgainst: "0",
+        totalVotingPower: "20000000",
+      },
     };
 
     expect(calculateParticipationPercentage(proposalWithJustTally)).to.equal(
@@ -69,7 +76,14 @@ describe("calculateParticipationPercentage", () => {
 describe("calculateInFavorParticipationPercentage", () => {
   it("should properly calculate proposal in favor participation", () => {
     const proposalWithJustTally = {
-      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+      tally: {
+        against: "2012",
+        inFavor: "4024",
+        tokenVotingPower: "13230000",
+        offchainInFavor: "0",
+        offchainAgainst: "0",
+        totalVotingPower: "20000000",
+      },
     };
 
     expect(calculateInFavorParticipationPercentage(proposalWithJustTally)).to.equal(
@@ -81,7 +95,14 @@ describe("calculateInFavorParticipationPercentage", () => {
 describe("calculateAgainstParticipationPercentage", () => {
   it("should properly calculate proposal against participation", () => {
     const proposalWithJustTally = {
-      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+      tally: {
+        against: "2012",
+        inFavor: "4024",
+        tokenVotingPower: "13230000",
+        offchainInFavor: "0",
+        offchainAgainst: "0",
+        totalVotingPower: "20000000",
+      },
     };
 
     expect(calculateAgainstParticipationPercentage(proposalWithJustTally)).to.equal(
@@ -93,7 +114,14 @@ describe("calculateAgainstParticipationPercentage", () => {
 describe("calculateAbstainedParticipationPercentage", () => {
   it("should properly calculate proposal abstained participation", () => {
     const proposalWithJustTally = {
-      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+      tally: {
+        against: "2012",
+        inFavor: "4024",
+        tokenVotingPower: "13230000",
+        offchainInFavor: "0",
+        offchainAgainst: "0",
+        totalVotingPower: "20000000",
+      },
     };
 
     expect(calculateAbstainedParticipationPercentage(proposalWithJustTally)).to.equal(
@@ -105,7 +133,14 @@ describe("calculateAbstainedParticipationPercentage", () => {
 describe("calculateShareholderParticipationPercentage", () => {
   it("should properly calculate proposal participation", () => {
     const proposalWithJustTally = {
-      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+      tally: {
+        against: "2012",
+        inFavor: "4024",
+        tokenVotingPower: "13230000",
+        offchainInFavor: "0",
+        offchainAgainst: "0",
+        totalVotingPower: "20000000",
+      },
     };
 
     const shareholderVote = {

@@ -38,3 +38,21 @@ export const selectProposalEto = (state: TAppGlobalState) => {
     ? shareholderResolutionsVotingModuleApi.selectors.selectProposalEto(proposalId)(state)
     : undefined;
 };
+
+export const selectNomineeBreakdownStats = (state: TAppGlobalState) => {
+  const { proposalId } = state.shareholderResolutionsVotingView;
+
+  return proposalId
+    ? shareholderResolutionsVotingModuleApi.selectors.selectNomineeBreakdownById(proposalId)(state)
+    : undefined;
+};
+
+export const selectShareCapitalBreakdownStats = (state: TAppGlobalState) => {
+  const { proposalId } = state.shareholderResolutionsVotingView;
+
+  return proposalId
+    ? shareholderResolutionsVotingModuleApi.selectors.selectShareCapitalBreakdownById(proposalId)(
+        state,
+      )
+    : undefined;
+};

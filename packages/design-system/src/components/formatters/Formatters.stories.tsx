@@ -32,13 +32,7 @@ const valuesDecimal = [
 
 const generateStory = (
   title: string,
-  Component:
-    | typeof Eth
-    | typeof Eur
-    | typeof EurToken
-    | typeof Neu
-    | typeof EquityTokenPriceEuro
-    | typeof Percentage,
+  Component: typeof Eth | typeof Eur | typeof Neu | typeof EquityTokenPriceEuro | typeof Percentage,
   values: Array<string> = [],
 ) => (
   <>

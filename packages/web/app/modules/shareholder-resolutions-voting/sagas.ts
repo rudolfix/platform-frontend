@@ -23,6 +23,8 @@ import { EProposalState, IShareholderVote, TProposal } from "./types";
 import {
   convertToProposalDetails,
   convertToProposalTally,
+  convertToShareCapitalBreakdown,
+  convertToShareholderVoteBreakdown,
   convertToShareholderVoteResolution,
 } from "./utils";
 
@@ -85,28 +87,53 @@ export function* loadInvestorShareholderResolution(proposalId: string): SagaGene
   );
 
   // TODO: Handle other shareholder proposal states
-  if (proposalDetails.state !== EProposalState.Public) {
+  if (
+    proposalDetails.state !== EProposalState.Public &&
+    proposalDetails.state !== EProposalState.Tally &&
+    proposalDetails.state !== EProposalState.Final
+  ) {
     throw new ProposalStateNotSupportedError(proposalDetails.state);
   }
 
-  const { proposalTallyRaw, voteStateRaw, equityToken } = yield* all({
+  const { proposalTallyRaw, voteStateRaw, equityToken, offChainVoteDocumentUri } = yield* all({
     proposalTallyRaw: call([contractsService.votingCenter, "tally"], proposalId),
     voteStateRaw: call([contractsService.votingCenter, "getVote"], proposalId, shareholderAddress),
     equityToken: call([contractsService, "getEquityToken"], proposalDetails.tokenAddress),
+    offChainVoteDocumentUri: call(
+      [contractsService.votingCenter, "offchainVoteDocumentUri"],
+      proposalId,
+    ),
   });
 
   const proposalTally = convertToProposalTally(proposalTallyRaw);
-
   const voteState = convertToShareholderVoteResolution(voteStateRaw);
 
   const companyId = makeEthereumAddressChecksummed(
     toEthereumAddress(yield* call(() => equityToken.companyLegalRepresentative)),
   );
 
+  const { decimals, tokenSymbol, shareNominalValueUlps, tokensPerShare } = yield* all({
+    decimals: call(() => equityToken.decimals),
+    tokenSymbol: call(() => equityToken.symbol),
+    shareNominalValueUlps: call(() => equityToken.shareNominalValueUlps),
+    tokensPerShare: call(() => equityToken.tokensPerShare),
+  });
+
+  const tokenHolderNomineeBreakdown = convertToShareholderVoteBreakdown({
+    inFavor: proposalTally.inFavor,
+    against: proposalTally.against,
+    tokenVotingPower: proposalTally.tokenVotingPower,
+    decimals,
+    // @see https://github.com/Neufund/platform-frontend/issues/4422#issuecomment-670388797
+    nomineeName: "Nominee",
+    tokenSymbol,
+  });
+
   const proposal: TProposal = {
     ...proposalDetails,
     companyId,
     id: proposalId,
+    state: proposalDetails.state,
     votingContractAddress: toEthereumChecksumAddress(contractsService.votingCenter.address),
     tally: proposalTally,
     // hardcoded for now (we could take it from smart contract but it will be too complicated)
@@ -126,6 +153,22 @@ export function* loadInvestorShareholderResolution(proposalId: string): SagaGene
   yield put(
     actions.setShareholderResolutionVotingProposalShareholderVote(proposal.id, shareholderVote),
   );
+  if (proposalDetails.state >= EProposalState.Tally) {
+    yield put(actions.setNomineeShareholderVoteBreakdown(proposal.id, tokenHolderNomineeBreakdown));
+  }
+  if (proposalDetails.state === EProposalState.Final) {
+    const shareCapital = convertToShareCapitalBreakdown({
+      offChainInFavor: proposalTally.offchainInFavor,
+      offchainAgainst: proposalTally.offchainAgainst,
+      shareNominalValueUlps,
+      offChainVoteDocumentUri,
+      tokensPerShare,
+      tokenVotingPower: proposalTally.tokenVotingPower,
+      totalVotingPower: proposalTally.totalVotingPower,
+      nomineeVote: tokenHolderNomineeBreakdown.nomineeVote,
+    });
+    yield put(actions.setShareCapitalBreakdown(proposal.id, shareCapital));
+  }
 }
 
 export function* loadIssuerShareholderResolution(proposalId: string): SagaGenerator<void> {

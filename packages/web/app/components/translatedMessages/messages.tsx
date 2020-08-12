@@ -60,7 +60,8 @@ export type TranslatedMessageType =
   | ELightWalletRestoreMessage
   | WalletConnectErrorMessage
   | EVotingErrorMessage
-  | EGovernanceErrorMessage;
+  | EGovernanceErrorMessage
+  | EProposalMessages;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -304,6 +305,10 @@ export enum EEtoNomineeRequestMessages {
 export enum EEtoNomineeActiveEtoNotifications {
   ACTIVE_ETO_SET_SUCCESS = "activeEtoSetSuccess",
   ACTIVE_ETO_SET_ERROR = "activeEtoSetError",
+}
+
+export enum EProposalMessages {
+  PROPOSAL_DOCUMENT_NAME = "proposalDocumentName",
 }
 
 export enum ENotificationText {
@@ -778,6 +783,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
+
+    case EProposalMessages.PROPOSAL_DOCUMENT_NAME:
+      return "statement";
 
     case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE:
       return <FormattedMessage id="account-recovery.success.title" />;

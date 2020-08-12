@@ -1,14 +1,22 @@
+import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import { toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import React from "react";
 
 import { EProposalState } from "../../../../modules/shareholder-resolutions-voting/module";
+import {
+  ENomineeVote,
+  ITokenHolderBreakdown,
+} from "../../../../modules/shareholder-resolutions-voting/types";
 import { ProposalVotingDetails } from "./ProposalVotingDetails";
 
 const proposalTally = {
   inFavor: "0",
   against: "0",
   tokenVotingPower: "13230000",
+  offchainInFavor: "0",
+  offchainAgainst: "0",
+  totalVotingPower: "20000000",
 };
 
 const proposal = {
@@ -26,6 +34,37 @@ const proposal = {
   quorum: "50",
 };
 
+const tokenHolderBreakdown = {
+  inFavorPercentage: "0",
+  inFavor: "0",
+  againstPercentage: "0",
+  against: "0",
+  abstainPercentage: "0",
+  abstain: "0",
+  totalTokens: "0",
+  nomineeVote: ENomineeVote.AGAINST,
+  decimals: 0,
+  tokenSymbol: "B",
+  nomineeName: "H",
+};
+
+const eto = { shareCapitalCurrencyCode: "EUR" };
+
+const breakdown = {
+  resolutionPassed: true,
+  shareCapitalInFavor: "0",
+  shareCapitalAgainst: "0",
+  shareCapitalAbstain: "0",
+  offChainVoteDocumentUri: "0",
+};
+
 storiesOf("Templates|ProposalVotingDetails", module).add("default", () => (
-  <ProposalVotingDetails proposal={proposal} />
+  <ProposalVotingDetails
+    proposal={proposal}
+    nomineeShareBreakdown={tokenHolderBreakdown as ITokenHolderBreakdown}
+    eto={eto as TEtoWithCompanyAndContract}
+    shareCapitalBreakdown={breakdown}
+    downloadDocument={() => {}}
+    pendingDownloads={{}}
+  />
 ));

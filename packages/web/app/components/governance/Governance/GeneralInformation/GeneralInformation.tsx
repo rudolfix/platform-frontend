@@ -7,6 +7,7 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { governanceModuleApi } from "../../../../modules/governance/module";
 import { IResolution } from "../../../../modules/governance/types";
+import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { Container } from "../../../layouts/Container";
 import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
@@ -16,7 +17,7 @@ import { LoadingIndicator } from "../../../shared/loading-indicator";
 import {
   GeneralInformationContainer,
   TGeneralInformationContainerProps,
-} from "./GeneralInformationConainer";
+} from "./GeneralInformationContainer";
 import { GeneralInformationList, TGeneralInformationListProps } from "./GeneralInformationList";
 
 import styles from "./GeneralInformation.module.scss";
@@ -53,15 +54,17 @@ export const GeneralInformation = compose<TGeneralInformationListProps, {}>(
         dispatch(actions.governance.toggleGovernanceUpdateModal(show)),
       onUpdatePublish: (title: string) =>
         dispatch(actions.txTransactions.startPublishResolutionUpdate(title)),
+      onPageChange: (to: string) => dispatch(routingActions.push(to)),
     }),
   }),
   branch<TStateProps>(({ files }) => !files, renderComponent(LoadingIndicator)),
   withContainer(
     withProps<TGeneralInformationContainerProps, TGeneralInformationContainerProps>(
-      ({ onUpdatePublish, toggleGovernanceUpdateModal, showUpdateModal }) => ({
+      ({ onUpdatePublish, toggleGovernanceUpdateModal, showUpdateModal, onPageChange }) => ({
         toggleGovernanceUpdateModal,
         onUpdatePublish,
         showUpdateModal,
+        onPageChange,
       }),
     )(GeneralInformationContainer),
   ),

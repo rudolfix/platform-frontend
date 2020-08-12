@@ -14,6 +14,7 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { shareholderResolutionsVotingModuleApi } from "../../../modules/shareholder-resolutions-voting/module";
 import {
+  EProposalState,
   EShareholderVoteResolution,
   IShareholderVote,
   TProposal,
@@ -158,7 +159,22 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
   );
 };
 
+const ProposalShareholderVoteAbstained: React.FunctionComponent<TExternalProps> = () => (
+  <PanelGray data-test-id="governance.proposal.shareholder-vote-widget.vote-details">
+    <p className={cn(styles.message, "mb-0 text-center")}>
+      <FormattedMessage id="governance.proposal.abstained-from-vote" />
+    </p>
+  </PanelGray>
+);
+
 const ProposalShareholderVoteWidget = compose<TExternalProps, TExternalProps>(
+  branch<TExternalProps>(
+    props =>
+      props.shareholderVote.state === EShareholderVoteResolution.Abstain &&
+      (props.proposal.state === EProposalState.Tally ||
+        props.proposal.state === EProposalState.Final),
+    renderComponent(ProposalShareholderVoteAbstained),
+  ),
   branch<TExternalProps>(
     props => props.shareholderVote.state === EShareholderVoteResolution.Abstain,
     renderComponent(ProposalShareholderVote),

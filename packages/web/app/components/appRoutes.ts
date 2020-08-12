@@ -1,3 +1,5 @@
+import { Values } from "@neufund/shared-utils";
+
 export const appRoutes = {
   // ----- HARDCODED TEMP ROUTES ---//
   greyp: "/greyp",
@@ -102,3 +104,5 @@ export const appRoutes = {
    */
   etoPublicViewLegacyRoute: "/eto/view/:previewCode",
 } as const;
+
+export type TAppRoute = Values<typeof appRoutes>;

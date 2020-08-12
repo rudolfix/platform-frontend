@@ -19,13 +19,11 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
       <Heading level={6} decorator={false} className="text-uppercase mb-2">
         <FormattedMessage id="governance.proposal.vote.details.heading" />
       </Heading>
-
       <DataRowSeparated
         size={EDataRowSize.SMALL}
         caption={<FormattedMessage id="governance.proposal.vote.details.source" />}
         value={<EtherscanAddressLink address={proposal.votingContractAddress} />}
       />
-
       <DataRowSeparated
         size={EDataRowSize.SMALL}
         caption={<FormattedMessage id="governance.proposal.vote.details.started" />}
@@ -43,12 +41,32 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
         }
       />
 
-      <DataRow
-        size={EDataRowSize.SMALL}
-        caption={<FormattedMessage id="governance.proposal.vote.details.ends" />}
-        value={<FormattedRelative value={proposal.endsAt} initialNow={new Date()} />}
-        className="mb-0"
-      />
+      {proposal.endsAt > new Date().getTime() ? (
+        <DataRow
+          size={EDataRowSize.SMALL}
+          caption={<FormattedMessage id="governance.proposal.vote.details.ends" />}
+          value={<FormattedRelative value={proposal.endsAt} initialNow={new Date()} />}
+          className="mb-0"
+        />
+      ) : (
+        <DataRow
+          size={EDataRowSize.SMALL}
+          caption={<FormattedMessage id="governance.proposal.vote.details.ended" />}
+          value={
+            <FormattedDate
+              timeZone="UTC"
+              timeZoneName="short"
+              year="numeric"
+              month="short"
+              day="numeric"
+              hour="numeric"
+              minute="numeric"
+              value={proposal.endsAt}
+            />
+          }
+          className="mb-0"
+        />
+      )}
     </section>
 
     <section>

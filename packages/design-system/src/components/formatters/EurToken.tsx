@@ -12,11 +12,14 @@ import { IValueProps, Value } from "./atoms/Value";
 import { ICommonMoneyProps } from "./types";
 import { formatCurrency } from "./utils";
 
-const EurTokenComponent: React.FunctionComponent<IValueProps & ICommonMoneyProps & TDataTestId> = ({
+const EurTokenComponent: React.FunctionComponent<IValueProps &
+  ICommonMoneyProps &
+  TDataTestId & { symbolAsEuro?: boolean }> = ({
   className,
   value,
   defaultValue,
   "data-test-id": dataTestId,
+  symbolAsEuro = false,
 }) => {
   const formattedValue =
     value &&
@@ -31,7 +34,7 @@ const EurTokenComponent: React.FunctionComponent<IValueProps & ICommonMoneyProps
   return (
     <span className={className} data-test-id={dataTestId}>
       <Value>{formattedValue || defaultValue || " "}</Value>
-      <Units show={!!formattedValue}>&#x20;nEUR</Units>
+      <Units show={!!formattedValue}>&#x20;{symbolAsEuro ? "EUR" : "nEUR"}</Units>
     </span>
   );
 };

@@ -5,11 +5,11 @@ import {
   neuCall,
   neuFork,
   neuTakeEveryUntil,
-  neuTakeOnly,
   put,
   race,
   select,
   TActionFromCreator,
+  takeOnly,
 } from "@neufund/sagas";
 import { Dictionary } from "@neufund/shared-utils";
 import { LOCATION_CHANGE } from "connected-react-router";
@@ -130,7 +130,7 @@ export function* watchSetEtoAction(
 
   yield race({
     wait: neuFork(etoDelay, previewCode),
-    cancel: neuTakeOnly(etoActions.setEto, { eto: { previewCode } }),
+    cancel: takeOnly(etoActions.setEto, { eto: { previewCode } }),
   });
 }
 

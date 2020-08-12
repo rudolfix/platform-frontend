@@ -11,6 +11,10 @@ import {
   IShareholderVote,
   TProposal,
 } from "../../../modules/shareholder-resolutions-voting/module";
+import {
+  IShareCapitalBreakdown,
+  ITokenHolderBreakdown,
+} from "../../../modules/shareholder-resolutions-voting/types";
 import { appConnect } from "../../../store";
 import { withMetaTags } from "../../../utils/withMetaTags";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
@@ -30,6 +34,8 @@ interface IStateProps {
   shareholderVote: IShareholderVote | undefined;
   eto: TEtoWithCompanyAndContract | undefined;
   pendingDownloads: Record<string, boolean | undefined>;
+  nomineeShareBreakdown: ITokenHolderBreakdown | undefined;
+  shareCapitalBreakdown: IShareCapitalBreakdown | undefined;
 }
 
 interface IDispatchProps {
@@ -46,7 +52,9 @@ type IProposalsProps = IStateProps & IDispatchProps;
 
 const ProposalInvestorLayout: React.FunctionComponent<IProposalsProps> = ({
   proposal,
+  nomineeShareBreakdown,
   shareholderVote,
+  shareCapitalBreakdown,
   eto,
   voteYes,
   voteNo,
@@ -82,7 +90,14 @@ const ProposalInvestorLayout: React.FunctionComponent<IProposalsProps> = ({
           eto={eto}
         />
 
-        <ProposalVotingDetails proposal={proposal} />
+        <ProposalVotingDetails
+          proposal={proposal}
+          nomineeShareBreakdown={nomineeShareBreakdown}
+          shareCapitalBreakdown={shareCapitalBreakdown}
+          downloadDocument={downloadDocument}
+          pendingDownloads={pendingDownloads}
+          eto={eto}
+        />
       </Container>
     </WidgetGrid>
   );
@@ -96,6 +111,12 @@ export const ProposalInvestor = compose<IStateProps & IDispatchProps, TExternalP
         state,
       ),
       eto: shareholderResolutionsVotingViewModuleApi.selectors.selectProposalEto(state),
+      nomineeShareBreakdown: shareholderResolutionsVotingViewModuleApi.selectors.selectNomineeBreakdownStats(
+        state,
+      ),
+      shareCapitalBreakdown: shareholderResolutionsVotingViewModuleApi.selectors.selectShareCapitalBreakdownStats(
+        state,
+      ),
       pendingDownloads: selectPendingDownloads(state),
     }),
     dispatchToProps: (dispatch, { proposalId }) => {

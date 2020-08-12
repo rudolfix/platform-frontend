@@ -4,6 +4,7 @@ import {
   invariant,
   isInEnum,
   subtractBigNumbers,
+  toEquityTokenSymbol,
   toEthereumAddress,
   toPercentage,
   unixTimestampToTimestamp,
@@ -14,11 +15,14 @@ import Web3Utils from "web3-utils";
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { makeEthereumAddressChecksummed } from "../web3/utils";
 import {
+  ENomineeVote,
   EProposalState,
   EShareholderVoteResolution,
   IProposalDetails,
   IProposalTally,
+  IShareCapitalBreakdown,
   IShareholderVote,
+  ITokenHolderBreakdown,
   TProposal,
 } from "./types";
 
@@ -82,10 +86,10 @@ export const convertToProposalTally = ([
   _state,
   inFavor,
   against,
-  _offchainInFavor,
-  _offchainAgainst,
+  offchainInFavor,
+  offchainAgainst,
   tokenVotingPower,
-  _totalVotingPower,
+  totalVotingPower,
   _campaignQuorumTokenAmount,
   _initiator,
   _hasObserverInterface,
@@ -103,7 +107,106 @@ export const convertToProposalTally = ([
 ]): IProposalTally => ({
   inFavor: inFavor.toString(),
   against: against.toString(),
+  offchainInFavor: offchainInFavor.toString(),
+  offchainAgainst: offchainAgainst.toString(),
   tokenVotingPower: tokenVotingPower.toString(),
+  totalVotingPower: totalVotingPower.toString(),
+});
+
+// TODO: clean up the utilty method and remove redundant calculations
+export const convertToShareholderVoteBreakdown = ({
+  inFavor,
+  against,
+  tokenVotingPower,
+  nomineeName,
+  decimals,
+  tokenSymbol,
+}: {
+  inFavor: string;
+  against: string;
+  tokenVotingPower: string;
+  decimals: BigNumber;
+  tokenSymbol: string;
+  nomineeName: string;
+}): ITokenHolderBreakdown => ({
+  inFavorPercentage: new BigNumber(inFavor)
+    .div(tokenVotingPower)
+    .mul("100")
+    .toString(),
+  inFavor: inFavor,
+  againstPercentage: new BigNumber(against)
+    .div(tokenVotingPower)
+    .mul("100")
+    .toString(),
+  against: against,
+  abstainPercentage: new BigNumber(tokenVotingPower)
+    .minus(inFavor)
+    .minus(against)
+    .div(tokenVotingPower)
+    .mul("100")
+    .toString(),
+  abstain: new BigNumber(tokenVotingPower)
+    .minus(inFavor)
+    .minus(against)
+    .toString(),
+  nomineeVote:
+    new BigNumber(against).comparedTo(new BigNumber(tokenVotingPower).div("2").floor()) === 1
+      ? ENomineeVote.AGAINST
+      : ENomineeVote.IN_FAVOUR,
+  decimals: decimals.toNumber(),
+  totalTokens: tokenVotingPower,
+  tokenSymbol: toEquityTokenSymbol(tokenSymbol),
+  nomineeName,
+});
+
+export const convertToShareCapitalBreakdown = ({
+  nomineeVote,
+  offChainInFavor,
+  offchainAgainst,
+  shareNominalValueUlps,
+  tokensPerShare,
+  tokenVotingPower,
+  offChainVoteDocumentUri,
+  totalVotingPower,
+}: {
+  nomineeVote: ENomineeVote;
+  offChainInFavor: string;
+  tokenVotingPower: string;
+  offchainAgainst: string;
+  totalVotingPower: string;
+  shareNominalValueUlps: BigNumber;
+  tokensPerShare: BigNumber;
+  offChainVoteDocumentUri: string;
+}): IShareCapitalBreakdown => ({
+  resolutionPassed:
+    new BigNumber(offChainInFavor)
+      .add(nomineeVote === ENomineeVote.IN_FAVOUR ? tokenVotingPower : "0")
+      .comparedTo(
+        new BigNumber(offchainAgainst).add(
+          nomineeVote === ENomineeVote.AGAINST ? tokenVotingPower : "0",
+        ),
+      ) === 1,
+  shareCapitalInFavor: new BigNumber(offChainInFavor)
+    .add(nomineeVote === ENomineeVote.IN_FAVOUR ? tokenVotingPower : "0")
+    .mul(shareNominalValueUlps)
+    .div(tokensPerShare)
+    .floor()
+    .toString(),
+  shareCapitalAgainst: new BigNumber(offchainAgainst)
+    .add(nomineeVote === ENomineeVote.AGAINST ? tokenVotingPower : "0")
+    .mul(shareNominalValueUlps)
+    .div(tokensPerShare)
+    .floor()
+    .toString(),
+  shareCapitalAbstain: new BigNumber(totalVotingPower)
+    .sub(offchainAgainst)
+    .sub(offChainInFavor)
+    .sub(tokenVotingPower)
+    .mul(shareNominalValueUlps)
+    .div(tokensPerShare)
+    .floor()
+    .toString(),
+  offChainVoteDocumentUri: hashFromIpfsLink(offChainVoteDocumentUri),
 });
 
 export const convertToShareholderVoteResolution = (

@@ -36,38 +36,42 @@ export const GeneralInformationList: React.FunctionComponent<TGeneralInformation
             return (
               <li className={styles.fileListItem} key={file.id}>
                 <img className={styles.fileIcon} src={pdfIcon} alt="PDF" />
-                <div className={styles.fileDetails}>
-                  <span className={styles.fileName}>{title}</span>
-                  <span className={styles.caption}>
-                    <FormattedDate
-                      value={file.startedAt}
-                      year="numeric"
-                      month="long"
-                      day="2-digit"
-                    />
-                    &#x20;&bull;&#x20;
-                    {file.draft && (
-                      <>
-                        <FormattedMessage id="common.draft" />
-                        &#x20;&bull;&#x20;
-                      </>
+
+                <div className={styles.fileDetailsWrapper}>
+                  <div className={styles.fileDetails}>
+                    <span className={styles.fileName}>{title}</span>
+                    <span className={styles.caption}>
+                      <FormattedDate
+                        value={file.startedAt}
+                        year="numeric"
+                        month="long"
+                        day="2-digit"
+                      />
+                      &#x20;&bull;&#x20;
+                      {file.draft && (
+                        <>
+                          <FormattedMessage id="common.draft" />
+                          &#x20;&bull;&#x20;
+                        </>
+                      )}
+                      {title}
+                    </span>
+                  </div>
+
+                  <Button
+                    className={styles.fileAction}
+                    onClick={() => onViewDetails(index)}
+                    width={EButtonWidth.NO_PADDING}
+                    size={EButtonSize.SMALL}
+                    layout={EButtonLayout.LINK}
+                  >
+                    {file.draft ? (
+                      <FormattedMessage id="common.edit-draft" />
+                    ) : (
+                      <FormattedMessage id="common.view-details" />
                     )}
-                    {title}
-                  </span>
+                  </Button>
                 </div>
-                <Button
-                  className={styles.fileAction}
-                  onClick={() => onViewDetails(index)}
-                  width={EButtonWidth.NO_PADDING}
-                  size={EButtonSize.SMALL}
-                  layout={EButtonLayout.LINK}
-                >
-                  {file.draft ? (
-                    <FormattedMessage id="common.edit-draft" />
-                  ) : (
-                    <FormattedMessage id="common.view-details" />
-                  )}
-                </Button>
               </li>
             );
           })}

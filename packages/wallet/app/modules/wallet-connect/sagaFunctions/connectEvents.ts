@@ -1,15 +1,6 @@
 // TODO: Fix unsafe assignment and unsafe member access
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access */
-import {
-  call,
-  cancel,
-  cancelled,
-  neuTakeOnly,
-  put,
-  race,
-  SagaGenerator,
-  take,
-} from "@neufund/sagas";
+import { call, cancel, takeOnly, put, race, SagaGenerator, take } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 import { assertNever, nonNullable } from "@neufund/shared-utils";
 
@@ -25,7 +16,7 @@ import {
   TWalletConnectAdapterEmit,
 } from "modules/wallet-connect/lib/types";
 
-function* watchWalletConnectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<void> {
+export function* watchWalletConnectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<void> {
   const channel = reduxify<TWalletConnectAdapterEmit>(wcAdapter);
 
   while (true) {
@@ -116,10 +107,10 @@ export function* connectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<v
     // start watching for events from wallet connect and UI actions
     const result = yield* race({
       walletConnectEvents: call(watchWalletConnectEvents, wcAdapter),
-      disconnectFromPeer: neuTakeOnly(walletConnectActions.disconnectFromPeer, {
+      disconnectFromPeer: takeOnly(walletConnectActions.disconnectFromPeer, {
         peerId: wcAdapter.getPeerId(),
       }),
-      disconnectFromPeerSilent: neuTakeOnly(walletConnectActions.disconnectFromPeerSilent, {
+      disconnectFromPeerSilent: takeOnly(walletConnectActions.disconnectFromPeerSilent, {
         peerId: wcAdapter.getPeerId(),
       }),
     });
@@ -135,13 +126,10 @@ export function* connectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<v
     // in case of unknown error stop session
     logger.error(e, `Wallet connect event watcher failed.`);
   } finally {
-    if (yield cancelled()) {
-      // if connectEvents saga gets cancelled then stop session
-      logger.info(`Wallet connect event watcher was cancelled.`);
-    }
+    yield* call([wcAdapter, "disconnectSession"]);
 
-    yield* call(() => wcAdapter.disconnectSession());
     logger.info(`Wallet connect session with peer ${peerId} ended`);
+
     yield put(walletConnectActions.disconnectedFromPeer(peerId));
 
     if (!silentDisconnect) {

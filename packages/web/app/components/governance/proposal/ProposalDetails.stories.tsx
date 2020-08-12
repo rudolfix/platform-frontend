@@ -10,6 +10,9 @@ const proposalTally = {
   inFavor: "0",
   against: "0",
   tokenVotingPower: "13230000",
+  totalVotingPower: "20000000",
+  offchainInFavor: "0",
+  offchainAgainst: "0",
 };
 
 const proposal = {

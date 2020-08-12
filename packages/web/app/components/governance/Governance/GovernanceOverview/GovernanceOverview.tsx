@@ -3,7 +3,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { NavLink } from "react-router-dom";
 
-import { Container } from "../../../layouts/Container";
 import { EGovernancePage, GovernancePages } from "../constants";
 
 import announcementIcon from "../../../../assets/img/governance_announcement.svg";
@@ -26,7 +25,7 @@ const icons: {
 };
 
 export const GovernanceOverview = () => (
-  <Container>
+  <div className={styles.wrapper}>
     <ul className={styles.list}>
       {GovernancePages.filter((_item, index) => index > 0).map(item => (
         <NavLink
@@ -35,7 +34,7 @@ export const GovernanceOverview = () => (
           key={item.key}
           to={item.to}
         >
-          <img src={icons[item.key]} alt={item.label as string} />
+          <img src={icons[item.key]} alt={item.label as string} className={styles.logo} />
           <span className={styles.title}>{item.label}</span>
           <span className={styles.comingSoon}>
             {item.comingSoon ? (
@@ -48,5 +47,5 @@ export const GovernanceOverview = () => (
         </NavLink>
       ))}
     </ul>
-  </Container>
+  </div>
 );

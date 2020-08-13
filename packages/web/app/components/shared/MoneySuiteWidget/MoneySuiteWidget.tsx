@@ -53,6 +53,8 @@ interface IMoneySuiteWidgetProps {
   textPosition?: ETextPosition;
   outputFormat?: THumanReadableFormat;
   inputFormat?: ENumberInputFormat;
+  // overrides inputFormat
+  bottomInputFormat?: ENumberInputFormat;
   useTildeSign?: boolean;
   transactionTheme?: ETransactionTheme;
 }
@@ -166,6 +168,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
   textPosition = ETextPosition.LEFT,
   outputFormat = ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
   inputFormat = ENumberInputFormat.ULPS,
+  bottomInputFormat,
   useTildeSign = false,
   transactionTheme,
 }) => {
@@ -199,7 +202,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
             {useTildeSign ? <>~</> : <>=</>}{" "}
             <Money
               value={smallNumber}
-              inputFormat={inputFormat}
+              inputFormat={bottomInputFormat || inputFormat}
               outputFormat={outputFormat}
               valueType={currencyTotal}
             />

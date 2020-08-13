@@ -1,4 +1,6 @@
+import { CommonHtmlProps } from "@neufund/design-system";
 import { XOR } from "@neufund/shared-utils";
+import cn from "classnames";
 import { isString } from "lodash";
 import * as React from "react";
 import { ListGroupItem } from "reactstrap";
@@ -40,14 +42,16 @@ const selectCopyValue = (
 
 export const InfoRow: React.FunctionComponent<TInfoRowCommonProps &
   TInfoRowCopyProps &
+  CommonHtmlProps &
   TDataTestId> = ({
   caption,
   value,
   allowClipboardCopy,
   "data-test-id": dataTestId,
   clipboardCopyValue,
+  className,
 }) => (
-  <ListGroupItem className={styles.infoRow}>
+  <ListGroupItem className={cn(styles.infoRow, className)}>
     <div className={styles.infoCell}>{caption}</div>
     <div className={styles.infoCell}>
       <span data-test-id={dataTestId}>{value}</span>

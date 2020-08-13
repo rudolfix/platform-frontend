@@ -9,7 +9,7 @@ import { TAcceptPayoutAdditionalData } from "../../../../modules/tx/transactions
 import { appConnect } from "../../../../store";
 import { ConfettiEthereum } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
-import { AcceptTransactionDetails } from "./AcceptTransactionDetails";
+import { AcceptTransactionDetailsSummary } from "./AcceptTransactionDetailsSummary";
 
 interface IExternalProps {
   txTimestamp: number;
@@ -35,7 +35,7 @@ const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({
     image={<ConfettiEthereum className="mb-3" />}
     text={<FormattedMessage id="investor-payout.accept.success.text" />}
   >
-    <AcceptTransactionDetails
+    <AcceptTransactionDetailsSummary
       txTimestamp={txTimestamp}
       additionalData={additionalData}
       className="mb-4"

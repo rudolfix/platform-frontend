@@ -1,0 +1,52 @@
+.container {
+  display: grid;
+  grid-template: auto / 1fr;
+  justify-content: center;
+  justify-items: center;
+  grid-row-gap: 1rem;
+
+  width: 100%;
+
+  header {
+    margin-bottom: .5rem;
+    justify-self: stretch;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.high-gas-cost-warning {
+  display: grid;
+  grid-template: 1fr / 1rem 1fr;
+  grid-gap: 1rem;
+}
+
+.high-gas-cost-warning-text {
+  text-align: left;
+}
+
+.total-payout {
+  font-weight: bold;
+}
+
+.total-payout-negative {
+  color: $neu-base-red;
+}
+
+.value {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 2rem;
+  justify-content: flex-end;
+}
+
+.tha-link {
+  justify-self: center;
+}
+
+.payout-list {
+  margin-bottom: .5rem;
+  justify-self: stretch;
+}

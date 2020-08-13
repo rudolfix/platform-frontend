@@ -10,6 +10,10 @@ export const ITokenDisbursalSchema = YupTS.object({
 
 export const InvestorAcceptPayoutAdditionalDataSchema = YupTS.object({
   tokensDisbursals: YupTS.array(ITokenDisbursalSchema),
+  gasCostEth: YupTS.string(),
+  gasCostEuro: YupTS.string(),
+  totalPayoutEuro: YupTS.string(),
+  payoutLowerThanMinimum: YupTS.boolean(),
 });
 
 export type TInvestorAcceptPayoutAdditionalData = TypeOfYTS<

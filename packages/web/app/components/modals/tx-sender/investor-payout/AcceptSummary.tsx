@@ -1,8 +1,7 @@
-import { Button } from "@neufund/design-system";
+import { Button, CheckboxBase } from "@neufund/design-system";
 import { EthereumAddressWithChecksum, selectUnits } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Container } from "reactstrap";
 
 import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
@@ -14,6 +13,8 @@ import { commitmentStatusLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ExternalLink } from "../../../shared/links";
 import { AcceptTransactionDetails } from "./AcceptTransactionDetails";
+
+import * as styles from "./AcceptSummary.module.scss";
 
 interface IStateProps {
   additionalData: TAcceptPayoutAdditionalData;
@@ -30,38 +31,52 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
   walletAddress,
   additionalData,
   onAccept,
-}) => (
-  <Container>
-    <Heading size={EHeadingSize.SMALL} level={4} className="mb-4">
-      <FormattedMessage id="investor-payout.accept.summary.title" />
-    </Heading>
+}) => {
+  const [warningAccepted, setWarningAccepted] = React.useState(
+    !additionalData.payoutLowerThanMinimum,
+  );
 
-    <p className="mb-3">
-      {additionalData.tokensDisbursals.length === 1 ? (
-        <FormattedMessage
-          id="investor-payout.accept.summary.single.description"
-          values={{ token: selectUnits(additionalData.tokensDisbursals[0].token) }}
-        />
-      ) : (
-        <FormattedMessage id="investor-payout.accept.summary.combined.description" />
-      )}
-    </p>
-
-    <AcceptTransactionDetails additionalData={additionalData} className="mb-4" />
-
-    <section className="text-center">
-      <ExternalLink className="d-inline-block mb-3" href={commitmentStatusLink(walletAddress)}>
+  return (
+    <div className={styles.container}>
+      <Heading size={EHeadingSize.SMALL} level={4}>
+        <FormattedMessage id="investor-payout.accept.summary.title" />
+      </Heading>
+      <p>
+        {additionalData.tokensDisbursals.length === 1 ? (
+          <FormattedMessage
+            id="investor-payout.accept.summary.single.description"
+            values={{ token: selectUnits(additionalData.tokensDisbursals[0].token) }}
+          />
+        ) : (
+          <FormattedMessage id="investor-payout.accept.summary.combined.description" />
+        )}
+      </p>
+      <AcceptTransactionDetails additionalData={additionalData} />
+      <ExternalLink className={styles.thaLink} href={commitmentStatusLink(walletAddress)}>
         <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
       </ExternalLink>
-      <small className="d-inline-block mb-3 mx-4">
-        <FormattedMessage id="investor-payout.summary.hint" />
-      </small>
-      <Button onClick={onAccept} data-test-id="investor-payout.accept-summary.accept">
+      {additionalData.payoutLowerThanMinimum && (
+        <div className={styles.highGasCostWarning}>
+          <CheckboxBase
+            name="high-gas-cost-warning-checkbox"
+            checked={warningAccepted}
+            onChange={() => setWarningAccepted(!warningAccepted)}
+          />
+          <p className={styles.highGasCostWarningText}>
+            <FormattedMessage id="investor-payout.accept.summary.high-gas-cost-warning" />
+          </p>
+        </div>
+      )}
+      <Button
+        onClick={onAccept}
+        disabled={!warningAccepted}
+        data-test-id="investor-payout.accept-summary.accept"
+      >
         <FormattedMessage id="investor-payout.accept.summary.accept" />
       </Button>
-    </section>
-  </Container>
-);
+    </div>
+  );
+};
 
 const InvestorAcceptPayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => ({

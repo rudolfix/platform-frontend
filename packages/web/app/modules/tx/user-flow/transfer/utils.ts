@@ -43,7 +43,7 @@ export const toFixedPrecisionAmountEth = (value: string) =>
 export const toFixedPrecisionAmountEur = (value: string) =>
   toFixedPrecision({
     value,
-    inputFormat: ENumberInputFormat.ULPS,
+    inputFormat: ENumberInputFormat.DECIMAL,
     decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
     roundingMode: ERoundingMode.DOWN,
   });

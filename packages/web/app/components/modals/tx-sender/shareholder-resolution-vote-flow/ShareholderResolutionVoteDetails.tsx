@@ -1,3 +1,4 @@
+import { Eth, EurToken } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -27,6 +28,16 @@ const ShareholderResolutionVoteDetails: TransactionDetailsComponent<ETxType.SHAR
     <InfoRow
       caption={<FormattedMessage id="governance.proposal.vote.summary.your-vote" />}
       value={<FormatBoolean value={additionalData.voteInFavor} />}
+    />
+
+    <InfoRow
+      caption={<FormattedMessage id="governance.proposal.vote.summary.transaction-cost" />}
+      value={
+        <>
+          <Eth value={additionalData.gasCost} /> (
+          <EurToken symbolAsEuro={true} value={additionalData.gasCostEur} />)
+        </>
+      }
     />
 
     {txTimestamp && <TimestampRow timestamp={txTimestamp} />}

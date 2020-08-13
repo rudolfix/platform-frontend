@@ -5,3 +5,6 @@ NF_BRIDGE_URL=https://platformtests.neufund.io/api/wc-bridge-socket/
 NF_TRANSACTIONAL_RPC_PROVIDER=https://localhost:9090/api/user/transaction/tx_ethereum_json_rpc
 NF_CYPRESS_RUN=1
 NODE_ENV=production
+
+##if payout is below this amount (in euro), warn user that payout maybe less than tx costs
+NF_MINIMAL_PAYOUT_WITHOUT_WARNING="2"

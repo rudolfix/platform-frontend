@@ -76,33 +76,35 @@ const CapitalShareBreakdown: React.FunctionComponent<TExternalProps> = ({
         )
       }
     />
-    <ButtonInline
-      data-test-id="governance.proposal.details.download-proposal"
-      disabled={pendingDownloads[shareCapitalBreakdown.offChainVoteDocumentUri]}
-      onClick={() =>
-        downloadDocument(
-          {
-            ipfsHash: shareCapitalBreakdown.offChainVoteDocumentUri,
-            asPdf: true,
-            mimeType: EMimeType.PDF,
-          },
+    {shareCapitalBreakdown.offChainVoteDocumentUri && (
+      <ButtonInline
+        data-test-id="governance.proposal.details.download-proposal"
+        disabled={pendingDownloads[shareCapitalBreakdown.offChainVoteDocumentUri]}
+        onClick={() =>
+          downloadDocument(
+            {
+              ipfsHash: shareCapitalBreakdown.offChainVoteDocumentUri!,
+              asPdf: true,
+              mimeType: EMimeType.PDF,
+            },
 
-          getMessageTranslation({
-            messageType: EProposalMessages.PROPOSAL_DOCUMENT_NAME,
-          }) as string,
-          true,
-        )
-      }
-    >
-      <InlineIcon
-        width="1.4em"
-        height="1.4em"
-        className="mr-2"
-        svgIcon={iconDownload}
-        fill={EInlineIconFill.FILL_OUTLINE}
-      />
-      <FormattedMessage id="governance.proposal.capital.share.download.official.statement" />
-    </ButtonInline>
+            getMessageTranslation({
+              messageType: EProposalMessages.PROPOSAL_DOCUMENT_NAME,
+            }) as string,
+            true,
+          )
+        }
+      >
+        <InlineIcon
+          width="1.4em"
+          height="1.4em"
+          className="mr-2"
+          svgIcon={iconDownload}
+          fill={EInlineIconFill.FILL_OUTLINE}
+        />
+        <FormattedMessage id="governance.proposal.capital.share.download.official.statement" />
+      </ButtonInline>
+    )}
   </section>
 );
 

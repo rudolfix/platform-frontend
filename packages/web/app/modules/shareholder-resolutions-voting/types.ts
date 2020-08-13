@@ -83,7 +83,7 @@ export interface IShareCapitalBreakdown {
   shareCapitalInFavor: string;
   shareCapitalAgainst: string;
   shareCapitalAbstain: string;
-  offChainVoteDocumentUri: string;
+  offChainVoteDocumentUri: string | null;
 }
 
 export enum ENomineeVote {

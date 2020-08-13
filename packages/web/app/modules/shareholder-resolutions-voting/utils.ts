@@ -176,7 +176,7 @@ export const convertToShareCapitalBreakdown = ({
   totalVotingPower: string;
   shareNominalValueUlps: BigNumber;
   tokensPerShare: BigNumber;
-  offChainVoteDocumentUri: string;
+  offChainVoteDocumentUri: string | null;
 }): IShareCapitalBreakdown => ({
   resolutionPassed:
     new BigNumber(offChainInFavor)
@@ -206,7 +206,8 @@ export const convertToShareCapitalBreakdown = ({
     .div(tokensPerShare)
     .floor()
     .toString(),
-  offChainVoteDocumentUri: hashFromIpfsLink(offChainVoteDocumentUri),
+  offChainVoteDocumentUri:
+    offChainVoteDocumentUri === null ? null : hashFromIpfsLink(offChainVoteDocumentUri),
 });
 
 export const convertToShareholderVoteResolution = (

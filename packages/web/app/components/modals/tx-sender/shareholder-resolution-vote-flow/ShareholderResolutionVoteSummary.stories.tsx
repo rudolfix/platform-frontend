@@ -9,6 +9,8 @@ const additionalData = {
   voteInFavor: true,
   proposalTitle: "Eto proposal title",
   companyName: "My awesome company",
+  gasCost: "1000000",
+  gasCostEur: "1000.12",
 };
 
 storiesOf("Templates|Shareholder Resolution Vote Summary", module)

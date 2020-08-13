@@ -95,17 +95,20 @@ export function* loadInvestorShareholderResolution(proposalId: string): SagaGene
     throw new ProposalStateNotSupportedError(proposalDetails.state);
   }
 
-  const { proposalTallyRaw, voteStateRaw, equityToken, offChainVoteDocumentUri } = yield* all({
+  const { proposalTallyRaw, voteStateRaw, equityToken } = yield* all({
     proposalTallyRaw: call([contractsService.votingCenter, "tally"], proposalId),
     voteStateRaw: call([contractsService.votingCenter, "getVote"], proposalId, shareholderAddress),
     equityToken: call([contractsService, "getEquityToken"], proposalDetails.tokenAddress),
-    offChainVoteDocumentUri: call(
-      [contractsService.votingCenter, "offchainVoteDocumentUri"],
-      proposalId,
-    ),
   });
 
   const proposalTally = convertToProposalTally(proposalTallyRaw);
+
+  const offChainVoteDocumentUri = new BigNumber(proposalTally.offchainAgainst)
+    .add(proposalTally.offchainInFavor)
+    .isZero()
+    ? null
+    : yield* call([contractsService.votingCenter, "offchainVoteDocumentUri"], proposalId);
+
   const voteState = convertToShareholderVoteResolution(voteStateRaw);
 
   const companyId = makeEthereumAddressChecksummed(

@@ -795,6 +795,7 @@
   "governance.proposal.vote.statistics.yes": "Yes",
   "governance.proposal.vote.summary.company": "Company",
   "governance.proposal.vote.summary.resolution": "Resolution",
+  "governance.proposal.vote.summary.transaction-cost": "Transaction Cost",
   "governance.proposal.vote.summary.your-vote": "Your Vote",
   "governance.proposal.vote.vote-no": "Vote no",
   "governance.proposal.vote.vote-yes": "Vote yes",

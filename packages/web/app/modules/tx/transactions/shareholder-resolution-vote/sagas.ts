@@ -10,6 +10,7 @@ import { shareholderResolutionsVotingViewModuleApi } from "../../../shareholder-
 import { shareholderResolutionsVotingModuleApi } from "../../../shareholder-resolutions-voting/module";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
+import { selectTxGasCostEthUlps, selectTxGasCostEurUlps } from "./../../sender/selectors";
 
 function* generateShareholderResolutionVoteTransaction(
   proposalId: string,
@@ -66,6 +67,9 @@ function* shareholderResolutionVoteTransactionFlow(
 
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
+  const gasCost = yield* select(selectTxGasCostEthUlps);
+  const gasCostEur = yield* select(selectTxGasCostEurUlps);
+
   const proposal = yield* select(
     shareholderResolutionsVotingModuleApi.selectors.selectProposalById(proposalId),
   );
@@ -81,6 +85,8 @@ function* shareholderResolutionVoteTransactionFlow(
       companyName: proposalEto.company.name,
       proposalTitle: proposal.title,
       voteInFavor,
+      gasCost,
+      gasCostEur,
     }),
   );
 }

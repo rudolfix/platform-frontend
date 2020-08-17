@@ -115,3 +115,25 @@ export type TSocialChannel = {
 };
 
 export type TSocialChannels = TSocialChannel[];
+
+export enum EEtoStateColor {
+  BLUE = "blue",
+  ORANGE = "orange",
+  GREEN = "green",
+  RED = "red",
+}
+
+export enum EEtoStateUIName {
+  CAMPAIGNING = "campaigning",
+  DRAFT = "draft",
+  PENDING = "pending",
+  ON_CHAIN = "on-chain",
+  SUSPENDED = "suspended",
+  PRESALE = "presale",
+  PUBLIC_SALE = "public-sale",
+  IN_SIGNING = "in-signing",
+  CLAIM = "claim",
+  PAYOUT = "payout",
+  REFUND = "refund",
+  WHITELISTING = "whitelisting",
+}

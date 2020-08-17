@@ -3,6 +3,7 @@ import { isFunction, omit } from "lodash";
 import { spy } from "sinon";
 
 import { invariant } from "../invariant";
+import { DeepPartial } from "../types";
 
 // helper to generate quickly selector for data-test-ids
 export function tid(id: string): string {
@@ -100,3 +101,21 @@ export type AssertEqual<T, Expected> = [T] extends [Expected]
     ? true
     : never
   : never;
+
+/**
+ * An utility wrapper around deep partial to have an ability of providing partial implementation
+ * to the tests or storybook stories
+ * Throws when property is accessed without being explicitly mocked. This allows catching missing mocks faster than before.
+ * @todo We can refactor `createMock` to be based on `toDeepPartialMock` as internals are quite similar
+ */
+export const toDeepPartialMock = <T extends object>(mock: DeepPartial<T>): T =>
+  new Proxy<T>(mock as T, {
+    get: (target: DeepPartial<T>, key: PropertyKey) => {
+      invariant(
+        Reflect.has(target, key),
+        `Invalid mocked property access. Make sure mock for "${key.toString()}" is provided`,
+      );
+
+      return Reflect.get(target, key);
+    },
+  });

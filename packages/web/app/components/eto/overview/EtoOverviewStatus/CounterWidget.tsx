@@ -1,4 +1,4 @@
-import { EETOStateOnChain } from "@neufund/shared-modules";
+import { EETOStateOnChain, etoModuleApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedDate, FormattedTime } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -80,9 +80,14 @@ const CounterBase: React.FunctionComponent<TCounterWidgetProps> = ({
 );
 
 const CounterWidget = compose<TCounterWidgetProps, TExternalProps>(
-  withProps<TWithProps, TExternalProps>(({ awaitedState }) => ({
-    stateName: generalStateToName[awaitedState],
-  })),
+  withProps<TWithProps, TExternalProps>(({ awaitedState }) => {
+    const uiState = etoModuleApi.utils.stateToUIName[awaitedState];
+    const stateName = generalStateToName[uiState];
+
+    return {
+      stateName,
+    };
+  }),
   withStateHandlers(
     {
       countdownFinished: false,

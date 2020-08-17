@@ -1,4 +1,4 @@
-import { investorPortfolioModuleApi, walletApi } from "@neufund/shared-modules";
+import { investorPortfolioModuleApi, walletApi, etoModuleApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   assertNever,
@@ -99,6 +99,7 @@ const selectHomeScreenData = createSelector(
   selectNeuBalance,
   selectNeuBalanceEur,
   selectTotalPortfolioBalanceEur,
+  etoModuleApi.selectors.selectEtos,
   selectHomeScreenState,
   (
     balances,
@@ -107,6 +108,7 @@ const selectHomeScreenData = createSelector(
     neuBalance,
     neuBalanceEur,
     totalPortfolioBalanceEur,
+    etos,
     screenState,
   ) => {
     switch (screenState) {
@@ -124,6 +126,7 @@ const selectHomeScreenData = createSelector(
           portfolioAssets: nonNullable(portfolioAssets),
           neuBalance,
           neuBalanceEur,
+          etos: nonNullable(etos),
           totalPortfolioBalanceEur,
           screenState,
         };

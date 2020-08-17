@@ -11,5 +11,18 @@
   "wallet.tx-list.name.payout": "Accepted Payout from NEU",
   "wallet.tx-list.name.redistribute-payout": "Redistributed Payout from NEU",
   "wallet.tx-list.name.transfer.received": "Received {currency}",
-  "wallet.tx-list.name.transfer.transferred": "Sent {currency}"
+  "wallet.tx-list.name.transfer.transferred": "Sent {currency}",
+  "shared-components.eto-investor-status.coming-soon": "Coming soon",
+  "shared-components.eto-investor-status.campaigning": "Campaigning",
+  "shared-components.eto-investor-status.draft": "In Draft",
+  "shared-components.eto-investor-status.pending": "Pending",
+  "shared-components.eto-investor-status.on-chain": "On chain",
+  "shared-components.eto-investor-status.suspended": "Suspended",
+  "shared-components.eto-investor-status.presale": "Presale",
+  "shared-components.eto-investor-status.public": "Public sale",
+  "shared-components.eto-investor-status.signing": "In signing",
+  "shared-components.eto-investor-status.claim": "Claim tokens",
+  "shared-components.eto-investor-status.payout": "Proceeds payout",
+  "shared-components.eto-investor-status.refund": "Refund",
+  "shared-components.eto-investor-status.whitelisting": "Whitelisting"
 }

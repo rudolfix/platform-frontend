@@ -88,6 +88,9 @@ export const spacingStyles = StyleSheet.create({
   p1: {
     padding: spacing1,
   },
+  p2: {
+    padding: spacing2,
+  },
   p3: {
     padding: spacing3,
   },

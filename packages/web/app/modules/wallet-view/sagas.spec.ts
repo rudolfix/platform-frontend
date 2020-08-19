@@ -15,6 +15,7 @@ import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
 import { generalPendingTxFixture } from "../tx/utils";
 import { web3Reducer } from "../web3/reducer";
+import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { walletViewReducer } from "./reducer";
 import {
   loadInitialWalletView,
@@ -122,7 +123,7 @@ describe("Wallet View", () => {
           txMonitor: {
             txs: {
               pendingTransaction: generalPendingTxFixture(
-                "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+                makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
               ),
             },
           },

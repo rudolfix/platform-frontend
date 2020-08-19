@@ -8,7 +8,7 @@ import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
-import { isAddressValid } from "../../../web3/utils";
+import { isAddressValid, makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import {
@@ -72,7 +72,7 @@ export function* generateTokenWithdrawTransaction(
     : contractInstance.transferTx(to, valueBigNumber).getData();
 
   const txDetails: Partial<ITxData> = {
-    to: tokenAddress,
+    to: makeEthereumAddressChecksummed(tokenAddress),
     from,
     data: txInput,
     value: "0",

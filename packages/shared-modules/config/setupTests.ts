@@ -23,6 +23,9 @@ chai.use(sinonChai);
 // Adds fetch to our unit/integration tests
 (global as any).fetch = fetch;
 
+// in lieu of process.node.env === "development"
+(global as any).__DEV__ = true;
+
 // make sure that tests fail on unhandled promise rejection
 process.on("unhandledRejection", (reason, p) => {
   // tslint:disable-next-line

@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { ETxType } from "../../../../lib/web3/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
+import { makeEthereumAddressChecksummed } from "../../../../modules/web3/utils";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
 
@@ -36,11 +37,11 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
   blockId: 4623487932,
   txHash: "af908098b968d7564564362c51836",
   txData: {
-    from: "0x0020d330ef4de5c07d4271e0a67e8fd67a21d523",
+    from: makeEthereumAddressChecksummed("0x0020d330ef4de5c07d4271e0a67e8fd67a21d523"),
     gas: "0x7b0c",
     gasPrice: "0xb2d05e00",
     input: "0x00",
-    to: "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+    to: makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
     value: "0x8ac7230489e80000",
   },
 };

@@ -1,6 +1,7 @@
 const path = require("path");
 const paths = require("../webpack/paths");
 const devConfig = require("../webpack/webpack.config.dev");
+const webpack = require("webpack");
 
 module.exports = ({ config }) => {
   config.module.rules = [
@@ -107,6 +108,11 @@ module.exports = ({ config }) => {
     },
   ];
 
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      __DEV__: false,
+    }),
+  );
   config.resolve.extensions = devConfig.resolve.extensions;
 
   return config;

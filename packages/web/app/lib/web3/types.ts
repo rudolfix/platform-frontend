@@ -1,10 +1,11 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 export interface ITxData {
-  to: string;
+  to: EthereumAddressWithChecksum;
   value: string;
   data?: string;
-  from: string;
+  from: EthereumAddressWithChecksum;
   input?: string;
   gas: string;
   gasPrice: string;

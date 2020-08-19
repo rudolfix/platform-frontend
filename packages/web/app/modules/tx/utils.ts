@@ -1,5 +1,11 @@
 import { ETransactionDirection, ETransactionType, ITokenDisbursal } from "@neufund/shared-modules";
-import { ECurrency, EquityToken, ETH_DECIMALS, multiplyBigNumbers } from "@neufund/shared-utils";
+import {
+  ECurrency,
+  EquityToken,
+  EthereumAddressWithChecksum,
+  ETH_DECIMALS,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import { TxData } from "web3";
@@ -7,6 +13,7 @@ import { TxData } from "web3";
 import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { ETxType, TBigNumberVariants } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
+import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { ETxSenderState } from "./sender/reducer";
 import { TPendingTransactionType } from "./types";
 
@@ -77,7 +84,7 @@ export const getPendingTransactionAmount = (transaction: TxPendingWithMetadata):
 };
 
 export const generalPendingTxFixture = (
-  from: string,
+  from: EthereumAddressWithChecksum,
   transactionStatus: ETxSenderState = ETxSenderState.MINING,
   currency: ECurrency = ECurrency.EUR,
 ) => ({
@@ -89,7 +96,7 @@ export const generalPendingTxFixture = (
     input:
       "0x64663ea600000000000000000000000016cd5ac5a1b77fb72032e3a09e91a98bb21d89880000000000000000000000000000000000000000000000008ac7230489e80000",
     nonce: "0x0",
-    to: "0xf538ca71b753e5fa634172c133e5f40ccaddaa80",
+    to: makeEthereumAddressChecksummed("0xf538ca71b753e5fa634172c133e5f40ccaddaa80"),
     value: "0x1",
     blockHash: undefined,
     blockNumber: undefined,
@@ -181,7 +188,7 @@ export const getPendingTransactionType = (
   }
 };
 
-export const mismatchedPendingTxFixture = (from: string) => ({
+export const mismatchedPendingTxFixture = (from: EthereumAddressWithChecksum) => ({
   ...generalPendingTxFixture(from),
   transactionAdditionalData: {
     to: "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",

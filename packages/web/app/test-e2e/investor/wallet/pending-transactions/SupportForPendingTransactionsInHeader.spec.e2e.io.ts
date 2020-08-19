@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared-utils";
+import { EthereumAddressWithChecksum, Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
@@ -20,7 +20,7 @@ import { createAndLoginNewUser } from "../../../utils/userHelpers";
 import { assertPendingWithdrawModal, doWithdraw } from "./utils";
 
 describe("Pending Transactions In Header", () => {
-  let userAddress: string;
+  let userAddress: EthereumAddressWithChecksum;
   const testAddress = "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988";
   const amount = "1";
   before(() => {

@@ -68,8 +68,7 @@ export class ContractsService implements IContractsService {
     this.web3 = this.web3Manager.getFullWeb3Object();
 
     // TODO: move to new eth module
-    this.balanceOf = (address: EthereumAddressWithChecksum) =>
-      this.web3Manager.getBalance((address as unknown) as EthereumAddress);
+    this.balanceOf = (address: EthereumAddressWithChecksum) => this.web3Manager.getBalance(address);
 
     if (!this.web3) {
       throw new Error("Could not initialize web3");

@@ -10,7 +10,7 @@ import {
   ethereumPrivateKey,
 } from "./lib/schemas";
 import { symbols } from "./lib/symbols";
-import { isAddress, isMnemonic, isPrivateKey } from "./lib/utils";
+import { isMnemonic, isPrivateKey } from "./lib/utils";
 
 type TEthModuleConfig = {
   rpcUrl: string;
@@ -19,7 +19,6 @@ type TEthModuleConfig = {
 const MODULE_ID = "wallet:eth";
 
 const utils = {
-  isAddress,
   isMnemonic,
   isPrivateKey,
   ethereumAddress,

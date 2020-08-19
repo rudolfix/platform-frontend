@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { ETxType } from "../../../../lib/web3/types";
 import { ETokenType } from "../../../../modules/tx/types";
+import { makeEthereumAddressChecksummed } from "../../../../modules/web3/utils";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxPendingLayout } from "./TxPending";
 
@@ -15,9 +16,9 @@ const txData: React.ComponentProps<typeof TxPendingLayout> = {
     tokenType: ETokenType.ETHER,
   },
   txData: {
-    to: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+    to: makeEthereumAddressChecksummed("0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359"),
     value: "5500000000000000000",
-    from: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+    from: makeEthereumAddressChecksummed("0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359"),
     gas: "28288283",
     gasPrice: "224523523",
   },

@@ -9,6 +9,7 @@ import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import { UserCannotUnlockFunds, UserMissingNeumarks } from "./errors";
@@ -40,7 +41,7 @@ function* generateUnlockEtherTransaction({
   ].getData(contractsService.etherLock.address, new BigNumber(neumarksDue), "");
 
   const txInitialDetails = {
-    to: contractsService.neumark.address,
+    to: makeEthereumAddressChecksummed(contractsService.neumark.address),
     from: userAddress,
     data: txData,
     value: addHexPrefix("0"),
@@ -77,7 +78,7 @@ function* generateUnlockEuroTransaction({
   ].getData(contractsService.euroLock.address, new BigNumber(euroNeumarksDue), "");
 
   const txInitialDetails = {
-    to: contractsService.neumark.address,
+    to: makeEthereumAddressChecksummed(contractsService.neumark.address),
     from: userAddress,
     data: txData,
     value: addHexPrefix("0"),

@@ -22,6 +22,7 @@ import {
 } from "../../../../nominee-flow/selectors";
 import { neuCall, neuTakeLatest } from "../../../../sagasUtils";
 import { selectEthereumAddress } from "../../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../../web3/utils";
 import { txSendSaga } from "../../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxType } from "../../../sender/selectors";
 import { IAgreementContractAndHash } from "./types";
@@ -85,7 +86,7 @@ function* generateNomineeSignAgreementTx(
     .getData();
 
   const txInitialDetails = {
-    to: contract.address,
+    to: makeEthereumAddressChecksummed(contract.address),
     from: userAddress,
     data: txData,
     value: "0",
@@ -158,7 +159,7 @@ function* generateSignNomineeInvestmentAgreementTx({
     .getData();
 
   const txInitialDetails = {
-    to: contract.address,
+    to: makeEthereumAddressChecksummed(contract.address),
     from: userAddress,
     data: txData,
     value: "0",

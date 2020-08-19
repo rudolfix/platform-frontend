@@ -76,7 +76,7 @@ describe("wallet-connect - connectToURI", () => {
   };
 
   const wcSessionRequestPayload = {
-    address: toEthereumChecksumAddress("user-address"),
+    address: toEthereumChecksumAddress("0x0089d53F703f7E0843953D48133f74cE247184c2"),
     chainId: 1,
   };
 

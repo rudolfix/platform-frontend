@@ -1,4 +1,4 @@
-import { EthereumHDPath } from "@neufund/shared-utils";
+import { EthereumHDPath, isAddress, isChecksumAddress } from "@neufund/shared-utils";
 import isString from "lodash/fp/isString";
 import * as yup from "yup";
 
@@ -8,7 +8,7 @@ import { oneOfSchema, singleValue, typedValue } from "utils/yupSchemas";
 
 import { TSecureReference } from "./SecureStorage";
 import { EWalletType } from "./types";
-import { isAddress, isChecksumAddress, isMnemonic, isPrivateKey } from "./utils";
+import { isMnemonic, isPrivateKey } from "./utils";
 
 /**
  * A typed schema to validate secure reference

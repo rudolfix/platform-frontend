@@ -1,6 +1,11 @@
 import { fork, put, select, take } from "@neufund/sagas";
 import { walletApi } from "@neufund/shared-modules";
-import { ECurrency, ETH_DECIMALS, toEthereumAddress } from "@neufund/shared-utils";
+import {
+  ECurrency,
+  EthereumAddressWithChecksum,
+  ETH_DECIMALS,
+  toEthereumAddress,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
@@ -10,7 +15,7 @@ import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Ma
 import { actions } from "../../../actions";
 import { neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
-import { isAddressValid } from "../../../web3/utils";
+import { isAddressValid, makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import {
@@ -47,7 +52,7 @@ export function* generateEthWithdrawTransaction(
   const etherTokenBalance: BigNumber = yield select(
     walletApi.selectors.selectEtherTokenBalanceAsBigNumber,
   );
-  const from: string = yield select(selectEthereumAddress);
+  const from: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   let txDetails: Partial<ITxData> = {};
@@ -55,7 +60,7 @@ export function* generateEthWithdrawTransaction(
   if (etherTokenBalance.isZero()) {
     // transaction can be fully covered ether balance
     txDetails = {
-      to,
+      to: makeEthereumAddressChecksummed(to),
       from,
       data: EMPTY_DATA,
       value: valueUlps,
@@ -68,7 +73,7 @@ export function* generateEthWithdrawTransaction(
     const difference = valueUlpsAsBigN.sub(etherTokenBalance);
 
     txDetails = {
-      to: contractsService.etherToken.address,
+      to: makeEthereumAddressChecksummed(contractsService.etherToken.address),
       from,
       data: txInput,
       value: difference.comparedTo("0") > 0 ? difference.toString() : "0",

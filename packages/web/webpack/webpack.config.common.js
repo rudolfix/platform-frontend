@@ -29,15 +29,17 @@ module.exports = {
     // so webpack will replace the value properly.
     // If we set the value to `"process.env": appEnv` then webpack will replace it as
     // `{ MY_ENV: "1", ...ALL_MY_OTHER_ENVS... }.MY_ENV` making it harder for minifier to eliminate dead code
-    new webpack.DefinePlugin(
-      Object.entries(appEnv).reduce(
+    new webpack.DefinePlugin({
+      // for consistency with Wallet app, use __DEV__ instead of process.env.NODE_ENV
+      __DEV__: appEnv.NODE_ENV === '"development"',
+      ...Object.entries(appEnv).reduce(
         (definitions, [key, value]) => ({
           ...definitions,
           [`process.env.${key}`]: value,
         }),
         {},
       ),
-    ),
+    }),
     // import only `en-gb` locale from moment (which is a default one)
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-gb/),
   ],

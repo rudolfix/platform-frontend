@@ -8,6 +8,7 @@ import { actions, TActionFromCreator } from "../../../actions";
 import { selectUserId } from "../../../auth/selectors";
 import { shareholderResolutionsVotingViewModuleApi } from "../../../shareholder-resolutions-voting-view/module";
 import { shareholderResolutionsVotingModuleApi } from "../../../shareholder-resolutions-voting/module";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import { selectTxGasCostEthUlps, selectTxGasCostEurUlps } from "./../../sender/selectors";
@@ -35,7 +36,7 @@ function* generateShareholderResolutionVoteTransaction(
   );
 
   const txInitialDetails = {
-    to: contractsService.votingCenter.address,
+    to: makeEthereumAddressChecksummed(contractsService.votingCenter.address),
     from: shareholderAddress,
     data: txInput,
     value: "0",

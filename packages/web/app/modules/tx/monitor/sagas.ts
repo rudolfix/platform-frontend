@@ -11,6 +11,7 @@ import { ETxType, ITxData, ITxMetadata } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
+import { makeEthereumAddressChecksummed } from "../../web3/utils";
 import { TransactionCancelledError } from "../event-channel/errors";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
@@ -73,12 +74,12 @@ export function* markTransactionAsPending(
   const pendingTransaction: TxPendingWithMetadata = {
     transaction: {
       hash: addHexPrefix(txHash),
-      from: addHexPrefix(txData.from),
+      from: makeEthereumAddressChecksummed(addHexPrefix(txData.from)),
       gas: addHexPrefix(new BigNumber(txData.gas).toString(16)),
       gasPrice: addHexPrefix(new BigNumber(txData.gasPrice).toString(16)),
       input: addHexPrefix(txData.data || "0x0"),
       nonce: addHexPrefix("0"),
-      to: addHexPrefix(txData.to),
+      to: makeEthereumAddressChecksummed(addHexPrefix(txData.to)),
       value: addHexPrefix(new BigNumber(txData.value).toString(16)),
       blockHash: undefined,
       blockNumber: undefined,

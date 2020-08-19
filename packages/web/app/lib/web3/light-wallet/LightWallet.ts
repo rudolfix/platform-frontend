@@ -7,6 +7,7 @@ import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
 import { ITxData } from "../../../lib/web3/types";
 import { ILightWalletMetadata } from "../../../modules/web3/types";
+import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IRawTxData } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
@@ -91,7 +92,7 @@ export class LightWallet implements IPersonalWallet {
 
       const encodedTxData: IRawTxData = {
         from: txData.from,
-        to: addHexPrefix(txData.to!),
+        to: makeEthereumAddressChecksummed(addHexPrefix(txData.to!)),
         gas: addHexPrefix(new BigNumber((txData.gas && txData.gas.toString()) || "0").toString(16)),
         gasPrice: addHexPrefix(
           new BigNumber((txData.gasPrice && txData.gasPrice.toString()) || "0").toString(16),

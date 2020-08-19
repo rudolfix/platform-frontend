@@ -1,3 +1,5 @@
+import { isChecksumAddress } from "../../utils/addressUtils";
+import { DevError } from "../../utils/errors";
 import {
   EquityToken,
   EthereumAddress,
@@ -16,7 +18,12 @@ const toEquityTokenSymbol = (symbol: string) => symbol as EquityToken;
  */
 const toEthereumAddress = (address: string) => address as EthereumAddress;
 
-const toEthereumChecksumAddress = (address: string) => address as EthereumAddressWithChecksum;
+const toEthereumChecksumAddress = (address: string) => {
+  if (__DEV__ && !isChecksumAddress(address)) {
+    throw new DevError("Address is not checksummed");
+  }
+  return address as EthereumAddressWithChecksum;
+};
 
 const toEthereumHDPath = (path: string) => path as EthereumHDPath;
 

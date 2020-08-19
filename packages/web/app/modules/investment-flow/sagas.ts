@@ -12,6 +12,7 @@ import {
   convertFromUlps,
   convertToUlps,
   ECurrency,
+  EthereumAddressWithChecksum,
   extractNumber,
   nonNullable,
   subtractBigNumbers,
@@ -444,8 +445,8 @@ function* setTransactionWithPresetGas(): any {
     actions.txSender.setTransactionData({
       gas: INVESTMENT_GAS_AMOUNT,
       value: "",
-      to: "",
-      from: "",
+      to: "" as EthereumAddressWithChecksum,
+      from: "" as EthereumAddressWithChecksum,
       gasPrice,
     }),
     // This sets all other irrelevant values into false values.

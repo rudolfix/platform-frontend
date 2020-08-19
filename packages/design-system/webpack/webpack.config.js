@@ -1,16 +1,12 @@
 const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const paths = require("./paths");
 const { peerDependencies } = require("../package");
-
-const isCircleCI = () => process.env.CI === "true" && process.env.CIRCLECI === "true";
 
 const webpackConfig = (env, argv = {}) => {
   const analyzerMode = argv.analyze || "disabled";
@@ -43,6 +39,9 @@ const webpackConfig = (env, argv = {}) => {
         },
       ),
       new BundleAnalyzerPlugin({ analyzerMode }),
+      new webpack.DefinePlugin({
+        __DEV__: process.env.NODE_ENV === "development",
+      }),
     ],
     optimization: {
       // minification is turned off to keep component names

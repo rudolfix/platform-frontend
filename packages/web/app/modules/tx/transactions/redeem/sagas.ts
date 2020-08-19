@@ -4,6 +4,7 @@ import {
   compareBigNumbers,
   convertToUlps,
   DeepReadonly,
+  EthereumAddressWithChecksum,
   ETH_DECIMALS,
   EURO_DECIMALS,
 } from "@neufund/shared-utils";
@@ -19,6 +20,7 @@ import {
 } from "../../../bank-transfer-flow/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 
@@ -26,13 +28,13 @@ function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   amount: string,
 ): any {
-  const from: string = yield select(selectEthereumAddress);
+  const from: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const txInput = contractsService.euroToken.withdrawTx(new BigNumber(amount)).getData();
 
   const txDetails: Partial<ITxData> = {
-    to: contractsService.euroToken.address,
+    to: makeEthereumAddressChecksummed(contractsService.euroToken.address),
     from,
     data: txInput,
     value: "0",

@@ -20,6 +20,7 @@ import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../../web3/utils";
 import {
   selectStandardGasPriceWithOverHead,
   selectTxGasCostEthUlps,
@@ -67,7 +68,7 @@ function* generatePayoutAcceptTokenTransaction(
   const txInput = yield* neuCall(generatePayoutAcceptTransactionData, tokensDisbursals);
 
   const txInitialDetails = {
-    to: feeDisbursal.address,
+    to: makeEthereumAddressChecksummed(feeDisbursal.address),
     from: userAddress,
     data: txInput,
     value: "0",

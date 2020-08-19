@@ -13,7 +13,6 @@ import { UserHasNoFundsError } from "../../../../../lib/web3/Web3Adapter";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
-import { isAddressValid } from "../../../../web3/utils";
 import { generateEthWithdrawTransaction } from "../../../transactions/withdraw/sagas";
 import { IWithdrawDraftType } from "../../../types";
 import { EAdditionalValidationDataNotifications, EValidationState } from "../../reducer";
@@ -69,14 +68,14 @@ export function* txValidateWithdraw(userInput: IWithdrawDraftType): Generator<an
       actions.txUserFlowTransfer.setTxUserFlowData({
         inputValue: valueUlps,
         inputValueEuro: convertFromUlps(valueFromUserEuroUlps).toString(),
-        inputTo: isAddressValid ? userInput.to : "0x",
+        inputTo: isValidAddress ? userInput.to : "0x",
         totalValue: totalValue,
         totalValueEur: multiplyBigNumbers([totalValue, euroPrice]),
         transactionCost,
         transactionCostEur: multiplyBigNumbers([transactionCost, euroPrice]),
       }),
     );
-    if (isAddressValid && isValueValid) {
+    if (isValidAddress && isValueValid) {
       yield put(actions.txSender.setTransactionData(generatedTxDetails));
       yield put(actions.txValidator.setValidationState(EValidationState.VALIDATION_OK));
     } else {

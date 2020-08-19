@@ -6,7 +6,7 @@ import {
   TUserType,
   wrappedFetch,
 } from "@neufund/shared-modules/tests";
-import { toCamelCase } from "@neufund/shared-utils";
+import { EthereumAddressWithChecksum, toCamelCase } from "@neufund/shared-utils";
 
 import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
@@ -115,7 +115,9 @@ export const createAndLoginNewUser = ({
     cy.log(`Logged in as ${type}`, `KYC: ${kyc}, seed: ${seed}`);
 
     // TODO: find why we need to `cy.wrap` as normal `return { address }` is not working
-    return new Promise<{ address: string }>(resolve => resolve(cy.wrap({ address })));
+    return new Promise<{ address: EthereumAddressWithChecksum }>(resolve =>
+      resolve(cy.wrap({ address })),
+    );
   });
 
 /*

@@ -10,6 +10,7 @@ import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
 import { selectEthereumAddress } from "../../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../../web3/utils";
 import { selectStandardGasPriceWithOverHead } from "../../../sender/selectors";
 
 // Use highest possible solidity uint256 to redistribute all disbursals for token
@@ -41,7 +42,7 @@ function* generatePayoutRedistributeTransaction(
     .getData();
 
   const txInitialDetails = {
-    to: feeDisbursal.address,
+    to: makeEthereumAddressChecksummed(feeDisbursal.address),
     from: userAddress,
     data: txInput,
     value: "0",

@@ -8,6 +8,7 @@ import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxGasCostEthUlps } from "../../sender/selectors";
 
@@ -22,7 +23,7 @@ function* generateGetClaimTransaction(
   const txInput = etoContract.claimTx().getData();
 
   const txInitialDetails = {
-    to: etoContract.address,
+    to: makeEthereumAddressChecksummed(etoContract.address),
     from: userAddress,
     data: txInput,
     value: "0",

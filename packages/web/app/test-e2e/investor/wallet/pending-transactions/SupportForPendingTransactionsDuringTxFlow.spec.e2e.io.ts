@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared-utils";
+import { EthereumAddressWithChecksum, Q18 } from "@neufund/shared-utils";
 
 import { generalPendingTxFixture, mismatchedPendingTxFixture } from "../../../../modules/tx/utils";
 import { assertTxErrorDialogueNoCost } from "../../../utils/assertions";
@@ -18,7 +18,7 @@ import {
 import { assertDraftWithdrawModal, assertPendingWithdrawModal } from "./utils";
 
 describe("Pending Transactions During TX flow", () => {
-  let userAddress: string;
+  let userAddress: EthereumAddressWithChecksum;
 
   before(() => {
     createAndLoginNewUser({

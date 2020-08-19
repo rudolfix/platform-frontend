@@ -39,7 +39,7 @@ const CircleButton: React.FunctionComponent<TExternalProps & TButtonBaseProps> =
 }) => {
   const withIconOnly = children === undefined;
 
-  if (process.env.NODE_ENV === "development") {
+  if (__DEV__) {
     invariant(
       !(svgIcon === undefined && withIconOnly),
       "Either `svgIcon` or `children` should be provided to a button",

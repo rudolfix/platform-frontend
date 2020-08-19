@@ -37,7 +37,7 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
   className,
   charactersLimit,
 }) => {
-  if (process.env.NODE_ENV === "development") {
+  if (__DEV__) {
     invariant(
       charactersLimit === undefined,
       "`charactersLimit` prop is deprecated and should not be used anymore for rich text editor",

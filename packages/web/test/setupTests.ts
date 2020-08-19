@@ -38,6 +38,9 @@ const { window } = new JSDOM(``, {
 
 (global as IGlobalWithWindow).window = window;
 
+// in lieu of process.node.env === "development"
+(global as any).__DEV__ = true;
+
 // make sure that tests fail on unhandled promise rejection
 process.on("unhandledRejection", (reason, p) => {
   // tslint:disable-next-line

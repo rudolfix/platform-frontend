@@ -1,12 +1,12 @@
 import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
-import { ECurrency, isZero } from "@neufund/shared-utils";
+import { ECurrency, isZero, TToken } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 import { createBalanceUiData } from "components/screens/WalletScreen/utils";
 import { EIconType } from "components/shared/Icon";
-import { Money } from "components/shared/Money";
 import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { Eur } from "components/shared/formatters";
 
 import { platformEtoLink } from "config/externalRoutes";
 
@@ -17,8 +17,6 @@ import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";
 
 import { spacingStyles } from "styles/spacings";
-
-import { TToken } from "utils/types";
 
 import { EtoCard } from "./EtoCard";
 import { HomeScreenLayoutContainer } from "./HomeScreenLayoutContainer";
@@ -69,13 +67,7 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
     <HomeScreenLayoutContainer>
       <Section
         heading="Portfolio"
-        subHeading={
-          <Money
-            value={totalPortfolioBalanceEur.value}
-            currency={totalPortfolioBalanceEur.type}
-            decimalPlaces={totalPortfolioBalanceEur.precision}
-          />
-        }
+        subHeading={<Eur token={totalPortfolioBalanceEur} />}
         style={styles.section}
       >
         {portfolioAssets.slice(0, PORTFOLIO_ASSETS_COUNT).map(asset => (
@@ -102,13 +94,7 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
 
       <Section
         heading="Wallet"
-        subHeading={
-          <Money
-            value={totalBalanceInEur.value}
-            currency={totalBalanceInEur.type}
-            decimalPlaces={totalBalanceInEur.precision}
-          />
-        }
+        subHeading={<Eur token={totalBalanceInEur} />}
         style={styles.section}
       >
         {formattedBalances.map(balance => (

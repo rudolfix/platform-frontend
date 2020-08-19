@@ -24,7 +24,7 @@ export * from "./utils/Validators";
 export * from "./utils/omitProps";
 export * from "./utils/constants";
 export * from "./utils/types";
-export * from "./utils/opaque-types";
+export * from "./opaque-types";
 export * from "./utils/enums";
 export * from "./utils/formatters";
 export * from "./utils/isNonNullable";

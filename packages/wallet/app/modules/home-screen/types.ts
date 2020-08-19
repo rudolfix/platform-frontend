@@ -1,11 +1,9 @@
 import { TModuleState } from "@neufund/shared-modules";
-import { ECurrency, EquityToken } from "@neufund/shared-utils";
+import { ECurrency, EquityToken, TToken } from "@neufund/shared-utils";
 
 import { EIconType } from "components/shared/Icon";
 
 import { setupHomeScreenModule } from "modules/home-screen/module";
-
-import { TToken } from "utils/types";
 
 export type THomeScreenState = TModuleState<typeof setupHomeScreenModule>;
 

@@ -85,11 +85,7 @@ export function errorEquality(actual: Error, expected: Error): void {
  * @example
  * assertType<AssertEqual<string, string>>();
  */
-export function assertType<T extends true>(expected: T): void {
-  if (expected !== true) {
-    throw new Error(`Invalid type assertion. Received ${expected} but true was expected`);
-  }
-}
+export function assertType<T extends true | false>(_expected: T): void {}
 
 /**
  * Assert that a give type `T` is exactly equal to `Expected`
@@ -99,8 +95,8 @@ export function assertType<T extends true>(expected: T): void {
 export type AssertEqual<T, Expected> = [T] extends [Expected]
   ? [Expected] extends [T]
     ? true
-    : never
-  : never;
+    : false
+  : false;
 
 /**
  * An utility wrapper around deep partial to have an ability of providing partial implementation

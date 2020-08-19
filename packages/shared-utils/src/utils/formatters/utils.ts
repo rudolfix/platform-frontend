@@ -1,12 +1,11 @@
-import BigNumber from "bignumber.js";
+import BigNumber, { Configuration } from "bignumber.js";
 
 import { ENumberOutputFormat, ERoundingMode, THumanReadableFormat } from "./types";
 
-//TODO unsafe because Bignumber doesn't expose RoundingMode type
 export function getBigNumberRoundingMode(
   roundingMode: ERoundingMode,
   outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
-): any {
+): NonNullable<Configuration["ROUNDING_MODE"]> {
   if (
     outputFormat === ENumberOutputFormat.FULL_ROUND_UP ||
     outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP

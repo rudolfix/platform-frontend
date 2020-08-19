@@ -4,17 +4,15 @@ import {
   assertNever,
   convertFromUlps,
   ECurrency,
-  ETH_DECIMALS,
-  EURO_DECIMALS,
   multiplyBigNumbers,
   nonNullable,
   toEquityTokenSymbol,
+  createToken,
+  ENumberInputFormat,
 } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { EScreenState } from "modules/types";
-
-import { createToken } from "utils/createToken";
 
 import { TPortfolioScreenModuleState, TAsset } from "./types";
 
@@ -22,12 +20,12 @@ const selectPortfolioScreenState = (state: TPortfolioScreenModuleState) =>
   state.portfolioScreen.screenState;
 
 const selectNeuBalance = createSelector(walletApi.selectors.selectNeuBalance, neuBalance =>
-  createToken(ECurrency.NEU, neuBalance, ETH_DECIMALS),
+  createToken(ECurrency.NEU, neuBalance, ENumberInputFormat.ULPS),
 );
 
 const selectNeuBalanceEur = createSelector(
   walletApi.selectors.selectNeuBalanceEuroAmount,
-  neuBalance => createToken(ECurrency.EUR, neuBalance, ETH_DECIMALS),
+  neuBalance => createToken(ECurrency.EUR, neuBalance, ENumberInputFormat.ULPS),
 );
 
 const selectTotalBalanceEur = createSelector(
@@ -37,7 +35,7 @@ const selectTotalBalanceEur = createSelector(
     createToken(
       ECurrency.EUR,
       addBigNumbers([myAssetsTotalEur, myPendingAssetsTotalEEur]),
-      EURO_DECIMALS,
+      ENumberInputFormat.DECIMAL,
     ),
 );
 
@@ -49,9 +47,13 @@ const selectPendingAssets = createSelector(
       token: createToken(
         toEquityTokenSymbol(asset.equityTokenSymbol),
         asset.investorTicket.equityTokenInt,
-        EURO_DECIMALS,
+        ENumberInputFormat.DECIMAL,
       ),
-      analogToken: createToken(ECurrency.EUR, asset.investorTicket.equivEur, EURO_DECIMALS),
+      analogToken: createToken(
+        ECurrency.EUR,
+        asset.investorTicket.equivEur,
+        ENumberInputFormat.DECIMAL,
+      ),
       tokenImage: asset.equityTokenImage,
       tokenName: asset.equityTokenName,
     })),
@@ -65,7 +67,7 @@ const selectAssets = createSelector(
       token: createToken(
         toEquityTokenSymbol(asset.equityTokenSymbol),
         asset.tokenData.balanceUlps,
-        EURO_DECIMALS,
+        ENumberInputFormat.DECIMAL,
       ),
       analogToken: createToken(
         ECurrency.EUR,
@@ -73,7 +75,7 @@ const selectAssets = createSelector(
           asset.tokenData.tokenPrice,
           convertFromUlps(asset.tokenData.balanceUlps, asset.tokenData.balanceDecimals),
         ]),
-        EURO_DECIMALS,
+        ENumberInputFormat.DECIMAL,
       ),
       tokenImage: asset.equityTokenImage,
       tokenName: asset.equityTokenName,

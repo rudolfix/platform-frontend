@@ -3,6 +3,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
+  formatCurrency,
   TDataTestId,
 } from "@neufund/shared-utils";
 import * as React from "react";
@@ -10,7 +11,6 @@ import * as React from "react";
 import { Units } from "./atoms/Units";
 import { IValueProps, Value } from "./atoms/Value";
 import { ICommonMoneyProps } from "./types";
-import { formatCurrency } from "./utils";
 
 interface IAdditionalProps {
   noSymbol?: boolean;
@@ -36,10 +36,11 @@ const EurComponent: React.FunctionComponent<IValueProps &
       roundingMode: ERoundingMode.DOWN,
     });
 
+  const showUnits = formattedValue && !noSymbol;
   return (
     <span className={className} data-test-id={dataTestId}>
       <Value>{formattedValue || defaultValue || " "}</Value>
-      <Units show={!!formattedValue && !noSymbol}>&#x20;EUR</Units>
+      {showUnits && <Units>&#x20;EUR</Units>}
     </span>
   );
 };

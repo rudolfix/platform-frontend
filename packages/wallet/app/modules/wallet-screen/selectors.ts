@@ -1,10 +1,8 @@
 import { walletApi, txHistoryApi } from "@neufund/shared-modules";
-import { ECurrency, ETH_DECIMALS, EURO_DECIMALS } from "@neufund/shared-utils";
+import { ECurrency, createToken, ENumberInputFormat } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { hasFunds, isMainBalance } from "modules/wallet-screen/utils";
-
-import { createToken } from "utils/createToken";
 
 import { EBalanceViewType, TBalance, TWalletScreenModuleState } from "./types";
 
@@ -12,7 +10,7 @@ const selectWalletScreenState = (state: TWalletScreenModuleState) => state.walle
 
 const selectWalletTotalBalanceInEur = createSelector(
   walletApi.selectors.selectTotalEuroBalance,
-  totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, EURO_DECIMALS),
+  totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, ENumberInputFormat.DECIMAL),
 );
 
 const selectWalletBalances = createSelector(
@@ -49,33 +47,41 @@ const selectWalletBalances = createSelector(
   ): TBalance[] => [
     {
       type: EBalanceViewType.ETH,
-      amount: createToken(ECurrency.ETH, ethBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.ETH, ethBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ENumberInputFormat.ULPS),
     },
     {
       type: EBalanceViewType.ICBM_ETH,
-      amount: createToken(ECurrency.ETH, icbmEthBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, icbmEthEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.ETH, icbmEthBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, icbmEthEuroBalance, ENumberInputFormat.ULPS),
     },
     {
       type: EBalanceViewType.LOCKED_ICBM_ETH,
-      amount: createToken(ECurrency.ETH, lockedIcbmEthBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, lockedIcbmEthEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.ETH, lockedIcbmEthBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(
+        ECurrency.EUR,
+        lockedIcbmEthEuroBalance,
+        ENumberInputFormat.ULPS,
+      ),
     },
     {
       type: EBalanceViewType.NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ENumberInputFormat.ULPS),
     },
     {
       type: EBalanceViewType.ICBM_NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, icbmEuroBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, icbmEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.EUR_TOKEN, icbmEuroBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, icbmEuroBalance, ENumberInputFormat.ULPS),
     },
     {
       type: EBalanceViewType.LOCKED_ICBM_NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, lockedIcbmEuroBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, lockedIcbmEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.EUR_TOKEN, lockedIcbmEuroBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(
+        ECurrency.EUR,
+        lockedIcbmEuroBalance,
+        ENumberInputFormat.ULPS,
+      ),
     },
   ],
 );

@@ -200,3 +200,15 @@ export type UnionToIntersection<U> = (U extends any
  * @note Don't use `{}` as a type. `{}` actually means "any non-nullish value".
  */
 export type UnknownObject = Record<string, unknown>;
+
+/**
+ * Allows only union of a given T
+ * Useful when you need to disallow narrowed usages of a given type
+ *
+ * @example
+ * OnlyUnion<"EUR" | "ETH" | "NEU"> // "EUR" | "ETH" | "NEU"
+ * OnlyUnion<"EUR"> // "EUR"
+ */
+export type OnlyUnion<T> =
+  // If this is a simple type UnionToIntersection<T> will be the same type, otherwise it will an intersection of all types in the union and probably will not extend `T`
+  [T] extends [UnionToIntersection<T>] ? never : T;

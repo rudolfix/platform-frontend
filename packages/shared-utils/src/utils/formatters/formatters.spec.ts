@@ -12,7 +12,7 @@ import {
   selectDecimalPlaces,
   stripNumberFormatting,
   toFixedPrecision,
-} from "./index";
+} from "./formatters";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,

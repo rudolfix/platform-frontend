@@ -1,18 +1,14 @@
+import BigNumber from "bignumber.js";
+
+import { TBigNumberVariants } from "../types";
 import {
   EAbbreviatedNumberOutputFormat,
-  ENumberInputFormat,
-  ERoundingMode,
   formatNumber,
   formatShortNumber,
   selectDecimalPlaces,
-  TBigNumberVariants,
-  THumanReadableFormat,
   toFixedPrecision,
-  TValueFormat,
-} from "@neufund/shared-utils";
-import BigNumber from "bignumber.js";
-
-import { ICommonMoneyProps } from "./types";
+} from "./index";
+import { ENumberInputFormat, ERoundingMode, THumanReadableFormat, TValueFormat } from "./types";
 
 interface IFormatCurrency {
   value: TBigNumberVariants;
@@ -28,7 +24,7 @@ export const formatCurrency = ({
   roundingMode,
   inputFormat,
   outputFormat,
-}: ICommonMoneyProps & IFormatCurrency): string => {
+}: IFormatCurrency): string => {
   const decimalPlaces = selectDecimalPlaces(valueType, outputFormat);
 
   const fixedZeroPrecision = toFixedPrecision({

@@ -18,6 +18,8 @@ function loadStories() {
 	require('../app/components/shared/buttons/Button.stories');
 	require('../app/components/shared/buttons/ButtonIcon.stories');
 	require('../app/components/shared/eto/ETOInvestorState.stories');
+	require('../app/components/shared/formatters/Formatters.stories');
+	require('../app/components/shared/formatters/MoneyUnsafe.stories');
 	require('../app/components/shared/forms/layouts/ErrorMessage.stories');
 	require('../app/components/shared/forms/layouts/FieldLayout.stories');
 	require('../app/components/shared/forms/layouts/Label.stories');
@@ -51,6 +53,8 @@ const stories = [
 	'../app/components/shared/buttons/Button.stories',
 	'../app/components/shared/buttons/ButtonIcon.stories',
 	'../app/components/shared/eto/ETOInvestorState.stories',
+	'../app/components/shared/formatters/Formatters.stories',
+	'../app/components/shared/formatters/MoneyUnsafe.stories',
 	'../app/components/shared/forms/layouts/ErrorMessage.stories',
 	'../app/components/shared/forms/layouts/FieldLayout.stories',
 	'../app/components/shared/forms/layouts/Label.stories',

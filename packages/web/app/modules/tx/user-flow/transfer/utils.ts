@@ -2,10 +2,9 @@ import {
   ECurrency,
   ENumberInputFormat,
   ERoundingMode,
+  selectDecimalPlaces,
   toFixedPrecision,
 } from "@neufund/shared-utils";
-
-import { selectDecimalPlaces } from "../../../../components/shared/Money.unsafe";
 
 export const toFormValue = (amountUlps: string, decimals?: number) =>
   toFixedPrecision({

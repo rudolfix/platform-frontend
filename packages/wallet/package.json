@@ -125,7 +125,7 @@
     "@types/jest": "^26.0.0",
     "@types/memory-cache": "^0.2.1",
     "@types/mockdate": "^2.0.0",
-    "@types/react-native": "0.63.2",
+    "@types/react-native": "0.63.8",
     "@types/react-native-permissions": "^2.0.0",
     "@types/react-redux": "^6.0.11",
     "@types/react-test-renderer": "16.9.2",

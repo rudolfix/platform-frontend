@@ -21,10 +21,3 @@ https://github.com/solkaz/ts-detox-example/issues/2 get's fixed.
 
 We need to patch typings given there is not way to force no hoist in transitive dependency, and we
 end up with invalid typings for `hoist-non-react-statics`.
-
-### @types/react-native
-
-Types of Animated component wrappers are invalid as they wrap all props with `Value` which is not
-exactly correct and is causing some type errors. The reported issue
-https://github.com/DefinitelyTyped/DefinitelyTyped/issues/46426. When issue is fixed we can try to
-remove patch.

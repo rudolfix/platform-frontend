@@ -1,6 +1,7 @@
 import { tid } from "../utils/index";
 import { cyan } from "color-name";
 import { generateRandomEmailAddress } from "../utils/userHelpers";
+import { assertInvestorDashboard } from "../utils/index";
 
 describe("Signup", () => {
   it("should sign up with light wallet", () => {
@@ -33,5 +34,7 @@ describe("Signup", () => {
     cy.get(tid("wallet-selector-register-tos")).click();
 
     cy.get(tid("wallet-selector-register-button")).click();
+
+    assertInvestorDashboard();
   });
 });

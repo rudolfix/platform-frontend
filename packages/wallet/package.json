@@ -65,6 +65,7 @@
     "@walletconnect/types": "^1.0.0-beta.87",
     "@walletconnect/utils": "^1.0.0-beta.87",
     "bignumber.js": "^5.0.0",
+    "eth-url-parser": "^1.0.3",
     "ethers": "^4.0.45",
     "eventemitter2": "^6.0.0",
     "formik": "^2.1.3",

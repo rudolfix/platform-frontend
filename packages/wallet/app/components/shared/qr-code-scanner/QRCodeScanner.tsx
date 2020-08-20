@@ -14,7 +14,9 @@ const QRCodeScanner: React.FunctionComponent<TExternalProps> = ({ onRead }) => {
       topViewStyle={styles.topAndBottom}
       bottomViewStyle={styles.topAndBottom}
       cameraStyle={{ width, height }}
-      onRead={e => onRead(e.data)}
+      onRead={e => {
+        onRead(e.data);
+      }}
     />
   );
 };

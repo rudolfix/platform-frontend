@@ -1,6 +1,4 @@
-import { IEtoDocument, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
-
-import { ETxType } from "../../../../../lib/web3/types";
+import { ETxType, IEtoDocument, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 
 export const selectDocument = (
   txType: ETxType | undefined,

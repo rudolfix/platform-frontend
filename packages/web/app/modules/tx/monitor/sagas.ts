@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { authModuleAPI, txHistoryApi } from "@neufund/shared-modules";
+import { authModuleAPI, ETxType, txHistoryApi } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
@@ -7,7 +7,7 @@ import Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs, TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
-import { ETxType, ITxData, ITxMetadata } from "../../../lib/web3/types";
+import { ITxData, ITxMetadata } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";

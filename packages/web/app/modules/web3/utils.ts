@@ -16,9 +16,6 @@ import { TBigNumberVariants } from "../../lib/web3/types";
 export function makeEthereumAddressChecksummed(
   ethereumAddress: EthereumAddress | string,
 ): EthereumAddressWithChecksum {
-  if (__DEV__ && !isAddress(ethereumAddress as string)) {
-    throw new Error("Passed argument is not an address");
-  }
   return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress as string));
 }
 

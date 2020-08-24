@@ -1,6 +1,6 @@
+import { ETxType } from "@neufund/shared-modules";
 import { branch, compose } from "recompose";
 
-import { ETxType } from "../../../../../../lib/web3/types";
 import { actions } from "../../../../../../modules/actions";
 import {
   selectTxAdditionalData,

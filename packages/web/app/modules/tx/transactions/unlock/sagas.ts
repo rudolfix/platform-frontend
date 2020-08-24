@@ -1,11 +1,11 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { ETxType, walletApi } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";

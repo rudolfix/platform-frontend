@@ -1,9 +1,9 @@
 import { Button, CheckboxBase } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum, selectUnits } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TAcceptPayoutAdditionalData } from "../../../../modules/tx/transactions/payout/accept/types";

@@ -1,4 +1,5 @@
 import { Eth, Eur } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -9,7 +10,6 @@ import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { Money } from "../../../shared/formatters/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

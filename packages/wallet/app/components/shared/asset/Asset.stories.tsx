@@ -16,8 +16,8 @@ storiesOf("Molecules|Asset", module)
     <Asset
       icon={EIconType.N_EUR}
       name="NEur"
-      token={createToken(toEquityTokenSymbol("NEUR"), "15 000", ENumberInputFormat.DECIMAL)}
-      analogToken={createToken(ECurrency.EUR, "15 000", ENumberInputFormat.DECIMAL)}
+      token={createToken(toEquityTokenSymbol("NEUR"), "15000", ENumberInputFormat.DECIMAL)}
+      analogToken={createToken(ECurrency.EUR, "15000", ENumberInputFormat.DECIMAL)}
       type={EAssetType.NORMAL}
     />
   ))
@@ -26,7 +26,7 @@ storiesOf("Molecules|Asset", module)
       icon={EIconType.ETH}
       name="ETH"
       token={createToken(toEquityTokenSymbol("ETH"), "1000", ENumberInputFormat.DECIMAL)}
-      analogToken={createToken(ECurrency.EUR, "15 000", ENumberInputFormat.DECIMAL)}
+      analogToken={createToken(ECurrency.EUR, "15000", ENumberInputFormat.DECIMAL)}
       type={EAssetType.RESERVED}
     />
   ));

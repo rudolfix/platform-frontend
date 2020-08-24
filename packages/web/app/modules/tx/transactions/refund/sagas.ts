@@ -1,5 +1,10 @@
 import { fork, put, select } from "@neufund/sagas";
-import { etoModuleApi, IInvestorTicket, investorPortfolioModuleApi } from "@neufund/shared-modules";
+import {
+  etoModuleApi,
+  ETxType,
+  IInvestorTicket,
+  investorPortfolioModuleApi,
+} from "@neufund/shared-modules";
 import {
   convertFromUlps,
   EthereumAddressWithChecksum,
@@ -9,7 +14,7 @@ import {
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";

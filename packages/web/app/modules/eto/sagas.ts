@@ -7,6 +7,7 @@ import {
   EEtoDocumentType,
   EETOStateOnChain,
   etoModuleApi,
+  ETxType,
   IEtoDocument,
   immutableDocumentName,
   kycApi,
@@ -24,7 +25,6 @@ import { DocumentConfidentialityAgreementModal } from "../../components/modals/d
 import { JurisdictionDisclaimerModal } from "../../components/modals/jurisdiction-disclaimer-modal/JurisdictionDisclaimerModal";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
-import { ETxType } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";

@@ -1,8 +1,8 @@
+import { ETxType } from "@neufund/shared-modules";
 import { convertFromUlps, convertToUlps, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import { makeEthereumAddressChecksummed } from "../../../../modules/web3/utils";

@@ -1,9 +1,9 @@
 import { fork, put, select } from "@neufund/sagas";
-import { investorPortfolioModuleApi } from "@neufund/shared-modules";
+import { ETxType, investorPortfolioModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";

@@ -3,6 +3,7 @@ import * as yup from "yup";
 
 import { tupleSchema } from "utils/yupSchemas";
 
+import { SESSION_REQUEST_EVENT } from "./constants";
 import { getJSONRPCSchema } from "./schemas";
 
 type YupPrimitiveInfer<T> = T extends yup.Schema<infer T> ? T : never;
@@ -13,19 +14,19 @@ describe("schemas", () => {
       type ExpectedType = {
         id: number;
         jsonrpc: string;
-        method: "session_request";
+        method: typeof SESSION_REQUEST_EVENT;
         params: [string, number];
       };
 
       const value: ExpectedType = {
         id: 1,
         jsonrpc: "2.0",
-        method: "session_request",
+        method: SESSION_REQUEST_EVENT,
         params: ["foo", 100],
       };
 
       const WalletConnectSessionJSONRPCSchema = getJSONRPCSchema(
-        "session_request" as const,
+        SESSION_REQUEST_EVENT,
         tupleSchema([yup.string(), yup.number()]).required(),
       );
 
@@ -43,14 +44,14 @@ describe("schemas", () => {
         WalletConnectSessionJSONRPCSchema.isValidSync({
           id: 1,
           jsonrpc: "2.0",
-          method: "session_request",
+          method: SESSION_REQUEST_EVENT,
         }),
       ).toBeFalsy();
       expect(
         WalletConnectSessionJSONRPCSchema.isValidSync({
           id: 1,
           jsonrpc: "2.0",
-          method: "session_request",
+          method: SESSION_REQUEST_EVENT,
           params: [100, "foo"],
         }),
       ).toBeFalsy();

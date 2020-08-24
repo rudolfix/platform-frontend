@@ -3,6 +3,11 @@ import * as yup from "yup";
 
 import { walletEthModuleApi } from "modules/eth/module";
 import { StorageSchema } from "modules/storage";
+import {
+  ETH_SEND_TYPED_TRANSACTION_RPC_METHOD,
+  ETH_SIGN_RPC_METHOD,
+  SESSION_REQUEST_EVENT,
+} from "modules/wallet-connect/lib/constants";
 
 import { singleValue, tupleSchema } from "utils/yupSchemas";
 
@@ -39,31 +44,41 @@ const SessionPeerSchema = yup.object({
 export type TPeerMeta = yup.InferType<typeof SessionPeerMetaSchema>;
 
 export const WalletConnectSessionJSONRPCSchema = getJSONRPCSchema(
-  "session_request" as const,
+  SESSION_REQUEST_EVENT,
   tupleSchema([SessionPeerSchema.required()]).required(),
 );
 
 export const WalletConnectEthSignJSONRPCSchema = getJSONRPCSchema(
-  "eth_sign" as const,
+  ETH_SIGN_RPC_METHOD,
   tupleSchema([
     walletEthModuleApi.utils.ethereumAddress().required(),
     yup.string().required(),
   ]).required(),
 );
 
-const TransactionSchema = yup.object({
-  to: walletEthModuleApi.utils.ethereumAddress().required(),
-  gasPrice: yup.string().required(),
-  gasLimit: yup.string().required(),
-  value: yup.string().required(),
-  data: yup.string().required(),
+const TransactionSchema = yup
+  .object({
+    to: walletEthModuleApi.utils.ethereumAddress().required(),
+    gasPrice: yup.string().required(),
+    gasLimit: yup.string().required(),
+    value: yup.string().required(),
+    data: yup.string().required(),
+  })
+  // rename `gas` to `gasLimit` because ethers expects `gasLimit` and transaction payload comes with `gas`
+  .from("gas", "gasLimit");
+
+const TransactionMetaDataSchema = yup.object({
+  transactionType: yup.string().required(),
+  // TODO update after transactionAdditionalData is structured
+  transactionAdditionalData: yup.object(),
 });
 
 export type TTransactionSchema = yup.InferType<typeof TransactionSchema>;
+export type TTransactionMetaData = yup.InferType<typeof TransactionMetaDataSchema>;
 
-export const WalletConnectEthSendTransactionJSONRPCSchema = getJSONRPCSchema(
-  "eth_sendTransaction" as const,
-  tupleSchema([TransactionSchema.required()]).required(),
+export const WalletConnectEthSendTypedTransactionJSONRPCSchema = getJSONRPCSchema(
+  ETH_SEND_TYPED_TRANSACTION_RPC_METHOD,
+  tupleSchema([TransactionSchema.required(), TransactionMetaDataSchema.required()]).required(),
 );
 
 const WalletSessionSchema = yup.object({

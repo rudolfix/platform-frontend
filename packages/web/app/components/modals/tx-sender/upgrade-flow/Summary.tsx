@@ -1,9 +1,10 @@
 import { Button } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData, selectTxDetails } from "../../../../modules/tx/sender/selectors";
 import { TUpgradeAdditionalData } from "../../../../modules/tx/transactions/upgrade/types";

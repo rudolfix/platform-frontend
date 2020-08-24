@@ -1,8 +1,9 @@
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import {
   selectTxAdditionalData,
   selectTxDetails,

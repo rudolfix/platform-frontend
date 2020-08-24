@@ -1,4 +1,5 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { calculateTimeLeft, DAY } from "@neufund/shared-utils";
 import moment from "moment";
 import * as React from "react";
@@ -6,7 +7,6 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
 import { branch, compose, lifecycle, renderComponent, renderNothing } from "recompose";
 
-import { ETxType } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
 import {
   selectAreAgreementsSignedByNominee,

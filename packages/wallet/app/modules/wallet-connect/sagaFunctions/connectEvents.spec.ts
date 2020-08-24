@@ -6,6 +6,7 @@ import {
   coreModuleApi,
   DevConsoleLogger,
   noopLogger,
+  ETxType,
 } from "@neufund/shared-modules";
 import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { simpleDelay, toEthereumChecksumAddress } from "@neufund/shared-utils";
@@ -251,6 +252,19 @@ describe("wallet-connect - watchWalletConnectEvents", () => {
 
     const signMessagePayload = {
       transaction,
+      transactionMetaData: {
+        transactionType: ETxType.WITHDRAW,
+        transactionAdditionalData: {
+          amount: "100000000000000000",
+          amountEur: "21.059102643554456",
+          to: "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+          tokenDecimals: 18,
+          tokenImage: "/images/1b0f8ccf.svg",
+          tokenSymbol: "eth",
+          total: "104881638400000000",
+          totalEur: "22087131884897625449.007104",
+        },
+      },
     };
 
     const signedMessagePayload = { transactionHash: "tx hash" };

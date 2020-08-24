@@ -1,5 +1,5 @@
 import { Eth, EurToken, Neu } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
+import { ETxType, walletApi } from "@neufund/shared-modules";
 import {
   ECurrency,
   getCurrentUTCTimestamp,
@@ -12,7 +12,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, lifecycle, withState } from "recompose";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";

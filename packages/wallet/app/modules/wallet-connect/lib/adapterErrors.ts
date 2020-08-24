@@ -20,7 +20,13 @@ class NoPeerMetaError extends WalletConnectAdapterError {
 
 class InvalidJSONRPCPayloadError extends WalletConnectAdapterError {
   constructor(method: string, public reason?: Error) {
-    super(`Invalid json rpc payload received for ${method}`);
+    super(`Invalid json rpc payload received for ${method}${reason ? ": " + reason.message : ``}`);
+  }
+}
+
+class UserRejectedRequestError extends WalletConnectAdapterError {
+  constructor() {
+    super(`User rejected request`);
   }
 }
 
@@ -29,4 +35,5 @@ export {
   InvalidRPCMethodError,
   NoPeerMetaError,
   WalletConnectAdapterError,
+  UserRejectedRequestError,
 };

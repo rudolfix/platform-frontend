@@ -1,9 +1,9 @@
-import { ILogger } from "@neufund/shared-modules";
-import { assertError, EthereumAddress } from "@neufund/shared-utils";
+import { ETxType, ILogger } from "@neufund/shared-modules";
+import { assertError, EthereumAddress, isInEnum } from "@neufund/shared-utils";
 import WalletConnect from "@walletconnect/react-native";
 import { IWalletConnectSession } from "@walletconnect/types";
 import { EventEmitter2 } from "eventemitter2";
-import { number, string, object } from "yup";
+import { number, object, string } from "yup";
 
 import { TWalletConnectPeer } from "modules/wallet-connect/types";
 
@@ -19,14 +19,14 @@ import {
   CALL_REQUEST_EVENT,
   CONNECT_EVENT,
   DISCONNECT_EVENT,
-  ETH_SEND_TRANSACTION_RPC_METHOD,
+  ETH_SEND_TYPED_TRANSACTION_RPC_METHOD,
   ETH_SIGN_RPC_METHOD,
   SESSION_REQUEST_EVENT,
   walletConnectClientMeta,
 } from "./constants";
 import {
   TPeerMeta,
-  WalletConnectEthSendTransactionJSONRPCSchema,
+  WalletConnectEthSendTypedTransactionJSONRPCSchema,
   WalletConnectEthSignJSONRPCSchema,
   WalletConnectSessionJSONRPCSchema,
 } from "./schemas";
@@ -160,18 +160,27 @@ class WalletConnectAdapter extends EventEmitter2 {
           }
           break;
 
-        case ETH_SEND_TRANSACTION_RPC_METHOD:
+        case ETH_SEND_TYPED_TRANSACTION_RPC_METHOD:
           try {
             const parsedPayload = parseRPCPayload(
-              WalletConnectEthSendTransactionJSONRPCSchema,
+              WalletConnectEthSendTypedTransactionJSONRPCSchema,
               payload,
             );
+
+            const transactionType = parsedPayload.params[1].transactionType;
+            if (!isInEnum(ETxType, transactionType)) {
+              this.logger.warn("Encountered unsupported ETxType");
+            }
 
             await this.handleCallSigningRequest(
               EWalletConnectAdapterEvents.SEND_TRANSACTION,
               parsedPayload.id,
               {
                 transaction: parsedPayload.params[0],
+                transactionMetaData: {
+                  transactionType,
+                  transactionAdditionalData: parsedPayload.params[1].transactionAdditionalData,
+                },
               },
             );
           } catch (e) {

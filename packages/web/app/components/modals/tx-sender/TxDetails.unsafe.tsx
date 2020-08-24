@@ -1,7 +1,8 @@
+import { ETxType } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 
-import { ETxType, ITxData } from "../../../lib/web3/types";
+import { ITxData } from "../../../lib/web3/types";
 import { TSpecificTransactionState } from "../../../modules/tx/types";
 import { CommonHtmlProps } from "../../../types";
 import { SetDateDetails } from "./eto-flow/SetDateDetails";

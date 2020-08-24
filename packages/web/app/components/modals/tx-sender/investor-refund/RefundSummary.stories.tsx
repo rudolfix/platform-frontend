@@ -1,9 +1,10 @@
+import { ETxType } from "@neufund/shared-modules";
 import { convertFromUlps, Q18 } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAdditionalDataByType } from "../../../../modules/tx/types";
 import { makeEthereumAddressChecksummed } from "../../../../modules/web3/utils";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";

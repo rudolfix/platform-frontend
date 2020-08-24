@@ -23,6 +23,7 @@ export type TWalletConnectAdapterEmit =
       type: EWalletConnectAdapterEvents.SIGN_MESSAGE;
       payload: {
         digest: string;
+        permission: string | undefined;
       };
       meta: {
         approveRequest: (signedMessage: string) => void;

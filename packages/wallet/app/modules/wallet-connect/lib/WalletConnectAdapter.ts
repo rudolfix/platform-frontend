@@ -1,4 +1,4 @@
-import { ETxType, ILogger } from "@neufund/shared-modules";
+import { EJwtPermissions, ETxType, ILogger } from "@neufund/shared-modules";
 import { assertError, EthereumAddress, isInEnum } from "@neufund/shared-utils";
 import WalletConnect from "@walletconnect/react-native";
 import { IWalletConnectSession } from "@walletconnect/types";
@@ -13,6 +13,7 @@ import {
   InvalidJSONRPCPayloadError,
   InvalidRPCMethodError,
   NoPeerMetaError,
+  TooManyPermissionsError,
   WalletConnectAdapterError,
 } from "./adapterErrors";
 import {
@@ -25,6 +26,7 @@ import {
   walletConnectClientMeta,
 } from "./constants";
 import {
+  TDigestJSON,
   TPeerMeta,
   WalletConnectEthSendTypedTransactionJSONRPCSchema,
   WalletConnectEthSignJSONRPCSchema,
@@ -35,7 +37,7 @@ import {
   ExtractWalletConnectAdapterEmitData,
   IWalletConnectOptions,
 } from "./types";
-import { parseRPCPayload } from "./utils";
+import { parseDigestString, parseRPCPayload } from "./utils";
 
 export type TSessionDetails = {
   peer: TWalletConnectPeer;
@@ -142,12 +144,26 @@ class WalletConnectAdapter extends EventEmitter2 {
         case ETH_SIGN_RPC_METHOD:
           try {
             const parsedPayload = parseRPCPayload(WalletConnectEthSignJSONRPCSchema, payload);
+            const digestString = parsedPayload.params[1];
+            const { permissions }: TDigestJSON = parseDigestString(digestString);
+            const filteredPermissions = permissions.filter(
+              (permission: string) => permission !== EJwtPermissions.SIGN_TOS,
+            );
+
+            if (filteredPermissions.length > 1) {
+              this.handleCallSigningError(
+                payload.id,
+                new InvalidJSONRPCPayloadError(payload.method, new TooManyPermissionsError()),
+              );
+              return;
+            }
 
             await this.handleCallSigningRequest(
               EWalletConnectAdapterEvents.SIGN_MESSAGE,
               parsedPayload.id,
               {
-                digest: parsedPayload.params[1],
+                digest: digestString,
+                permission: permissions[0],
               },
             );
           } catch (e) {

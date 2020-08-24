@@ -1,4 +1,5 @@
 import { Tuple } from "@neufund/shared-utils";
+import { utils } from "ethers";
 import * as yup from "yup";
 
 import { walletEthModuleApi } from "modules/eth/module";
@@ -29,6 +30,10 @@ export const getJSONRPCSchema = <T extends string, U extends Tuple>(
     params,
   });
 
+//================================================================================
+// Session Schema
+//================================================================================
+
 const SessionPeerMetaSchema = yup.object({
   description: yup.string(),
   url: yup.string().required(),
@@ -48,11 +53,20 @@ export const WalletConnectSessionJSONRPCSchema = getJSONRPCSchema(
   tupleSchema([SessionPeerSchema.required()]).required(),
 );
 
+//================================================================================
+// EthSign Schema
+//================================================================================
+
+const HexStringSchema = yup
+  .string()
+  // eslint-disable-next-line no-template-curly-in-string
+  .test("is-hex-string", "${path} is not hex string", value => utils.isHexString(value));
+
 export const WalletConnectEthSignJSONRPCSchema = getJSONRPCSchema(
   ETH_SIGN_RPC_METHOD,
   tupleSchema([
     walletEthModuleApi.utils.ethereumAddress().required(),
-    yup.string().required(),
+    HexStringSchema.required(),
   ]).required(),
 );
 
@@ -81,6 +95,10 @@ export const WalletConnectEthSendTypedTransactionJSONRPCSchema = getJSONRPCSchem
   tupleSchema([TransactionSchema.required(), TransactionMetaDataSchema.required()]).required(),
 );
 
+//================================================================================
+// SessionStorage Schema
+//================================================================================
+
 const WalletSessionSchema = yup.object({
   connected: yup.boolean().required(),
   accounts: yup.array(yup.string().required()).required(),
@@ -102,3 +120,13 @@ export const WalletSessionStorageSchema = new StorageSchema<TWalletSession>(
   "WalletSessionSchema",
   WalletSessionSchema,
 );
+
+//================================================================================
+// Digest Schema
+//================================================================================
+
+export const DigestJSONSchema = yup.object({
+  permissions: yup.array(yup.string().required()).required(),
+});
+
+export type TDigestJSON = yup.InferType<typeof DigestJSONSchema>;

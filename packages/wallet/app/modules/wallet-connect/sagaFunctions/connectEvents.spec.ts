@@ -7,6 +7,7 @@ import {
   DevConsoleLogger,
   noopLogger,
   ETxType,
+  EJwtPermissions,
 } from "@neufund/shared-modules";
 import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { simpleDelay, toEthereumChecksumAddress } from "@neufund/shared-utils";
@@ -158,6 +159,7 @@ describe("wallet-connect - watchWalletConnectEvents", () => {
   describe("SIGN_MESSAGE", () => {
     const signMessagePayload = {
       digest: "message to sign",
+      permission: EJwtPermissions.SUBMIT_KYC_PERMISSION,
     };
 
     const signedMessagePayload = { signedData: "signed message" };

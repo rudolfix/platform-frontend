@@ -10,16 +10,12 @@ import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { invariant, toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { mocked } from "ts-jest/utils";
 
-import {
-  InvalidWalletConnectUriError,
-  isValidWalletConnectUri,
-} from "modules/wallet-connect/lib/utils";
+import { isValidWalletConnectUri, toWalletConnectUri } from "modules/wallet-connect/lib/utils";
 
 import { navigate } from "router/routeUtils";
 
 import { EAppRoutes } from "../../../router/appRoutes";
 import { createMock } from "../../../utils/testUtils.specUtils";
-import { notificationUIModuleApi } from "../../notification-ui/module";
 import { ESignerType, signerUIModuleApi } from "../../signer-ui/module";
 import { setupStorageModule } from "../../storage/module";
 import { walletConnectActions } from "../actions";
@@ -57,7 +53,7 @@ const setupTest = () => {
 };
 
 describe("wallet-connect - connectToURI", () => {
-  const mockURI = "wallet-connect-uri";
+  const mockURI = toWalletConnectUri("wallet-connect-uri");
 
   const walletConnectAdapterMock = createMock(WalletConnectAdapter, {});
 
@@ -136,28 +132,7 @@ describe("wallet-connect - connectToURI", () => {
       .not.call(connectEvents, walletConnectAdapterMock)
       .run();
 
-    expect(session.rejectSession).toHaveBeenCalledWith();
+    expect(session.rejectSession).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(EAppRoutes.home);
-  });
-
-  it("should stop connection process when uri is invalid", async () => {
-    const { expectSaga, logger } = setupTest();
-
-    mocked(isValidWalletConnectUri).mockImplementation(uri => {
-      invariant(uri === mockURI, "Invalid URI passed");
-
-      return false;
-    });
-
-    await expectSaga(connectToURI, walletConnectActions.connectToPeer(mockURI))
-      .put.actionType(notificationUIModuleApi.actions.showInfo.getType())
-      // should not rethrow the error to root saga
-      .not.throws(Error)
-      .run();
-
-    expect(logger.error).toHaveBeenCalledWith(
-      expect.any(InvalidWalletConnectUriError),
-      expect.any(String),
-    );
   });
 });

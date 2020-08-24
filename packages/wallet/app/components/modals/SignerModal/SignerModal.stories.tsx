@@ -1,4 +1,4 @@
-import { ETxType } from "@neufund/shared-modules";
+import { EJwtPermissions, ETxType } from "@neufund/shared-modules";
 import { toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react-native";
@@ -44,6 +44,7 @@ const signMessageSignerRequest: TSignerSignPayload = {
   type: ESignerType.SIGN_MESSAGE,
   data: {
     digest: "foo",
+    permission: EJwtPermissions.SUBMIT_KYC_PERMISSION,
   },
 };
 

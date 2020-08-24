@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { ETxType, noopLogger } from "@neufund/shared-modules";
+import { ETxType, noopLogger, EJwtPermissions } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import WalletConnectMock from "@walletconnect/react-native";
 import { EventEmitter2 } from "eventemitter2";
@@ -235,7 +235,8 @@ describe("WalletConnectAdapter", () => {
     it("should approve eth_sign method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new ApproveRequestMock());
 
-      const signingMessage = "message to sign";
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
       const signedMessage = "signed message";
 
       const validEthSignJsonRpc = {
@@ -257,7 +258,10 @@ describe("WalletConnectAdapter", () => {
       meta.approveRequest(signedMessage);
 
       setTimeout(() => {
-        expect(payload).toEqual({ digest: signingMessage });
+        expect(payload).toEqual({
+          digest: signingMessage,
+          permission: EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+        });
         expect(mockInstance.approveRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           result: signedMessage,
@@ -270,7 +274,8 @@ describe("WalletConnectAdapter", () => {
     it("should reject eth_sign method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new RejectRequestMock());
 
-      const signingMessage = "message to sign";
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
 
       const validEthSignJsonRpc = {
         id: 1,
@@ -288,10 +293,40 @@ describe("WalletConnectAdapter", () => {
         EWalletConnectAdapterEvents.SIGN_MESSAGE,
       );
 
-      meta.rejectRequest(new Error("User denied request"));
+      meta.rejectRequest(new Error("User rejected request"));
 
       setTimeout(() => {
-        expect(payload).toEqual({ digest: signingMessage });
+        expect(payload).toEqual({
+          digest: signingMessage,
+          permission: EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+        });
+        expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
+          id: validEthSignJsonRpc.id,
+          error: expect.any(Error),
+        });
+
+        done();
+      }, 1);
+    });
+
+    it("should automatically reject eth_sign method for too many permissions", async done => {
+      const { mockInstance } = await approveSession(new RejectRequestMock());
+
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c222c2022646f2d626f6f6b6275696c64696e67225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
+
+      const validEthSignJsonRpc = {
+        id: 1,
+        jsonrpc: "2.0",
+        method: "eth_sign",
+        params: [address, signingMessage],
+      };
+
+      setTimeout(() => {
+        mockInstance.emit("call_request", undefined, validEthSignJsonRpc);
+      }, 1);
+
+      setTimeout(() => {
         expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           error: expect.any(Error),

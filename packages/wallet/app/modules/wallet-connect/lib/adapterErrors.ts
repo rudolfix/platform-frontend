@@ -30,10 +30,17 @@ class UserRejectedRequestError extends WalletConnectAdapterError {
   }
 }
 
+class TooManyPermissionsError extends WalletConnectAdapterError {
+  constructor() {
+    super(`Too many permissions`);
+  }
+}
+
 export {
   InvalidJSONRPCPayloadError,
   InvalidRPCMethodError,
   NoPeerMetaError,
   WalletConnectAdapterError,
   UserRejectedRequestError,
+  TooManyPermissionsError,
 };

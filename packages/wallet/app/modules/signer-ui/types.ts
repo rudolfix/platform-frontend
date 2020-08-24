@@ -22,6 +22,7 @@ type TWCSessionResponsePayload = {
 
 type TSignRequestPayload = {
   digest: string;
+  permission: string | undefined;
 };
 
 type TSignResponsePayload = {

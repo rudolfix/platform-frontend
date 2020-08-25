@@ -144,7 +144,8 @@ Google in Play Store and bundle is signed with upload key. The application id is
 3. You need keystore in `wallet/android/app/production.keystore.p12`
 4. specify signing config name in `NF_WALLET_ANDROID_RELEASE_SIGCONFIG_NAME`, if missing it defaults
    to `debug`
-5. specify signing keys for `production` signing config in `NF_WALLET_ANDROID_RELEASE_KEYSTORE_PASS`
+5. specify signing keys for `production` signing config in
+   `NF_WALLET_ANDROID_PRODUCTION_KEYSTORE_PASS`
 6. build apk (`./gradlew :app:assembleRelease`) or bundle (`./gradlew :app:bundleRelease`). you must
    `cd` to `[..]/wallet/android`
 7. verify release build with

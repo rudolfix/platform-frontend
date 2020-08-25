@@ -106,10 +106,10 @@ type TSetupSagasConfig = {
 
 export function setupWalletSagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
   return function* walletSagas(): any {
-    yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
+    yield fork(neuTakeEvery, walletActions.loadWalletData, loadWalletDataSaga);
     yield takeLatestUntil(
       authModuleAPI.actions.setUser,
-      walletActions.stopWalletBalanceWatcher,
+      authModuleAPI.actions.reset,
       walletBalanceWatcher,
       config.waitUntilSmartContractsAreInitialized,
     );

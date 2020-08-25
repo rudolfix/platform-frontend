@@ -44,6 +44,12 @@ export const authActions = {
   failedToUnlockAccount: createActionFactory("AUTH_UNLOCK_FAILED_TO_UNLOCK"),
 
   /**
+   * Lock account flow
+   */
+  lockAccount: createActionFactory("AUTH_LOCK_ACCOUNT"),
+  lockAccountDone: createActionFactory("AUTH_LOCK_ACCOUNT_DONE"),
+
+  /**
    * Logout flow
    */
   logout: createActionFactory("AUTH_LOGOUT"),

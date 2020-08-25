@@ -1,4 +1,4 @@
-import { neuTakeLatest, put, fork, call, SagaGenerator, select } from "@neufund/sagas";
+import { call, fork, neuTakeLatest, put, SagaGenerator, select, take } from "@neufund/sagas";
 import {
   coreModuleApi,
   kycApi,
@@ -10,7 +10,7 @@ import { assertError } from "@neufund/shared-utils";
 import { authActions } from "modules/auth/actions";
 import { authModuleAPI } from "modules/auth/module";
 import { walletContractsModuleApi } from "modules/contracts/module";
-import { notificationModuleApi } from "modules/notifications/module";
+import { appStateChannel } from "modules/utils";
 import { walletConnectActions } from "modules/wallet-connect/actions";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
 
@@ -21,40 +21,25 @@ import { initActions } from "./actions";
 /**
  * Init global watchers
  */
-function* initGlobalWatchers(): SagaGenerator<void> {
+function* startGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
 }
 
+function* stopGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStop());
+}
+
 function* initStartSaga(): SagaGenerator<void> {
-  const { logger, notifications } = yield* neuGetBindings({
+  const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
-    notifications: notificationModuleApi.symbols.notifications,
   });
   try {
     yield* call(walletContractsModuleApi.sagas.initializeContracts);
-    yield* call(initGlobalWatchers);
 
     // checks if we have credentials and automatically signs the user
     yield* call(authModuleAPI.sagas.trySignInExistingAccount);
 
     yield put(initActions.done());
-
-    // TODO: Move push notification from initStartSaga
-    //       as it won't work given until `done` is dispatched there is a splash screen
-    //       and it's not possible to accept permissions request
-
-    // init push notifications
-    yield* call(() => notifications.init());
-
-    // subscribe for notifications test
-    yield* call(() =>
-      notifications.onReceivedNotificationInForeground(
-        notification => {
-          logger.info("------event work--------", notification);
-        },
-        { alert: true, sound: true, badge: false },
-      ),
-    );
   } catch (e) {
     assertError(e);
 
@@ -64,10 +49,50 @@ function* initStartSaga(): SagaGenerator<void> {
   }
 }
 
+function* handleAppStateChanges(): SagaGenerator<void> {
+  const { logger } = yield* neuGetBindings({
+    logger: coreModuleApi.symbols.logger,
+  });
+
+  try {
+    const stateChannel = yield* call(appStateChannel);
+
+    while (true) {
+      const { nextState, currentState } = yield* take(stateChannel);
+
+      if (nextState === "background") {
+        const isAuthorized = yield* select(authModuleAPI.selectors.selectIsAuthorized);
+
+        if (isAuthorized) {
+          // lock account when app moves to background
+          yield put(authModuleAPI.actions.lockAccount());
+        }
+      }
+
+      if (nextState === "active" && currentState === "background") {
+        const isAuthorized = yield* select(authModuleAPI.selectors.selectIsAuthorized);
+
+        if (!isAuthorized) {
+          // checks if we have credentials and automatically signs the user
+          yield* call(authModuleAPI.sagas.trySignInExistingAccount);
+        }
+      }
+    }
+  } catch (e) {
+    assertError(e);
+
+    logger.error(e, "Failed to handle app state change");
+
+    yield put(initActions.error(e?.message ?? "Unknown error"));
+  }
+}
+
 function* initAuthSigned(): SagaGenerator<void> {
   yield* call(walletConnectModuleApi.sagas.tryToConnectExistingSession);
 
   yield* call(kycApi.sagas.loadKycRequestData);
+
+  yield* call(startGlobalWatchers);
 }
 
 function* initAuthLogoutDone(): SagaGenerator<void> {
@@ -78,10 +103,17 @@ function* initAuthLogoutDone(): SagaGenerator<void> {
   if (peer) {
     yield put(walletConnectActions.disconnectFromPeerSilent(peer.id));
   }
+
+  yield* call(stopGlobalWatchers);
 }
 
 export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
   yield fork(neuTakeLatest, authActions.signed, initAuthSigned);
-  yield fork(neuTakeLatest, authActions.logoutDone, initAuthLogoutDone);
+  yield fork(
+    neuTakeLatest,
+    [authActions.logoutDone, authActions.lockAccountDone],
+    initAuthLogoutDone,
+  );
+  yield fork(neuTakeLatest, initActions.done, handleAppStateChanges);
 }

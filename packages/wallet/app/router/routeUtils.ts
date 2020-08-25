@@ -32,7 +32,10 @@ export type RootStackParamList = {
   [EAppRoutes.webView]: { uri: string };
 };
 
-const navigate = (name: string, params?: StackNavigationProp<RootStackParamList>) => {
+const navigate = <T extends EAppRoutes>(
+  name: T,
+  params?: StackNavigationProp<RootStackParamList, T>,
+) => {
   navigationRef.current?.navigate(name, params);
 };
 

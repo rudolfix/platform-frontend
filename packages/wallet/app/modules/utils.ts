@@ -1,6 +1,7 @@
 import { eventChannel } from "@neufund/sagas";
 import { invariant, UnknownObject } from "@neufund/shared-utils";
 import { EventEmitter2 } from "eventemitter2";
+import { AppState, AppStateStatus } from "react-native";
 
 type TReduxifyAction = {
   type: string;
@@ -33,4 +34,20 @@ const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) =>
     return () => eventEmitter.offAny(listener);
   });
 
-export { reduxify };
+const appStateChannel = () =>
+  eventChannel<{ nextState: AppStateStatus; currentState: AppStateStatus }>(emitter => {
+    let currentState = AppState.currentState;
+
+    const listener = (nextState: AppStateStatus) => {
+      emitter({ currentState, nextState });
+      currentState = nextState;
+    };
+
+    AppState.addEventListener("change", listener);
+
+    return () => {
+      AppState.removeEventListener("change", listener);
+    };
+  });
+
+export { reduxify, appStateChannel };

@@ -1,7 +1,7 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { TResolution } from "./types";
-import { TGovernanceViewState } from "./reducer";
+import { TDocumentUploadResponse, TGovernanceViewState } from "./reducer";
+import { TResolutionData } from "./types";
 
 export const actions = {
   setGovernanceVisibility: createActionFactory(
@@ -10,7 +10,7 @@ export const actions = {
   ),
   setGovernanceResolutions: createActionFactory(
     "SET_GOVERNANCE_RESOLUTIONS",
-    (resolutions: TResolution[]) => ({
+    (resolutions: TResolutionData[]) => ({
       resolutions,
     }),
   ),
@@ -20,29 +20,39 @@ export const actions = {
   setGovernanceUpdateData: createActionFactory(
     "setGovernanceUpdateData",
     (data: TGovernanceViewState) => ({
-      data
-    })
+      data,
+    }),
   ),
-  uploadFile: createActionFactory(
-    "GOVERNANCE_UPLOAD_FILE",
-    (file: string) => ({ file })
-  ),
+  uploadFile: createActionFactory("GOVERNANCE_UPLOAD_FILE", (file: File) => ({ file })),
   onFormChange: createActionFactory(
     "FORM_ON_CHANGE",
     (formId: string, fieldPath: string, newValue: string) => ({
-      formId, fieldPath, newValue,
+      formId,
+      fieldPath,
+      newValue,
     }),
   ),
   onFormBlur: createActionFactory(
     "FORM_ON_BLUR",
     (formId: string, fieldPath: string, newValue: string) => ({
-      formId, fieldPath, newValue,
-    })
+      formId,
+      fieldPath,
+      newValue,
+    }),
   ),
   onFormFocus: createActionFactory(
     "FORM_ON_FOCUS",
     (formId: string, fieldPath: string, newValue: string) => ({
-      formId, fieldPath, newValue,
-    })
+      formId,
+      fieldPath,
+      newValue,
+    }),
   ),
+  onFileUpload: createActionFactory("ON_FILE_UPLOAD", (response: TDocumentUploadResponse) => ({
+    ...response,
+  })),
+  removeFile: createActionFactory("REMOVE_FILE"),
+  onFileRemove: createActionFactory("ON_FILE_REMOVE"),
+  publishUpdate: createActionFactory("START_PUBLISH_UPDATE"),
+  updatePublishSuccess: createActionFactory("UPDATE_PUBLISH_SUCCESS"),
 };

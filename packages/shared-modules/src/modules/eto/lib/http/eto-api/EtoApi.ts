@@ -12,6 +12,7 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "./EtoApi.interfaces.unsafe";
+import { EResolutionDocumentType } from "./EtoFileApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/";
 const COMPANIES_ME_DATA_PATH = "/companies/me";
@@ -29,7 +30,8 @@ export class EtoApi {
   constructor(
     @inject(authModuleAPI.symbols.authJsonHttpClient) private authorizedHttpClient: IHttpClient,
     @inject(coreModuleApi.symbols.jsonHttpClient) private httpClient: IHttpClient,
-  ) {}
+  ) {
+  }
 
   public async getEtos(): Promise<TEtoDataWithCompany[]> {
     return this.httpClient
@@ -119,6 +121,30 @@ export class EtoApi {
       url: COMPANIES_ME_DATA_PATH,
       body: data,
     });
+  }
+
+  public async uploadGovernanceDocument(
+    file:File,
+    documentType:EResolutionDocumentType,
+    title:string,
+    resolutionId:string
+  ) {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('document_data', JSON.stringify({
+      mime_type: 'application/pdf',
+      title,
+      resolution_id: resolutionId,
+      document_type: documentType,
+      name: file.name,
+      form: 'document'
+    }))
+    const response = await this.authorizedHttpClient.post({
+      baseUrl: BASE_PATH,
+      url: `${COMPANIES_ME_DATA_PATH}/documents`,
+      formData: data,
+    })
+    return response.body
   }
 
   public async submitCompanyAndEto(): Promise<IHttpResponse<TEtoDataWithCompany>> {

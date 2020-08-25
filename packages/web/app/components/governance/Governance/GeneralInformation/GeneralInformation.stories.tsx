@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { mockedStore } from "../../../../../test/fixtures/mockedStore";
 import { TGovernanceViewState } from "../../../../modules/governance/reducer";
-import { EGovernanceAction, TResolution } from "../../../../modules/governance/types";
+import { EGovernanceAction, TResolutionData } from "../../../../modules/governance/types";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { Container, EColumnSpan } from "../../../layouts/Container";
 import { GeneralInformation } from "./GeneralInformation";
@@ -14,7 +14,7 @@ const initialGovernanceState: TGovernanceViewState = {
   showGovernanceUpdateModal: false,
 };
 
-const files: TResolution[] = [
+const files: TResolutionData[] = [
   {
     action: EGovernanceAction.REGISTER_OFFER,
     id: "0x642f1abab6a3bf50045490997b35edc3578372c994e8111062968205c0cd1a59",
@@ -41,7 +41,7 @@ const files: TResolution[] = [
   },
 ];
 
-const withGovernance = (resolutions: TResolution[] | undefined) => {
+const withGovernance = (resolutions: TResolutionData[] | undefined) => {
   const governanceState = {
     governance: {
       ...initialGovernanceState,

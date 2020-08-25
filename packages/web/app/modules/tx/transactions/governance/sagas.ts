@@ -1,6 +1,5 @@
 import { call, put, select, takeLatest } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
-import cryptoRandomString from "crypto-random-string";
 
 import { symbols } from "../../../../di/symbols";
 import { IControllerGovernance } from "../../../../lib/contracts/IControllerGovernance";
@@ -19,12 +18,12 @@ import { txTransactionsActions } from "../actions";
 type TGlobalDependencies = unknown;
 
 export function* generatePublishResolutionTransaction(
-  documentTitle: string,
+  updateTitle: string,
+  resolutionId: string,
+  resolutionDocumentUrl: string,
   action: EGovernanceAction,
 ): Generator<any, any, any> {
-  const resolutionId = cryptoRandomString({ length: 32 });
   // TODO hardcoded until we have upload
-  const resolutionDocumentUrl = "ipfs:QmTetEmvLsbP2oNoZzKCwgEQBSNGTiSb29nWsu15h3eqwG";
 
   const { web3Manager } = yield* neuGetBindings({
     web3Manager: symbols.web3Manager,
@@ -40,7 +39,7 @@ export function* generatePublishResolutionTransaction(
   const toAddress = yield governanceController.address;
 
   const data = yield governanceController
-    .generalResolutionTx(resolutionId, action, documentTitle, resolutionDocumentUrl)
+    .generalResolutionTx(resolutionId, action, updateTitle, resolutionDocumentUrl)
     .getData();
 
   const txInitialDetails = {
@@ -62,22 +61,30 @@ export function* generatePublishResolutionTransaction(
 
 function* startPublishResolutionUpdateFlow(
   _: TGlobalDependencies,
-  documentTitle: string,
+  params: {
+    updateTitle: string;
+    resolutionId: string;
+    resolutionDocumentUrl: string;
+  },
 ): Generator<any, any, any> {
+  const { updateTitle, resolutionId, resolutionDocumentUrl } = params;
+
   const company = yield select(selectIssuerCompany);
   // TODO hardcoded until we support other types
   const action = EGovernanceAction.COMPANY_NONE;
 
   const txDetails: ITxData = yield* call(
     generatePublishResolutionTransaction,
-    documentTitle,
+    updateTitle,
+    resolutionId,
+    resolutionDocumentUrl,
     action,
   );
 
   yield put(actions.txSender.setTransactionData(txDetails));
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxType.EXECUTE_RESOLUTION>({
-      documentTitle,
+      documentTitle: updateTitle,
       type: governanceActionToLabel(action, company.brandName) as string,
     }),
   );
@@ -94,12 +101,12 @@ function* txStartPublishResolutionUpdate(
     yield txSendSaga({
       type: ETxType.EXECUTE_RESOLUTION,
       transactionFlowGenerator: startPublishResolutionUpdateFlow,
-      extraParam: action.payload.title,
+      extraParam: action.payload,
     });
 
     logger.info("Publish resolution update successful");
 
-    yield put(governanceModuleApi.actions.loadGeneralInformationView());
+    yield put(governanceModuleApi.actions.updatePublishSuccess());
   } catch (e) {
     logger.info("Publish resolution update cancelled" + e);
   }

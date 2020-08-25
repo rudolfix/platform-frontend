@@ -85,3 +85,7 @@ export const immutableDocumentName: { [key in EEtoDocumentType]: string } = {
   signed_investment_and_shareholder_agreement: "Signed Investment and Shareholder Agreement",
   investment_and_shareholder_agreement_preview: "Investment and Shareholder Agreement",
 };
+
+export enum EResolutionDocumentType {
+  RESOLUTION_DOCUMENT= "resolution_document"
+}

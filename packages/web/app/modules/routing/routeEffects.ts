@@ -9,6 +9,7 @@ import { profileRoutes } from "../../components/settings/routes";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
+import { governanceModuleApi } from "../governance/module";
 import { neuCall } from "../sagasUtils";
 import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
@@ -21,7 +22,6 @@ import {
   TEtoViewByPreviewCodeMatch,
   TShareholderResolutionsVotingRoute,
 } from "./types";
-import { governanceModuleApi } from "../governance/module";
 
 export const routeEffects = [
   // most routes here are stubbed until we move them all to sagas
@@ -114,50 +114,45 @@ export function* greypRoute(payload: RouterState): Generator<any, any, any> {
 }
 
 export function* governanceRoute(payload: RouterState): Generator<any, any, any> {
-  const governanceMatch = yield* call(matchPath,payload.location.pathname, {
-      path: appRoutes.governance,
-      exact: true,
-    }
-  );
+  const governanceMatch = yield* call(matchPath, payload.location.pathname, {
+    path: appRoutes.governance,
+    exact: true,
+  });
 
-  return yield routeAction(governanceMatch,{
+  return yield routeAction(governanceMatch, {
     notAuth: put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToGovernanceOverview()),
     nominee: put(actions.routing.goToDashboard()),
-  })
+  });
 }
 
 export function* governanceOverviewRoute(payload: RouterState): Generator<any, any, any> {
-  const governanceOverviewMatch = yield* call(matchPath, payload.location.pathname,
-    {
-      path: appRoutes.governanceOverview,
-      exact: true,
-    }
-  );
+  const governanceOverviewMatch = yield* call(matchPath, payload.location.pathname, {
+    path: appRoutes.governanceOverview,
+    exact: true,
+  });
 
   return yield routeAction(governanceOverviewMatch, {
     notAuth: put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.etoFlow.loadIssuerView()),
     nominee: put(actions.routing.goToDashboard()),
-  })
+  });
 }
 
 export function* governanceGeneralInformationRoute(payload: RouterState): Generator<any, any, any> {
   const governanceGeneralInformationMatch = yield* call(matchPath, payload.location.pathname, {
-      path: appRoutes.governanceGeneralInformation,
-      exact: true,
-    }
-  );
+    path: appRoutes.governanceGeneralInformation,
+    exact: true,
+  });
 
   return yield routeAction(governanceGeneralInformationMatch, {
-      notAuth: put(actions.routing.goHome()),
-      investor: put(actions.routing.goToDashboard()),
-      issuer: put(governanceModuleApi.actions.loadGeneralInformationView()),
-      nominee: put(actions.routing.goToDashboard()),
-    }
-  )
+    notAuth: put(actions.routing.goHome()),
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(governanceModuleApi.actions.loadGeneralInformationView()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
 }
 
 export function* etoViewRoute(payload: RouterState): Generator<any, any, any> {

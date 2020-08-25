@@ -56,7 +56,11 @@ export const txTransactionsActions = {
   ),
   startPublishResolutionUpdate: createActionFactory(
     "TRANSACTION_START_PUBLISH_RESOLUTION_UPDATE",
-    (title: string) => ({ title }),
+    (updateTitle: string, resolutionId: string, resolutionDocumentUrl: string) => ({
+      updateTitle,
+      resolutionId,
+      resolutionDocumentUrl,
+    }),
   ),
   // Add here new custom sagas that represent flows
 };

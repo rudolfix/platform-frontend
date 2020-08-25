@@ -24,16 +24,14 @@ export function* ensurePermissionsArePresentAndRunEffect(
 
   // check whether all permissions are present and still valid
   if (jwt && hasValidPermissions(jwt, permissions)) {
-    yield effect;
-
-    return;
+    return yield effect;
   }
 
   // obtain a freshly signed token with missing permissions
   try {
     const obtainJwtEffect = neuCall(authModuleAPI.sagas.escalateJwt, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message, inputLabel);
-    yield effect;
+    return yield effect;
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {
       deps.logger.info("Signing Cancelled");

@@ -17,49 +17,48 @@ export type TGeneralInformationListProps = {
 };
 
 export const GeneralInformationList: React.FunctionComponent<TGeneralInformationListProps> = props => {
-  const [showDetailsModal, setShowDetailsModal] = React.useState<boolean>(false);
-  const [fileDetailsIndex, setFileDetailsIndex] = React.useState<number>(-1);
-  const onViewDetails = (index: number) => {
-    setFileDetailsIndex(index);
-    setShowDetailsModal(true);
-  };
+  const [showDetailsModalForId, setShowDetailsModalForId] = React.useState<undefined | number>(
+    undefined,
+  );
 
   return (
     <>
       <Container>
         <ul className={styles.fileList}>
-          {props.resolutions.map((file: TResolution, index: number) => {
-            const title = governanceActionToLabel(file.action, props.companyBrandName);
+          {props.resolutions.map((resolution: TResolution, index: number) => {
+            const title =
+              resolution.title ||
+              governanceActionToLabel(resolution.action, props.companyBrandName);
             return (
-              <li className={styles.fileListItem} key={file.id}>
+              <li className={styles.fileListItem} key={resolution.id}>
                 <img className={styles.fileIcon} src={pdfIcon} alt="PDF" />
                 <div className={styles.fileDetails}>
                   <span className={styles.fileName}>{title}</span>
                   <span className={styles.caption}>
                     <FormattedDate
-                      value={file.startedAt}
+                      value={resolution.startedAt}
                       year="numeric"
                       month="long"
                       day="2-digit"
                     />
                     &#x20;&bull;&#x20;
-                    {file.draft && (
+                    {resolution.draft && (
                       <>
                         <FormattedMessage id="common.draft" />
                         &#x20;&bull;&#x20;
                       </>
                     )}
-                    {title}
+                    {governanceActionToLabel(resolution.action, props.companyBrandName)}
                   </span>
                 </div>
                 <Button
                   className={styles.fileAction}
-                  onClick={() => onViewDetails(index)}
+                  onClick={() => setShowDetailsModalForId(index)}
                   width={EButtonWidth.NO_PADDING}
                   size={EButtonSize.SMALL}
                   layout={EButtonLayout.LINK}
                 >
-                  {file.draft ? (
+                  {resolution.draft ? (
                     <FormattedMessage id="common.edit-draft" />
                   ) : (
                     <FormattedMessage id="common.view-details" />
@@ -70,17 +69,27 @@ export const GeneralInformationList: React.FunctionComponent<TGeneralInformation
           })}
         </ul>
       </Container>
-
-      <GovernanceUpdateDetailsModal
-        isOpen={showDetailsModal}
-        title={
-          fileDetailsIndex > -1
-            ? governanceActionToLabel(props.resolutions[fileDetailsIndex].action, props.companyBrandName)
-            : undefined
-        }
-        date={fileDetailsIndex > -1 ? props.resolutions[fileDetailsIndex].startedAt : undefined}
-        onClose={() => setShowDetailsModal(false)}
-      />
+      {showDetailsModalForId !== undefined && (
+        <GovernanceUpdateDetailsModal
+          isOpen={true}
+          title={
+            props.resolutions[showDetailsModalForId].title ||
+            governanceActionToLabel(
+              props.resolutions[showDetailsModalForId].action,
+              props.companyBrandName,
+            )
+          }
+          actionName={governanceActionToLabel(
+            props.resolutions[showDetailsModalForId].action,
+            props.companyBrandName,
+          )}
+          documentName={props.resolutions[showDetailsModalForId].documentName || "Fallback Title"}
+          documentHash={props.resolutions[showDetailsModalForId].documentHash || "#"}
+          documentSize={props.resolutions[showDetailsModalForId].documentSize || "NaN"}
+          date={props.resolutions[showDetailsModalForId].startedAt}
+          onClose={() => setShowDetailsModalForId(undefined)}
+        />
+      )}
     </>
   );
 };

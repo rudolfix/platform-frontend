@@ -19,6 +19,16 @@
   grid-gap: 16px;
 }
 
+.footer {
+  margin: px-to-rem(8) -5rem;
+  padding: px-to-rem(19) 3rem 0 5rem;
+  border-top: 1px solid $neu-light-blue-grey-two;
+
+  display: grid;
+  grid-template: 1fr / 1fr auto;
+  justify-items: flex-end;
+}
+
 .save-as-draft {
   margin-right: px-to-rem(16px);
 }
@@ -65,4 +75,8 @@
   p {
     margin-bottom: 0;
   }
+}
+
+.document-upload-error {
+  color: $neu-flamingo-red;
 }

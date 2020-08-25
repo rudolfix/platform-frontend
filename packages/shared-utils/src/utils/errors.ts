@@ -3,6 +3,12 @@ import { InvariantError } from "./invariant";
 export class FormInputError extends Error {}
 export class DataUnavailableError extends Error {}
 export class StateNotAllowedError extends Error {}
+export class GovernanceNotSetUpError extends Error {}
+export class GovernanceIncompatibleError extends Error {
+  constructor(public etoId:string) {
+    super()
+  }
+}
 
 const assertError = (error: unknown): asserts error is Error => {
   if (!(error instanceof Error)) {
@@ -13,3 +19,4 @@ const assertError = (error: unknown): asserts error is Error => {
 };
 
 export { assertError };
+

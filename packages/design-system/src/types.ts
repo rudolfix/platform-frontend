@@ -7,3 +7,18 @@ export type CommonHtmlProps = {
 };
 
 export type TTranslatedString = string | ReactElement<FormattedMessage.Props>;
+
+export type TFormDataCommon = {
+  errors: TTranslatedString[],
+  isValid: boolean,
+  disabled: boolean,
+  validations: Function[]
+}
+
+export   type TFormFieldData<T> = {
+  value: T,
+}  & TFormDataCommon
+
+export  type TFormData<T,V> = {
+  fields: { [K in keyof T ]: TFormFieldData<V> }
+} & TFormDataCommon

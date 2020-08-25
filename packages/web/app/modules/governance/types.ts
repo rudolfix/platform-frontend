@@ -1,4 +1,7 @@
+import { EResolutionDocumentType } from "@neufund/shared-modules";
 import * as Yup from "yup";
+
+import { EMimeType } from "../../components/shared/forms/fields/utils";
 
 export enum EGovernanceControllerState {
   SETUP = 0,
@@ -39,16 +42,34 @@ export enum EGovernanceAction {
   CANCEL_RESOLUTION = 25,
 }
 
+export type TResolutionData = {
+  contract: string;
+  createdAt: string;
+  documentType: EResolutionDocumentType.RESOLUTION_DOCUMENT;
+  form: "document";
+  ipfsHash: string;
+  mimeType: EMimeType.PDF;
+  name: string;
+  owner: string;
+  resolutionId: string;
+  size: 116211;
+  title: string;
+};
+
 export type TResolution = {
   action: EGovernanceAction;
   id: string;
   draft: boolean;
   startedAt: Date;
-}
+  title?: string;
+  documentName?: string;
+  documentHash?: string;
+  documentSize?: string;
+};
 
 export type TResolutionUpdate = {
   title: string;
-}
+};
 
 export const GovernanceUpdateSchema = Yup.object().shape({
   updateTitle: Yup.string().required(),

@@ -9,8 +9,8 @@ import { assertError } from "@neufund/shared-utils";
 
 import { authActions } from "modules/auth/actions";
 import { authModuleAPI } from "modules/auth/module";
+import { biometryModuleApi } from "modules/biometry/module";
 import { walletContractsModuleApi } from "modules/contracts/module";
-import { notificationModuleApi } from "modules/notifications/module";
 import { walletConnectActions } from "modules/wallet-connect/actions";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
 
@@ -26,35 +26,18 @@ function* initGlobalWatchers(): SagaGenerator<void> {
 }
 
 function* initStartSaga(): SagaGenerator<void> {
-  const { logger, notifications } = yield* neuGetBindings({
+  const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
-    notifications: notificationModuleApi.symbols.notifications,
   });
   try {
     yield* call(walletContractsModuleApi.sagas.initializeContracts);
+    yield* call(biometryModuleApi.sagas.initializeBiometrics);
     yield* call(initGlobalWatchers);
 
     // checks if we have credentials and automatically signs the user
     yield* call(authModuleAPI.sagas.trySignInExistingAccount);
 
     yield put(initActions.done());
-
-    // TODO: Move push notification from initStartSaga
-    //       as it won't work given until `done` is dispatched there is a splash screen
-    //       and it's not possible to accept permissions request
-
-    // init push notifications
-    yield* call(() => notifications.init());
-
-    // subscribe for notifications test
-    yield* call(() =>
-      notifications.onReceivedNotificationInForeground(
-        notification => {
-          logger.info("------event work--------", notification);
-        },
-        { alert: true, sound: true, badge: false },
-      ),
-    );
   } catch (e) {
     assertError(e);
 

@@ -13,6 +13,7 @@ import { mocked } from "ts-jest/utils";
 import {
   InvalidWalletConnectUriError,
   isValidWalletConnectUri,
+  toWalletConnectUri,
 } from "modules/wallet-connect/lib/utils";
 
 import { navigate } from "router/routeUtils";
@@ -57,7 +58,7 @@ const setupTest = () => {
 };
 
 describe("wallet-connect - connectToURI", () => {
-  const mockURI = "wallet-connect-uri";
+  const mockURI = toWalletConnectUri("wallet-connect-uri");
 
   const walletConnectAdapterMock = createMock(WalletConnectAdapter, {});
 

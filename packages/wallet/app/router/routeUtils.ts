@@ -20,6 +20,7 @@ export type RootStackParamList = {
   [EAppRoutes.landing]: undefined;
   [EAppRoutes.importAccount]: undefined;
   [EAppRoutes.unlockAccount]: undefined;
+  [EAppRoutes.noBiometrics]: undefined;
   [EAppRoutes.importFixture]: undefined;
   [EAppRoutes.switchToFixture]: undefined;
   [EAppRoutes.accountBackup]: undefined;

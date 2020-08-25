@@ -150,6 +150,8 @@ PODS:
   - OpenSSL-Universal/Static (1.0.2.19)
   - Permission-Camera (2.0.9):
     - RNPermissions
+  - Permission-FaceID (2.0.9):
+    - RNPermissions
   - Permission-Notifications (2.0.9):
     - RNPermissions
   - Protobuf (3.11.4)
@@ -462,6 +464,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera.podspec`)
+  - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID.podspec`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -551,6 +554,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera.podspec"
+  Permission-FaceID:
+    :path: "../node_modules/react-native-permissions/ios/FaceID.podspec"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
   RCTRequired:
@@ -668,6 +673,7 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   Permission-Camera: 8fe4753b02396489b11c5089e4f57bab7fe1ef42
+  Permission-FaceID: 29c3f213a033c24330a554a5dad7681d6e3698f8
   Permission-Notifications: 1e03f5c43612ac4f9cdcaf6504695fc4e15f33d9
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
@@ -713,6 +719,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8fe2fee27cd6ca97528efececf0ee8ad6152c7ea
+PODFILE CHECKSUM: b1c52e1886e8d0be119d05420004feb47d0b6d29
 
 COCOAPODS: 1.9.1

@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared-utils";
+import { assertNever, StateNotAllowedError } from "@neufund/shared-utils";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { InteractionManager } from "react-native";
@@ -9,11 +9,14 @@ import { SignerModal } from "components/modals/SignerModal/SignerModal";
 
 import { usePrevious } from "hooks/usePrevious";
 
-import { EAuthState, authModuleAPI } from "modules/auth/module";
-import { initModuleApi, EInitStatus } from "modules/init/module";
+import { authModuleAPI, EAuthState } from "modules/auth/module";
+import { biometryModuleApi } from "modules/biometry/module";
+import { EBiometricsState } from "modules/biometry/reducer";
+import { EInitStatus, initModuleApi } from "modules/init/module";
 
 import { AppAuthRouter } from "router/AppAuthRouter";
 import { AppNoAuthRouter } from "router/AppNoAuthRouter";
+import { BiometricsRoute } from "router/BiometricsRouter";
 import { navigationRef } from "router/routeUtils";
 
 import { appConnect } from "store/utils";
@@ -24,6 +27,7 @@ type TStateProps = {
   initStatus: ReturnType<typeof initModuleApi.selectors.selectInitStatus>;
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
   authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
+  biometricsState: ReturnType<typeof biometryModuleApi.selectors.selectBiometricsState>;
 };
 
 type TDispatchProps = {
@@ -32,7 +36,24 @@ type TDispatchProps = {
 
 type TLayoutProps = TStateProps & TDispatchProps;
 
-const AppRouter: React.FunctionComponent<Pick<TLayoutProps, "authState" | "authWallet">> = ({
+const BiometricsGuards: React.FunctionComponent<Pick<
+  TLayoutProps,
+  "authState" | "authWallet" | "biometricsState"
+>> = ({ authState, authWallet, biometricsState }) => {
+  switch (biometricsState) {
+    case EBiometricsState.ACCESS_ALLOWED:
+      return <AuthorizedGuards authState={authState} authWallet={authWallet} />;
+    case EBiometricsState.NO_SUPPORT:
+    case EBiometricsState.NO_ACCESS:
+      return <BiometricsRoute biometricsState={biometricsState} />;
+    case EBiometricsState.UNKNOWN:
+      throw new StateNotAllowedError("Biometrics should be initialized");
+    default:
+      assertNever(biometricsState, "Invalid biometrics state");
+  }
+};
+
+const AuthorizedGuards: React.FunctionComponent<Pick<TLayoutProps, "authState" | "authWallet">> = ({
   authState,
   authWallet,
 }) => {
@@ -58,6 +79,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
   authState,
   authWallet,
   initStatus,
+  biometricsState,
 }) => {
   const { navigationTheme } = useTheme();
   const previousInitStatus = usePrevious(initStatus);
@@ -85,7 +107,11 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
     case EInitStatus.DONE:
       return (
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-          <AppRouter authState={authState} authWallet={authWallet} />
+          <BiometricsGuards
+            biometricsState={biometricsState}
+            authState={authState}
+            authWallet={authWallet}
+          />
         </NavigationContainer>
       );
     case EInitStatus.ERROR:
@@ -100,6 +126,7 @@ const App = appConnect<TStateProps, TDispatchProps>({
     initStatus: initModuleApi.selectors.selectInitStatus(state),
     authState: authModuleAPI.selectors.selectAuthState(state),
     authWallet: authModuleAPI.selectors.selectAuthWallet(state),
+    biometricsState: biometryModuleApi.selectors.selectBiometricsState(state),
   }),
   dispatchToProps: dispatch => ({
     init: () => dispatch(initModuleApi.actions.start()),

@@ -496,7 +496,7 @@ export function setupTXHistorySagas(config: TSetupSagasConfig): () => SagaGenera
     yield fork(
       takeLatestUntil,
       txHistoryActions.startWatchingForNewTransactions,
-      [txHistoryActions.stopWatchingForNewTransactions],
+      txHistoryActions.stopWatchingForNewTransactions,
       watchTransactions,
       config.refreshOnAction,
     );

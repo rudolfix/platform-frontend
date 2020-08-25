@@ -159,7 +159,12 @@ export class KeychainSecureStorage extends BaseSecureStorage {
       accessControl: this.useBiometry
         ? Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
         : Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
+
+      // IOS
       accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+      authenticationType: Keychain.AUTHENTICATION_TYPE.BIOMETRICS,
+
+      // ANDROID
       securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE,
     });
   }

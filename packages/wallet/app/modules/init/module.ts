@@ -10,6 +10,7 @@ import {
 } from "@neufund/shared-modules";
 
 import { setupAuthModule } from "modules/auth/module";
+import { setupBiometryModule } from "modules/biometry/module";
 import { setupWalletContractsModule } from "modules/contracts/module";
 import { setupDeviceInformationModule } from "modules/device-information/module";
 import { setupWalletEthModule } from "modules/eth/module";
@@ -86,6 +87,7 @@ const setupInitModule = (config: TConfig) => {
     setupWalletModule({
       waitUntilSmartContractsAreInitialized,
     }),
+    setupBiometryModule(),
     /**
      * Screen modules
      */

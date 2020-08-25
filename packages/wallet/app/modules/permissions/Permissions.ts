@@ -1,6 +1,12 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
-import { NotificationsResponse, requestNotifications } from "react-native-permissions";
+import {
+  NotificationsResponse,
+  requestNotifications,
+  check,
+  PermissionStatus,
+  Permission,
+} from "react-native-permissions";
 
 /**
  * @class Permissions
@@ -27,5 +33,15 @@ export class Permissions {
     this.logger.info("Request for push notification permissions");
 
     return requestNotifications([]);
+  }
+
+  async check(permission: Permission): Promise<PermissionStatus> {
+    this.logger.info(`Checking for permission ${permission.toString()}`);
+
+    const result = await check(permission);
+
+    this.logger.info(`Permission ${permission.toString()} status is ${result}`);
+
+    return result;
   }
 }

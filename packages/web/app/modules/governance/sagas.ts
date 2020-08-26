@@ -68,7 +68,7 @@ import {
   hasOnFormBlur,
   hasOnFormChange,
   hasOpenGovernanceUpdateModal,
-  hasPublishUpdate,
+  hasPublishUpdate, hasRemoveFile,
   hasUpdatePublishSuccess,
   hasUploadFile,
   modalStateIsOpen,
@@ -359,6 +359,31 @@ function* uploadFileUpdate(
     return oldState;
   }
 }
+function* removeFileUpdate(
+  oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
+    tabVisible: boolean;
+  },
+  _updateData:{ removeFile: ReturnType<typeof actions.governance.removeFile> }
+): Generator<any, TGovernanceViewState, any> {
+  if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
+
+    const newDocumentUploadState = {
+      documentUploadStatus: EProcessState.NOT_STARTED as const,
+    };
+    const publishButtonDisabled = true
+
+    return {
+      ...oldState,
+      governanceUpdateModalState: {
+        ...oldState.governanceUpdateModalState,
+        documentUploadState: newDocumentUploadState,
+        publishButtonDisabled,
+      },
+    } as const;
+  } else {
+    return oldState;
+  }
+}
 
 function* onFormChangeUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
@@ -530,6 +555,8 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
 
         if (hasUploadFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
           newState = yield* call(uploadFileUpdate, oldState, update);
+        } else if(hasRemoveFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
+          newState = yield* call(removeFileUpdate, oldState, update)
         } else if (
           hasOnFormChange(update) &&
           modalStateIsOpen(oldState.governanceUpdateModalState)

@@ -158,6 +158,11 @@ export const hasUploadFile = (
 ): x is { uploadFile: ReturnType<typeof actions.governance.uploadFile> } =>
   x.uploadFile !== undefined;
 
+export const hasRemoveFile = (
+  x: any,
+): x is { removeFile: ReturnType<typeof actions.governance.removeFile> } =>
+  x.removeFile !== undefined;
+
 export const hasOnFormBlur = (
   x: any,
 ): x is { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> } =>

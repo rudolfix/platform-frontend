@@ -71,32 +71,49 @@ function* allowToUnlockExistingAccount(): SagaGenerator<void> {
 }
 
 function* signInExistingAccount(): SagaGenerator<void> {
-  const { ethManager } = yield* neuGetBindings({
+  const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
+    logger: coreModuleApi.symbols.logger,
   });
 
-  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+  try {
+    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
 
-  // do not allow to start sign in without having existing wallet
-  invariant(walletMetadata, "No existing wallet to sign in");
+    // do not allow to start sign in without having existing wallet
+    invariant(walletMetadata, "No existing wallet to sign in");
 
-  yield put(authActions.signIn());
+    const jwt = yield* neuCall(authModuleAPI.sagas.loadJwt);
 
-  yield* call(() => ethManager.plugExistingWallet());
+    // if JWT is already in the store and it's won't expire soon
+    // then just feed state with the current jwt
+    if (jwt && isJwtExpiringLateEnough(jwt)) {
+      // given we reuse jwt we need to confirm user has access to secure enclave
+      const hasValidCredentials = yield* call([ethManager, "hasValidCredentials"]);
 
-  const jwt = yield* neuCall(authModuleAPI.sagas.loadJwt);
-  // if JWT is already in the store and it's won't expire soon
-  // then just feed state with the current jwt
-  if (jwt && isJwtExpiringLateEnough(jwt)) {
-    yield* neuCall(authModuleAPI.sagas.setJwt, jwt);
-  } else {
-    yield* call(authModuleAPI.sagas.createJwt, []);
+      if (!hasValidCredentials) {
+        logger.info("Not valid credentials");
+
+        yield put(authActions.failedToUnlockAccount());
+
+        return;
+      }
+
+      yield* call(() => ethManager.plugExistingWallet());
+      yield* neuCall(authModuleAPI.sagas.setJwt, jwt);
+    } else {
+      yield* call(() => ethManager.plugExistingWallet());
+      yield* call(authModuleAPI.sagas.createJwt, []);
+    }
+
+    // given that user may already exist just load the user from database
+    yield* call(loadOrCreateUser);
+
+    yield put(authActions.unlockAccountDone(walletMetadata));
+  } catch (e) {
+    logger.error(e, "Failed to unlock account");
+
+    yield put(authActions.failedToUnlockAccount());
   }
-
-  // given that user may already exist just load the user from database
-  yield* call(loadOrCreateUser);
-
-  yield put(authActions.signed(walletMetadata));
 }
 
 function* createNewAccount(): SagaGenerator<void> {
@@ -122,7 +139,7 @@ function* createNewAccount(): SagaGenerator<void> {
     // do not allow to start sign in without having existing wallet
     invariant(walletMetadata, "No existing wallet to sign in");
 
-    yield put(authActions.signed(walletMetadata));
+    yield put(authActions.unlockAccountDone(walletMetadata));
 
     logger.info("New account created");
   } catch (e) {
@@ -187,7 +204,7 @@ function* importNewAccount(
     // do not allow to start sign in without having existing wallet
     invariant(walletMetadata, "No existing wallet to sign in");
 
-    yield put(authActions.signed(walletMetadata));
+    yield put(authActions.unlockAccountDone(walletMetadata));
 
     logger.info("New account imported");
   } catch (e) {

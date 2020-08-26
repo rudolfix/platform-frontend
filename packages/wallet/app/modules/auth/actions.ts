@@ -41,6 +41,12 @@ export const authActions = {
     (metadata: TAuthWalletMetadata) => ({ metadata }),
   ),
   unlockAccount: createActionFactory("AUTH_UNLOCK_UNLOCK"),
+  unlockAccountDone: createActionFactory(
+    "AUTH_NEW_ACCOUNT_SIGNED",
+    (metadata: TAuthWalletMetadata) => ({
+      metadata,
+    }),
+  ),
   failedToUnlockAccount: createActionFactory("AUTH_UNLOCK_FAILED_TO_UNLOCK"),
 
   /**
@@ -48,12 +54,4 @@ export const authActions = {
    */
   logout: createActionFactory("AUTH_LOGOUT"),
   logoutDone: createActionFactory("AUTH_LOGOUT_DONE"),
-
-  /**
-   * Sign in flow
-   */
-  signIn: createActionFactory("AUTH_SIGN_IN"),
-  signed: createActionFactory("AUTH_NEW_ACCOUNT_SIGNED", (metadata: TAuthWalletMetadata) => ({
-    metadata,
-  })),
 };

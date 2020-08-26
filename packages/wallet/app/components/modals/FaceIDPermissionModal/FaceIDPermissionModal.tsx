@@ -27,7 +27,7 @@ const FaceIDPermissionModalLayout: React.FunctionComponent<TStateProps & TDispat
   isBiometryAccessRequestRequired,
   requestFaceIdPermissions,
 }) => (
-  <BottomSheetModal isVisible={false}>
+  <BottomSheetModal isVisible={isBiometryAccessRequestRequired}>
     <BodyText style={styles.headline}>
       To secure your account, we require your permission to enable Face ID.
     </BodyText>

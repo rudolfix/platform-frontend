@@ -65,6 +65,6 @@ function* initAuthLogoutDone(): SagaGenerator<void> {
 
 export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
-  yield fork(neuTakeLatest, authActions.signed, initAuthSigned);
+  yield fork(neuTakeLatest, authActions.unlockAccountDone, initAuthSigned);
   yield fork(neuTakeLatest, authActions.logoutDone, initAuthLogoutDone);
 }

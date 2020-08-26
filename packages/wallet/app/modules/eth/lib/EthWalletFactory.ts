@@ -69,13 +69,37 @@ class EthWalletFactory {
   async hasExistingWallet() {
     this.logger.info("Checking if there is existing wallet");
 
-    // TODO: Check if it's possible to make sure whether key exists for provided key reference
-    //       without triggering presence confirmation screen
-    const isThereExistingWallet = !!(await this.walletStorage.get());
+    const walletMetadata = await this.walletStorage.get();
 
-    this.logger.info(`Existing wallet ${isThereExistingWallet ? "found" : "not found"}`);
+    let hasExistingWallet = false;
 
-    return isThereExistingWallet;
+    if (walletMetadata) {
+      hasExistingWallet = await this.ethSecureEnclave.hasSecret(walletMetadata.privateKeyReference);
+    }
+
+    this.logger.info(`Existing wallet ${hasExistingWallet ? "found" : "not found"}`);
+
+    return hasExistingWallet;
+  }
+
+  /**
+   * Check if existing wallet in memory has corresponding key reference available in secure enclave
+   */
+  async hasValidCredentials() {
+    this.logger.info("Checking if wallet is in valid state");
+
+    const walletMetadata = await this.walletStorage.get();
+
+    let hasValidState = true;
+    if (walletMetadata) {
+      hasValidState = await this.ethSecureEnclave.hasAccessToSecret(
+        walletMetadata.privateKeyReference,
+      );
+    }
+
+    this.logger.info(`Existing wallet state ${hasValidState ? "is valid" : "is invalid"}`);
+
+    return hasValidState;
   }
 
   /**

@@ -127,6 +127,15 @@ class EthManager implements IEthManager {
   }
 
   /**
+   * Check if there is already existing wallet in the memory.
+   *
+   * @note Make sure to check for wallet before calling `plugExistingWallet`.
+   */
+  async hasValidCredentials() {
+    return this.ethWalletFactory.hasValidCredentials();
+  }
+
+  /**
    * Throws if there is already existing wallet in the memory.
    *
    * @throws WalletAlreadyInMemoryError - When wallet is already available

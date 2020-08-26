@@ -12,6 +12,7 @@ import { inject, injectable } from "inversify";
 import { DeviceInformation } from "modules/device-information/DeviceInformation";
 import { deviceInformationModuleApi } from "modules/device-information/module";
 import { EthModuleError } from "modules/eth/errors";
+import { SecureStorageAccessCancelled } from "modules/eth/lib/errors";
 
 import { EPlatform } from "utils/Platform";
 
@@ -102,6 +103,34 @@ class EthSecureEnclave {
       this.secureStorage = new KeychainSecureStorage(useBiometry);
     }
     return this.secureStorage;
+  }
+
+  async hasSecret(reference: TSecureReference): Promise<boolean> {
+    this.logger.info(`Checkins secret existence for ref ${reference.substring(0, 4)}`);
+
+    const storage = await this.getStorage();
+
+    return storage.hasSecret(reference);
+  }
+
+  async hasAccessToSecret(reference: TSecureReference): Promise<boolean> {
+    try {
+      this.logger.info(`Checkins access to secret for ref ${reference.substring(0, 4)}`);
+
+      const storage = await this.getStorage();
+
+      // secret access will force biometrics check
+      // if biometrics are not valid secret access will throw an error
+      await storage.getSecret(reference);
+
+      return true;
+    } catch (e) {
+      if (e instanceof SecureStorageAccessCancelled) {
+        return false;
+      }
+
+      throw e;
+    }
   }
 
   /**

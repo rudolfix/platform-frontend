@@ -35,7 +35,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         state: EAuthState.AUTHORIZING,
       };
 
-    case authActions.signed.getType():
+    case authActions.unlockAccountDone.getType():
       return {
         ...initialState,
         state: EAuthState.AUTHORIZED,

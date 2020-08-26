@@ -1,6 +1,6 @@
 import { call, fork, neuTakeLatest, put, SagaGenerator } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
-import { invariant } from "@neufund/shared-utils";
+import { assertNever, invariant, StateNotAllowedError } from "@neufund/shared-utils";
 
 import { biometricsActions } from "modules/biometry/actions";
 import { privateSymbols } from "modules/biometry/lib/symbols";
@@ -13,27 +13,33 @@ function* handleBiometryPermissionResult(permissionResult: PermissionStatus) {
     biometry: privateSymbols.biometry,
   });
 
-  const supportedBiometrics = yield* call([biometry, "getSupportedBiometrics"]);
+  const availableBiometrics = yield* call([biometry, "getAvailableBiometrics"]);
 
-  invariant(supportedBiometrics !== BIOMETRY_NONE, "Biometry type should be known at this point");
+  invariant(availableBiometrics !== BIOMETRY_NONE, "Biometry type should be known at this point");
 
-  if (permissionResult === PERMISSION_RESULTS.BLOCKED) {
-    logger.info("No biometrics permissions");
+  switch (permissionResult) {
+    case PERMISSION_RESULTS.DENIED:
+      logger.info("Biometrics need to request for permissions");
 
-    yield put(biometricsActions.noBiometricsAccess(supportedBiometrics));
+      yield put(biometricsActions.biometricsAccessRequestRequired(availableBiometrics));
 
-    return;
+      break;
+    case PERMISSION_RESULTS.BLOCKED:
+      logger.info("No biometrics permissions");
+
+      yield put(biometricsActions.noBiometricsAccess(availableBiometrics));
+
+      break;
+    case PERMISSION_RESULTS.GRANTED:
+      yield put(biometricsActions.biometricsAccessAllowed(availableBiometrics));
+
+      break;
+    case PERMISSION_RESULTS.UNAVAILABLE:
+      throw new StateNotAllowedError("Biometry type should be known at this point");
+
+    default:
+      assertNever(permissionResult);
   }
-
-  if (permissionResult === PERMISSION_RESULTS.DENIED) {
-    logger.info("Biometrics need to request for permissions");
-
-    yield put(biometricsActions.biometricsAccessRequestRequired(supportedBiometrics));
-
-    return;
-  }
-
-  yield put(biometricsActions.biometricsAccessAllowed(supportedBiometrics));
 }
 
 export function* initializeBiometrics(): SagaGenerator<void> {
@@ -42,12 +48,10 @@ export function* initializeBiometrics(): SagaGenerator<void> {
     biometry: privateSymbols.biometry,
   });
 
-  const supportedBiometrics = yield* call([biometry, "getSupportedBiometrics"]);
+  const availableBiometrics = yield* call([biometry, "getAvailableBiometrics"]);
 
-  if (supportedBiometrics === BIOMETRY_NONE) {
+  if (availableBiometrics === BIOMETRY_NONE) {
     logger.info("No biometrics support");
-
-    const availableBiometrics = yield* call([biometry, "getAvailableBiometrics"]);
 
     yield put(biometricsActions.noBiometricsSupport(availableBiometrics));
 

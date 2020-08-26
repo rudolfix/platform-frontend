@@ -66,9 +66,9 @@ export class Biometry {
   }
 
   async getBiometryPermission(): Promise<PermissionStatus> {
-    const supportedBiometrics = await this.getSupportedBiometrics();
+    const availableBiometrics = await this.getAvailableBiometrics();
 
-    switch (supportedBiometrics) {
+    switch (availableBiometrics) {
       case EBiometryType.IOSFaceID:
         return this.permissions.check(PERMISSIONS.IOS.FACE_ID);
       case EBiometryType.IOSTouchID:
@@ -76,14 +76,14 @@ export class Biometry {
       case BIOMETRY_NONE:
         return PERMISSION_RESULTS.UNAVAILABLE;
       default:
-        assertNever(supportedBiometrics);
+        assertNever(availableBiometrics);
     }
   }
 
   async requestBiometryPermission(): Promise<PermissionStatus> {
-    const supportedBiometrics = await this.getSupportedBiometrics();
+    const availableBiometrics = await this.getAvailableBiometrics();
 
-    switch (supportedBiometrics) {
+    switch (availableBiometrics) {
       case EBiometryType.IOSFaceID:
         return this.permissions.request(PERMISSIONS.IOS.FACE_ID);
       case EBiometryType.IOSTouchID:
@@ -91,7 +91,7 @@ export class Biometry {
       case BIOMETRY_NONE:
         return PERMISSION_RESULTS.UNAVAILABLE;
       default:
-        assertNever(supportedBiometrics);
+        assertNever(availableBiometrics);
     }
   }
 }

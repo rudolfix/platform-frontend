@@ -190,7 +190,12 @@ export class KeychainSecureStorage extends BaseSecureStorage {
 
       switch (Platform.OS) {
         case EPlatform.IOS:
-          if (e.message === "User canceled the operation.") {
+          if (
+            // happens when you cancel FACE ID check
+            e.message === "User canceled the operation." ||
+            // happens when you don't allow FACE ID access permissions
+            e.message === "The user name or passphrase you entered is not correct."
+          ) {
             throw new SecureStorageAccessCancelled();
           }
           break;

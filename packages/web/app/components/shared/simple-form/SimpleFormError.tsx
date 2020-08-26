@@ -1,10 +1,10 @@
 import { TDataTestId } from "@neufund/shared-utils";
 import * as React from "react";
 
+import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
 
 import * as styles from "./SimpleFormError.module.scss";
-import { getMessageTranslation } from "../../translatedMessages/messages";
 
 type TFormErrorProps = {
   name: string;

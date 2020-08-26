@@ -33,7 +33,8 @@ import { isEqual } from "lodash/fp";
 import { EMimeType } from "../../components/shared/forms";
 import {
   EGovernanceErrorMessage,
-  EtoDocumentsMessage, ValidationMessage,
+  EtoDocumentsMessage,
+  ValidationMessage,
 } from "../../components/translatedMessages/messages";
 import {
   createMessage,
@@ -68,7 +69,8 @@ import {
   hasOnFormBlur,
   hasOnFormChange,
   hasOpenGovernanceUpdateModal,
-  hasPublishUpdate, hasRemoveFile,
+  hasPublishUpdate,
+  hasRemoveFile,
   hasUpdatePublishSuccess,
   hasUploadFile,
   modalStateIsOpen,
@@ -265,7 +267,10 @@ export const initialGovernanceUpdateModalState = {
       updateTitle: {
         validations: [
           minStringLengthValidation(1, createMessage(ValidationMessage.VALIDATION_FIELD_REQIRED)),
-          maxStringLengthValidation(60, createMessage(ValidationMessage.VALIDATION_STRING_TOO_LONG, 60)),
+          maxStringLengthValidation(
+            60,
+            createMessage(ValidationMessage.VALIDATION_STRING_TOO_LONG, 60),
+          ),
         ],
         id: EGovernanceUpdateModalFormElements.GOVERNANCE_UPDATE_TITLE_FORM_UPDATE_TITLE,
         value: "",
@@ -361,16 +366,15 @@ function* uploadFileUpdate(
 }
 function* removeFileUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
-  _updateData:{ removeFile: ReturnType<typeof actions.governance.removeFile> }
+      tabVisible: boolean;
+    },
+  _updateData: { removeFile: ReturnType<typeof actions.governance.removeFile> },
 ): Generator<any, TGovernanceViewState, any> {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
-
     const newDocumentUploadState = {
       documentUploadStatus: EProcessState.NOT_STARTED as const,
     };
-    const publishButtonDisabled = true
+    const publishButtonDisabled = true;
 
     return {
       ...oldState,
@@ -555,8 +559,8 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
 
         if (hasUploadFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
           newState = yield* call(uploadFileUpdate, oldState, update);
-        } else if(hasRemoveFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
-          newState = yield* call(removeFileUpdate, oldState, update)
+        } else if (hasRemoveFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
+          newState = yield* call(removeFileUpdate, oldState, update);
         } else if (
           hasOnFormChange(update) &&
           modalStateIsOpen(oldState.governanceUpdateModalState)

@@ -87,5 +87,5 @@ export const immutableDocumentName: { [key in EEtoDocumentType]: string } = {
 };
 
 export enum EResolutionDocumentType {
-  RESOLUTION_DOCUMENT= "resolution_document"
+  RESOLUTION_DOCUMENT = "resolution_document",
 }

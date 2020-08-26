@@ -705,15 +705,14 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
         />
       );
     case ValidationMessage.VALIDATION_FIELD_REQIRED:
-      return <FormattedMessage
-      id="form.field.error.required"
-      />
+      return <FormattedMessage id="form.field.error.required" />;
     case ValidationMessage.VALIDATION_STRING_TOO_LONG:
-      return <FormattedMessage
-        id="form.field.error.string.max"
-      values={{max: messageData as number}}
-      />
-
+      return (
+        <FormattedMessage
+          id="form.field.error.string.max"
+          values={{ max: messageData as number }}
+        />
+      );
 
     case MarketingEmailsMessage.UNSUBSCRIBE_ERROR:
       return <FormattedMessage id="settings.unsubscription.error" />;

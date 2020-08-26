@@ -25,6 +25,7 @@ const BottomSheetModal: React.FunctionComponent<TExternalProps> = ({
 }) => {
   const { height } = useWindowDimensions();
   const { bottom } = useSafeAreaInsets();
+
   useBackHandler(() => {
     if (isVisible) {
       onDismiss();

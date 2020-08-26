@@ -5,6 +5,7 @@ import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
 
 import { CriticalError } from "components/CriticalError";
+import { FaceIDPermissionModal } from "components/modals/FaceIDPermissionModal/FaceIDPermissionModal";
 import { SignerModal } from "components/modals/SignerModal/SignerModal";
 
 import { usePrevious } from "hooks/usePrevious";
@@ -42,6 +43,7 @@ const BiometricsGuards: React.FunctionComponent<Pick<
 >> = ({ authState, authWallet, biometricsState }) => {
   switch (biometricsState) {
     case EBiometricsState.ACCESS_ALLOWED:
+    case EBiometricsState.ACCESS_REQUEST_REQUIRED:
       return <AuthorizedGuards authState={authState} authWallet={authWallet} />;
     case EBiometricsState.NO_SUPPORT:
     case EBiometricsState.NO_ACCESS:
@@ -67,6 +69,7 @@ const AuthorizedGuards: React.FunctionComponent<Pick<TLayoutProps, "authState" |
           <AppAuthRouter />
 
           <SignerModal />
+          <FaceIDPermissionModal />
         </>
       );
     default:

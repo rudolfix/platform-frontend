@@ -6,6 +6,7 @@ import {
   check,
   PermissionStatus,
   Permission,
+  request,
 } from "react-native-permissions";
 
 /**
@@ -41,6 +42,16 @@ export class Permissions {
     const result = await check(permission);
 
     this.logger.info(`Permission ${permission.toString()} status is ${result}`);
+
+    return result;
+  }
+
+  async request(permission: Permission): Promise<PermissionStatus> {
+    this.logger.info(`Requesting permission ${permission.toString()}`);
+
+    const result = await request(permission);
+
+    this.logger.info(`Permission ${permission.toString()} status after request is ${result}`);
 
     return result;
   }

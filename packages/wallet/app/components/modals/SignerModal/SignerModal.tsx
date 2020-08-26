@@ -4,7 +4,7 @@ import { compose } from "recompose";
 
 import { BottomSheetModal } from "components/shared/modals/BottomSheetModal";
 
-import { ESignerUIState, setupSignerUIModule, signerUIModuleApi } from "modules/signer-ui/module";
+import { ESignerUIState, signerUIModuleApi } from "modules/signer-ui/module";
 import { ESignerType, TSignerSignPayload } from "modules/signer-ui/types";
 
 import { appConnect } from "store/utils";
@@ -54,7 +54,7 @@ const SignerModalLayout: React.FunctionComponent<TStateProps & TDispatchProps> =
 );
 
 const SignerModal = compose<TStateProps & TDispatchProps, UnknownObject>(
-  appConnect<TStateProps, TDispatchProps, UnknownObject, typeof setupSignerUIModule>({
+  appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       state: signerUIModuleApi.selectors.selectSignerUIState(state),
       request: signerUIModuleApi.selectors.selectSignerUIRequest(state),

@@ -1,7 +1,7 @@
 import { StateFromReducersMapObject } from "redux";
 import { createSelector } from "reselect";
 
-import { biometricsReducerMap } from "./reducer";
+import { biometricsReducerMap, EBiometricsState } from "./reducer";
 
 const selectBiometrics = (state: StateFromReducersMapObject<typeof biometricsReducerMap>) =>
   state.biometrics;
@@ -10,4 +10,9 @@ const selectBiometricsState = createSelector(selectBiometrics, biometrics => bio
 
 const selectBiometricsType = createSelector(selectBiometrics, biometrics => biometrics.type);
 
-export { selectBiometricsState, selectBiometricsType };
+const selectIsBiometryAccessRequestRequired = createSelector(
+  selectBiometrics,
+  biometrics => biometrics.state === EBiometricsState.ACCESS_REQUEST_REQUIRED,
+);
+
+export { selectBiometricsState, selectBiometricsType, selectIsBiometryAccessRequestRequired };

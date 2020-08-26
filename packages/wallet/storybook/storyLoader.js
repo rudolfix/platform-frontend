@@ -4,6 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+	require('../app/components/modals/FaceIDPermissionModal/FaceIDPermissionModal.stories');
 	require('../app/components/modals/SignerModal/SignerModal.stories');
 	require('../app/components/screens/HomeScreen/EtoCard.stories');
 	require('../app/components/screens/WalletScreen/Transactions/PendingTransaction.stories');
@@ -39,6 +40,7 @@ function loadStories() {
 }
 
 const stories = [
+	'../app/components/modals/FaceIDPermissionModal/FaceIDPermissionModal.stories',
 	'../app/components/modals/SignerModal/SignerModal.stories',
 	'../app/components/screens/HomeScreen/EtoCard.stories',
 	'../app/components/screens/WalletScreen/Transactions/PendingTransaction.stories',

@@ -22,6 +22,7 @@ const getInitialState = (state: EBiometricsState) => {
       return EAppRoutes.noBiometrics;
 
     case EBiometricsState.ACCESS_ALLOWED:
+    case EBiometricsState.ACCESS_REQUEST_REQUIRED:
     case EBiometricsState.UNKNOWN:
       throw new StateNotAllowedError("Biometrics should be initialized and with allowed access");
 

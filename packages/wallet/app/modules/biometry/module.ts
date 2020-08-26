@@ -1,5 +1,10 @@
-import { initializeBiometrics } from "modules/biometry/sagas";
-import { selectBiometricsState, selectBiometricsType } from "modules/biometry/selectors";
+import { biometricsActions } from "modules/biometry/actions";
+import { biometricsSagas, initializeBiometrics } from "modules/biometry/sagas";
+import {
+  selectBiometricsState,
+  selectBiometricsType,
+  selectIsBiometryAccessRequestRequired,
+} from "modules/biometry/selectors";
 
 import { setupBindings } from "./lib/bindings";
 import { biometricsReducerMap, EBiometricsState } from "./reducer";
@@ -10,17 +15,20 @@ const MODULE_ID = "wallet:biometry";
 const setupBiometryModule = () => ({
   id: MODULE_ID,
   libs: [setupBindings()],
+  sagas: [biometricsSagas],
   reducerMap: biometricsReducerMap,
   api: biometryModuleApi,
 });
 
 const biometryModuleApi = {
+  actions: biometricsActions,
   sagas: {
     initializeBiometrics,
   },
   selectors: {
     selectBiometricsState,
     selectBiometricsType,
+    selectIsBiometryAccessRequestRequired,
   },
 };
 

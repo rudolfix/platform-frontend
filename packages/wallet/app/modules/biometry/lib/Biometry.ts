@@ -6,7 +6,12 @@ import { getSupportedBiometryType } from "react-native-keychain";
 
 import { convertBiometrics } from "modules/biometry/lib/utils";
 import { EBiometryType, BIOMETRY_NONE } from "modules/biometry/types";
-import { permissionsModuleApi, PERMISSIONS, PERMISSION_RESULTS } from "modules/permissions/module";
+import {
+  permissionsModuleApi,
+  PERMISSIONS,
+  PermissionStatus,
+  PERMISSION_RESULTS,
+} from "modules/permissions/module";
 
 type TRNBiometrics = {
   isSensorAvailable: () => Promise<
@@ -60,21 +65,31 @@ export class Biometry {
     return biometryType;
   }
 
-  async hasBiometricsPermissions(): Promise<boolean> {
+  async getBiometryPermission(): Promise<PermissionStatus> {
     const supportedBiometrics = await this.getSupportedBiometrics();
 
     switch (supportedBiometrics) {
-      case EBiometryType.IOSFaceID: {
-        const permission = await this.permissions.check(PERMISSIONS.IOS.FACE_ID);
-
-        // when permission result is blocked
-        // then access was denied by user for the app
-        return permission !== PERMISSION_RESULTS.BLOCKED;
-      }
+      case EBiometryType.IOSFaceID:
+        return this.permissions.check(PERMISSIONS.IOS.FACE_ID);
       case EBiometryType.IOSTouchID:
-        return true;
+        return PERMISSION_RESULTS.GRANTED;
       case BIOMETRY_NONE:
-        return false;
+        return PERMISSION_RESULTS.UNAVAILABLE;
+      default:
+        assertNever(supportedBiometrics);
+    }
+  }
+
+  async requestBiometryPermission(): Promise<PermissionStatus> {
+    const supportedBiometrics = await this.getSupportedBiometrics();
+
+    switch (supportedBiometrics) {
+      case EBiometryType.IOSFaceID:
+        return this.permissions.request(PERMISSIONS.IOS.FACE_ID);
+      case EBiometryType.IOSTouchID:
+        return PERMISSION_RESULTS.GRANTED;
+      case BIOMETRY_NONE:
+        return PERMISSION_RESULTS.UNAVAILABLE;
       default:
         assertNever(supportedBiometrics);
     }

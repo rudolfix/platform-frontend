@@ -1,4 +1,8 @@
-import { RESULTS as PERMISSION_RESULTS, PERMISSIONS } from "react-native-permissions";
+import {
+  RESULTS as PERMISSION_RESULTS,
+  PERMISSIONS,
+  PermissionStatus,
+} from "react-native-permissions";
 
 import { setupBindings } from "./bindings";
 import { symbols } from "./symbols";
@@ -15,4 +19,5 @@ const permissionsModuleApi = {
   symbols,
 };
 
+export type { PermissionStatus };
 export { setupPermissionsModule, permissionsModuleApi, PERMISSION_RESULTS, PERMISSIONS };

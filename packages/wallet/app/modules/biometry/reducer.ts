@@ -7,6 +7,7 @@ export enum EBiometricsState {
   UNKNOWN = "unknown",
   NO_SUPPORT = "no_biometrics_support",
   NO_ACCESS = "no_biometrics_access",
+  ACCESS_REQUEST_REQUIRED = "access_request_required",
   ACCESS_ALLOWED = "access_allowed",
 }
 
@@ -37,6 +38,13 @@ const biometricsReducer: AppReducer<IBiometricsState, typeof biometricsActions> 
         ...initialState,
         type: action.payload.type,
         state: EBiometricsState.NO_ACCESS,
+      };
+
+    case biometricsActions.biometricsAccessRequestRequired.getType():
+      return {
+        ...initialState,
+        type: action.payload.type,
+        state: EBiometricsState.ACCESS_REQUEST_REQUIRED,
       };
 
     case biometricsActions.biometricsAccessAllowed.getType():

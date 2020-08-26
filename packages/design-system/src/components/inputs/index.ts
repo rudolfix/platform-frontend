@@ -7,7 +7,3 @@ export * from "./LabelBase";
 export * from "./Input";
 export * from "./utils";
 export * from "./VirtualizedSelect";
-export * from "./SimpleFormError"
-export * from "./SimpleFormLabel"
-export * from "./SimpleTextField"
-export * from "./SimpleTextInput"

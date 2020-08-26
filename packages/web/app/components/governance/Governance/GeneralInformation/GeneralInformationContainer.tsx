@@ -2,8 +2,10 @@ import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/desi
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TGovernanceUpdateModalState } from "../../../../modules/governance/reducer";
-import { Container } from "../../../layouts/Container";
+import {
+  modalStateIsOpen,
+  TGovernanceUpdateModalState,
+} from "../../../../modules/governance/types";
 import { Heading } from "../../../shared/Heading";
 import { GovernancePages } from "../constants";
 import { GovernancePageSelect } from "../GovernancePageSelect.unsafe";
@@ -37,6 +39,7 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
   children,
   onFormChange,
   onFormBlur,
+  onPageChange,
 }) => (
   <>
     <div className={styles.titleRow}>
@@ -44,42 +47,30 @@ export const GeneralInformationContainer: React.FunctionComponent<TGeneralInform
         <FormattedMessage id="governance.title.general-information" />
       </Heading>
 
-      <GovernancePageSelect value={GovernancePages[1].to} onChange={props.onPageChange} />
-
+      <GovernancePageSelect value={GovernancePages[1].to} onChange={onPageChange} />
       <Button
         iconPosition={EIconPosition.ICON_BEFORE}
         layout={EButtonLayout.PRIMARY}
         size={EButtonSize.NORMAL}
         svgIcon={plusIcon}
-        onClick={() => props.toggleGovernanceUpdateModal(true)}
+        onClick={openGovernanceUpdateModal}
         data-test-id="governance-add-new-update"
       >
-        Add new
+        <FormattedMessage id="governance.add-new-update" />
       </Button>
     </div>
-        <Button
-          iconPosition={EIconPosition.ICON_BEFORE}
-          layout={EButtonLayout.PRIMARY}
-          size={EButtonSize.NORMAL}
-          svgIcon={plusIcon}
-          onClick={openGovernanceUpdateModal}
-          data-test-id="governance-add-new-update"
-        >
-          <FormattedMessage id="governance.add-new-update" />
-        </Button>
-      </div>
-    </Container>
 
     {children}
-
-    <GovernanceUpdateModal
-      closeGovernanceUpdateModal={closeGovernanceUpdateModal}
-      uploadFile={uploadFile}
-      removeFile={removeFile}
-      publishUpdate={publishUpdate}
-      onFormChange={onFormChange}
-      onFormBlur={onFormBlur}
-      {...governanceUpdateModalState}
-    />
+    {modalStateIsOpen(governanceUpdateModalState) && (
+      <GovernanceUpdateModal
+        closeGovernanceUpdateModal={closeGovernanceUpdateModal}
+        uploadFile={uploadFile}
+        removeFile={removeFile}
+        publishUpdate={publishUpdate}
+        onFormChange={onFormChange}
+        onFormBlur={onFormBlur}
+        {...governanceUpdateModalState}
+      />
+    )}
   </>
 );

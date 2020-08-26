@@ -2,19 +2,28 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { mockedStore } from "../../../../../test/fixtures/mockedStore";
-import { TGovernanceViewState } from "../../../../modules/governance/reducer";
-import { EGovernanceAction, TResolutionData } from "../../../../modules/governance/types";
+import {
+  EGovernanceAction,
+  EModalState,
+  TGovernanceViewState,
+  TResolution,
+} from "../../../../modules/governance/types";
+import { EProcessState } from "../../../../utils/enums/processStates";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { Container, EColumnSpan } from "../../../layouts/Container";
 import { GeneralInformation } from "./GeneralInformation";
 
 const initialGovernanceState: TGovernanceViewState = {
   tabVisible: false,
-  resolutions: undefined,
-  showGovernanceUpdateModal: false,
+  processState: EProcessState.SUCCESS,
+  resolutions: [],
+  companyBrandName: "TestCompany GmbH",
+  governanceUpdateModalState: {
+    modalState: EModalState.CLOSED,
+  },
 };
 
-const files: TResolutionData[] = [
+const testResolutions: TResolution[] = [
   {
     action: EGovernanceAction.REGISTER_OFFER,
     id: "0x642f1abab6a3bf50045490997b35edc3578372c994e8111062968205c0cd1a59",
@@ -41,7 +50,7 @@ const files: TResolutionData[] = [
   },
 ];
 
-const withGovernance = (resolutions: TResolutionData[] | undefined) => {
+const withGovernance = (resolutions: TResolution[] | undefined) => {
   const governanceState = {
     governance: {
       ...initialGovernanceState,
@@ -58,4 +67,4 @@ const withGovernance = (resolutions: TResolutionData[] | undefined) => {
 storiesOf("Governance/GeneralInformation", module)
   .add("loading", () => withGovernance(undefined))
   .add("empty", () => withGovernance([]))
-  .add("with files", () => withGovernance(files));
+  .add("with files", () => withGovernance(testResolutions));

@@ -1,5 +1,5 @@
 import { TMessage } from "../../components/translatedMessages/utils";
-import { TFormData, TFormDataCommon, TFormFieldData } from "./reducer";
+import { TFormData, TFormDataCommon, TFormFieldData } from "./types";
 
 const resetCurrentFieldValidation = (field: TFormDataCommon) => {
   field.errors = [];

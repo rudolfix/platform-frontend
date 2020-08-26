@@ -2,6 +2,7 @@ import { FormikContextType } from "formik";
 import { CSSProperties, default as React, ReactElement } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { ToastOptions } from "react-toastify";
+import { TMessage } from "./components/translatedMessages/utils";
 
 // we dont use AllHtmlAttributes because they include many more fields which can collide easily with components props (like data)
 export type CommonHtmlProps = {
@@ -14,6 +15,21 @@ export type TTranslatedString = string | ReactElement<FormattedMessage.Props>;
 export type TDataTestId = {
   "data-test-id"?: string;
 };
+
+export type TFormDataCommon = {
+  errors: TMessage[];
+  isValid: boolean;
+  disabled: boolean;
+  validations: Function[];
+};
+
+export type TFormFieldData<T> = {
+  value: T;
+} & TFormDataCommon;
+
+export type TFormData<T, V> = {
+  fields: { [K in keyof T]: TFormFieldData<V> };
+} & TFormDataCommon;
 
 export type ToastWithTestData = ToastOptions & TDataTestId;
 

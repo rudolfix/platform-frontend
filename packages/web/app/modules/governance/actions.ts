@@ -1,7 +1,6 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { TDocumentUploadResponse, TGovernanceViewState } from "./reducer";
-import { TResolutionData } from "./types";
+import { TDocumentUploadResponse, TGovernanceViewState } from "./types";
 
 export const actions = {
   setGovernanceVisibility: createActionFactory(

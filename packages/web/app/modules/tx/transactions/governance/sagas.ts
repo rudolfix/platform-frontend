@@ -1,7 +1,5 @@
 import { call, put, select, takeLatest } from "@neufund/sagas";
-import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
 import { coreModuleApi, ETxType, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
-import cryptoRandomString from "crypto-random-string";
 
 import { symbols } from "../../../../di/symbols";
 import { IControllerGovernance } from "../../../../lib/contracts/IControllerGovernance";

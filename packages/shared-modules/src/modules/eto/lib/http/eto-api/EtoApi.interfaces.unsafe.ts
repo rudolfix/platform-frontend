@@ -29,7 +29,7 @@ import { NumberSchema, StringSchema } from "yup";
 import { currencyCodeSchema, dateSchema, percentage } from "../../../../../lib/yup/custom-schemas";
 import { TypeOfYTS, YupTS } from "../../../../../lib/yup/yup-ts.unsafe";
 import { IBookBuildingStats } from "../../../../bookbuilding/lib/http/eto-pledge-api/EtoPledgeApi.interfaces.unsafe";
-import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
+import { EResolutionDocumentType, TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 import { TEtoProduct } from "./EtoProductsApi.interfaces";
 
 /**
@@ -568,4 +568,27 @@ export const FUNDING_ROUNDS: Dictionary<string, EFundingRound | "NONE_KEY"> = {
   [EFundingRound.E_ROUND]: "Series E",
   [EFundingRound.PRE_IPO]: "Pre-IPO",
   [EFundingRound.PUBLIC]: "PUBLIC",
+};
+
+export enum EMimeType {
+  PDF = "application/pdf",
+  JPEG = "image/jpeg",
+  JPG = "image/jpg",
+  PNG = "image/png",
+  SVG = "image/svg+xml",
+  ANY_IMAGE_TYPE = "image/*",
+}
+
+export type TResolutionData = {
+  contract: string;
+  createdAt: string;
+  documentType: EResolutionDocumentType.RESOLUTION_DOCUMENT;
+  form: "document";
+  ipfsHash: string;
+  mimeType: EMimeType.PDF;
+  name: string;
+  owner: string;
+  resolutionId: string;
+  size: number;
+  title: string;
 };

@@ -56,15 +56,25 @@ import {
   setFormValue,
   validateForm,
 } from "./formUtils";
+import { selectGovernanceData, selectGovernanceVisible } from "./selectors";
 import {
+  documentUploadStatusIsSuccess,
+  EGovernanceControllerState,
   EModalState,
+  hasCloseGovernanceUpdateModal,
+  hasOnFormBlur,
+  hasOnFormChange,
+  hasOpenGovernanceUpdateModal,
+  hasPublishUpdate,
+  hasUpdatePublishSuccess,
+  hasUploadFile,
+  modalStateIsOpen,
   TDocumentUploadResponse,
-  TGovernanceUpdateModalStateOpen,
   TGovernanceViewState,
   TGovernanceViewSuccessState,
-} from "./reducer";
-import { selectGovernanceData, selectGovernanceVisible } from "./selectors";
-import { EGovernanceControllerState, TResolution, TResolutionData } from "./types";
+  TResolution,
+  TResolutionData,
+} from "./types";
 import { convertGovernanceActionNumberToEnum } from "./utils";
 
 type TGlobalDependencies = unknown;
@@ -80,53 +90,6 @@ type TUpdate =
   | { openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal> }
   | { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> }
   | { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> };
-
-const modalStateIsOpen = (
-  x: any,
-): x is { modalState: EModalState.OPEN } & TGovernanceUpdateModalStateOpen =>
-  x.modalState === EModalState.OPEN;
-
-const documentUploadStatusIsSuccess = (
-  x: any,
-): x is { documentUploadStatus: EProcessState.SUCCESS } =>
-  x.documentUploadStatus === EProcessState.SUCCESS;
-
-const hasUploadFile = (
-  x: any,
-): x is { uploadFile: ReturnType<typeof actions.governance.uploadFile> } =>
-  x.uploadFile !== undefined;
-
-const hasOnFormBlur = (
-  x: any,
-): x is { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> } =>
-  x.onFormBlur !== undefined;
-
-const hasOnFormChange = (
-  x: any,
-): x is { onFormChange: ReturnType<typeof actions.governance.onFormChange> } =>
-  x.onFormChange !== undefined;
-
-const hasCloseGovernanceUpdateModal = (
-  x: any,
-): x is {
-  closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal>;
-} => x.closeGovernanceUpdateModal !== undefined;
-
-const hasOpenGovernanceUpdateModal = (
-  x: any,
-): x is {
-  openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal>;
-} => x.openGovernanceUpdateModal !== undefined;
-
-const hasPublishUpdate = (
-  x: any,
-): x is { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> } =>
-  x.publishUpdate !== undefined;
-
-const hasUpdatePublishSuccess = (
-  x: any,
-): x is { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> } =>
-  x.updatePublishSuccess !== undefined;
 
 export function* selectGovernanceController(
   equityTokenContractAddress: string,
@@ -364,7 +327,7 @@ function* uploadFileUpdate(
     const newDocumentUploadState = {
       documentUploadStatus: EProcessState.SUCCESS,
       document: file,
-    };
+    } as const;
     const publishButtonDisabled = !(
       oldState.governanceUpdateModalState.governanceUpdateTitleForm.isValid &&
       newDocumentUploadState.documentUploadStatus === EProcessState.SUCCESS
@@ -488,6 +451,19 @@ function* publishUpdate(
       resolutionId,
       updateTitle,
     );
+    console.log("resolutionDocumentUploadResult",resolutionDocumentUploadResult)
+
+    // contract: "0xb56f3C996D8A2Cce8aFC21B24258145D0d5EAA25"
+    // createdAt: "2020-08-26T11:41:16.258566Z"
+    // documentType: "resolution_document"
+    // form: "document"
+    // ipfsHash: "QmYXyZj9PNx8wLzPAoitJjNmrY8QeVN2LSsAF9wrszdxw4"
+    // mimeType: "application/pdf"
+    // name: "RAVENOL_PSF-Y_Fluid.pdf"
+    // owner: "0x95137084d1b6F58D177523De894293913394aA12"
+    // resolutionId: "0xc492d0819ad3598aca28bf606eecc29a512d5d451f1a6ecd1ba246057cd21e6a"
+    // size: 111110
+    // title: "Another update title"
 
     yield put(
       actions.txTransactions.startPublishResolutionUpdate(
@@ -554,20 +530,14 @@ function* governanceGeneralInformationViewController(): Generator<any, void, any
           updatePublishSuccess: take(actions.governance.updatePublishSuccess),
         });
 
-        if (
-          hasUploadFile(update) &&
-          oldState.governanceUpdateModalState.modalState === EModalState.OPEN
-        ) {
+        if (hasUploadFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
           newState = yield* call(uploadFileUpdate, oldState, update);
         } else if (
           hasOnFormChange(update) &&
-          oldState.governanceUpdateModalState.modalState === EModalState.OPEN
+          modalStateIsOpen(oldState.governanceUpdateModalState)
         ) {
           newState = yield* call(onFormChangeUpdate, oldState, update);
-        } else if (
-          hasOnFormBlur(update) &&
-          oldState.governanceUpdateModalState.modalState === EModalState.OPEN
-        ) {
+        } else if (hasOnFormBlur(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
           newState = yield* call(onFormBlurUpdate, oldState, update);
         } else if (hasCloseGovernanceUpdateModal(update)) {
           newState = yield* call(closeGovernanceUpdateModalUpdate, oldState, update);
@@ -627,5 +597,5 @@ export function* governanceModuleSagas(): SagaGenerator<void> {
     actions.governance.loadGeneralInformationView,
     governanceGeneralInformationViewController,
   );
-  yield fork(neuTakeLatest, etoFlowActions.setEto, checkGovernanceVisibility);
+  yield fork(neuTakeLatest, etoFlowActions.setEto, checkGovernanceVisibility); //TODO this should be done differently. On routing level.
 }

@@ -10,7 +10,7 @@ import {
   TBookBuildingsStatsList,
   TEtoDataWithCompany,
   TPartialCompanyEtoData,
-  TPartialEtoSpecData,
+  TPartialEtoSpecData, TResolutionData,
 } from "./EtoApi.interfaces.unsafe";
 import { EResolutionDocumentType } from "./EtoFileApi.interfaces";
 
@@ -128,7 +128,7 @@ export class EtoApi {
     documentType:EResolutionDocumentType,
     title:string,
     resolutionId:string
-  ) {
+  ):Promise<TResolutionData> {
     const data = new FormData()
     data.append('file', file)
     data.append('document_data', JSON.stringify({
@@ -139,7 +139,7 @@ export class EtoApi {
       name: file.name,
       form: 'document'
     }))
-    const response = await this.authorizedHttpClient.post({
+    const response = await this.authorizedHttpClient.post<TResolutionData>({
       baseUrl: BASE_PATH,
       url: `${COMPANIES_ME_DATA_PATH}/documents`,
       formData: data,

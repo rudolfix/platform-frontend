@@ -5,8 +5,8 @@ export class DataUnavailableError extends Error {}
 export class StateNotAllowedError extends Error {}
 export class GovernanceNotSetUpError extends Error {}
 export class GovernanceIncompatibleError extends Error {
-  constructor(public etoId:string) {
-    super()
+  constructor(public etoId: string) {
+    super();
   }
 }
 export class DevError extends Error {

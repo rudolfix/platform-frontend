@@ -1,26 +1,17 @@
-import {
-  Button,
-  EButtonLayout,
-  EButtonSize,
-  EButtonWidth,
-  SimpleTextField,
-} from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, renderComponent, renderNothing } from "recompose";
 
 import {
-  EModalState,
   TDocumentUploadState,
-  TGovernanceUpdateModalState,
   TGovernanceUpdateModalStateOpen,
-} from "../../../../modules/governance/reducer";
+} from "../../../../modules/governance/types";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { Modal } from "../../../modals/Modal";
 import { EMimeType } from "../../../shared/forms";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { EUploadType, MultiFileUploadComponent } from "../../../shared/MultiFileUpload";
-import { shouldNeverHappen } from "../../../shared/NeverComponent";
+import { SimpleTextField } from "../../../shared/simple-form/SimpleTextField";
 
 import trashIcon from "../../../../assets/img/inline_icons/delete.svg";
 import styles from "./GovernanceUpdateModal.module.scss";
@@ -32,8 +23,7 @@ type TGovernanceUpdateModalExternalProps = {
   publishUpdate: () => void;
   onFormChange: (formId: string, fieldPath: string, newValue: string) => void;
   onFormBlur: (formId: string, fieldPath: string, newValue: string) => void;
-  onFormFocus: (formId: string, fieldPath: string, newValue: string) => void;
-  id: string;
+  onFormFocus?: (formId: string, fieldPath: string, newValue: string) => void;
 };
 
 type TGovernanceUpdateModalProps = TGovernanceUpdateModalExternalProps &
@@ -114,7 +104,7 @@ export const GovernanceUpdateModalDocumentDropzone: React.FunctionComponent<TGov
   }
 };
 
-export const GovernanceUpdateModalBase: React.FunctionComponent<TGovernanceUpdateModalProps> = ({
+export const GovernanceUpdateModal: React.FunctionComponent<TGovernanceUpdateModalProps> = ({
   publishUpdate,
   uploadFile,
   removeFile,
@@ -125,7 +115,6 @@ export const GovernanceUpdateModalBase: React.FunctionComponent<TGovernanceUpdat
   onFormChange,
   onFormBlur,
   onFormFocus = () => undefined,
-  id: formId,
 }) => (
   <Modal
     onClose={closeGovernanceUpdateModal}
@@ -138,20 +127,20 @@ export const GovernanceUpdateModalBase: React.FunctionComponent<TGovernanceUpdat
       <FormattedMessage id="governance.update-modal.title" />
     </h4>
     <form
-      id={formId}
+      id={governanceUpdateTitleForm.id}
       onChange={(e: React.ChangeEvent<HTMLFormElement>) => {
-        onFormChange(formId, e.target.name, e.target.value);
+        onFormChange(governanceUpdateTitleForm.id, e.target.name, e.target.value);
       }}
       onBlur={(e: React.ChangeEvent<HTMLFormElement>) => {
-        onFormBlur(formId, e.target.name, e.target.value);
+        onFormBlur(governanceUpdateTitleForm.id, e.target.name, e.target.value);
       }}
       onFocus={(e: React.FocusEvent<HTMLFormElement>) => {
-        onFormFocus(formId, e.target.name, e.target.value);
+        onFormFocus(governanceUpdateTitleForm.id, e.target.name, e.target.value);
       }}
     >
       <SimpleTextField
         path={governanceUpdateTitleForm.fields.updateTitle.id}
-        data={governanceUpdateTitleForm.fields.updateTitle}
+        data={governanceUpdateTitleForm.fields.updateTitle} //fixme convert TMessage to TTranslatedString
         labelText={<FormattedMessage id="form.label.title" />}
         data-test-id="governance-update-title"
       />
@@ -183,17 +172,3 @@ export const GovernanceUpdateModalBase: React.FunctionComponent<TGovernanceUpdat
     </div>
   </Modal>
 );
-
-export const GovernanceUpdateModal = compose<
-  TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps,
-  TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps
->(
-  branch<TGovernanceUpdateModalState>(
-    ({ modalState }) => modalState === EModalState.CLOSED,
-    renderNothing,
-  ),
-  branch<TGovernanceUpdateModalState & TGovernanceUpdateModalExternalProps>(
-    ({ modalState }) => modalState === EModalState.OPEN,
-    renderComponent(GovernanceUpdateModalBase),
-  ),
-)(shouldNeverHappen("GovernanceUpdateModal reached default branch"));

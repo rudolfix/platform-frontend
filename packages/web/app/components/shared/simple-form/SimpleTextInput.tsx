@@ -2,12 +2,12 @@ import { TDataTestId } from "@neufund/shared-utils";
 import * as React from "react";
 
 type TTextInputProps = {
-  name: string,
-  value: string,
-  placeholder: string,
-  isValid: boolean,
-  disabled: boolean,
-} & TDataTestId
+  name: string;
+  value: string;
+  placeholder: string;
+  isValid: boolean;
+  disabled: boolean;
+} & TDataTestId;
 
 export const SimpleTextInput: React.FunctionComponent<TTextInputProps> = ({
   name,
@@ -15,8 +15,8 @@ export const SimpleTextInput: React.FunctionComponent<TTextInputProps> = ({
   placeholder = "",
   isValid,
   disabled,
-  'data-test-id': dataTestId
-}) =>
+  "data-test-id": dataTestId,
+}) => (
   <input
     type="text"
     name={name}
@@ -26,6 +26,6 @@ export const SimpleTextInput: React.FunctionComponent<TTextInputProps> = ({
     disabled={disabled}
     placeholder={placeholder}
     data-test-id={dataTestId}
-
     onChange={() => undefined}
   />
+);

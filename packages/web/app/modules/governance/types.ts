@@ -107,16 +107,28 @@ export enum EGovernanceAction {
   CANCEL_RESOLUTION = 25,
 }
 
-export type TResolution = {
+export enum EResolutionState {
+  FULL = "full",
+  BASIC = "basic",
+}
+
+export type TBasicResolutionData = {
   action: EGovernanceAction;
   id: string;
   draft: boolean;
   startedAt: Date;
+};
+
+export type TFullResolutionData = {
   title?: string;
   documentName?: string;
   documentHash?: string;
   documentSize?: string;
-};
+} & TBasicResolutionData;
+
+export type TResolution =
+  | ({ resolutionState: EResolutionState.FULL } & TFullResolutionData)
+  | ({ resolutionState: EResolutionState.BASIC } & TBasicResolutionData);
 
 export type TResolutionUpdate = {
   title: string;
@@ -130,6 +142,11 @@ export const GovernanceUpdateSchema = Yup.object().shape({
 export const modalStateIsOpen = <T>(
   x: { modalState: EModalState } & T,
 ): x is { modalState: EModalState.OPEN } & T => x.modalState === EModalState.OPEN;
+
+export const documentUploadStateIsSuccess = (
+  x: any,
+): x is { documentUploadStatus: EProcessState.SUCCESS; document: File } =>
+  x.documentUploadStatus === EProcessState.SUCCESS;
 
 export const documentUploadStatusIsSuccess = (
   x: any,
@@ -172,3 +189,8 @@ export const hasUpdatePublishSuccess = (
   x: any,
 ): x is { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> } =>
   x.updatePublishSuccess !== undefined;
+
+export const resolutionIsFull = (
+  x: any,
+): x is { resolutionState: EResolutionState.FULL } & TFullResolutionData =>
+  x.resolutionState === EResolutionState.FULL;

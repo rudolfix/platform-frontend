@@ -1,5 +1,6 @@
 import { TMessage } from "../../components/translatedMessages/utils";
-import { TFormData, TFormDataCommon, TFormFieldData } from "./types";
+import { TFormData, TFormFieldData } from "../../types";
+import { TFormDataCommon } from "./types";
 
 const resetCurrentFieldValidation = (field: TFormDataCommon) => {
   field.errors = [];
@@ -61,7 +62,7 @@ export const validateForm = <
 
 export const minStringLengthValidation = <F extends object, V extends { value: string }>(
   minLength: number,
-  errorMessage: string,
+  errorMessage: TMessage,
 ) => (_form: F, field: V) => {
   if (isFormField(field) && field.value.trim().length < minLength) {
     return errorMessage;
@@ -70,9 +71,9 @@ export const minStringLengthValidation = <F extends object, V extends { value: s
   }
 };
 
-export const maxStringLenghValidation = <F extends object, V extends { value: string }>(
+export const maxStringLengthValidation = <F extends object, V extends { value: string }>(
   maxLength: number,
-  errorMessage: string,
+  errorMessage: TMessage,
 ) => (_form: F, field: V) => {
   if (isFormField(field) && field.value.trim().length > maxLength) {
     return errorMessage;
@@ -106,6 +107,7 @@ export const setValue = <T, V>(
   if (isFormField(form) && rest.length === 0) {
     return {
       ...form,
+      showErrors: true,
       value,
     };
   } else if (isForm(form) && isFormField(form.fields[pathSegment as keyof T])) {

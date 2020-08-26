@@ -258,6 +258,8 @@ export enum ValidationMessage {
   VALIDATION_PERCENTAGE_MIN = "validationPercentageMin",
   VALIDATION_CURRENCY_CODE = "validationCurrencyCode",
   VALIDATION_FIELDS_SHOULD_MATCH = "validationFieldsShouldMatch",
+  VALIDATION_FIELD_REQIRED = "validationFieldReqired",
+  VALIDATION_STRING_TOO_LONG = "validationStringTooLong",
 }
 
 export enum MarketingEmailsMessage {
@@ -702,6 +704,16 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
           values={{ fieldNames: formatMatchingFieldNames(messageData as string[]) }}
         />
       );
+    case ValidationMessage.VALIDATION_FIELD_REQIRED:
+      return <FormattedMessage
+      id="form.field.error.required"
+      />
+    case ValidationMessage.VALIDATION_STRING_TOO_LONG:
+      return <FormattedMessage
+        id="form.field.error.string.max"
+      values={{max: messageData as number}}
+      />
+
 
     case MarketingEmailsMessage.UNSUBSCRIBE_ERROR:
       return <FormattedMessage id="settings.unsubscription.error" />;

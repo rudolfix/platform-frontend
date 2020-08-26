@@ -19,8 +19,10 @@ export type TDataTestId = {
 export type TFormDataCommon = {
   errors: TMessage[];
   isValid: boolean;
+  showErrors: boolean;
   disabled: boolean;
   validations: Function[];
+  id: string;
 };
 
 export type TFormFieldData<T> = {

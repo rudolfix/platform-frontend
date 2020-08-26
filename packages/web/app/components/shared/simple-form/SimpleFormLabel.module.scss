@@ -1,7 +1,5 @@
 .label {
+  @include nds-input-label;
 
-}
-
-.label-disabled {
-
+  color: $neu-charcoal-grey;
 }

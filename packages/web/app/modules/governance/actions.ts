@@ -1,3 +1,4 @@
+import { TResolutionData } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 
 import { TDocumentUploadResponse, TGovernanceViewState } from "./types";

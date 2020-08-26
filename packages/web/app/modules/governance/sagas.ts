@@ -17,6 +17,7 @@ import {
   etoModuleApi,
   neuGetBindings,
   TEtoSpecsData,
+  TResolutionData,
 } from "@neufund/shared-modules";
 import {
   DataUnavailableError,
@@ -32,7 +33,7 @@ import { isEqual } from "lodash/fp";
 import { EMimeType } from "../../components/shared/forms";
 import {
   EGovernanceErrorMessage,
-  EtoDocumentsMessage,
+  EtoDocumentsMessage, ValidationMessage,
 } from "../../components/translatedMessages/messages";
 import {
   createMessage,
@@ -40,7 +41,7 @@ import {
 } from "../../components/translatedMessages/utils";
 import { symbols } from "../../di/symbols";
 import { IControllerGovernance } from "../../lib/contracts/IControllerGovernance";
-import { ITokenControllerHook } from "../../lib/contracts/ITokenControllerHook";
+import { IEquityToken } from "../../lib/contracts/IEquityToken";
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
@@ -51,16 +52,18 @@ import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuTakeLatest } from "../sagasUtils";
 import { GOVERNANCE_CONTRACT_ID } from "./constants";
 import {
-  maxStringLenghValidation,
+  maxStringLengthValidation,
   minStringLengthValidation,
   setFormValue,
   validateForm,
 } from "./formUtils";
 import { selectGovernanceData, selectGovernanceVisible } from "./selectors";
 import {
+  documentUploadStateIsSuccess,
   documentUploadStatusIsSuccess,
   EGovernanceControllerState,
   EModalState,
+  EResolutionState,
   hasCloseGovernanceUpdateModal,
   hasOnFormBlur,
   hasOnFormChange,
@@ -73,7 +76,6 @@ import {
   TGovernanceViewState,
   TGovernanceViewSuccessState,
   TResolution,
-  TResolutionData,
 } from "./types";
 import { convertGovernanceActionNumberToEnum } from "./utils";
 
@@ -98,7 +100,7 @@ export function* selectGovernanceController(
     contractsService: symbols.contractsService,
   });
 
-  const tokenControllerHook: ITokenControllerHook = yield contractsService.getTokenControllerHook(
+  const tokenControllerHook: IEquityToken = yield contractsService.getEquityToken(
     equityTokenContractAddress,
   );
   const tokenController = yield tokenControllerHook.tokenController;
@@ -160,17 +162,27 @@ function* loadResolutionForId(
     ([, document]) => (document as { resolutionId: string }).resolutionId === id,
   ); //TODO typecasting because typings for etoIssuer are incorrect!
   const resolutionData = foundData && (foundData[1] as TResolutionData);
-
-  return {
-    action: convertGovernanceActionNumberToEnum(action),
-    id,
-    draft: false,
-    startedAt: new Date(secondsToMs(startedAt.toNumber())),
-    title: resolutionData?.title,
-    documentName: resolutionData?.name,
-    documentHash: resolutionData?.ipfsHash,
-    documentSize: resolutionData?.size.toString(),
-  };
+  if (resolutionData) {
+    return {
+      resolutionState: EResolutionState.FULL as const,
+      action: convertGovernanceActionNumberToEnum(action),
+      id,
+      draft: false,
+      startedAt: new Date(secondsToMs(startedAt.toNumber())),
+      title: resolutionData.title,
+      documentName: resolutionData.name,
+      documentHash: resolutionData.ipfsHash,
+      documentSize: resolutionData.size.toString(),
+    };
+  } else {
+    return {
+      resolutionState: EResolutionState.BASIC as const,
+      action: convertGovernanceActionNumberToEnum(action),
+      id,
+      draft: false,
+      startedAt: new Date(secondsToMs(startedAt.toNumber())),
+    };
+  }
 }
 
 function* loadResolutionData(
@@ -247,17 +259,19 @@ export const initialGovernanceUpdateModalState = {
     validations: [],
     errors: [],
     isValid: false,
+    showErrors: false,
     disabled: false,
     fields: {
       updateTitle: {
         validations: [
-          minStringLengthValidation(1, "string too short"),
-          maxStringLenghValidation(60, "string too long"),
+          minStringLengthValidation(1, createMessage(ValidationMessage.VALIDATION_FIELD_REQIRED)),
+          maxStringLengthValidation(60, createMessage(ValidationMessage.VALIDATION_STRING_TOO_LONG, 60)),
         ],
         id: EGovernanceUpdateModalFormElements.GOVERNANCE_UPDATE_TITLE_FORM_UPDATE_TITLE,
         value: "",
         errors: [],
         isValid: false,
+        showErrors: false,
         disabled: false,
       },
     },
@@ -352,21 +366,8 @@ function* onFormChangeUpdate(
     },
   updateData: { onFormChange: ReturnType<typeof actions.governance.onFormChange> },
 ): Generator<any, TGovernanceViewState, any> {
-  if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
-    const { fieldPath, newValue } = updateData.onFormChange.payload;
-    const oldForm = oldState.governanceUpdateModalState.governanceUpdateTitleForm;
-    const newForm = setFormValue(oldForm, fieldPath, newValue);
-
-    return {
-      ...oldState,
-      governanceUpdateModalState: {
-        ...oldState.governanceUpdateModalState,
-        governanceUpdateTitleForm: newForm,
-      },
-    };
-  } else {
-    return oldState;
-  }
+  const { fieldPath, newValue } = updateData.onFormChange.payload;
+  return yield call(onFormUpdate, oldState, fieldPath, newValue);
 }
 
 function* onFormBlurUpdate(
@@ -375,8 +376,18 @@ function* onFormBlurUpdate(
     },
   updateData: { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> },
 ): Generator<any, TGovernanceViewState, any> {
+  const { fieldPath, newValue } = updateData.onFormBlur.payload;
+  return yield call(onFormUpdate, oldState, fieldPath, newValue);
+}
+
+function onFormUpdate(
+  oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
+      tabVisible: boolean;
+    },
+  fieldPath: string,
+  newValue: string,
+): TGovernanceViewState {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
-    const { fieldPath, newValue } = updateData.onFormBlur.payload;
     const newForm = setFormValue(
       oldState.governanceUpdateModalState.governanceUpdateTitleForm,
       fieldPath,
@@ -451,19 +462,6 @@ function* publishUpdate(
       resolutionId,
       updateTitle,
     );
-    console.log("resolutionDocumentUploadResult",resolutionDocumentUploadResult)
-
-    // contract: "0xb56f3C996D8A2Cce8aFC21B24258145D0d5EAA25"
-    // createdAt: "2020-08-26T11:41:16.258566Z"
-    // documentType: "resolution_document"
-    // form: "document"
-    // ipfsHash: "QmYXyZj9PNx8wLzPAoitJjNmrY8QeVN2LSsAF9wrszdxw4"
-    // mimeType: "application/pdf"
-    // name: "RAVENOL_PSF-Y_Fluid.pdf"
-    // owner: "0x95137084d1b6F58D177523De894293913394aA12"
-    // resolutionId: "0xc492d0819ad3598aca28bf606eecc29a512d5d451f1a6ecd1ba246057cd21e6a"
-    // size: 111110
-    // title: "Another update title"
 
     yield put(
       actions.txTransactions.startPublishResolutionUpdate(
@@ -494,7 +492,7 @@ function* updatePublishSuccessUpdate(
   };
 }
 
-function* governanceGeneralInformationViewController(): Generator<any, void, any> {
+export function* governanceGeneralInformationViewController(): Generator<any, void, any> {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     apiEtoService: etoModuleApi.symbols.etoApi,
@@ -546,8 +544,7 @@ function* governanceGeneralInformationViewController(): Generator<any, void, any
         } else if (
           hasPublishUpdate(update) &&
           modalStateIsOpen(oldState.governanceUpdateModalState) &&
-          oldState.governanceUpdateModalState.documentUploadState.documentUploadStatus ===
-            EProcessState.SUCCESS
+          documentUploadStateIsSuccess(oldState.governanceUpdateModalState.documentUploadState)
         ) {
           newState = yield* call(publishUpdate, oldState, update);
         } else if (hasUpdatePublishSuccess(update)) {

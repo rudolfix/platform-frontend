@@ -10,10 +10,8 @@ import { IControllerGovernance } from "../../lib/contracts/IControllerGovernance
 import { ITokenControllerHook } from "../../lib/contracts/ITokenControllerHook";
 import { ContractsService } from "../../lib/web3/ContractsService";
 import { actions as globalActions } from "../actions";
-import { actions } from "./actions";
 import { GOVERNANCE_CONTRACT_ID } from "./constants";
-import { loadGeneralInformationView } from "./sagas";
-import { EGovernanceAction } from "./types";
+import { governanceGeneralInformationViewController } from "./sagas";
 
 const TOKEN_CONTROLLER = "0xb56f3c996d8a2cce8afc21b24258145d0d5eaa25";
 
@@ -40,7 +38,7 @@ describe("Governance > General information sagas", () => {
       .bind<TLibSymbolType<typeof symbols.contractsService>>(symbols.contractsService)
       .toConstantValue(contractsService);
 
-    await expectSaga(loadGeneralInformationView)
+    await expectSaga(governanceGeneralInformationViewController)
       .withState({
         governance: {
           tabVisible: false,
@@ -69,7 +67,7 @@ describe("Governance > General information sagas", () => {
       .bind<TLibSymbolType<typeof symbols.contractsService>>(symbols.contractsService)
       .toConstantValue(contractsService);
 
-    await expectSaga(loadGeneralInformationView)
+    await expectSaga(governanceGeneralInformationViewController)
       .withState({
         governance: {
           tabVisible: true,
@@ -113,7 +111,7 @@ describe("Governance > General information sagas", () => {
       .bind<TLibSymbolType<typeof symbols.contractsService>>(symbols.contractsService)
       .toConstantValue(contractsService);
 
-    await expectSaga(loadGeneralInformationView)
+    await expectSaga(governanceGeneralInformationViewController)
       .withState({
         governance: {
           tabVisible: true,
@@ -122,22 +120,6 @@ describe("Governance > General information sagas", () => {
           eto: testEto,
         },
       })
-      .put(
-        actions.setGovernanceResolutions([
-          {
-            action: EGovernanceAction.COMPANY_NONE,
-            id: "0x642f1abab6a3bf50045490997b35edc3578372c994e8111062968205c0cd1a59",
-            draft: false,
-            startedAt: new Date("2020-04-18T14:17:48.000Z"),
-          },
-          {
-            action: EGovernanceAction.COMPANY_NONE,
-            id: "0x57cd9bf3f51b148c4b1e353719485a92f81ffcc3824a9b628446b0f4e4f01a6b",
-            draft: false,
-            startedAt: new Date("2020-04-18T14:17:48.000Z"),
-          },
-        ]),
-      )
       .run();
   });
 });

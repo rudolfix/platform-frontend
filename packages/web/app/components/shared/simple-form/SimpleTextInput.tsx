@@ -1,6 +1,8 @@
 import { TDataTestId } from "@neufund/shared-utils";
 import * as React from "react";
 
+import * as styles from "./SimpleTextInput.module.scss";
+
 type TTextInputProps = {
   name: string;
   value: string;
@@ -18,6 +20,7 @@ export const SimpleTextInput: React.FunctionComponent<TTextInputProps> = ({
   "data-test-id": dataTestId,
 }) => (
   <input
+    className={styles.textInput}
     type="text"
     name={name}
     value={value}

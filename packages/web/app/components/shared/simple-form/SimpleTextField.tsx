@@ -14,23 +14,24 @@ type TTextFieldProps = {
 } & TDataTestId;
 
 export const SimpleTextField: React.FunctionComponent<TTextFieldProps> = ({
-  data: { value, errors, isValid, disabled },
+  data: { value, errors, isValid, disabled, showErrors },
   path,
   "data-test-id": dataTestId,
   placeholder = "",
   labelText,
 }) => (
   <div>
-    {labelText && <SimpleFormLabel name={path} labelText={labelText} disabled={disabled} />}
+    {labelText && <SimpleFormLabel name={path} labelText={labelText} />}
     <SimpleTextInput
       name={path}
       value={value}
       placeholder={placeholder}
-      isValid={isValid}
+      isValid={!showErrors || isValid}
       disabled={disabled}
       data-test-id={dataTestId}
     />
     {!!errors.length &&
+      showErrors &&
       errors.map((error, i) => (
         <SimpleFormError key={i} name={path} error={error} data-test-id={dataTestId} />
       ))}

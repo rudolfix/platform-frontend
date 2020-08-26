@@ -140,17 +140,13 @@ export function* takeLatestUntil<
  *  Awaits an Action with specific payload.
  *  You can pass only a part of the payload that you want to match.
  */
-export function* neuTakeOnly<T extends ActionPattern>(
+export function* takeOnly<T extends ActionPattern>(
   type: T,
   payload: Partial<TActionPayload<T>>,
-): any {
+): SagaGenerator<T> {
   while (true) {
-    const takenAction: any = yield take(type);
-    if (
-      // TODO: Update prettier to allow `.?` operator
-      (takenAction && takenAction.payload === undefined) ||
-      isMatch(payload as object, takenAction.payload as object)
-    ) {
+    const takenAction = yield* take(type);
+    if (takenAction?.payload === undefined || isMatch(payload, takenAction.payload)) {
       return takenAction;
     }
   }

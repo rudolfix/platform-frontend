@@ -1,15 +1,16 @@
 import { fork, put, select, take } from "@neufund/sagas";
 import {
   etoModuleApi,
+  ETxType,
   investorPortfolioModuleApi,
   TEtoWithCompanyAndContractReadonly,
   walletApi,
 } from "@neufund/shared-modules";
-import { compareBigNumbers } from "@neufund/shared-utils";
+import { compareBigNumbers, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { EInvestmentType } from "../../../investment-flow/reducer";
@@ -24,6 +25,7 @@ import {
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxGasCostEthUlps } from "../../sender/selectors";
 import { TAdditionalDataByType } from "../../types";
@@ -73,7 +75,7 @@ export function* generateInvestmentTransaction(
     investAmountUlps,
   }: { investmentType: EInvestmentType; etoId: string; investAmountUlps: BigNumber },
 ): Generator<any, any, any> {
-  const from: string = yield select(selectEthereumAddress);
+  const from: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPrice: string = yield select(selectStandardGasPriceWithOverHead);
   let data;
   let to;
@@ -110,7 +112,7 @@ export function* generateInvestmentTransaction(
       break;
   }
   const transaction: Partial<ITxData> = {
-    to,
+    to: makeEthereumAddressChecksummed(to),
     from,
     data,
     value: value || "0",

@@ -54,6 +54,13 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         wallet: action.payload.metadata,
       };
 
+    case authActions.lockAccount.getType():
+      return {
+        ...initialState,
+        state: EAuthState.NOT_AUTHORIZED,
+        wallet: state.wallet,
+      };
+
     case authActions.failedToUnlockAccount.getType():
       return {
         ...initialState,

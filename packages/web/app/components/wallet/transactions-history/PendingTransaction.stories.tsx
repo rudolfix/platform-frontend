@@ -5,9 +5,11 @@ import * as React from "react";
 
 import { TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
 import { generalPendingTxFixture } from "../../../modules/tx/utils";
+import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { PendingTransaction } from "./PendingTransaction";
 
-const fromAddress = "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8989";
+const fromAddress = makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8989");
+
 storiesOf("Molecules|PendingTransaction", module)
   .add("Withdraw", () => {
     const transaction: TxPendingWithMetadata = generalPendingTxFixture(fromAddress);

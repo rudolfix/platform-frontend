@@ -8,12 +8,16 @@ import { actions } from "../../../modules/actions";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { shareholderResolutionsVotingViewModuleApi } from "../../../modules/shareholder-resolutions-voting-view/module";
 import { TProposal } from "../../../modules/shareholder-resolutions-voting/module";
+import {
+  IShareCapitalBreakdown,
+  ITokenHolderBreakdown,
+} from "../../../modules/shareholder-resolutions-voting/types";
 import { appConnect } from "../../../store";
 import { withMetaTags } from "../../../utils/withMetaTags";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { ProposalDetails } from "./ProposalDetails";
-import { ProposalVotingBreakdown } from "./voting-details/ProposalVotingBreakdown";
+import { ProposalVotingDetails } from "./voting-details/ProposalVotingDetails";
 
 import * as styles from "./ProposalShared.module.scss";
 
@@ -23,6 +27,8 @@ interface IStateProps {
   proposal: TProposal | undefined;
   eto: TEtoWithCompanyAndContract | undefined;
   pendingDownloads: Record<string, boolean | undefined>;
+  nomineeShareBreakdown: ITokenHolderBreakdown | undefined;
+  shareCapitalBreakdown: IShareCapitalBreakdown | undefined;
 }
 
 interface IDispatchProps {
@@ -37,6 +43,8 @@ type IProposalsProps = IStateProps & IDispatchProps;
 
 const ProposalIssuerLayout: React.FunctionComponent<IProposalsProps> = ({
   proposal,
+  nomineeShareBreakdown,
+  shareCapitalBreakdown,
   eto,
   downloadDocument,
   pendingDownloads,
@@ -61,7 +69,14 @@ const ProposalIssuerLayout: React.FunctionComponent<IProposalsProps> = ({
         columnSpan={EColumnSpan.ONE_COL}
         type={EContainerType.GRID}
       >
-        <ProposalVotingBreakdown proposal={proposal} eto={eto} />
+        <ProposalVotingDetails
+          proposal={proposal}
+          nomineeShareBreakdown={nomineeShareBreakdown}
+          shareCapitalBreakdown={shareCapitalBreakdown}
+          downloadDocument={downloadDocument}
+          pendingDownloads={pendingDownloads}
+          eto={eto}
+        />
       </Container>
     </WidgetGrid>
   );
@@ -73,6 +88,12 @@ export const ProposalIssuer = compose<IStateProps & IDispatchProps, TExternalPro
       proposal: shareholderResolutionsVotingViewModuleApi.selectors.selectProposal(state),
       eto: shareholderResolutionsVotingViewModuleApi.selectors.selectProposalEto(state),
       pendingDownloads: selectPendingDownloads(state),
+      nomineeShareBreakdown: shareholderResolutionsVotingViewModuleApi.selectors.selectNomineeBreakdownStats(
+        state,
+      ),
+      shareCapitalBreakdown: shareholderResolutionsVotingViewModuleApi.selectors.selectShareCapitalBreakdownStats(
+        state,
+      ),
     }),
     dispatchToProps: dispatch => ({
       downloadDocument: (

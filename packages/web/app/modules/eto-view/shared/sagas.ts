@@ -1,4 +1,4 @@
-import { call, fork, neuFork, neuTakeOnly, put, race, select } from "@neufund/sagas";
+import { call, fork, neuFork, put, race, select, takeOnly } from "@neufund/sagas";
 import {
   bookbuildingModuleApi,
   EEtoState,
@@ -222,7 +222,7 @@ function* watchSetEtoViewAction(
   const previewCode = action.payload.etoData.eto.previewCode;
   yield race({
     wait: neuFork(etoViewDelay, previewCode),
-    cancel: neuTakeOnly(actions.etoView.setEtoViewData, { etoData: { eto: { previewCode } } }),
+    cancel: takeOnly(actions.etoView.setEtoViewData, { etoData: { eto: { previewCode } } }),
   });
 }
 

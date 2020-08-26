@@ -34,7 +34,13 @@ const date = moment.utc(dummyNow).subtract(1, "day");
 
 const props = {
   txTimestamp: date.valueOf(),
-  additionalData: { tokensDisbursals: [ethTokenDisbursal, nEurTokenDisbursal] },
+  additionalData: {
+    tokensDisbursals: [ethTokenDisbursal, nEurTokenDisbursal],
+    gasCostEth: "123444",
+    gasCostEuro: "27",
+    totalPayoutEuro: "984609705509027210028",
+    payoutLowerThanMinimum: false,
+  },
   goToWallet: action("View Wallet"),
 };
 

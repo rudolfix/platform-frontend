@@ -15,11 +15,14 @@ import {
   calculateTarget,
 } from "./lib/http/eto-api/EtoUtils";
 import {
+  EEtoStateColor,
   EETOStateOnChain,
+  EEtoStateUIName,
   EEtoSubState,
   IEtoTotalInvestment,
   TEtoContractData,
   TEtoStartOfStates,
+  TEtoWithCompanyAndContract,
   TEtoWithCompanyAndContractReadonly,
   TEtoWithContract,
 } from "./types";
@@ -272,3 +275,87 @@ export const etoIsInOfferState = (onChainState: EETOStateOnChain | undefined) =>
     EETOStateOnChain.Public,
     EETOStateOnChain.Signing,
   ].some(offerState => offerState === onChainState);
+
+/**
+ * Narrows ETO state to the most specific one.
+ * For .e.g if ETO is on chain then `eto.contract.timedState` is returned over `eto.state`.
+ */
+export const getEtoCurrentState = (
+  eto: TEtoWithCompanyAndContractReadonly,
+): EETOStateOnChain | EEtoState | EEtoSubState => {
+  if (eto.subState) {
+    return eto.subState;
+  } else if (isOnChain(eto)) {
+    return eto.contract.timedState;
+  } else {
+    return eto.state;
+  }
+};
+
+const stateToColor: Record<EEtoState | EETOStateOnChain | EEtoSubState, EEtoStateColor> = {
+  [EEtoState.PREVIEW]: EEtoStateColor.BLUE,
+  [EEtoState.PENDING]: EEtoStateColor.ORANGE,
+  [EEtoState.LISTED]: EEtoStateColor.BLUE,
+  [EEtoState.ON_CHAIN]: EEtoStateColor.GREEN,
+  [EEtoState.PROSPECTUS_APPROVED]: EEtoStateColor.GREEN,
+  [EEtoState.SUSPENDED]: EEtoStateColor.RED,
+  // eto on chain states
+  [EETOStateOnChain.Setup]: EEtoStateColor.BLUE,
+  [EETOStateOnChain.Whitelist]: EEtoStateColor.GREEN,
+  [EETOStateOnChain.Public]: EEtoStateColor.GREEN,
+  [EETOStateOnChain.Claim]: EEtoStateColor.GREEN,
+  [EETOStateOnChain.Payout]: EEtoStateColor.GREEN,
+  [EETOStateOnChain.Refund]: EEtoStateColor.RED,
+  [EETOStateOnChain.Signing]: EEtoStateColor.BLUE,
+
+  // eto sub states
+  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: EEtoStateColor.ORANGE,
+  [EEtoSubState.CAMPAIGNING]: EEtoStateColor.GREEN,
+  [EEtoSubState.WHITELISTING]: EEtoStateColor.GREEN,
+  [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: EEtoStateColor.GREEN,
+  [EEtoSubState.COUNTDOWN_TO_PRESALE]: EEtoStateColor.GREEN,
+};
+
+/**
+ * For a given eto returns the proper eto state color
+ */
+export const getEtoStateColor = (eto: TEtoWithCompanyAndContract) => {
+  const state = getEtoCurrentState(eto);
+
+  return stateToColor[state];
+};
+
+export const stateToUIName: Record<EEtoState | EETOStateOnChain | EEtoSubState, EEtoStateUIName> = {
+  [EEtoState.PREVIEW]: EEtoStateUIName.DRAFT,
+  [EEtoState.PENDING]: EEtoStateUIName.PENDING,
+  [EEtoState.LISTED]: EEtoStateUIName.CAMPAIGNING,
+  [EEtoState.PROSPECTUS_APPROVED]: EEtoStateUIName.CAMPAIGNING,
+  [EEtoState.ON_CHAIN]: EEtoStateUIName.ON_CHAIN,
+  [EEtoState.SUSPENDED]: EEtoStateUIName.SUSPENDED,
+
+  // on chain state mappings
+  [EETOStateOnChain.Setup]: EEtoStateUIName.CAMPAIGNING,
+  [EETOStateOnChain.Whitelist]: EEtoStateUIName.PRESALE,
+  [EETOStateOnChain.Public]: EEtoStateUIName.PUBLIC_SALE,
+  [EETOStateOnChain.Signing]: EEtoStateUIName.IN_SIGNING,
+  [EETOStateOnChain.Claim]: EEtoStateUIName.CLAIM,
+  [EETOStateOnChain.Payout]: EEtoStateUIName.PAYOUT,
+  [EETOStateOnChain.Refund]: EEtoStateUIName.REFUND,
+
+  // on chain sub state mappings
+  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: EEtoStateUIName.PENDING,
+  [EEtoSubState.CAMPAIGNING]: EEtoStateUIName.CAMPAIGNING,
+  [EEtoSubState.WHITELISTING]: EEtoStateUIName.WHITELISTING,
+  [EEtoSubState.COUNTDOWN_TO_PRESALE]: EEtoStateUIName.CAMPAIGNING,
+  [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: EEtoStateUIName.CAMPAIGNING,
+};
+
+/**
+ * Get an UI name for a given eto.
+ * @note This is a generic name of a given eto if you need an issuer specific one use `getEtoStateIssuerUIName`.
+ */
+export const getEtoStateUIName = (eto: TEtoWithCompanyAndContract) => {
+  const state = getEtoCurrentState(eto);
+
+  return stateToUIName[state];
+};

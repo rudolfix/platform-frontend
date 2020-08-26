@@ -1,7 +1,7 @@
+import { ETxType } from "@neufund/shared-modules";
 import { RequiredByKeys } from "@neufund/shared-utils";
 import { branch, compose } from "recompose";
 
-import { ETxType } from "../../../../../lib/web3/types";
 import { actions } from "../../../../../modules/actions";
 import { ETransactionErrorType } from "../../../../../modules/tx/sender/reducer";
 import {

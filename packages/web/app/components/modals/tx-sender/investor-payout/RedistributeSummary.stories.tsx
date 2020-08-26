@@ -1,5 +1,5 @@
 import { ITokenDisbursal } from "@neufund/shared-modules";
-import { ECurrency, ETH_DECIMALS, EthereumAddressWithChecksum } from "@neufund/shared-utils";
+import { ECurrency, EthereumAddressWithChecksum, ETH_DECIMALS } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";

@@ -32,7 +32,7 @@ import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFil
 import { EMimeType } from "../../../shared/forms/fields/utils";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
-import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
+import { SocialProfilesEditor, SOCIAL_PROFILES_PERSON } from "../../../shared/SocialProfilesEditor";
 import { convert, generateKeys, removeKeys, setDefaultValueIfUndefined } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";

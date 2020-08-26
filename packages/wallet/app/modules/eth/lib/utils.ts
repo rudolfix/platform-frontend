@@ -1,9 +1,4 @@
-import {
-  EthereumPrivateKey,
-  EthereumAddress,
-  EthereumAddressWithChecksum,
-  EthereumHDMnemonic,
-} from "@neufund/shared-utils";
+import { EthereumPrivateKey, EthereumHDMnemonic } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import isString from "lodash/fp/isString";
 
@@ -52,36 +47,4 @@ const isMnemonic = (mnemonic: unknown): mnemonic is EthereumHDMnemonic => {
   return false;
 };
 
-/**
- * Check if a given address is a valid
- *
- * @param address - A possible address
- */
-const isAddress = (address: unknown): address is EthereumAddress => {
-  try {
-    if (isString(address)) {
-      utils.getAddress(address);
-
-      return true;
-    }
-
-    return false;
-  } catch {
-    return false;
-  }
-};
-
-/**
- * Check if a given address is a valid checksum address
- *
- * @param address - A possible address
- */
-const isChecksumAddress = (address: unknown): address is EthereumAddressWithChecksum => {
-  try {
-    return isString(address) && address === utils.getAddress(address);
-  } catch {
-    return false;
-  }
-};
-
-export { isHdWallet, isPrivateKey, isMnemonic, isAddress, isChecksumAddress, addHexPrefix };
+export { isHdWallet, isPrivateKey, isMnemonic, addHexPrefix };

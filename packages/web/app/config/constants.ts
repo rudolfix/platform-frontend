@@ -1,5 +1,6 @@
 import { EUserType } from "@neufund/shared-modules";
 import { minutesToMs } from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
 
 // If running in cypress wait for a short time
 export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME =
@@ -22,3 +23,9 @@ export const USERS_WITH_ACCOUNT_SETUP = [EUserType.NOMINEE, EUserType.INVESTOR];
 
 export const WC_DEFAULT_SESSION_REQUEST_TIMEOUT = minutesToMs(10);
 export const WC_DEFAULT_SIGN_TIMEOUT = minutesToMs(10);
+
+// for testing purposes we can change this threshold via .env.
+// minimal amount to show the user a high gas cost warning during payout. In Euros
+export const MINIMAL_PAYOUT_WITHOUT_WARNING = new BigNumber(
+  process.env.NF_MINIMAL_PAYOUT_WITHOUT_WARNING || "2",
+);

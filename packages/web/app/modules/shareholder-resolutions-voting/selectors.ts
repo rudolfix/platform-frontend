@@ -12,6 +12,14 @@ export const selectProposalById = (proposalId: string) => (
   state: TShareholderResolutionsVotingModuleState,
 ) => state.shareholderResolutionsVoting.proposals[proposalId];
 
+export const selectNomineeBreakdownById = (proposalId: string) => (
+  state: TShareholderResolutionsVotingModuleState,
+) => state.shareholderResolutionsVoting.nomineeShareBreakdown[proposalId];
+
+export const selectShareCapitalBreakdownById = (proposalId: string) => (
+  state: TShareholderResolutionsVotingModuleState,
+) => state.shareholderResolutionsVoting.shareCapitalBreakdown[proposalId];
+
 export const selectShareholderVotes = (address: EthereumAddressWithChecksum) => (
   state: TShareholderResolutionsVotingModuleState,
 ) => state.shareholderResolutionsVoting.shareholdersVotes[address];

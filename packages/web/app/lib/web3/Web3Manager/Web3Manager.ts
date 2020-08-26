@@ -180,7 +180,9 @@ export class Web3Manager extends EventEmitter implements IEthManager {
     return this.internalWeb3Adapter.getBlockNumber();
   }
 
-  public async getBalance(userAddress: EthereumAddress): Promise<BigNumber> {
+  public async getBalance(
+    userAddress: EthereumAddress | EthereumAddressWithChecksum,
+  ): Promise<BigNumber> {
     return this.internalWeb3Adapter.getBalance(userAddress);
   }
 

@@ -1,4 +1,6 @@
 const path = require("path");
+const webpack = require("webpack");
+
 const paths = require("../webpack/paths");
 const devConfig = require("../webpack/webpack.config.dev");
 
@@ -107,6 +109,11 @@ module.exports = ({ config }) => {
     },
   ];
 
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      __DEV__: false,
+    }),
+  );
   config.resolve.extensions = devConfig.resolve.extensions;
 
   return config;

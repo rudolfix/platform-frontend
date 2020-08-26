@@ -45,7 +45,7 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
 
   logger.info(`Unlock flow set to ${unlockFlow}`);
 
-  switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
+  switch (unlockFlow) {
     case "user_requested":
       yield* call(allowToUnlockExistingAccount);
       break;
@@ -97,6 +97,13 @@ function* signInExistingAccount(): SagaGenerator<void> {
   yield* call(loadOrCreateUser);
 
   yield put(authActions.signed(walletMetadata));
+}
+
+function* lockAccount(): SagaGenerator<void> {
+  // keep to store so JWT can be reused if not expired
+  yield* call(authModuleAPI.sagas.resetUser, { clearStorage: false });
+
+  yield put(authActions.lockAccountDone());
 }
 
 function* createNewAccount(): SagaGenerator<void> {
@@ -239,5 +246,6 @@ export function* authSaga(): SagaGenerator<void> {
   yield takeLeading(authActions.importAccount, importNewAccount);
   yield takeLeading(authActions.switchAccount, switchAccount);
   yield takeLeading(authActions.unlockAccount, signInExistingAccount);
+  yield takeLeading(authActions.lockAccount, lockAccount);
   yield takeLeading(authActions.logout, logout);
 }

@@ -2,6 +2,8 @@ import { NavigationContainerRef, useNavigation } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 
+import { EQRCodeType } from "modules/qr-code-scanner/module";
+
 import { EAppRoutes } from "./appRoutes";
 
 const navigationRef = React.createRef<NavigationContainerRef>();
@@ -25,12 +27,15 @@ export type RootStackParamList = {
   [EAppRoutes.portfolio]: undefined;
   [EAppRoutes.wallet]: undefined;
   [EAppRoutes.profile]: undefined;
-  [EAppRoutes.qrCode]: undefined;
+  [EAppRoutes.qrCode]: { requiredQRCodeType: EQRCodeType | undefined } | undefined;
   [EAppRoutes.walletConnectSession]: undefined;
   [EAppRoutes.webView]: { uri: string };
 };
 
-const navigate = (name: string, params?: StackNavigationProp<RootStackParamList>) => {
+const navigate = <T extends EAppRoutes>(
+  name: T,
+  params?: StackNavigationProp<RootStackParamList, T>,
+) => {
   navigationRef.current?.navigate(name, params);
 };
 

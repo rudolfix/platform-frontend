@@ -11,6 +11,7 @@ export * from "./modules/kyc/module";
 export * from "./modules/investor-portfolio/module";
 export * from "./modules/bookbuilding/module";
 export * from "./modules/eto/module";
+export * from "./modules/tx/module";
 
 export * from "./modules/routing/module";
 

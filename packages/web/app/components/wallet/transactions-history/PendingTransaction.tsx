@@ -1,4 +1,5 @@
 import { InlineIcon } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { ENumberOutputFormat, makeTid } from "@neufund/shared-utils";
 import cn from "classnames";
 import * as React from "react";
@@ -6,7 +7,6 @@ import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
-import { ETxType } from "../../../lib/web3/types";
 import { TDataTestId } from "../../../types";
 import { Money } from "../../shared/formatters/Money";
 import { EInlineIconFill } from "../../shared/icons";

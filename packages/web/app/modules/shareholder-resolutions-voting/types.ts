@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
+import { EquityToken, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 /**
  * Proposal states:
@@ -32,6 +32,9 @@ export interface IProposalTally {
   tokenVotingPower: string;
   inFavor: string;
   against: string;
+  offchainInFavor: string;
+  offchainAgainst: string;
+  totalVotingPower: string;
 }
 
 type TProposalExtras = {
@@ -40,6 +43,7 @@ type TProposalExtras = {
   id: string;
   votingContractAddress: EthereumAddressWithChecksum;
   quorum: string;
+  state: EProposalState;
 };
 
 export type TProposal = IProposalDetails & TProposalExtras;
@@ -58,4 +62,31 @@ export interface IShareholderVote {
   proposalId: string;
   state: EShareholderVoteResolution;
   votingPower: string;
+}
+
+export interface ITokenHolderBreakdown {
+  inFavorPercentage: string;
+  inFavor: string;
+  againstPercentage: string;
+  against: string;
+  abstainPercentage: string;
+  abstain: string;
+  totalTokens: string;
+  nomineeVote: ENomineeVote;
+  decimals: number;
+  tokenSymbol: EquityToken;
+  nomineeName: string;
+}
+
+export interface IShareCapitalBreakdown {
+  resolutionPassed: boolean;
+  shareCapitalInFavor: string;
+  shareCapitalAgainst: string;
+  shareCapitalAbstain: string;
+  offChainVoteDocumentUri: string | null;
+}
+
+export enum ENomineeVote {
+  IN_FAVOUR = "in_favour",
+  AGAINST = "agianst",
 }

@@ -1,6 +1,7 @@
 import {
   EETOStateOnChain,
   EKycRequestStatus,
+  ETxType,
   EUserType,
   EWalletType,
 } from "@neufund/shared-modules";
@@ -20,7 +21,6 @@ import {
   testContract,
   testEto,
 } from "../../../../../test/fixtures";
-import { ETxType } from "../../../../lib/web3/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";

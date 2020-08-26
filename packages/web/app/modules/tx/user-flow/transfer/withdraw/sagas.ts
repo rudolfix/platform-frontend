@@ -1,9 +1,9 @@
 import { fork, put, select } from "@neufund/sagas";
-import { generateRandomEthereumAddress, walletApi } from "@neufund/shared-modules";
+import { ETxType, generateRandomEthereumAddress, walletApi } from "@neufund/shared-modules";
 import { convertFromUlps, multiplyBigNumbers, subtractBigNumbers } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../../lib/web3/types";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuCall, neuDebounce } from "../../../../sagasUtils";
 import { isAddressValid } from "../../../../web3/utils";

@@ -1,15 +1,17 @@
 import { call, put, SagaGenerator, select, takeLatest } from "@neufund/sagas";
-import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
+import { coreModuleApi, ETxType, neuGetBindings } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 
 import { symbols } from "../../../../di/symbols";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectUserId } from "../../../auth/selectors";
 import { shareholderResolutionsVotingViewModuleApi } from "../../../shareholder-resolutions-voting-view/module";
 import { shareholderResolutionsVotingModuleApi } from "../../../shareholder-resolutions-voting/module";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
+import { selectTxGasCostEthUlps, selectTxGasCostEurUlps } from "./../../sender/selectors";
 
 function* generateShareholderResolutionVoteTransaction(
   proposalId: string,
@@ -34,7 +36,7 @@ function* generateShareholderResolutionVoteTransaction(
   );
 
   const txInitialDetails = {
-    to: contractsService.votingCenter.address,
+    to: makeEthereumAddressChecksummed(contractsService.votingCenter.address),
     from: shareholderAddress,
     data: txInput,
     value: "0",
@@ -66,6 +68,9 @@ function* shareholderResolutionVoteTransactionFlow(
 
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
+  const gasCost = yield* select(selectTxGasCostEthUlps);
+  const gasCostEur = yield* select(selectTxGasCostEurUlps);
+
   const proposal = yield* select(
     shareholderResolutionsVotingModuleApi.selectors.selectProposalById(proposalId),
   );
@@ -81,6 +86,8 @@ function* shareholderResolutionVoteTransactionFlow(
       companyName: proposalEto.company.name,
       proposalTitle: proposal.title,
       voteInFavor,
+      gasCost,
+      gasCostEur,
     }),
   );
 }

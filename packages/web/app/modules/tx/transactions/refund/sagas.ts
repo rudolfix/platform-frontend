@@ -1,20 +1,26 @@
 import { fork, put, select } from "@neufund/sagas";
-import { etoModuleApi, IInvestorTicket, investorPortfolioModuleApi } from "@neufund/shared-modules";
+import {
+  etoModuleApi,
+  ETxType,
+  IInvestorTicket,
+  investorPortfolioModuleApi,
+} from "@neufund/shared-modules";
 import {
   convertFromUlps,
-  ETH_DECIMALS,
   EthereumAddressWithChecksum,
+  ETH_DECIMALS,
   multiplyBigNumbers,
 } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxGasCostEthUlps } from "../../sender/selectors";
 
@@ -29,7 +35,7 @@ function* generateGetRefundTransaction(
   const txInput = etoContract.refundTx().getData();
 
   const txInitialDetails = {
-    to: etoContract.address,
+    to: makeEthereumAddressChecksummed(etoContract.address),
     from: userAddress,
     data: txInput,
     value: "0",

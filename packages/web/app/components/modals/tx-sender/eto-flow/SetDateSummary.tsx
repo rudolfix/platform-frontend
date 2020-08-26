@@ -3,6 +3,7 @@ import {
   EEtoDocumentType,
   EEtoState,
   etoModuleApi,
+  ETxType,
   immutableDocumentName,
   InvalidETOStateError,
   TEtoDocumentTemplates,
@@ -16,7 +17,6 @@ import { Container } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerEtoDateToWhitelistMinDuration,

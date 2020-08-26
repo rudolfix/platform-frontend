@@ -10,6 +10,7 @@ import { symbols } from "../../di/symbols";
 import { IVotingCenter } from "../../lib/contracts/IVotingCenter";
 import { ContractsService } from "../../lib/web3/ContractsService";
 import { selectUserId } from "../auth/selectors";
+import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { actions } from "./actions";
 import {
   ProposalNotFoundError,
@@ -29,7 +30,9 @@ const proposalId = "0x6400a3523bc839d6bad3232d118c4234d9ef6b2408ca6afcadcbff728f
 
 const userId = "0x8a194c13308326173423119F8dCb785CE14C732B";
 
-const votingCenterContractAddress = "0x88137084d1b6f58d177523de894293913394aa12";
+const votingCenterContractAddress = makeEthereumAddressChecksummed(
+  "0x88137084d1b6f58d177523de894293913394aa12",
+);
 const tokenAddress = "0xe39629B8e3e6F42F95EfF73Ab13001fa63529F60";
 
 const rawProposalDetails: Parameters<typeof convertToProposalDetails>[0] = [

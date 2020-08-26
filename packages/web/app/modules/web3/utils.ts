@@ -2,10 +2,10 @@ import {
   compareBigNumbers,
   convertToUlps,
   ERoundingMode,
-  ETH_DECIMALS,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
+  ETH_DECIMALS,
   formatMoney,
   toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
@@ -14,9 +14,9 @@ import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 import { TBigNumberVariants } from "../../lib/web3/types";
 
 export function makeEthereumAddressChecksummed(
-  ethereumAddress: EthereumAddress,
+  ethereumAddress: EthereumAddress | string,
 ): EthereumAddressWithChecksum {
-  return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress));
+  return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress as string));
 }
 
 /**

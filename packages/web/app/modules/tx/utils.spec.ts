@@ -1,9 +1,9 @@
-import { ETransactionType } from "@neufund/shared-modules";
+import { ETransactionType, ETxType } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
 import { expect } from "chai";
 
-import { ETxType } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
+import { makeEthereumAddressChecksummed } from "../web3/utils";
 import {
   generalPendingTxFixture,
   getPendingTransactionAmount,
@@ -15,7 +15,9 @@ describe("Pending transaction type", () => {
   let pendingTransaction: any;
 
   beforeEach(() => {
-    pendingTransaction = generalPendingTxFixture("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988");
+    pendingTransaction = generalPendingTxFixture(
+      makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
+    );
   });
 
   it("returns transfer type for withdraw", () => {
@@ -32,7 +34,9 @@ describe("Pending transaction currency", () => {
   let pendingTransaction: any;
 
   beforeEach(() => {
-    pendingTransaction = generalPendingTxFixture("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988");
+    pendingTransaction = generalPendingTxFixture(
+      makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
+    );
   });
 
   it("returns token symbol when it is set", () => {
@@ -53,7 +57,9 @@ describe("Pending transaction amount", () => {
   let pendingTransaction: any;
 
   beforeEach(() => {
-    pendingTransaction = generalPendingTxFixture("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988");
+    pendingTransaction = generalPendingTxFixture(
+      makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
+    );
   });
 
   it("returns amount eur", () => {

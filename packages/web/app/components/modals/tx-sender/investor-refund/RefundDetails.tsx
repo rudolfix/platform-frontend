@@ -1,9 +1,9 @@
 import { Eth, Eur, EurToken } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { isZero } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";

@@ -1,6 +1,7 @@
 .title-row {
   display: flex;
   justify-content: space-between;
+  margin-bottom: px-to-rem(20px);
 }
 
 .file-list {
@@ -8,14 +9,31 @@
   padding-left: 0;
 }
 
+.file-details-wrapper {
+  @include media-breakpoint-down(sm) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  display: flex;
+  padding-left: .75rem;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
 .file-list-item {
+  @include media-breakpoint-down(md) {
+    height: auto;
+  }
+
   height: px-to-rem(64px);
   display: flex;
-  flex-flow: row;
+  align-items: start;
+  flex-direction: row;
   border: px-to-rem(1px) solid $neu-light-blue-grey-two;
   border-bottom: 0;
   padding: px-to-rem(12px) px-to-rem(20px);
-  align-items: center;
+  overflow: hidden;
 
   &:last-child {
     border-bottom: px-to-rem(1px) solid $neu-light-blue-grey-two;
@@ -31,25 +49,35 @@
 .file-details {
   display: flex;
   flex-flow: column;
-  flex-basis: 90%;
-  margin-left: px-to-rem(12px);
+  flex-grow: 1;
 }
 
 .file-name {
   @include font-headline-small;
   color: $neu-charcoal-grey;
+  white-space: break-spaces;
 }
 
 .caption {
+  @include media-breakpoint-down(sm) {
+    margin-top: px-to-rem(4px);
+  }
+
   @include nds-helper-text;
   color: $text-gray;
+  white-space: break-spaces;
 }
 
 .file-action {
+  @include media-breakpoint-down(sm) {
+    margin-top: px-to-rem(16px);
+    align-self: flex-start;
+  }
+
   align-self: center;
   white-space: nowrap;
   color: $neu-dark-blue;
-  cursor: pointer;
+  min-width: 0;
 }
 
 .empty-message {
@@ -58,6 +86,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: px-to-rem(20px);
 }
 
 .empty-message-text {
@@ -65,4 +94,21 @@
   font-size: px-to-rem(20px);
   font-family: $font-family-roboto;
   font-weight: normal;
+}
+
+.heading {
+  @include media-breakpoint-down(lg) {
+    display: none;
+  }
+}
+
+.select {
+  @include media-breakpoint-down(lg) {
+    display: block;
+  }
+
+  display: none;
+  margin-top: px-to-rem(3px);
+  margin-right: px-to-rem(16px);
+  width: px-to-rem(180px);
 }

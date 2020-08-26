@@ -5,7 +5,7 @@ import { coreModuleApi } from "../../core/module";
 import { symbols } from "../lib/symbols";
 import { EWalletType, IUser, IUserInput } from "../lib/users/interfaces";
 import { UserNotExisting } from "../lib/users/UsersApi";
-import { userActions, userPrivateActions } from "./actions";
+import { userActions } from "./actions";
 import { TLoadOrCreateOptions } from "./types";
 
 /**
@@ -111,7 +111,7 @@ export function* loadUser(): SagaGenerator<void> {
 }
 
 function* setLoggerUser(
-  action: ReturnType<typeof userActions.setUser> | ReturnType<typeof userPrivateActions.reset>,
+  action: ReturnType<typeof userActions.setUser> | ReturnType<typeof userActions.reset>,
 ): SagaGenerator<void> {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
@@ -130,16 +130,22 @@ function* setLoggerUser(
   }
 }
 
-export function* resetUser(): SagaGenerator<void> {
+type TResetUserOptions = {
+  clearStorage: boolean;
+};
+
+export function* resetUser(
+  options: TResetUserOptions = { clearStorage: true },
+): SagaGenerator<void> {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
   });
 
-  yield put(userPrivateActions.reset());
+  yield put(userActions.reset(options.clearStorage));
 
   logger.info("User has been cleared out");
 }
 
 export function* authUserSagas(): SagaGenerator<void> {
-  yield takeEvery([userActions.setUser, userPrivateActions.reset], setLoggerUser);
+  yield takeEvery([userActions.setUser, userActions.reset], setLoggerUser);
 }

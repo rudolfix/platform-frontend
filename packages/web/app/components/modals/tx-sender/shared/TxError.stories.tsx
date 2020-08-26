@@ -1,10 +1,11 @@
+import { ETxType } from "@neufund/shared-modules";
 import { convertFromUlps, convertToUlps, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
+import { makeEthereumAddressChecksummed } from "../../../../modules/web3/utils";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxErrorLayout } from "./TxError";
@@ -15,14 +16,14 @@ const baseTxData = {
   blockId: 4623487932,
   txHash: "af908098b968d7564564362c51836",
   txData: {
-    from: "0x0020d330ef4de5c07d4271e0a67e8fd67a21d523",
+    from: makeEthereumAddressChecksummed("0x0020d330ef4de5c07d4271e0a67e8fd67a21d523"),
     gas: "0x7b0c",
     gasPrice: "0xb2d05e00",
     hash: "0xe0cbf82ceee3d0a84b762fccf7eefbb4744bf68a6c0e9038a7db57ec8f2346f4",
     input: "0x00",
     nonce: "0x0",
     status: "pending",
-    to: "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+    to: makeEthereumAddressChecksummed("0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988"),
     value: "0x8ac7230489e80000",
     blockHash: undefined,
     blockNumber: undefined,

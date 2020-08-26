@@ -5,6 +5,7 @@ import {
   ETransactionDirection,
   ETransactionStatus,
   ETransactionType,
+  ETxType,
   EUserType,
   EWalletSubType,
   EWalletType,
@@ -22,7 +23,6 @@ import {
   EthereumTxHash,
 } from "@neufund/shared-utils";
 
-import { ETxType } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
 import { ETxSenderState } from "../tx/sender/reducer";
 import { IConnectedWeb3State } from "../web3/reducer";

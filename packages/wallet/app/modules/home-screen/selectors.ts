@@ -1,11 +1,11 @@
-import { investorPortfolioModuleApi, walletApi } from "@neufund/shared-modules";
+import { investorPortfolioModuleApi, walletApi, etoModuleApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   assertNever,
   convertFromUlps,
+  createToken,
   ECurrency,
-  ETH_DECIMALS,
-  EURO_DECIMALS,
+  ENumberInputFormat,
   multiplyBigNumbers,
   nonNullable,
   toEquityTokenSymbol,
@@ -14,19 +14,17 @@ import { createSelector } from "reselect";
 
 import { EScreenState } from "modules/types";
 
-import { createToken } from "utils/createToken";
-
-import { THomeScreenState, EBalanceViewType, TBalance, TAsset } from "./types";
+import { EBalanceViewType, TAsset, TBalance, THomeScreenState } from "./types";
 
 const selectHomeScreenState = (state: THomeScreenState) => state.homeScreen.screenState;
 
 const selectNeuBalance = createSelector(walletApi.selectors.selectNeuBalance, neuBalance =>
-  createToken(ECurrency.NEU, neuBalance, ETH_DECIMALS),
+  createToken(ECurrency.NEU, neuBalance, ENumberInputFormat.ULPS),
 );
 
 const selectNeuBalanceEur = createSelector(
   walletApi.selectors.selectNeuBalanceEuroAmount,
-  neuBalance => createToken(ECurrency.EUR, neuBalance, ETH_DECIMALS),
+  neuBalance => createToken(ECurrency.EUR, neuBalance, ENumberInputFormat.ULPS),
 );
 
 const selectTotalPortfolioBalanceEur = createSelector(
@@ -36,13 +34,13 @@ const selectTotalPortfolioBalanceEur = createSelector(
     createToken(
       ECurrency.EUR,
       addBigNumbers([myAssetsTotalEur, myPendingAssetsTotalEEur]),
-      EURO_DECIMALS,
+      ENumberInputFormat.DECIMAL,
     ),
 );
 
 const selectWalletTotalBalanceInEur = createSelector(
   walletApi.selectors.selectTotalEuroBalance,
-  totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, EURO_DECIMALS),
+  totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, ENumberInputFormat.DECIMAL),
 );
 
 /**
@@ -58,13 +56,13 @@ const selectWalletGroupedBalances = createSelector(
   (ethBalance, ethEuroBalance, nEurBalance): TBalance[] => [
     {
       type: EBalanceViewType.ETH,
-      amount: createToken(ECurrency.ETH, ethBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.ETH, ethBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ENumberInputFormat.ULPS),
     },
     {
       type: EBalanceViewType.NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ETH_DECIMALS),
+      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ENumberInputFormat.ULPS),
+      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ENumberInputFormat.ULPS),
     },
   ],
 );
@@ -77,7 +75,7 @@ const selectPortfolioAssets = createSelector(
       token: createToken(
         toEquityTokenSymbol(asset.equityTokenSymbol),
         asset.tokenData.balanceUlps,
-        EURO_DECIMALS,
+        ENumberInputFormat.DECIMAL,
       ),
       analogToken: createToken(
         ECurrency.EUR,
@@ -85,7 +83,7 @@ const selectPortfolioAssets = createSelector(
           asset.tokenData.tokenPrice,
           convertFromUlps(asset.tokenData.balanceUlps, asset.tokenData.balanceDecimals),
         ]),
-        EURO_DECIMALS,
+        ENumberInputFormat.DECIMAL,
       ),
       tokenImage: asset.equityTokenImage,
       tokenName: asset.equityTokenName,
@@ -99,6 +97,7 @@ const selectHomeScreenData = createSelector(
   selectNeuBalance,
   selectNeuBalanceEur,
   selectTotalPortfolioBalanceEur,
+  etoModuleApi.selectors.selectEtos,
   selectHomeScreenState,
   (
     balances,
@@ -107,6 +106,7 @@ const selectHomeScreenData = createSelector(
     neuBalance,
     neuBalanceEur,
     totalPortfolioBalanceEur,
+    etos,
     screenState,
   ) => {
     switch (screenState) {
@@ -124,6 +124,7 @@ const selectHomeScreenData = createSelector(
           portfolioAssets: nonNullable(portfolioAssets),
           neuBalance,
           neuBalanceEur,
+          etos: nonNullable(etos),
           totalPortfolioBalanceEur,
           screenState,
         };

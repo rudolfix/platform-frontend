@@ -31,6 +31,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^3.0.0",
+    "ethers": "^4.0.45",
     "jsdom": "^16.2.2",
     "lolex": "^5.1.1",
     "mocha": "^6.0.2",
@@ -43,7 +44,7 @@
     "moment": "^2.21.0",
     "ts-node": "6.2.0",
     "tslib": "^1.10.0",
-    "tslint": "^5.20.1",
+    "tslint": "^6.1.2",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.7.3",
     "typestrict": "^1.0.2"

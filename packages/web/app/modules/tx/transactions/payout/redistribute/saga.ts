@@ -1,15 +1,16 @@
 import { put, select, take } from "@neufund/sagas";
-import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ETxType, ITokenDisbursal } from "@neufund/shared-modules";
 import { ECurrency, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../../lib/web3/types";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
 import { selectEthereumAddress } from "../../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../../web3/utils";
 import { selectStandardGasPriceWithOverHead } from "../../../sender/selectors";
 
 // Use highest possible solidity uint256 to redistribute all disbursals for token
@@ -41,7 +42,7 @@ function* generatePayoutRedistributeTransaction(
     .getData();
 
   const txInitialDetails = {
-    to: feeDisbursal.address,
+    to: makeEthereumAddressChecksummed(feeDisbursal.address),
     from: userAddress,
     data: txInput,
     value: "0",

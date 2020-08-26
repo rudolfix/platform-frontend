@@ -1,10 +1,10 @@
 import { ButtonArrowRight } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 import { compose } from "recompose";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TNEurRedeemAdditionalDetails } from "../../../../modules/tx/transactions/redeem/types";

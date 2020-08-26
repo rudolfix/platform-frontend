@@ -1,10 +1,10 @@
-import { ECurrency, EquityToken, isInEnum } from "@neufund/shared-utils";
+import { ECurrency, EquityToken, isInEnum, TToken } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import { EIconType } from "components/shared/Icon";
-import { Money } from "components/shared/Money";
 import { Skeleton } from "components/shared/animations/Skeleton";
+import { MoneyUnsafe } from "components/shared/formatters";
 import { Panel } from "components/shared/panel/Panel";
 import { BodyBoldText } from "components/shared/typography/BodyText";
 import { HelperText } from "components/shared/typography/HelperText";
@@ -12,8 +12,6 @@ import { MenuLabelBold } from "components/shared/typography/MenuLabel";
 
 import { baseWhite, bluish } from "styles/colors";
 import { spacing2, spacing3, spacingStyles } from "styles/spacings";
-
-import { TToken } from "utils/types";
 
 import { TOKEN_ICON_SIZE, TokenIcon, TokenImage } from "./TokenIcon";
 
@@ -77,15 +75,10 @@ const Asset: React.FunctionComponent<TExternalProps<
     </View>
     <View style={styles.balanceContainer}>
       <BodyBoldText style={styles.balanceText}>
-        <Money value={token.value} currency={token.type} decimalPlaces={token.precision} />
+        <MoneyUnsafe token={token} />
       </BodyBoldText>
       <HelperText style={styles.analogBalanceText}>
-        ≈{" "}
-        <Money
-          value={analogToken.value}
-          currency={analogToken.type}
-          decimalPlaces={token.precision}
-        />
+        ≈ <MoneyUnsafe token={analogToken} />
       </HelperText>
     </View>
   </Panel>

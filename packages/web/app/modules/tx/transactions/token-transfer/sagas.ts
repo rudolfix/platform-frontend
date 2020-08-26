@@ -1,14 +1,15 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
+import { ETxType } from "@neufund/shared-modules";
 import { EthereumAddress, toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
-import { isAddressValid } from "../../../web3/utils";
+import { isAddressValid, makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import {
@@ -72,7 +73,7 @@ export function* generateTokenWithdrawTransaction(
     : contractInstance.transferTx(to, valueBigNumber).getData();
 
   const txDetails: Partial<ITxData> = {
-    to: tokenAddress,
+    to: makeEthereumAddressChecksummed(tokenAddress),
     from,
     data: txInput,
     value: "0",

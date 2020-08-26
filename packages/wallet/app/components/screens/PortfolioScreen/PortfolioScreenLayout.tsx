@@ -1,18 +1,16 @@
-import { ECurrency, isZero } from "@neufund/shared-utils";
+import { ECurrency, isZero, TToken } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 import { HeaderScreen } from "components/shared/HeaderScreen";
 import { EIconType } from "components/shared/Icon";
-import { Money } from "components/shared/Money";
 import { Screen } from "components/shared/Screen";
 import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { Eur } from "components/shared/formatters";
 
 import { TAsset } from "modules/portfolio-screen/module";
 
 import { spacingStyles } from "styles/spacings";
-
-import { TToken } from "utils/types";
 
 type TExternalProps = {
   assets: TAsset[];
@@ -36,16 +34,7 @@ const PortfolioScreenLayout: React.FunctionComponent<TExternalProps> = ({
   const assets = myAssets.length > 0 || !isZero(neuBalance.value) ? myAssets : allAssets;
 
   return (
-    <HeaderScreen
-      heading={
-        <Money
-          value={totalBalanceEur.value}
-          currency={totalBalanceEur.type}
-          decimalPlaces={totalBalanceEur.precision}
-        />
-      }
-      subHeading={"Portfolio balance"}
-    >
+    <HeaderScreen heading={<Eur token={totalBalanceEur} />} subHeading={"Portfolio balance"}>
       {screenProps => (
         <Screen {...screenProps}>
           {pendingAssets.map(asset => (

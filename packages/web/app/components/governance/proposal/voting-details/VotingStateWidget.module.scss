@@ -1,0 +1,26 @@
+// sass-lint:disable placeholder-in-extend
+
+.votes {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  height: 32px;
+  color: $neu-white;
+}
+
+.waiting {
+  @extend .votes;
+  background-color: $neu-dark-blue;
+}
+
+.success {
+  @extend .votes;
+  background-color: $neu-base-green;
+}
+
+.failed {
+  @extend .votes;
+  background-color: $neu-base-red;
+}

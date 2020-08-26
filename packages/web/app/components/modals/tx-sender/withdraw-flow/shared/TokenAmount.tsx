@@ -1,4 +1,4 @@
-import { ECurrency, EquityToken } from "@neufund/shared-utils";
+import { ECurrency, ENumberInputFormat, EquityToken } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { DataRow } from "../../../../shared/DataRow";
@@ -29,6 +29,7 @@ export const TokenAmount: React.FunctionComponent<{
           currency={ECurrency.ETH}
           largeNumber={amount}
           value={amountEur}
+          bottomInputFormat={ENumberInputFormat.DECIMAL}
           currencyTotal={ECurrency.EUR}
           data-test-id="modals.tx-sender.withdraw-flow.summary.value"
           theme={ETheme.BLACK}

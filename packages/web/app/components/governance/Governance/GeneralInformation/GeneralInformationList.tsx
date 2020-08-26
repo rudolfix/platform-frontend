@@ -32,6 +32,8 @@ export const GeneralInformationList: React.FunctionComponent<TGeneralInformation
             return (
               <li className={styles.fileListItem} key={resolution.id}>
                 <img className={styles.fileIcon} src={pdfIcon} alt="PDF" />
+                <div className={styles.fileDetailsWrapper}>
+                <div className={styles.fileDetailsWrapper}
                 <div className={styles.fileDetails}>
                   <span className={styles.fileName}>{title}</span>
                   <span className={styles.caption}>
@@ -64,6 +66,7 @@ export const GeneralInformationList: React.FunctionComponent<TGeneralInformation
                     <FormattedMessage id="common.view-details" />
                   )}
                 </Button>
+              </dev>
               </li>
             );
           })}

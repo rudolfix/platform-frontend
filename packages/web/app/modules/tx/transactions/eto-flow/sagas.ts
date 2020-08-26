@@ -1,11 +1,11 @@
 import { fork, put, select } from "@neufund/sagas";
-import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
+import { ETxType, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { etoFlowActions } from "../../../eto-flow/actions";
@@ -17,6 +17,7 @@ import {
 } from "../../../eto-flow/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 
@@ -41,7 +42,7 @@ function* generateSetStartDateTransaction({
   const txData = contract.setStartDateTx(terms, token, time).getData();
 
   const txInitialDetails = {
-    to: contract.address,
+    to: makeEthereumAddressChecksummed(contract.address),
     from: userAddress,
     data: txData,
     value: "0",
@@ -77,7 +78,7 @@ function* generateSignInvestmentAgreementTx(
       .getData();
 
     const txInitialDetails = {
-      to: contract.address,
+      to: makeEthereumAddressChecksummed(contract.address),
       from: userAddress,
       data: txData,
       value: "0",

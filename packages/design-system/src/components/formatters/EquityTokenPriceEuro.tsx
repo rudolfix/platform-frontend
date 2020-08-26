@@ -3,6 +3,7 @@ import {
   ENumberOutputFormat,
   EPriceFormat,
   ERoundingMode,
+  formatCurrency,
   TDataTestId,
 } from "@neufund/shared-utils";
 import * as React from "react";
@@ -10,7 +11,6 @@ import * as React from "react";
 import { Units } from "./atoms/Units";
 import { IValueProps, Value } from "./atoms/Value";
 import { ICommonFormatterProps } from "./types";
-import { formatCurrency } from "./utils";
 
 const EquityTokenPriceEuroComponent: React.FunctionComponent<IValueProps &
   ICommonFormatterProps &
@@ -28,7 +28,7 @@ const EquityTokenPriceEuroComponent: React.FunctionComponent<IValueProps &
   return (
     <span className={className} data-test-id={dataTestId}>
       <Value>{formattedValue || defaultValue || " "}</Value>
-      <Units show={!!formattedValue}>&#x20;EUR</Units>
+      {formattedValue && <Units>&#x20;EUR</Units>}
     </span>
   );
 };

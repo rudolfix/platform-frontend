@@ -2,6 +2,7 @@ import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neu
 import {
   EETOStateOnChain,
   etoModuleApi,
+  ETxType,
   investorPortfolioModuleApi,
   TEtoWithCompanyAndContractReadonly,
   walletApi,
@@ -12,6 +13,7 @@ import {
   convertFromUlps,
   convertToUlps,
   ECurrency,
+  EthereumAddressWithChecksum,
   extractNumber,
   nonNullable,
   subtractBigNumbers,
@@ -21,7 +23,7 @@ import BigNumber from "bignumber.js";
 import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../lib/web3/types";
+import { ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall } from "../sagasUtils";
@@ -444,8 +446,8 @@ function* setTransactionWithPresetGas(): any {
     actions.txSender.setTransactionData({
       gas: INVESTMENT_GAS_AMOUNT,
       value: "",
-      to: "",
-      from: "",
+      to: "" as EthereumAddressWithChecksum,
+      from: "" as EthereumAddressWithChecksum,
       gasPrice,
     }),
     // This sets all other irrelevant values into false values.

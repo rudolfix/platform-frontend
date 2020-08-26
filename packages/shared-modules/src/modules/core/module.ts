@@ -12,6 +12,7 @@ import { JsonHttpClient } from "./lib/client/JsonHttpClient";
 import { IEthManager } from "./lib/eth/IEthManager";
 import { ESignerType } from "./lib/eth/types";
 import { ILogger, noopLogger } from "./lib/logger";
+import { DevConsoleLogger } from "./lib/logger/DevConsoleLogger";
 import { ISingleKeyStorage } from "./lib/storage/ISingleKeyStorage";
 import { symbols } from "./lib/symbols";
 
@@ -48,4 +49,5 @@ export {
   IEthManager,
   ESignerType,
   JsonHttpClient,
+  DevConsoleLogger,
 };

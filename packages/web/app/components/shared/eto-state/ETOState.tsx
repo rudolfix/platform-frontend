@@ -1,11 +1,9 @@
 import {
-  EEtoState,
-  EETOStateOnChain,
-  EEtoSubState,
+  EEtoStateColor,
+  EEtoStateUIName,
   etoModuleApi,
   TEtoWithCompanyAndContractReadonly,
 } from "@neufund/shared-modules";
-import { Dictionary, PartialDictionary } from "@neufund/shared-utils";
 import cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -36,76 +34,38 @@ interface ISizeLayoutProps {
   layout?: EProjectStatusLayout;
 }
 
-export const generalStateToName: Dictionary<
-  TTranslatedString,
-  EEtoState | EETOStateOnChain | EEtoSubState
-> = {
-  [EEtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
-  [EEtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-pending" />,
-  [EEtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
-  [EEtoState.PROSPECTUS_APPROVED]: (
-    <FormattedMessage id="shared-component.eto-overview.status-prospectus-approved" />
+export const generalStateToName: Record<EEtoStateUIName, TTranslatedString> = {
+  [EEtoStateUIName.CAMPAIGNING]: <FormattedMessage id="eto.status.onchain.setup" />,
+  [EEtoStateUIName.DRAFT]: (
+    <FormattedMessage id="shared-component.eto-overview.status-in-preview" />
   ),
-  [EEtoState.ON_CHAIN]: <FormattedMessage id="shared-component.eto-overview.status-on-chain" />,
-  [EEtoState.SUSPENDED]: <FormattedMessage id="shared-component.eto-overview.status-suspended" />,
-
-  // on chain state mappings
-  [EETOStateOnChain.Setup]: <FormattedMessage id="eto.status.onchain.setup" />,
-  [EETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
-  [EETOStateOnChain.Public]: <FormattedMessage id="eto.status.onchain.public" />,
-  [EETOStateOnChain.Signing]: <FormattedMessage id="eto.status.onchain.signing" />,
-  [EETOStateOnChain.Claim]: <FormattedMessage id="eto.status.onchain.claim" />,
-  [EETOStateOnChain.Payout]: <FormattedMessage id="eto.status.onchain.payout" />,
-  [EETOStateOnChain.Refund]: <FormattedMessage id="eto.status.onchain.refund" />,
-
-  // on chain sub state mappings
-  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: (
-    <FormattedMessage id="eto.status.sub-state.marketing-listing-in-review" />
+  [EEtoStateUIName.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-pending" />,
+  [EEtoStateUIName.ON_CHAIN]: (
+    <FormattedMessage id="shared-component.eto-overview.status-on-chain" />
   ),
-  [EEtoSubState.CAMPAIGNING]: <FormattedMessage id="eto.status.onchain.setup" />,
-  [EEtoSubState.WHITELISTING]: <FormattedMessage id="eto.status.sub-state.whitelisting" />,
-  [EEtoSubState.COUNTDOWN_TO_PRESALE]: <FormattedMessage id="eto.status.onchain.setup" />,
-  [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: <FormattedMessage id="eto.status.onchain.setup" />,
+  [EEtoStateUIName.SUSPENDED]: (
+    <FormattedMessage id="shared-component.eto-overview.status-suspended" />
+  ),
+  [EEtoStateUIName.PRESALE]: <FormattedMessage id="eto.status.onchain.whitelist" />,
+  [EEtoStateUIName.PUBLIC_SALE]: <FormattedMessage id="eto.status.onchain.public" />,
+  [EEtoStateUIName.IN_SIGNING]: <FormattedMessage id="eto.status.onchain.signing" />,
+  [EEtoStateUIName.CLAIM]: <FormattedMessage id="eto.status.onchain.claim" />,
+  [EEtoStateUIName.PAYOUT]: <FormattedMessage id="eto.status.onchain.payout" />,
+  [EEtoStateUIName.REFUND]: <FormattedMessage id="eto.status.onchain.refund" />,
+  [EEtoStateUIName.WHITELISTING]: <FormattedMessage id="eto.status.sub-state.whitelisting" />,
 };
 
-export const issuerOnChainStateToName: PartialDictionary<TTranslatedString, EETOStateOnChain> = {
-  // on chain state mappings
-  [EETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
-  [EETOStateOnChain.Claim]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
-  [EETOStateOnChain.Payout]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
+export const issuerOnChainStateToName: Partial<Record<EEtoStateUIName, TTranslatedString>> = {
+  [EEtoStateUIName.WHITELISTING]: <FormattedMessage id="eto.status.onchain.whitelist" />,
+  [EEtoStateUIName.CLAIM]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
+  [EEtoStateUIName.PAYOUT]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
 };
 
-const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubState, string>> = {
-  [EEtoState.PREVIEW]: styles.blue,
-  [EEtoState.PENDING]: styles.orange,
-  [EEtoState.LISTED]: styles.green,
-  [EEtoState.SUSPENDED]: styles.red,
-  // eto on chain states
-  [EETOStateOnChain.Whitelist]: styles.green,
-  [EETOStateOnChain.Public]: styles.green,
-  [EETOStateOnChain.Claim]: styles.green,
-  [EETOStateOnChain.Payout]: styles.green,
-  [EETOStateOnChain.Refund]: styles.red,
-  [EETOStateOnChain.Signing]: styles.blue,
-
-  // eto sub states
-  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: styles.orange,
-  [EEtoSubState.CAMPAIGNING]: styles.green,
-  [EEtoSubState.WHITELISTING]: styles.green,
-  [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: styles.green,
-  [EEtoSubState.COUNTDOWN_TO_PRESALE]: styles.green,
-};
-
-const getState = (
-  eto: TEtoWithCompanyAndContractReadonly,
-): EETOStateOnChain | EEtoState | EEtoSubState => {
-  if (eto.subState) {
-    return eto.subState;
-  } else if (etoModuleApi.utils.isOnChain(eto)) {
-    return eto.contract.timedState;
-  } else {
-    return eto.state;
-  }
+const etoColorToClassName: Record<EEtoStateColor, string> = {
+  [EEtoStateColor.BLUE]: styles.blue,
+  [EEtoStateColor.ORANGE]: styles.orange,
+  [EEtoStateColor.GREEN]: styles.green,
+  [EEtoStateColor.RED]: styles.red,
 };
 
 const ComingSoonEtoState: React.FunctionComponent<ISizeLayoutProps & CommonHtmlProps> = ({
@@ -142,15 +102,16 @@ const ETOIssuerState: React.FunctionComponent<IExternalProps &
   size = EProjectStatusSize.MEDIUM,
   layout = EProjectStatusLayout.NORMAL,
 }) => {
-  const state = getState(eto);
-  const timedState = etoModuleApi.utils.isOnChain(eto) ? eto.contract.timedState : undefined;
+  const state = etoModuleApi.utils.getEtoCurrentState(eto);
+  const stateColor = etoModuleApi.utils.getEtoStateColor(eto);
+  const stateUIName = etoModuleApi.utils.getEtoStateUIName(eto);
 
   return (
     <div
-      className={cn(styles.projectStatus, stateToClassName[state], size, layout, className)}
+      className={cn(styles.projectStatus, etoColorToClassName[stateColor], size, layout, className)}
       data-test-id={`eto-state-${state}`}
     >
-      {(timedState && issuerOnChainStateToName[timedState]) || generalStateToName[state]}
+      {issuerOnChainStateToName[stateUIName] ?? generalStateToName[stateUIName]}
     </div>
   );
 };
@@ -167,14 +128,16 @@ const ETOInvestorState: React.FunctionComponent<IExternalProps &
     return <ComingSoonEtoState />;
   }
 
-  const state = getState(eto);
+  const state = etoModuleApi.utils.getEtoCurrentState(eto);
+  const stateColor = etoModuleApi.utils.getEtoStateColor(eto);
+  const stateUIName = etoModuleApi.utils.getEtoStateUIName(eto);
 
   return (
     <div
-      className={cn(styles.projectStatus, stateToClassName[state], size, layout, className)}
+      className={cn(styles.projectStatus, etoColorToClassName[stateColor], size, layout, className)}
       data-test-id={`eto-state-${state}`}
     >
-      {generalStateToName[state]}
+      {generalStateToName[stateUIName]}
     </div>
   );
 };

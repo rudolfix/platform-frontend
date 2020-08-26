@@ -18,6 +18,7 @@ import { setupNotificationUIModule } from "modules/notification-ui/module";
 import { setupNotificationsModule } from "modules/notifications/module";
 import { setupPermissionsModule } from "modules/permissions/module";
 import { setupPortfolioScreenModule } from "modules/portfolio-screen/module";
+import { setupQRCodeScannerModule } from "modules/qr-code-scanner/module";
 import { setupSignerUIModule } from "modules/signer-ui/module";
 import { setupStorageModule } from "modules/storage";
 import { setupWalletConnectModule } from "modules/wallet-connect/module";
@@ -63,6 +64,7 @@ const setupInitModule = (config: TConfig) => {
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),
+    setupQRCodeScannerModule(),
     setupGasModule(),
     setupTokenPriceModule({
       // TODO: When we have a proper block watching flow for mobile app provide proper refresh action

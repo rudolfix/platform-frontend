@@ -9,7 +9,7 @@ import { ESignerType, TSignerSignPayload } from "modules/signer-ui/types";
 
 import { appConnect } from "store/utils";
 
-import { SendTransactionSigner } from "./SendTransactionSigner";
+import { SendTransactionSigner } from "./SendTransactionSigner/SendTransactionSigner";
 import { SignMessageSigner } from "./SignMessageSigner";
 import { WCSessionRequestSigner } from "./WCSessionRequestSigner";
 

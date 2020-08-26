@@ -1,15 +1,15 @@
 import { ButtonArrowRight } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TAcceptPayoutAdditionalData } from "../../../../modules/tx/transactions/payout/accept/types";
 import { appConnect } from "../../../../store";
 import { ConfettiEthereum } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
-import { AcceptTransactionDetails } from "./AcceptTransactionDetails";
+import { AcceptTransactionDetailsSummary } from "./AcceptTransactionDetailsSummary";
 
 interface IExternalProps {
   txTimestamp: number;
@@ -35,7 +35,7 @@ const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({
     image={<ConfettiEthereum className="mb-3" />}
     text={<FormattedMessage id="investor-payout.accept.success.text" />}
   >
-    <AcceptTransactionDetails
+    <AcceptTransactionDetailsSummary
       txTimestamp={txTimestamp}
       additionalData={additionalData}
       className="mb-4"

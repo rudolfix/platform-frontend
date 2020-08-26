@@ -1,13 +1,14 @@
 import { fork, put, select } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
-import { EthereumAddress } from "@neufund/shared-utils";
+import { ETxType, walletApi } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions, TAction } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import { ETokenType } from "../../types";
@@ -28,7 +29,7 @@ function* generateEuroUpgradeTransaction({
   const txData = contractsService.icbmEuroLock.migrateTx().getData();
 
   const txInitialDetails = {
-    to: contractsService.icbmEuroLock.address,
+    to: makeEthereumAddressChecksummed(contractsService.icbmEuroLock.address),
     from: userAddress,
     data: txData,
     value: addHexPrefix("0"),
@@ -48,7 +49,7 @@ function* generateEtherUpgradeTransaction({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): any {
-  const userAddress: EthereumAddress = yield select(selectEthereumAddress);
+  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
   const migrationTarget: boolean = yield select(walletApi.selectors.selectIsEtherUpgradeTargetSet);
 
@@ -59,7 +60,7 @@ function* generateEtherUpgradeTransaction({
   const txInput = contractsService.icbmEtherLock.migrateTx().getData();
 
   const txInitialDetails = {
-    to: contractsService.icbmEtherLock.address,
+    to: makeEthereumAddressChecksummed(contractsService.icbmEtherLock.address),
     from: userAddress,
     data: txInput,
     value: "0",

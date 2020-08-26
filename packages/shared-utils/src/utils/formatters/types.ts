@@ -1,4 +1,4 @@
-import { EquityToken } from "../opaque-types";
+import { EquityToken } from "../../opaque-types";
 import { TBigNumberVariants } from "../types";
 
 export enum ERoundingMode {

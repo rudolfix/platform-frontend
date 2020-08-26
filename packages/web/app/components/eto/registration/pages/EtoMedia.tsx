@@ -16,7 +16,7 @@ import { appConnect } from "../../../../store";
 import { FormField, FormFieldBoolean } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
-import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
+import { SocialProfilesEditor, SOCIAL_PROFILES_ICONS } from "../../../shared/SocialProfilesEditor";
 import { Tooltip } from "../../../shared/tooltips";
 import { convert, removeEmptyKeyValueFields, removeIfUrlEmpty } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";

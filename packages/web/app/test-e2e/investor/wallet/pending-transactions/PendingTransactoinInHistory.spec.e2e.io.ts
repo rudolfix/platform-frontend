@@ -1,3 +1,5 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
+
 import { generalPendingTxFixture } from "../../../../modules/tx/utils";
 import {
   addPendingTransactions,
@@ -8,7 +10,7 @@ import {
 import { createAndLoginNewUser } from "../../../utils/userHelpers";
 
 describe("Pending Transactions In Header", () => {
-  let userAddress: string;
+  let userAddress: EthereumAddressWithChecksum;
   before(() => {
     createAndLoginNewUser({
       type: "investor",

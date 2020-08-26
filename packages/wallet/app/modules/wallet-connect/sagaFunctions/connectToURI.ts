@@ -8,10 +8,6 @@ import { signerUIModuleApi } from "modules/signer-ui/module";
 import { ESignerType } from "modules/signer-ui/types";
 import { walletConnectActions } from "modules/wallet-connect/actions";
 import { privateSymbols } from "modules/wallet-connect/lib/symbols";
-import {
-  InvalidWalletConnectUriError,
-  isValidWalletConnectUri,
-} from "modules/wallet-connect/lib/utils";
 
 import { EAppRoutes } from "router/appRoutes";
 import { navigate } from "router/routeUtils";
@@ -32,13 +28,9 @@ export function* connectToURI(
   const uri = action.payload.uri;
 
   try {
-    if (!isValidWalletConnectUri(uri)) {
-      throw new InvalidWalletConnectUriError();
-    }
-
     navigate(EAppRoutes.home);
 
-    const session = yield* call(() => walletConnectManager.createSession(uri));
+    const session = yield* call([walletConnectManager, "createSession"], uri);
 
     yield put(
       signerUIModuleApi.actions.sign({

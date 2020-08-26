@@ -1,19 +1,14 @@
-import { ECurrency, isZero } from "@neufund/shared-utils";
+import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
+import { ECurrency, isZero, TToken } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import emfluxmotorsBanner from "assets/images/emfluxmotors.png";
-import greypBanner from "assets/images/greyp.png";
-import icbmBanner from "assets/images/icbm.png";
-import myswooopBanner from "assets/images/myswooop.png";
-import neufundBanner from "assets/images/neufund.png";
-import ngraveBanner from "assets/images/ngrave.png";
-import nuCaoBanner from "assets/images/nucao.png";
-
 import { createBalanceUiData } from "components/screens/WalletScreen/utils";
 import { EIconType } from "components/shared/Icon";
-import { Money } from "components/shared/Money";
 import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { Eur } from "components/shared/formatters";
+
+import { platformEtoLink } from "config/externalRoutes";
 
 import { TBalance } from "modules/home-screen/module";
 import { TAsset } from "modules/portfolio-screen/types";
@@ -22,8 +17,6 @@ import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";
 
 import { spacingStyles } from "styles/spacings";
-
-import { TToken } from "utils/types";
 
 import { EtoCard } from "./EtoCard";
 import { HomeScreenLayoutContainer } from "./HomeScreenLayoutContainer";
@@ -41,6 +34,7 @@ type TExternalProps = {
   neuBalance: TToken<ECurrency.NEU>;
   neuBalanceEur: TToken<ECurrency.EUR>;
   totalPortfolioBalanceEur: TToken<ECurrency.EUR>;
+  etos: TEtoWithCompanyAndContract[];
 };
 
 const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
@@ -49,6 +43,7 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
   portfolioAssets: allPortfolioAssets,
   neuBalance,
   neuBalanceEur,
+  etos,
   totalPortfolioBalanceEur,
 }) => {
   const myPortfolioAssets = allPortfolioAssets.filter(asset => !isZero(asset.token.value));
@@ -72,13 +67,7 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
     <HomeScreenLayoutContainer>
       <Section
         heading="Portfolio"
-        subHeading={
-          <Money
-            value={totalPortfolioBalanceEur.value}
-            currency={totalPortfolioBalanceEur.type}
-            decimalPlaces={totalPortfolioBalanceEur.precision}
-          />
-        }
+        subHeading={<Eur token={totalPortfolioBalanceEur} />}
         style={styles.section}
       >
         {portfolioAssets.slice(0, PORTFOLIO_ASSETS_COUNT).map(asset => (
@@ -105,13 +94,7 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
 
       <Section
         heading="Wallet"
-        subHeading={
-          <Money
-            value={totalBalanceInEur.value}
-            currency={totalBalanceInEur.type}
-            decimalPlaces={totalBalanceInEur.precision}
-          />
-        }
+        subHeading={<Eur token={totalBalanceInEur} />}
         style={styles.section}
       >
         {formattedBalances.map(balance => (
@@ -128,74 +111,16 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
       </Section>
 
       <Section heading="Investment Opportunities" style={styles.section}>
-        <EtoCard
-          etoState="Coming Soon"
-          companyName="the nu company"
-          style={styles.etoCard}
-          companyThumbnail={nuCaoBanner}
-          categories={["Impact", "Food"]}
-          onPress={() =>
-            onEtoCardPress(
-              "https://platform.neufund.org/eto/view/LI/7900e7fe-8fdf-4930-9798-1bc267f05b2b",
-            )
-          }
-        />
-        <EtoCard
-          etoState="Proceeds Payout"
-          companyName="Grey (GRP)"
-          style={styles.etoCard}
-          companyThumbnail={greypBanner}
-          categories={["Light Electric Vehicles", "Smart Mobility"]}
-          onPress={() =>
-            onEtoCardPress(
-              "https://platform.neufund.org/eto/view/LI/1eb004fd-c44d-4bed-9e76-0e0858649587",
-            )
-          }
-        />
-        <EtoCard
-          etoState="Proceeds Payout"
-          companyName="Neufund (FTH)"
-          style={styles.etoCard}
-          companyThumbnail={neufundBanner}
-          categories={["Technology", "Blockchain"]}
-          onPress={() =>
-            onEtoCardPress(
-              "https://platform.neufund.org/eto/view/DE/efbfc858-0f29-4351-8d07-850b1e0461b8",
-            )
-          }
-        />
-        <EtoCard
-          etoState="Proceeds Payout"
-          companyName="Emuflux Motors"
-          style={styles.etoCard}
-          companyThumbnail={emfluxmotorsBanner}
-          categories={["Mobility", "India"]}
-          onPress={() => onEtoCardPress("http://www.emfluxmotors.com/")}
-        />
-        <EtoCard
-          etoState="Coming Soon"
-          companyName="My Swoop"
-          style={styles.etoCard}
-          companyThumbnail={myswooopBanner}
-          categories={["Re-commerce", "Germany"]}
-          onPress={() => onEtoCardPress("https://www.myswooop.de/")}
-        />
-        <EtoCard
-          etoState="Coming Soon"
-          companyName="Ngrave"
-          style={styles.etoCard}
-          companyThumbnail={ngraveBanner}
-          categories={["Blockchain", "Belgium"]}
-          onPress={() => onEtoCardPress("https://www.ngrave.io/")}
-        />
-        <EtoCard
-          etoState="Success"
-          companyName="NEUFUND ICBM Capital Raise"
-          style={styles.etoCard}
-          companyThumbnail={icbmBanner}
-          categories={["Technology", "Blockchain"]}
-          onPress={() => onEtoCardPress("https://commit.neufund.org/")}
-        />
+        {etos.map(eto => (
+          <EtoCard
+            key={eto.etoId}
+            eto={eto}
+            style={styles.etoCard}
+            onPress={() => {
+              onEtoCardPress(platformEtoLink(eto.previewCode, eto.product.jurisdiction));
+            }}
+          />
+        ))}
       </Section>
     </HomeScreenLayoutContainer>
   );

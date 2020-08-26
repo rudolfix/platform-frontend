@@ -1,13 +1,13 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import { ECurrency, EthereumTxHash, toEthereumTxHash } from "@neufund/shared-utils";
+import { ECurrency, EthereumTxHash, toEthereumTxHash, TToken } from "@neufund/shared-utils";
 import * as React from "react";
 import { Linking, StyleSheet, View } from "react-native";
 
 import { createBalanceUiData } from "components/screens/WalletScreen/utils";
 import { HeaderScreen } from "components/shared/HeaderScreen";
 import { INDICATOR_SIZE, LoadingIndicator } from "components/shared/LoadingIndicator";
-import { Money } from "components/shared/Money";
 import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { Eur } from "components/shared/formatters";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 import { st } from "components/utils";
 
@@ -16,8 +16,6 @@ import { etherscanTxLink } from "config/externalRoutes";
 import { TBalance, TxHistoryPaginated } from "modules/wallet-screen/module";
 
 import { spacingStyles } from "styles/spacings";
-
-import { TToken } from "utils/types";
 
 import { Transactions } from "./Transactions/Transactions";
 import { ETransactionKind } from "./Transactions/types";
@@ -60,16 +58,7 @@ const WalletScreenLayout: React.FunctionComponent<TExternalProps> = ({
   };
 
   return (
-    <HeaderScreen
-      heading={
-        <Money
-          value={totalBalanceInEur.value}
-          currency={totalBalanceInEur.type}
-          decimalPlaces={totalBalanceInEur.precision}
-        />
-      }
-      subHeading={"Wallet balance"}
-    >
+    <HeaderScreen heading={<Eur token={totalBalanceInEur} />} subHeading={"Wallet balance"}>
       {props => (
         <Transactions
           onTransactionPress={transaction => showActionSheet(toEthereumTxHash(transaction.txHash))}

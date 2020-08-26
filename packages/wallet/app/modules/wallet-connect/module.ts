@@ -1,7 +1,9 @@
 import { walletConnectActions } from "./actions";
 import { setupBindings } from "./lib/bindings";
+import { isValidWalletConnectUri } from "./lib/utils";
 import { walletConnectReducerMap } from "./reducer";
-import { tryToConnectExistingSession, walletConnectSaga } from "./sagas";
+import { tryToConnectExistingSession } from "./sagaFunctions/tryToConnectExistingSession";
+import { walletConnectSaga } from "./sagas";
 import { selectWalletConnectPeer } from "./selectors";
 
 const MODULE_ID = "wallet:wallet-connect";
@@ -21,6 +23,9 @@ const walletConnectModuleApi = {
   },
   sagas: {
     tryToConnectExistingSession,
+  },
+  utils: {
+    isValidWalletConnectUri,
   },
 };
 

@@ -1,35 +1,23 @@
+import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import React from "react";
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 
+import { ETOInvestorState } from "components/shared/eto/ETOInvestorState";
 import { Panel } from "components/shared/panel/Panel";
 import { Headline } from "components/shared/typography/Headline";
-import { HelperText } from "components/shared/typography/HelperText";
 
-import { baseGray, baseGreen, baseWhite } from "styles/colors";
+import { baseGray, baseWhite } from "styles/colors";
 import { roundness, shadowStyles } from "styles/common";
 import { spacing2, spacingStyles } from "styles/spacings";
 import { typographyStyles } from "styles/typography";
 
 type TEtoCardProps = {
-  categories: string[];
-  companyThumbnail: ImageSourcePropType;
-  companyName: string;
-  etoState: string;
+  eto: TEtoWithCompanyAndContract;
   onPress: () => void;
 };
 
 const EtoCard: React.FunctionComponent<TEtoCardProps & React.ComponentProps<typeof Panel>> = ({
-  categories,
-  companyThumbnail,
-  companyName,
-  etoState,
+  eto,
   onPress,
   style,
   ...props
@@ -38,28 +26,27 @@ const EtoCard: React.FunctionComponent<TEtoCardProps & React.ComponentProps<type
     <View style={[styles.wrapper, style]}>
       <View style={styles.companyThumbnailWrapper}>
         <Image
-          source={companyThumbnail}
+          source={{ uri: eto.company.companyPreviewCardBanner }}
           style={styles.companyThumbnail}
           accessibilityIgnoresInvertColors
         />
 
-        <View style={styles.categories}>
-          {categories.map(category => (
-            <Text key={category} style={styles.category}>
-              {category}
-            </Text>
-          ))}
-        </View>
+        {eto.company.categories && (
+          <View style={styles.categories}>
+            {eto.company.categories.map(category => (
+              <Text key={category} style={styles.category}>
+                {category}
+              </Text>
+            ))}
+          </View>
+        )}
       </View>
 
       <View style={styles.body}>
-        <View style={styles.stateRow}>
-          <View style={styles.stateIndicator} />
-          <HelperText style={styles.stateName}>{etoState}</HelperText>
-        </View>
+        <ETOInvestorState eto={eto} style={styles.stateRow} />
 
         <View>
-          <Headline level={3}>{companyName}</Headline>
+          <Headline level={3}>{eto.company.brandName}</Headline>
         </View>
       </View>
     </View>
@@ -83,15 +70,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     flexDirection: "row",
     justifyContent: "flex-end",
+    flexWrap: "wrap",
     bottom: spacing2,
-    left: spacing2,
+    left: "20%",
     right: spacing2,
   },
   category: {
     ...typographyStyles.helperText,
-    padding: 2,
     ...spacingStyles.ph2,
     ...spacingStyles.ml2,
+    ...spacingStyles.mt2,
+    paddingVertical: 2,
     backgroundColor: baseGray,
     borderRadius: 10,
     color: baseWhite,
@@ -99,22 +88,9 @@ const styles = StyleSheet.create({
   },
   stateRow: {
     ...spacingStyles.mb2,
-    flexDirection: "row",
-    alignItems: "center",
   },
   body: {
     ...spacingStyles.p4,
-  },
-  stateName: {
-    ...spacingStyles.ml2,
-    ...typographyStyles.menuLabelBold,
-    textTransform: "uppercase",
-  },
-  stateIndicator: {
-    width: 8,
-    height: 8,
-    backgroundColor: baseGreen,
-    borderRadius: 4,
   },
   companyThumbnailWrapper: {
     position: "relative",

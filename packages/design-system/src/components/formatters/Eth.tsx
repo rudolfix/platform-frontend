@@ -3,6 +3,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
+  formatCurrency,
   TDataTestId,
 } from "@neufund/shared-utils";
 import * as React from "react";
@@ -10,7 +11,6 @@ import * as React from "react";
 import { Units } from "./atoms/Units";
 import { IValueProps, Value } from "./atoms/Value";
 import { ICommonFormatterProps } from "./types";
-import { formatCurrency } from "./utils";
 
 const EthComponent: React.FunctionComponent<IValueProps & ICommonFormatterProps & TDataTestId> = ({
   className,
@@ -31,7 +31,7 @@ const EthComponent: React.FunctionComponent<IValueProps & ICommonFormatterProps 
   return (
     <span className={className} data-test-id={dataTestId}>
       <Value>{formattedValue || defaultValue || " "}</Value>
-      <Units show={!!formattedValue}>&#x20;ETH</Units>
+      {formattedValue && <Units>&#x20;ETH</Units>}
     </span>
   );
 };

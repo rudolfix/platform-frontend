@@ -9,7 +9,7 @@ import { baseGray } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 type TExternalProps = {
-  headline: string;
+  headline: React.ReactNode;
   icon: EIconType;
   approve: () => void;
   reject: () => void;
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     ...spacingStyles.mb3,
 
     color: baseGray,
+    textAlign: "center",
   },
   acceptButton: {
     ...spacingStyles.mb1,

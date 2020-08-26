@@ -1,9 +1,9 @@
 import { Eur } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { ENumberInputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { BankNumber } from "../../../wallet/bank-account/BankAccount";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

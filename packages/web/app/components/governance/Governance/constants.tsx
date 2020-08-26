@@ -1,8 +1,7 @@
-import { Values } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { appRoutes } from "../../appRoutes";
+import { appRoutes, TAppRoute } from "../../appRoutes";
 
 export enum EGovernancePage {
   OVERVIEW = "overview",
@@ -16,7 +15,7 @@ export enum EGovernancePage {
 
 export type TGovernancePage = {
   key: EGovernancePage;
-  to: Values<typeof appRoutes>;
+  to: TAppRoute;
   comingSoon?: boolean;
   label: React.ReactNode;
 };

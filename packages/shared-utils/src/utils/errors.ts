@@ -9,6 +9,11 @@ export class GovernanceIncompatibleError extends Error {
     super()
   }
 }
+export class DevError extends Error {
+  constructor(message: string) {
+    super(`[Dev Only] ${message}`);
+  }
+}
 
 const assertError = (error: unknown): asserts error is Error => {
   if (!(error instanceof Error)) {
@@ -19,4 +24,3 @@ const assertError = (error: unknown): asserts error is Error => {
 };
 
 export { assertError };
-

@@ -1,10 +1,13 @@
+import { toDeepPartialMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 
 import { testEto } from "../../tests/fixtures";
 import { EJurisdiction } from "../kyc/module";
 import { EEtoState } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+import { EETOStateOnChain, EEtoSubState, TEtoWithCompanyAndContract } from "./types";
 import {
   amendEtoToCompatibleFormat,
+  getEtoCurrentState,
   getEtoEurMaxTarget,
   getEtoEurMinTarget,
   getEtoNextStateStartDate,
@@ -128,6 +131,34 @@ describe("eto-utils", () => {
       expect(
         getEtoEurMaxTarget(mockEto(EEtoState.ON_CHAIN, "1000", 10, undefined, 100, "5200")),
       ).to.eq("5200");
+    });
+  });
+
+  describe("getState", () => {
+    const subState = EEtoSubState.WHITELISTING;
+    const timedState = EETOStateOnChain.Refund;
+    const state = EEtoState.PROSPECTUS_APPROVED;
+
+    const eto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+      state,
+      subState,
+      contract: {
+        timedState,
+      },
+    });
+
+    it("should return eto calculated subState when set", () => {
+      expect(getEtoCurrentState(eto)).to.eq(subState);
+    });
+
+    it("should return eto on chain state when subState is not set", () => {
+      expect(getEtoCurrentState({ ...eto, state: EEtoState.ON_CHAIN, subState: undefined })).to.eq(
+        timedState,
+      );
+    });
+
+    it("should return eto state when subState and onChain state is not yet set", () => {
+      expect(getEtoCurrentState({ ...eto, subState: undefined, contract: undefined })).to.eq(state);
     });
   });
 });

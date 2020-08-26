@@ -4,6 +4,7 @@ import {
   put,
   SagaGenerator,
   select,
+  TActionFromCreator,
   takeEvery,
   takeLatestUntil,
 } from "@neufund/sagas";
@@ -18,7 +19,7 @@ import { neuGetBindings } from "../../../utils";
 import { coreModuleApi } from "../../core/module";
 import { ICreateJwtEndpointResponse } from "../lib/signature/SignatureAuthApi";
 import { privateSymbols, symbols } from "../lib/symbols";
-import { userPrivateActions } from "../user/actions";
+import { userActions } from "../user/actions";
 import { jwtActions } from "./actions";
 import { JwtNotAvailable } from "./errors";
 import { signChallenge } from "./sagasInternal";
@@ -127,12 +128,16 @@ function* refreshJWT(): SagaGenerator<void> {
   logger.info("Jwt refreshed successfully");
 }
 
-function* clearJWT(): SagaGenerator<void> {
+function* clearJWT(
+  action: TActionFromCreator<typeof userActions, typeof userActions.reset>,
+): SagaGenerator<void> {
   const { jwtStorage } = yield* neuGetBindings({
     jwtStorage: symbols.jwtStorage,
   });
 
-  yield* call(() => jwtStorage.clear());
+  if (action.payload.clearStorage) {
+    yield* call(() => jwtStorage.clear());
+  }
 }
 
 /**
@@ -187,8 +192,8 @@ export function* handleJwtTimeout(): SagaGenerator<void> {
 }
 
 function* authJwtSagas(): SagaGenerator<void> {
-  yield takeEvery(userPrivateActions.reset, clearJWT);
-  yield* takeLatestUntil(jwtActions.setJWT, userPrivateActions.reset, handleJwtTimeout);
+  yield takeEvery(userActions.reset, clearJWT);
+  yield* takeLatestUntil(jwtActions.setJWT, userActions.reset, handleJwtTimeout);
 }
 
 export { createJwt, escalateJwt, refreshJWT, loadJwt, selectJwt, setJwt, authJwtSagas };

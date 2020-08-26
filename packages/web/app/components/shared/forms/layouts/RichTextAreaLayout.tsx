@@ -69,7 +69,7 @@ const RichTextAreaLayoutComponent: React.FunctionComponent<TExternalProps &
         writer.setAttribute("aria-labeledby", generateLabelId(name), viewEditableRoot);
         writer.setAttribute("aria-multiline", true, viewEditableRoot);
 
-        if (process.env.NF_CYPRESS_RUN === "1" || process.env.NODE_ENV === "development") {
+        if (process.env.NF_CYPRESS_RUN === "1" || __DEV__) {
           writer.setAttribute("data-test-id", `form.name.${name}`, viewEditableRoot);
         }
 

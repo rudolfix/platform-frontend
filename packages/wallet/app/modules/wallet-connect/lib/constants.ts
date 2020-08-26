@@ -14,8 +14,8 @@ const CALL_REQUEST_EVENT = "call_request";
 const DISCONNECT_EVENT = "disconnect";
 const CONNECT_EVENT = "connect";
 
-const ETH_SIGN_RPC_METHOD = "eth_sign";
-const ETH_SEND_TRANSACTION_RPC_METHOD = "eth_sendTransaction";
+const ETH_SIGN_RPC_METHOD = "eth_sign" as const;
+const ETH_SEND_TYPED_TRANSACTION_RPC_METHOD = "eth_sendTypedTransaction" as const;
 
 const WALLET_CONNECT_SESSION_KEY = "wallet-connect-session";
 
@@ -28,6 +28,6 @@ export {
   DISCONNECT_EVENT,
   ETH_SIGN_RPC_METHOD,
   CONNECT_EVENT,
-  ETH_SEND_TRANSACTION_RPC_METHOD,
+  ETH_SEND_TYPED_TRANSACTION_RPC_METHOD,
   WALLET_CONNECT_SESSION_KEY,
 };

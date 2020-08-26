@@ -1,13 +1,14 @@
 import { fork, put, select } from "@neufund/sagas";
-import { investorPortfolioModuleApi } from "@neufund/shared-modules";
+import { ETxType, investorPortfolioModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
+import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxGasCostEthUlps } from "../../sender/selectors";
 
@@ -22,7 +23,7 @@ function* generateGetClaimTransaction(
   const txInput = etoContract.claimTx().getData();
 
   const txInitialDetails = {
-    to: etoContract.address,
+    to: makeEthereumAddressChecksummed(etoContract.address),
     from: userAddress,
     data: txInput,
     value: "0",

@@ -1,7 +1,7 @@
-import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
+import { ETxType, TypeOfYTS, YupTS } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
-import { ETxType } from "../../../lib/web3/types";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 
 export const OOO_TRANSACTION_TYPE = "mempool";
@@ -15,14 +15,14 @@ export const TxPendingDataSchema = YupTS.object({
   blockHash: YupTS.string().optional(),
   blockNumber: YupTS.string().optional(),
   chainId: YupTS.string().optional(),
-  from: YupTS.string(),
+  from: YupTS.string<EthereumAddressWithChecksum>(),
   gas: YupTS.string(),
   gasPrice: YupTS.string(),
   hash: YupTS.string(),
   input: YupTS.string(),
   nonce: YupTS.string(),
   status: YupTS.string().optional(),
-  to: YupTS.string(),
+  to: YupTS.string<EthereumAddressWithChecksum>(),
   transactionIndex: YupTS.string().optional(),
   value: YupTS.string(),
 });

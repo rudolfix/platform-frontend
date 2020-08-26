@@ -1,9 +1,7 @@
 import { txHistoryApi, TModuleState } from "@neufund/shared-modules";
-import { ECurrency } from "@neufund/shared-utils";
+import { ECurrency, TToken } from "@neufund/shared-utils";
 
 import { setupWalletScreenModule } from "modules/wallet-screen/module";
-
-import { TToken } from "utils/types";
 
 export type TWalletScreenModuleState = TModuleState<typeof setupWalletScreenModule>;
 

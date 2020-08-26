@@ -1,4 +1,4 @@
-import { ECurrency } from "@neufund/shared-utils";
+import { createToken, ECurrency, ENumberInputFormat } from "@neufund/shared-utils";
 import React from "react";
 import { FormattedDate } from "react-intl";
 import {
@@ -11,19 +11,19 @@ import {
 } from "react-native";
 
 import { EIconType, Icon } from "components/shared/Icon";
-import { Money } from "components/shared/Money";
+import { Eur, MoneyUnsafe } from "components/shared/formatters";
 import { HelperText } from "components/shared/typography/HelperText";
 import { Text, TextBold } from "components/shared/typography/Text";
 import { st } from "components/utils";
 
 import { ETransactionDirection, TTxHistory } from "modules/wallet-screen/module";
 
-import { baseGray, baseGreen, baseSilver, blueyGray } from "styles/colors";
-import { spacingStyles } from "styles/spacings";
+import { baseSilver } from "styles/colors";
 
 import { Badge, EBadgeType } from "./Badge";
 import { IconSpacer } from "./IconSpacer";
 import { getTransactionName } from "./getTransactionName";
+import { transactionSharedStyles } from "./transactionSharedStyles";
 
 type TExternalProps = {
   transaction: TTxHistory;
@@ -57,25 +57,25 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({ transacti
 
   return (
     <TouchableOpacity
-      style={st(styles.container)}
+      style={st(styles.container, transactionSharedStyles.container)}
       activeOpacity={0.4}
       accessibilityComponentType="button"
       accessibilityTraits="button"
       onPress={onPress}
     >
       <>
-        <IconSpacer style={st(styles.spacer, { transform: [{ rotate }] })}>
-          <Icon style={[st(styles.icon)]} type={EIconType.PENDING} />
+        <IconSpacer style={st(transactionSharedStyles.spacer, { transform: [{ rotate }] })}>
+          <Icon style={[st(transactionSharedStyles.icon)]} type={EIconType.PENDING} />
         </IconSpacer>
 
-        <View style={st(styles.wrapper)}>
+        <View style={st(transactionSharedStyles.wrapper)}>
           <View>
-            <Text style={styles.name} numberOfLines={1}>
+            <Text style={transactionSharedStyles.name} numberOfLines={1}>
               {getTransactionName(transaction)}
             </Text>
 
             <View style={styles.dateAndBadgeWrapper}>
-              <HelperText style={styles.date} numberOfLines={1}>
+              <HelperText style={transactionSharedStyles.date} numberOfLines={1}>
                 <FormattedDate
                   value={transaction.date}
                   year="numeric"
@@ -87,26 +87,30 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({ transacti
             </View>
           </View>
 
-          <View>
+          <View style={st(transactionSharedStyles.valueWrapper)}>
             <TextBold
               style={st(
-                [isIncomeTransaction, styles.valueIn],
-                [!isIncomeTransaction, styles.valueOut],
+                [isIncomeTransaction, transactionSharedStyles.valueIn],
+                [!isIncomeTransaction, transactionSharedStyles.valueOut],
               )}
               numberOfLines={1}
             >
               {!isIncomeTransaction && <>&minus;</>}
-              <Money
-                currency={transaction.currency}
-                value={transaction.amount}
-                decimalPlaces={18}
+              <MoneyUnsafe
+                token={createToken(
+                  transaction.currency,
+                  transaction.amount,
+                  ENumberInputFormat.ULPS,
+                )}
               />
             </TextBold>
 
             {"amountEur" in transaction && (
-              <HelperText style={styles.valueEquivalent} numberOfLines={1}>
+              <HelperText style={transactionSharedStyles.valueEquivalent} numberOfLines={1}>
                 &asymp;{" "}
-                <Money currency={ECurrency.EUR} value={transaction.amountEur} decimalPlaces={18} />
+                <Eur
+                  token={createToken(ECurrency.EUR, transaction.amountEur, ENumberInputFormat.ULPS)}
+                />
               </HelperText>
             )}
           </View>
@@ -119,43 +123,10 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({ transacti
 const styles = StyleSheet.create({
   container: {
     backgroundColor: baseSilver,
-    flexDirection: "row",
-    height: 64,
-  },
-  spacer: { alignSelf: "center" },
-  icon: {
-    color: baseGray,
-    width: "100%",
-    height: "100%",
-  },
-  wrapper: {
-    ...spacingStyles.pr4,
-
-    flex: 1,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  name: {
-    color: baseGray,
   },
   dateAndBadgeWrapper: {
     alignItems: "center",
     flexDirection: "row",
-  },
-  date: {
-    ...spacingStyles.mr1,
-
-    color: blueyGray,
-  },
-  valueIn: {
-    color: baseGreen,
-  },
-  valueOut: {
-    color: baseGray,
-  },
-  valueEquivalent: {
-    color: blueyGray,
   },
 });
 

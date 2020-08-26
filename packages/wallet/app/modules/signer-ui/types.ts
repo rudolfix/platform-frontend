@@ -1,3 +1,4 @@
+import { ETxType } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { TTransactionRequestRequired } from "modules/eth/lib/types";
@@ -21,6 +22,7 @@ type TWCSessionResponsePayload = {
 
 type TSignRequestPayload = {
   digest: string;
+  permission: string | undefined;
 };
 
 type TSignResponsePayload = {
@@ -29,6 +31,12 @@ type TSignResponsePayload = {
 
 type TSendTransactionRequestPayload = {
   transaction: TTransactionRequestRequired;
+  transactionMetaData: {
+    // any until we have shape
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    transactionAdditionalData: any;
+    transactionType: ETxType | string;
+  };
 };
 
 type TSendTransactionResponsePayload = {

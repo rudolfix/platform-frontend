@@ -104,7 +104,7 @@ const Form = <Values extends {}>({
 
   return (
     <>
-      {process.env.NODE_ENV === "development" && validationSchema && (
+      {__DEV__ && validationSchema && (
         <SchemaFieldsGuard<Values>
           {...props}
           validationSchema={validationSchema}

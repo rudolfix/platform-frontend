@@ -1,11 +1,12 @@
 import { ButtonArrowRight } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 import { branch, compose, renderNothing } from "recompose";
 
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData, selectTxDetails } from "../../../../modules/tx/sender/selectors";
 import { TRefundAdditionalData } from "../../../../modules/tx/transactions/refund/types";

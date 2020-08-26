@@ -1,9 +1,9 @@
-import { ILogger } from "@neufund/shared-modules";
-import { assertError, EthereumAddress } from "@neufund/shared-utils";
+import { EJwtPermissions, ETxType, ILogger } from "@neufund/shared-modules";
+import { assertError, EthereumAddress, isInEnum } from "@neufund/shared-utils";
 import WalletConnect from "@walletconnect/react-native";
 import { IWalletConnectSession } from "@walletconnect/types";
 import { EventEmitter2 } from "eventemitter2";
-import { number, string, object } from "yup";
+import { number, object, string } from "yup";
 
 import { TWalletConnectPeer } from "modules/wallet-connect/types";
 
@@ -13,20 +13,22 @@ import {
   InvalidJSONRPCPayloadError,
   InvalidRPCMethodError,
   NoPeerMetaError,
+  TooManyPermissionsError,
   WalletConnectAdapterError,
 } from "./adapterErrors";
 import {
   CALL_REQUEST_EVENT,
   CONNECT_EVENT,
   DISCONNECT_EVENT,
-  ETH_SEND_TRANSACTION_RPC_METHOD,
+  ETH_SEND_TYPED_TRANSACTION_RPC_METHOD,
   ETH_SIGN_RPC_METHOD,
   SESSION_REQUEST_EVENT,
   walletConnectClientMeta,
 } from "./constants";
 import {
+  TDigestJSON,
   TPeerMeta,
-  WalletConnectEthSendTransactionJSONRPCSchema,
+  WalletConnectEthSendTypedTransactionJSONRPCSchema,
   WalletConnectEthSignJSONRPCSchema,
   WalletConnectSessionJSONRPCSchema,
 } from "./schemas";
@@ -35,7 +37,7 @@ import {
   ExtractWalletConnectAdapterEmitData,
   IWalletConnectOptions,
 } from "./types";
-import { parseRPCPayload } from "./utils";
+import { parseDigestString, parseRPCPayload } from "./utils";
 
 export type TSessionDetails = {
   peer: TWalletConnectPeer;
@@ -142,12 +144,26 @@ class WalletConnectAdapter extends EventEmitter2 {
         case ETH_SIGN_RPC_METHOD:
           try {
             const parsedPayload = parseRPCPayload(WalletConnectEthSignJSONRPCSchema, payload);
+            const digestString = parsedPayload.params[1];
+            const { permissions }: TDigestJSON = parseDigestString(digestString);
+            const filteredPermissions = permissions.filter(
+              (permission: string) => permission !== EJwtPermissions.SIGN_TOS,
+            );
+
+            if (filteredPermissions.length > 1) {
+              this.handleCallSigningError(
+                payload.id,
+                new InvalidJSONRPCPayloadError(payload.method, new TooManyPermissionsError()),
+              );
+              return;
+            }
 
             await this.handleCallSigningRequest(
               EWalletConnectAdapterEvents.SIGN_MESSAGE,
               parsedPayload.id,
               {
-                digest: parsedPayload.params[1],
+                digest: digestString,
+                permission: permissions[0],
               },
             );
           } catch (e) {
@@ -160,18 +176,27 @@ class WalletConnectAdapter extends EventEmitter2 {
           }
           break;
 
-        case ETH_SEND_TRANSACTION_RPC_METHOD:
+        case ETH_SEND_TYPED_TRANSACTION_RPC_METHOD:
           try {
             const parsedPayload = parseRPCPayload(
-              WalletConnectEthSendTransactionJSONRPCSchema,
+              WalletConnectEthSendTypedTransactionJSONRPCSchema,
               payload,
             );
+
+            const transactionType = parsedPayload.params[1].transactionType;
+            if (!isInEnum(ETxType, transactionType)) {
+              this.logger.warn("Encountered unsupported ETxType");
+            }
 
             await this.handleCallSigningRequest(
               EWalletConnectAdapterEvents.SEND_TRANSACTION,
               parsedPayload.id,
               {
                 transaction: parsedPayload.params[0],
+                transactionMetaData: {
+                  transactionType,
+                  transactionAdditionalData: parsedPayload.params[1].transactionAdditionalData,
+                },
               },
             );
           } catch (e) {

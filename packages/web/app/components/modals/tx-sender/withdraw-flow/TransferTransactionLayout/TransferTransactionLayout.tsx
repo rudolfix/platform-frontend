@@ -11,8 +11,7 @@ import {
 } from "../../../../../modules/tx/user-flow/transfer/utils";
 import { ErrorAlert } from "../../../../shared/Alerts";
 import { DataRow, DataRowSeparator } from "../../../../shared/DataRow";
-import { EtherscanTxLink } from "../../../../shared/links/EtherscanLink";
-import { ExternalLink } from "../../../../shared/links/ExternalLink";
+import { EtherscanTxLink, ExternalLink } from "../../../../shared/links";
 import {
   ESize as ETransactionDataSize,
   ETheme as ETransactionDataTheme,

@@ -7,6 +7,7 @@ export enum EAuthState {
   NOT_AUTHORIZED = "not_authorized",
   AUTHORIZING = "authorizing",
   AUTHORIZED = "authorized",
+  LOST = "lost",
 }
 
 interface IAuthState {
@@ -59,6 +60,13 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         ...initialState,
         // still keep current wallet in the store to show the proper UI
         wallet: state.wallet,
+      };
+
+    case authActions.lost.getType():
+      return {
+        ...initialState,
+        state: EAuthState.LOST,
+        wallet: action.payload.metadata,
       };
 
     default:

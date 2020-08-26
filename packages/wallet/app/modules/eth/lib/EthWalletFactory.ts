@@ -1,9 +1,9 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import {
-  EthereumPrivateKey,
-  EthereumHDMnemonic,
-  toEthereumHDPath,
   assertNever,
+  EthereumHDMnemonic,
+  EthereumPrivateKey,
+  toEthereumHDPath,
 } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
@@ -15,7 +15,7 @@ import { EthWallet, TEthWalletProviderType } from "./EthWallet";
 import { TSecureReference } from "./SecureStorage";
 import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { privateSymbols } from "./symbols";
-import { EWalletType, TWalletUIMetadata } from "./types";
+import { EWalletExistenceStatus, EWalletType, TWalletUIMetadata } from "./types";
 
 class EthWalletFactoryError extends EthModuleError {
   constructor(message: string) {
@@ -66,20 +66,23 @@ class EthWalletFactory {
    *
    * @note Make sure to check for wallet before calling `createFromExisting`.
    */
-  async hasExistingWallet() {
-    this.logger.info("Checking if there is existing wallet");
+  async getWalletExistenceStatus() {
+    this.logger.info("Checking if there is an existing wallet");
 
     const walletMetadata = await this.walletStorage.get();
 
-    let hasExistingWallet = false;
+    let status: EWalletExistenceStatus = EWalletExistenceStatus.NOT_EXIST;
 
     if (walletMetadata) {
-      hasExistingWallet = await this.ethSecureEnclave.hasSecret(walletMetadata.privateKeyReference);
+      const hasSecret = await this.ethSecureEnclave.hasSecret(walletMetadata.privateKeyReference);
+
+      // in case there is no secret we may assume that in some way keychain was cleared out (for .e.g. biometrics have changed)
+      status = hasSecret ? EWalletExistenceStatus.EXIST : EWalletExistenceStatus.LOST;
     }
 
-    this.logger.info(`Existing wallet ${hasExistingWallet ? "found" : "not found"}`);
+    this.logger.info(`Wallet existence status is "${status}"`);
 
-    return hasExistingWallet;
+    return status;
   }
 
   /**

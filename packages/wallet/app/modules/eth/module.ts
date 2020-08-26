@@ -1,6 +1,7 @@
 import { utils as ethersUtils } from "ethers";
 
 import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
+import { EWalletExistenceStatus } from "modules/eth/lib/types";
 
 import { setupBindings } from "./lib/bindings";
 import {
@@ -43,4 +44,4 @@ const walletEthModuleApi = {
   },
 };
 
-export { setupWalletEthModule, walletEthModuleApi };
+export { setupWalletEthModule, walletEthModuleApi, EWalletExistenceStatus };

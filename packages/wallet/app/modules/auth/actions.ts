@@ -54,4 +54,9 @@ export const authActions = {
    */
   logout: createActionFactory("AUTH_LOGOUT"),
   logoutDone: createActionFactory("AUTH_LOGOUT_DONE"),
+
+  /**
+   * Logout flow
+   */
+  lost: createActionFactory("AUTH_LOST", (metadata: TAuthWalletMetadata) => ({ metadata })),
 };

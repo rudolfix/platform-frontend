@@ -13,10 +13,11 @@ import {
   toEthereumPrivateKey,
   toEthereumHDMnemonic,
   invariant,
+  assertNever,
 } from "@neufund/shared-utils";
 import Config from "react-native-config";
 
-import { walletEthModuleApi } from "modules/eth/module";
+import { walletEthModuleApi, EWalletExistenceStatus } from "modules/eth/module";
 import { notificationUIModuleApi } from "modules/notification-ui/module";
 
 import { authActions } from "./actions";
@@ -31,29 +32,48 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
     logger: coreModuleApi.symbols.logger,
   });
 
-  const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
+  const existenceStatus = yield* call(() => ethManager.getWalletExistenceStatus());
 
-  if (!hasExistingWallet) {
-    logger.info("No existing wallet to sign in");
+  switch (existenceStatus) {
+    case EWalletExistenceStatus.NOT_EXIST: {
+      logger.info("No existing wallet to sign in");
 
-    yield put(authActions.canCreateAccount());
+      yield put(authActions.canCreateAccount());
 
-    return;
-  }
+      return;
+    }
+    case EWalletExistenceStatus.EXIST: {
+      const unlockFlow = Config.NF_ACCOUNT_UNLOCK_FLOW ?? "auto";
 
-  const unlockFlow = Config.NF_ACCOUNT_UNLOCK_FLOW ?? "auto";
+      logger.info(`Unlock flow set to ${unlockFlow}`);
 
-  logger.info(`Unlock flow set to ${unlockFlow}`);
+      switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
+        case "user_requested":
+          yield* call(allowToUnlockExistingAccount);
+          break;
 
-  switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
-    case "user_requested":
-      yield* call(allowToUnlockExistingAccount);
-      break;
+        case "auto":
+        default:
+          yield* call(signInExistingAccount);
+          break;
+      }
 
-    case "auto":
+      return;
+    }
+    case EWalletExistenceStatus.LOST: {
+      logger.warn("Wallet lost. Cleaning up the state from metadata");
+
+      const walletMetadata = yield* call([ethManager, "getExistingWalletMetadata"]);
+
+      // do not allow to unlock existing account without having existing wallet
+      invariant(walletMetadata, "No existing wallet to sign in");
+
+      yield put(authActions.lost(walletMetadata));
+
+      return;
+    }
     default:
-      yield* call(signInExistingAccount);
-      break;
+      assertNever(existenceStatus, "Invalid wallet existence status");
   }
 }
 

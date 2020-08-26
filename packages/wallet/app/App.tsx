@@ -62,7 +62,8 @@ const AuthorizedGuards: React.FunctionComponent<Pick<TLayoutProps, "authState" |
   switch (authState) {
     case EAuthState.NOT_AUTHORIZED:
     case EAuthState.AUTHORIZING:
-      return <AppNoAuthRouter authWallet={authWallet} />;
+    case EAuthState.LOST:
+      return <AppNoAuthRouter authWallet={authWallet} authState={authState} />;
     case EAuthState.AUTHORIZED:
       return (
         <>

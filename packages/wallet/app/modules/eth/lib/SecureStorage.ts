@@ -173,10 +173,7 @@ export class KeychainSecureStorage extends BaseSecureStorage {
     try {
       const result = await Keychain.getInternetCredentials(reference, {
         authenticationPrompt: {
-          title: "Access Key",
-          subtitle: "Allow Neufund to manage your ethereum key.",
-          description: "",
-          cancel: "Deny",
+          title: "Allow Neufund to manage your ethereum key.",
         },
       });
 

@@ -1,14 +1,14 @@
 import {
   coreModuleApi,
+  ESignerType,
+  IEthManager,
   ILogger,
   TLibSymbolType,
-  IEthManager,
-  ESignerType,
 } from "@neufund/shared-modules";
 import {
-  EthereumPrivateKey,
-  EthereumHDMnemonic,
   EthereumAddressWithChecksum,
+  EthereumHDMnemonic,
+  EthereumPrivateKey,
 } from "@neufund/shared-utils";
 import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";
@@ -20,6 +20,7 @@ import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
 import { privateSymbols } from "./symbols";
 import {
+  EWalletExistenceStatus,
   ITransactionResponse,
   TTransactionRequestRequired,
   TUnsignedTransaction,
@@ -122,8 +123,19 @@ class EthManager implements IEthManager {
    *
    * @note Make sure to check for wallet before calling `plugExistingWallet`.
    */
+  async getWalletExistenceStatus() {
+    return this.ethWalletFactory.getWalletExistenceStatus();
+  }
+
+  /**
+   * Check if there is already existing wallet in the memory.
+   *
+   * @note Make sure to check for wallet before calling `plugExistingWallet`.
+   */
   async hasExistingWallet() {
-    return this.ethWalletFactory.hasExistingWallet();
+    const status = await this.ethWalletFactory.getWalletExistenceStatus();
+
+    return status === EWalletExistenceStatus.EXIST;
   }
 
   /**
@@ -141,7 +153,7 @@ class EthManager implements IEthManager {
    * @throws WalletAlreadyInMemoryError - When wallet is already available
    */
   async assertHasNoExistingWallet() {
-    if (await this.ethWalletFactory.hasExistingWallet()) {
+    if (await this.hasExistingWallet()) {
       throw new WalletAlreadyInMemoryError();
     }
   }

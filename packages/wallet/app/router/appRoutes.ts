@@ -4,6 +4,7 @@ enum EAppRoutes {
   importAccount = "ImportAccount",
   noBiometrics = "NoBiometrics",
   unlockAccount = "UnlockAccount",
+  lostAccount = "LostAccount",
   importFixture = "ImportFixtureAccount",
   walletConnectSession = "WalletConnectSession",
 

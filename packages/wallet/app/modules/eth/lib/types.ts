@@ -6,6 +6,12 @@ export enum EBlockTag {
   LATEST = "latest",
 }
 
+export enum EWalletExistenceStatus {
+  EXIST = "exist",
+  NOT_EXIST = "not_exist",
+  LOST = "lost",
+}
+
 export type TTransactionRequestRequired = {
   to: EthereumAddressWithChecksum | EthereumName;
   // TODO: hide under `EthManager` so there is not need to pass it from saga

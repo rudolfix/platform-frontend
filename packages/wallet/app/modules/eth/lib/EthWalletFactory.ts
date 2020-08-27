@@ -223,6 +223,15 @@ class EthWalletFactory {
     await this.walletStorage.clear();
   }
 
+  /**
+   * Deletes a lost wallet from the devices
+   */
+  async unsafeDeleteLostWallet(): Promise<void> {
+    this.logger.info(`Deleting lost wallet from device`);
+
+    await this.walletStorage.clear();
+  }
+
   private async createFromMnemonicReference(mnemonicReference: TSecureReference, name?: string) {
     this.logger.info(`Deriving private key for a default hd path ${DEFAULT_HD_PATH}`);
 

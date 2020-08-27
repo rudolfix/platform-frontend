@@ -261,6 +261,21 @@ class EthManager implements IEthManager {
   }
 
   /**
+   * Unplugs and deletes wallet data from the memory.
+   *
+   * @note This operation is irreversible and wallet can be replugged only from backup codes.
+   */
+  async unsafeDeleteLostWallet(): Promise<void> {
+    await this.assertHasNoExistingWallet();
+
+    this.logger.info(`Deleting a lost wallet`);
+
+    await this.ethWalletFactory.unsafeDeleteLostWallet();
+
+    this.logger.info(`Lost wallet deleted`);
+  }
+
+  /**
    * Exports wallet private key to the UI
    *
    * @note This operation is unsafe as private key is exposed to the UI

@@ -3,7 +3,8 @@ import { biometricsSagas, initializeBiometrics } from "modules/biometry/sagas";
 import {
   selectBiometricsState,
   selectBiometricsType,
-  selectIsBiometryAccessRequestRequired, selectIsBiometryAvailable,
+  selectIsBiometryAccessRequestRequired,
+  selectIsBiometryAvailable,
 } from "modules/biometry/selectors";
 
 import { setupBindings } from "./lib/bindings";
@@ -29,7 +30,7 @@ const biometryModuleApi = {
     selectBiometricsState,
     selectBiometricsType,
     selectIsBiometryAccessRequestRequired,
-    selectIsBiometryAvailable
+    selectIsBiometryAvailable,
   },
 };
 

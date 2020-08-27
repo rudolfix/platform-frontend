@@ -6,6 +6,7 @@ import {
   SagaGenerator,
   TActionFromCreator,
   take,
+  select,
 } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, authModuleAPI } from "@neufund/shared-modules";
 import {
@@ -17,6 +18,8 @@ import {
 } from "@neufund/shared-utils";
 import Config from "react-native-config";
 
+import { EAuthState } from "modules/auth/reducer";
+import { selectAuthState } from "modules/auth/selectors";
 import { walletEthModuleApi, EWalletExistenceStatus } from "modules/eth/module";
 import { notificationUIModuleApi } from "modules/notification-ui/module";
 
@@ -136,6 +139,21 @@ function* signInExistingAccount(): SagaGenerator<void> {
   }
 }
 
+function* ensureNoLostWallet(): SagaGenerator<void> {
+  const { ethManager, logger } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+    logger: coreModuleApi.symbols.logger,
+  });
+
+  const authState = yield* select(selectAuthState);
+
+  if (authState === EAuthState.LOST) {
+    logger.info("Removing lost wallet metadata");
+
+    yield* call([ethManager, "unsafeDeleteLostWallet"]);
+  }
+}
+
 function* createNewAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
@@ -143,6 +161,8 @@ function* createNewAccount(): SagaGenerator<void> {
   });
 
   try {
+    yield* call(ensureNoLostWallet);
+
     logger.info("Plugging random wallet");
 
     yield* call(() => ethManager.plugNewRandomWallet());
@@ -186,6 +206,8 @@ function* importNewAccount(
   const { privateKeyOrMnemonic, name } = action.payload;
 
   try {
+    yield* call(ensureNoLostWallet);
+
     const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
 
     if (hasExistingWallet) {
@@ -267,7 +289,9 @@ function* logout(): SagaGenerator<void> {
   } catch (e) {
     logger.error(e, "Failed to logout user");
 
-    // TODO: Force to cleanup keychain state to not store any kind of user data even in case of error
+    yield* call([ethManager, "unsafeDeleteLostWallet"]);
+
+    logger.info("State cleared from the lost wallet");
   }
 }
 

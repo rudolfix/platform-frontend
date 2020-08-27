@@ -15,4 +15,15 @@ const selectIsBiometryAccessRequestRequired = createSelector(
   biometrics => biometrics.state === EBiometricsState.ACCESS_REQUEST_REQUIRED,
 );
 
-export { selectBiometricsState, selectBiometricsType, selectIsBiometryAccessRequestRequired };
+const selectIsBiometryAvailable = createSelector(selectBiometrics, biometrics =>
+  [EBiometricsState.ACCESS_REQUEST_REQUIRED, EBiometricsState.ACCESS_ALLOWED].includes(
+    biometrics.state,
+  ),
+);
+
+export {
+  selectBiometricsState,
+  selectBiometricsType,
+  selectIsBiometryAccessRequestRequired,
+  selectIsBiometryAvailable,
+};

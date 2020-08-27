@@ -18,6 +18,10 @@ import { TAppGlobalState } from "store/types";
 
 import { initActions } from "./actions";
 
+function* initGlobalModules(): SagaGenerator<void> {
+  yield* call(walletContractsModuleApi.sagas.initializeContracts);
+  yield* call(biometryModuleApi.sagas.initializeBiometrics);
+}
 /**
  * Init global watchers
  */
@@ -30,12 +34,18 @@ function* initStartSaga(): SagaGenerator<void> {
     logger: coreModuleApi.symbols.logger,
   });
   try {
-    yield* call(walletContractsModuleApi.sagas.initializeContracts);
-    yield* call(biometryModuleApi.sagas.initializeBiometrics);
+    yield* call(initGlobalModules);
     yield* call(initGlobalWatchers);
 
     // checks if we have credentials and automatically signs the user
-    yield* call(authModuleAPI.sagas.trySignInExistingAccount);
+    const isBiometryAvailable = yield* select(
+      biometryModuleApi.selectors.selectIsBiometryAvailable,
+    );
+
+    // when there is not biometry support calling `trySignInExistingAccount` will fail on credentials check
+    if (isBiometryAvailable) {
+      yield* call(authModuleAPI.sagas.trySignInExistingAccount);
+    }
 
     yield put(initActions.done());
   } catch (e) {

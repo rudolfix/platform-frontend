@@ -1,26 +1,20 @@
 import { coreModuleApi, ILogger, TLibSymbolType } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
-import { NativeModules } from "react-native";
-import { getSupportedBiometryType } from "react-native-keychain";
+import {
+  AUTHENTICATION_TYPE,
+  canImplyAuthentication,
+  getSupportedBiometryType,
+} from "react-native-keychain";
 
 import { convertBiometrics } from "modules/biometry/lib/utils";
-import { EBiometryType, BIOMETRY_NONE } from "modules/biometry/types";
+import { BIOMETRY_NONE, EBiometryType } from "modules/biometry/types";
 import {
-  permissionsModuleApi,
-  PERMISSIONS,
-  PermissionStatus,
   PERMISSION_RESULTS,
+  PERMISSIONS,
+  permissionsModuleApi,
+  PermissionStatus,
 } from "modules/permissions/module";
-
-type TRNBiometrics = {
-  isSensorAvailable: () => Promise<
-    { available: true; biometryType: EBiometryType } | { available: false; error: Error }
-  >;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const RNBiometrics: TRNBiometrics = NativeModules.RNBiometrics;
 
 /**
  * @class Permissions
@@ -42,18 +36,16 @@ export class Biometry {
     this.permissions = permissions;
   }
 
-  async getSupportedBiometrics(): Promise<EBiometryType | typeof BIOMETRY_NONE> {
-    const sensor = await RNBiometrics.isSensorAvailable();
+  async canImplyAuthentication(): Promise<boolean> {
+    const canImplyAuth = await canImplyAuthentication({
+      authenticationType: AUTHENTICATION_TYPE.BIOMETRICS,
+    });
 
-    if (sensor.available) {
-      this.logger.info(`Available biometrics ${sensor.biometryType.toString()}`);
+    this.logger.info(
+      `Biometrics authentication is "${canImplyAuth ? "supported" : "not supported"}"`,
+    );
 
-      return sensor.biometryType;
-    }
-
-    this.logger.info("No biometrics available");
-
-    return BIOMETRY_NONE;
+    return canImplyAuth;
   }
 
   async getAvailableBiometrics(): Promise<EBiometryType | typeof BIOMETRY_NONE> {

@@ -14,10 +14,10 @@ export function* initializeBiometrics(): SagaGenerator<void> {
   });
 
   const availableBiometrics = yield* call([biometry, "getAvailableBiometrics"]);
-  const supportedBiometrics = yield* call([biometry, "getSupportedBiometrics"]);
+  const canImplyAuthentication = yield* call([biometry, "canImplyAuthentication"]);
   const biometryPermission = yield* call([biometry, "getBiometryPermission"]);
 
-  if (supportedBiometrics === BIOMETRY_NONE && biometryPermission !== PERMISSION_RESULTS.BLOCKED) {
+  if (!canImplyAuthentication && biometryPermission !== PERMISSION_RESULTS.BLOCKED) {
     logger.info("No biometrics support");
 
     yield put(biometricsActions.noBiometricsSupport(availableBiometrics));

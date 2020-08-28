@@ -538,3 +538,5 @@ export function setupEtoSagas(): () => SagaGenerator<void> {
     yield fork(neuTakeUntil, etoActions.setEtos, LOCATION_CHANGE, watchEtosSetActionSaga);
   };
 }
+
+export * from "./sagas/watchEtosSetActionSaga";

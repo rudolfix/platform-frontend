@@ -56,6 +56,10 @@ module.exports = {
           {
             name: "lodash",
             message: "Please use lodash submodules imports."
+          },
+          {
+            name: "lodash/fp",
+            message: "Please use lodash submodules imports."
           }
         ]
       }

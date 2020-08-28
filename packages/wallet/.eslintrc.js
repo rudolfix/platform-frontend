@@ -25,6 +25,8 @@ module.exports = {
       "error",
       {
         paths: [
+          // inherit base "no-restricted-imports" config paths
+          ...config.rules["no-restricted-imports"][1].paths,
           {
             name: "react-native",
             importNames: ["Platform"],

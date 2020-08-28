@@ -14,7 +14,7 @@ import {
   takeLatest,
   throttle,
 } from "@neufund/sagas";
-import { isMatch } from "lodash/fp";
+import isMatch from "lodash/fp/isMatch";
 
 import { TGlobalDependencies } from "../di/setupBindings";
 import { TActionPayload, TPattern } from "./actions";

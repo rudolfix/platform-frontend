@@ -1,5 +1,5 @@
 import { getRange } from "@neufund/shared-utils";
-import { floor } from "lodash";
+import floor from "lodash/floor";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

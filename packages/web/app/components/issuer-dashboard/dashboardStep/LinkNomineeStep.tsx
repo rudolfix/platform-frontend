@@ -1,5 +1,5 @@
 import { nonNullable } from "@neufund/shared-utils";
-import { isEmpty } from "lodash/fp";
+import isEmpty from "lodash/fp/isEmpty";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";

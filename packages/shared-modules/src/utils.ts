@@ -1,7 +1,7 @@
 import { getContext, SagaGenerator } from "@neufund/sagas";
 import { Dictionary, ETHEREUM_ADDRESS_LENGTH } from "@neufund/shared-utils";
 import { Container } from "inversify";
-import { mapValues } from "lodash/fp";
+import mapValues from "lodash/fp/mapValues";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 import { randomHex } from "web3-utils";
 

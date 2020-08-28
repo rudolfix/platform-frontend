@@ -5,7 +5,7 @@ import {
   etoModuleApi,
   TEtoStartOfStates,
 } from "@neufund/shared-modules";
-import { clamp } from "lodash/fp";
+import clamp from "lodash/fp/clamp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, pure, withHandlers, withProps } from "recompose";

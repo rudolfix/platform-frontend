@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import get from "lodash/get";
 
 import { MOCK_API_URL } from "../config";
 import { getLatestEmailByUser } from "./assertions";

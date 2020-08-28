@@ -1,4 +1,4 @@
-import { mapValues } from "lodash/fp";
+import mapValues from "lodash/fp/mapValues";
 import { MixedSchema, object, ObjectSchema } from "yup";
 
 // copied from design system, should be deduplicated at some point

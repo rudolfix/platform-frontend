@@ -1,7 +1,7 @@
 import { TPartialCompanyEtoData } from "@neufund/shared-modules";
 import { createUser } from "@neufund/shared-modules/tests";
 import { toCamelCase, toSnakeCase, withParams } from "@neufund/shared-utils";
-import { isFunction } from "lodash/fp";
+import isFunction from "lodash/fp/isFunction";
 
 import { etoRegisterRoutes } from "../../../components/eto/registration/routes";
 import { confirmAccessModal } from "../../utils";

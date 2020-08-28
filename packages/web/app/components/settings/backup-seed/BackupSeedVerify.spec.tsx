@@ -1,7 +1,8 @@
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
-import { difference, noop } from "lodash";
+import difference from "lodash/difference";
+import noop from "lodash/noop";
 import * as React from "react";
 
 import { englishMnemonics } from "../../../utils/englishMnemonics";

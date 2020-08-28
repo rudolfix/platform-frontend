@@ -1,7 +1,7 @@
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
-import { isString } from "lodash";
+import isString from "lodash/isString";
 import * as queryString from "query-string";
 import { createSelector } from "reselect";
 

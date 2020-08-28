@@ -6,7 +6,7 @@ import {
   immutableDocumentName,
   TEtoWithCompanyAndContractReadonly,
 } from "@neufund/shared-modules";
-import { map } from "lodash/fp";
+import map from "lodash/fp/map";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";

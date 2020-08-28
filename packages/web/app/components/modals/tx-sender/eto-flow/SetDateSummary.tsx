@@ -9,7 +9,7 @@ import {
   TEtoDocumentTemplates,
 } from "@neufund/shared-modules";
 import { nonNullable, withParams } from "@neufund/shared-utils";
-import { find } from "lodash";
+import find from "lodash/find";
 import moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

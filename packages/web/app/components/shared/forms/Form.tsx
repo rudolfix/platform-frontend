@@ -1,6 +1,7 @@
 // tslint:disable-next-line:import-blacklist
 import { Form as FormikForm, Formik, FormikConfig, FormikErrors, FormikProps } from "formik";
-import { difference, isEmpty } from "lodash/fp";
+import difference from "lodash/fp/difference";
+import isEmpty from "lodash/fp/isEmpty";
 import * as React from "react";
 
 import { CommonHtmlProps, TDataTestId } from "../../../types";

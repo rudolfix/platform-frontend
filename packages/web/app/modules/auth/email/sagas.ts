@@ -5,7 +5,7 @@ import {
   IVerifyEmailUser,
   neuGetBindings,
 } from "@neufund/shared-modules";
-import { includes } from "lodash/fp";
+import includes from "lodash/fp/includes";
 
 import {
   EUnverifiedEmailReminderModalType,

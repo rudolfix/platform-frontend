@@ -14,7 +14,8 @@ import {
 } from "@neufund/shared-modules";
 import { Dictionary, InvariantError, nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { cloneDeep, isEmpty } from "lodash/fp";
+import cloneDeep from "lodash/fp/cloneDeep";
+import isEmpty from "lodash/fp/isEmpty";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { getNomineeRequestComponentState } from "../../components/nominee-dashboard/linkToIssuer/utils";

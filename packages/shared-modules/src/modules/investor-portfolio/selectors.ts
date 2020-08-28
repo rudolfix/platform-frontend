@@ -9,7 +9,7 @@ import {
   subtractBigNumbers,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { isArray } from "lodash/fp";
+import isArray from "lodash/fp/isArray";
 import { createSelector } from "reselect";
 
 import { bookbuildingModuleApi } from "../bookbuilding/module";

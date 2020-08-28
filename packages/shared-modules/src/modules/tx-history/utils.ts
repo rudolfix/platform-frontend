@@ -1,5 +1,8 @@
 import { DeepReadonlyObject, ECurrency, ENumberInputFormat } from "@neufund/shared-utils";
-import { compose, keyBy, reverse, sortBy } from "lodash/fp";
+import compose from "lodash/fp/compose";
+import keyBy from "lodash/fp/keyBy";
+import reverse from "lodash/fp/reverse";
+import sortBy from "lodash/fp/sortBy";
 
 import {
   TAnalyticsTransaction,
@@ -7,7 +10,6 @@ import {
 } from "./lib/http/analytics-api/interfaces";
 import { EModuleStatus, ITxHistoryState } from "./reducer";
 import { TTxHistory } from "./types";
-
 // TODO: Try to sync backend currency format with frontend, as currently we use `eur_t` for nEur
 const getCurrencyFromTokenSymbol = (
   metadata: TAnalyticsTransactionTokenMetadata | undefined,

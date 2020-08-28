@@ -3,7 +3,7 @@ import { DeepWritable } from "@neufund/shared-utils";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { render } from "enzyme";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
 import { testEto } from "../../../../../../test/fixtures";

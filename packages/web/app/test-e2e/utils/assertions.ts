@@ -1,4 +1,4 @@
-import { find } from "lodash";
+import find from "lodash/find";
 
 import { appRoutes } from "../../components/appRoutes";
 import { walletLoginRoutes } from "../../components/wallet-selector/WalletSelectorLogin/wallet-routes";

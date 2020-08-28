@@ -14,7 +14,7 @@ import {
   TBookbuildingStatsType,
   TEtoProduct,
 } from "@neufund/shared-modules";
-import { sortBy } from "lodash/fp";
+import sortBy from "lodash/fp/sortBy";
 import * as Yup from "yup";
 
 function getErrorsNumber(validator: Yup.Schema<any>, data?: any): number {

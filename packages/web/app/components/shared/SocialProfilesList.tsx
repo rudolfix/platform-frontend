@@ -5,7 +5,7 @@ import {
 } from "@neufund/shared-modules";
 import { RequiredNonNullable } from "@neufund/shared-utils";
 import cn from "classnames";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import * as React from "react";
 
 import { InlineIcon } from "./icons";

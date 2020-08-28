@@ -21,7 +21,10 @@ import {
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
-import { compose, keyBy, map, omit } from "lodash/fp";
+import compose from "lodash/fp/compose";
+import keyBy from "lodash/fp/keyBy";
+import map from "lodash/fp/map";
+import omit from "lodash/fp/omit";
 
 import { createMessage } from "../../messages";
 import { generateRandomEthereumAddress, neuGetBindings } from "../../utils";
@@ -64,7 +67,6 @@ import {
   TEtoWithContract,
 } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate, isOnChain } from "./utils";
-export * from "./sagas/watchEtosSetActionSaga";
 
 type TGlobalDependencies = unknown;
 

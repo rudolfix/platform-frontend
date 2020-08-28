@@ -1,7 +1,7 @@
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor, { IUploadAdapterFactory, TCkEditor, TLoader } from "@ckeditor/ckeditor5-react";
 import cn from "classnames";
-import { difference } from "lodash";
+import difference from "lodash/difference";
 import * as React from "react";
 import { compose } from "recompose";
 

@@ -23,7 +23,8 @@ import {
   toEthereumAddress,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { filter, map } from "lodash/fp";
+import map from "lodash/fp/map";
+import filter from "lodash/fp/filter";
 
 import { createMessage } from "../../messages";
 import { neuGetBindings } from "../../utils";

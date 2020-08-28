@@ -1,7 +1,7 @@
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import * as React from "react";
 
 import { BackupSeedDisplay } from "./BackupSeedDisplay";

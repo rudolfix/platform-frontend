@@ -1,7 +1,7 @@
 import { noopLogger } from "@neufund/shared-modules";
 import { expect } from "chai";
 import { mount } from "enzyme";
-import { noop } from "lodash";
+import noop from "lodash/noop";
 import * as React from "react";
 import { SinonStub, stub } from "sinon";
 import { object, string } from "yup";

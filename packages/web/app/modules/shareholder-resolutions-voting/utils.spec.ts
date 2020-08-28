@@ -1,7 +1,7 @@
 import { toEthereumChecksumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
-import { set } from "lodash";
+import set from "lodash/set";
 
 import {
   calculateAbstainedParticipationPercentage,

@@ -6,7 +6,7 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers,
 } from "@neufund/shared-utils";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 import { NotEnoughEtherForGasError, UserHasNoFundsError } from "../../../../lib/web3/Web3Adapter";
 import { actions } from "../../../actions";

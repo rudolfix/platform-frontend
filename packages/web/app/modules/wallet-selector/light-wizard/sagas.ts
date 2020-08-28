@@ -1,7 +1,7 @@
 import { call, fork, put, select, take } from "@neufund/sagas";
 import { authModuleAPI, EUserType, EWalletType, IUser } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
-import { includes } from "lodash";
+import includes from "lodash/includes";
 
 import {
   BackupRecoveryMessage,

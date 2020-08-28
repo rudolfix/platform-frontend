@@ -1,5 +1,6 @@
 import { EKycRequestStatus, kycApi } from "@neufund/shared-modules";
-import { includes, some } from "lodash";
+import includes from "lodash/includes";
+import some from "lodash/some";
 import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";

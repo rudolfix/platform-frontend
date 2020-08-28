@@ -1,4 +1,4 @@
-import { pick } from "lodash/fp";
+import pick from "lodash/fp/pick";
 
 import { fillForm, getFieldError } from "../../../../utils/forms";
 import { formField, tid } from "../../../../utils/selectors";

@@ -13,7 +13,7 @@ import {
 } from "@neufund/sagas";
 import { Dictionary } from "@neufund/shared-utils";
 import { LOCATION_CHANGE } from "connected-react-router";
-import { map } from "lodash/fp";
+import map from "lodash/fp/map";
 
 import { neuGetBindings } from "../../../utils";
 import { coreModuleApi } from "../../core/module";

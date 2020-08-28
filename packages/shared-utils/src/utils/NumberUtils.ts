@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { curry } from "lodash/fp";
+import curry from "lodash/fp/curry";
 
 import {
   addBigNumbers,

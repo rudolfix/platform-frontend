@@ -1,7 +1,7 @@
 import { CommonHtmlProps } from "@neufund/design-system";
 import { XOR } from "@neufund/shared-utils";
 import cn from "classnames";
-import { isString } from "lodash";
+import isString from "lodash/isString";
 import * as React from "react";
 import { ListGroupItem } from "reactstrap";
 

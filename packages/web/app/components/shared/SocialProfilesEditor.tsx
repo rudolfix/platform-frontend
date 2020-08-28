@@ -1,7 +1,8 @@
 import { TSocialChannelsType } from "@neufund/shared-modules";
 import cn from "classnames";
 import { connect, FieldArray, getIn } from "formik";
-import { get, isEqual } from "lodash/fp";
+import get from "lodash/fp/get";
+import isEqual from "lodash/fp/isEqual";
 import * as React from "react";
 
 import { CommonHtmlProps, TFormikConnect } from "../../types";

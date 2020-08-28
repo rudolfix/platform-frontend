@@ -1,7 +1,7 @@
 import { VirtualizedSelect } from "@neufund/design-system";
 import cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
-import { differenceWith } from "lodash/fp";
+import differenceWith from "lodash/fp/differenceWith";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Creatable as ReactSelectCreatable, Option } from "react-select";

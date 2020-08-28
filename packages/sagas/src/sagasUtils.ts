@@ -1,5 +1,5 @@
 import { ActionMatchingPattern } from "@redux-saga/types";
-import { isMatch } from "lodash/fp";
+import isMatch from "lodash/fp/isMatch";
 import { CallEffect, SagaReturnType, Tail } from "redux-saga/effects";
 
 import {

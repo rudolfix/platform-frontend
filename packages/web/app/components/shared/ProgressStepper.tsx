@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { range } from "lodash";
+import range from "lodash/range";
 import * as React from "react";
 
 import * as styles from "./ProgressStepper.module.scss";

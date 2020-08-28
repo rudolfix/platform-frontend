@@ -9,7 +9,7 @@ import {
   takeLatestUntil,
 } from "@neufund/sagas";
 import { convertFromUlps, StringableActionCreator } from "@neufund/shared-utils";
-import { isEqual } from "lodash/fp";
+import isEqual from "lodash/fp/isEqual";
 
 import { neuGetBindings } from "../../utils";
 import { contractsModuleApi } from "../contracts/module";

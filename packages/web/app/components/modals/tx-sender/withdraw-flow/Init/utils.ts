@@ -1,6 +1,6 @@
 import { YupTS } from "@neufund/shared-modules";
 import { yupToFormErrors } from "formik";
-import { memoize } from "lodash";
+import memoize from "lodash/memoize";
 import { NumberSchema } from "yup";
 
 import { EAdditionalValidationDataNotifications } from "../../../../../modules/tx/validator/reducer";

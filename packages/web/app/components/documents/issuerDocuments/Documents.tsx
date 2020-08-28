@@ -8,7 +8,7 @@ import {
   TEtoDocumentTemplates,
 } from "@neufund/shared-modules";
 import { DeepReadonly, nonNullable } from "@neufund/shared-utils";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import * as React from "react";
 import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";

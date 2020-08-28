@@ -10,7 +10,7 @@ import {
   toFixedPrecision,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { floor } from "lodash";
+import floor from "lodash/floor";
 
 import { appRoutes } from "../../components/appRoutes";
 import { MOCK_API_URL } from "../config";

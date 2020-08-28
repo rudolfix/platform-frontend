@@ -3,7 +3,7 @@ import {
   IEtoDocument,
   TEtoWithCompanyAndContractReadonly,
 } from "@neufund/shared-modules";
-import { keyBy } from "lodash";
+import keyBy from "lodash/keyBy";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";

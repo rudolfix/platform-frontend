@@ -10,7 +10,7 @@ import {
   toFixedPrecision,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { includes } from "lodash/fp";
+import includes from "lodash/fp/includes";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

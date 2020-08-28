@@ -7,7 +7,7 @@ import {
   Q18,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { omit } from "lodash/fp";
+import omit from "lodash/fp/omit";
 
 import { bootstrapModule } from "../../tests";
 import { testCompany, testContract, testEto } from "../../tests/fixtures";

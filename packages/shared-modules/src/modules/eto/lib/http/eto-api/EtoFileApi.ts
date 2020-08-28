@@ -1,4 +1,4 @@
-import { withParams, Dictionary } from "@neufund/shared-utils";
+import { Dictionary, withParams } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
 import { authModuleAPI } from "../../../../auth/module";

@@ -1,5 +1,5 @@
 import { DeepReadonly, nonNullable } from "@neufund/shared-utils";
-import { find } from "lodash/fp";
+import find from "lodash/fp/find";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 

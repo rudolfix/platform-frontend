@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { forEach, values } from "lodash";
+import forEach from "lodash/forEach";
+import values from "lodash/values";
 
 import { actions } from "./actions";
 

@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import { isString } from "lodash/fp";
+import isString from "lodash/fp/isString";
 
 import { EthereumAddress, EthereumAddressWithChecksum } from "../opaque-types";
 

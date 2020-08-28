@@ -1,10 +1,12 @@
 import { customSchemas, TCompanyEtoData } from "@neufund/shared-modules";
 import { formatFlexiPrecision, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { cloneDeep, flow, get, set } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import flow from "lodash/flow";
+import get from "lodash/get";
+import set from "lodash/set";
 
 import { TShareholder } from "./eto-full-view/shared/campaign-overview/legal-information-widget/LegalInformationWidget";
-
 const HUNDRED_PERCENT = new BigNumber("100");
 export const OTHERS_NAME = "Others";
 

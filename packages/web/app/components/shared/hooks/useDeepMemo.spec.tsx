@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
 import { useDeepMemo } from "./useDeepMemo";

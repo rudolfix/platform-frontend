@@ -49,6 +49,17 @@ module.exports = {
     "no-implicit-globals": "error",
     "no-return-assign": "error",
     "no-return-await": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "lodash",
+            message: "Please use lodash submodules imports."
+          }
+        ]
+      }
+    ],
     "no-script-url": "error",
     "no-self-compare": "error",
     "no-shadow": "error",

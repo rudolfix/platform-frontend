@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { times } from "lodash/fp";
+import times from "lodash/fp/times";
 import * as React from "react";
 
 import * as styles from "./LoadingIndicatorHexagon.module.scss";

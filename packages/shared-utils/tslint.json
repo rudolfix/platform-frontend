@@ -39,8 +39,9 @@
     "import-blacklist": [
       true,
       { "react-intl": ["FormattedMessage", "FormattedHTMLMessage"] },
-      {"formik": ["Form"] },
-      "lodash"
+      { "formik": ["Form"] },
+      "lodash",
+      "lodash/fp"
     ],
     "triple-equals": true,
     "no-eval": true,

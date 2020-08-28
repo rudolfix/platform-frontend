@@ -5,7 +5,7 @@ import {
   TEtoWithCompanyAndContractReadonly,
   TNomineeRequestResponse,
 } from "@neufund/shared-modules";
-import { isString } from "lodash/fp";
+import isString from "lodash/fp/isString";
 import * as queryString from "query-string";
 
 import { ENomineeRequestStatusTranslation } from "../../components/translatedMessages/messages";

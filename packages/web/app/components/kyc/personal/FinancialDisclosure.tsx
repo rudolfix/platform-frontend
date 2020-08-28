@@ -5,7 +5,7 @@ import {
   KycPersonalDataSchemaWithFinancialDisclosureRequired,
 } from "@neufund/shared-modules";
 import { FormikProps, withFormik } from "formik";
-import { defaultTo } from "lodash/fp";
+import defaultTo from "lodash/fp/defaultTo";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";

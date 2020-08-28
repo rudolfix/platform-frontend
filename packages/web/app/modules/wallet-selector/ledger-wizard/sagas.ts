@@ -1,7 +1,8 @@
 import { call, fork, neuCall, put, race, select, take } from "@neufund/sagas";
 import { EWalletType } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
-import { toPairs, zip } from "lodash";
+import toPairs from "lodash/toPairs";
+import zip from "lodash/zip";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";

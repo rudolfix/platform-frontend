@@ -1,7 +1,7 @@
 import { noopLogger } from "@neufund/shared-modules";
 import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
-import { random } from "lodash/fp";
+import random from "lodash/fp/random";
 import { SinonFakeTimers, spy, useFakeTimers } from "sinon";
 import Web3 from "web3";
 

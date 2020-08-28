@@ -6,7 +6,7 @@ import {
 } from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
-import { defaultTo } from "lodash/fp";
+import defaultTo from "lodash/fp/defaultTo";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";

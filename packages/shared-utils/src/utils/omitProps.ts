@@ -1,4 +1,4 @@
-import { omit } from "lodash/fp";
+import omit from "lodash/fp/omit";
 import { mapProps } from "recompose";
 
 export const omitProps = (keys: string[]) => mapProps<object, object>(props => omit(keys, props));

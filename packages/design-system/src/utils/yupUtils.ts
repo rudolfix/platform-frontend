@@ -1,7 +1,9 @@
 import { FormikContextType, isFunction } from "formik";
-import { compose, includes, mapValues, pick } from "lodash/fp";
+import compose from "lodash/fp/compose";
+import includes from "lodash/fp/includes";
+import mapValues from "lodash/fp/mapValues";
+import pick from "lodash/fp/pick";
 import { MixedSchema, object, ObjectSchema, reach, Schema } from "yup";
-
 const getSchemaTests = <T>(schema: Schema<T>): string[] => schema.describe().tests;
 
 export const getSchemaMeta = <T>(schema: Schema<T>): any => schema.describe().meta;

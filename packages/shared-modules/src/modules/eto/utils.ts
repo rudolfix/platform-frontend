@@ -1,6 +1,6 @@
 import { convertFromUlps, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { includes } from "lodash/fp";
+import includes from "lodash/fp/includes";
 
 import { EJurisdiction } from "../kyc/module";
 import {

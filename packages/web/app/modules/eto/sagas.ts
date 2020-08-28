@@ -17,7 +17,8 @@ import {
 } from "@neufund/shared-modules";
 import { Dictionary, ECountries, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
-import { camelCase, isString } from "lodash";
+import camelCase from "lodash/fp/camelCase";
+import isString from "lodash/fp/isString";
 
 import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";

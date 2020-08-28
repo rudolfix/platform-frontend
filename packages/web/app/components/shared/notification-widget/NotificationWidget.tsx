@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import * as React from "react";
 import { branch, compose, renderNothing } from "recompose";
 

@@ -1,5 +1,5 @@
 import { Values } from "@neufund/shared-utils";
-import { mapValues } from "lodash";
+import mapValues from "lodash/mapValues";
 import { fromRenderProps } from "recompose";
 
 import { ContainerContext, TContainerContext } from "../InversifyProvider";

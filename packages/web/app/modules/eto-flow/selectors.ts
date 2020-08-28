@@ -20,7 +20,8 @@ import {
   TOfferingAgreementsStatus,
 } from "@neufund/shared-modules";
 import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
-import { find, some } from "lodash";
+import find from "lodash/find";
+import some from "lodash/some";
 import { createSelector } from "reselect";
 
 import { TAppGlobalState } from "../../store";

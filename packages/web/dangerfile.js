@@ -2,12 +2,12 @@ import { danger, fail, message } from "danger";
 import { writeFileSync } from "fs";
 import uniq from "lodash/uniq";
 
-const main = (): void => {
+const main = () => {
   checkPackageLock();
   getE2ETestTags();
 };
 
-function checkPackageLock(): void {
+function checkPackageLock() {
   if (!danger.github.pr) {
     return;
   }
@@ -22,7 +22,7 @@ function checkPackageLock(): void {
 // We will always run these tests in PR
 const alwaysRunningTests = ["#p1", "#p2"];
 
-function getE2ETestTags(): void {
+function getE2ETestTags() {
   // if it's github pr read tags from pr body.
   // in case of time triggered builds run all e2e tests
   const prBody = danger.github.pr.body;

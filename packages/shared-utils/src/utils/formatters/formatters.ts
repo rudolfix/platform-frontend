@@ -1,7 +1,10 @@
 // TODO: Split functions by more focused files
 
 import BigNumber from "bignumber.js";
-import { ceil, findLast, floor, round } from "lodash";
+import ceil from "lodash/ceil";
+import findLast from "lodash/findLast";
+import floor from "lodash/floor";
+import round from "lodash/round";
 
 import { DEFAULT_DECIMAL_PLACES } from "../constants";
 import { invariant } from "../invariant";

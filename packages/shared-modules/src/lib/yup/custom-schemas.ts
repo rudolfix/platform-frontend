@@ -1,5 +1,5 @@
 import { ECountries } from "@neufund/shared-utils";
-import { includes } from "lodash";
+import includes from "lodash/includes";
 import moment from "moment";
 import * as Yup from "yup";
 

@@ -1,5 +1,8 @@
 import BigNumber from "bignumber.js";
-import { filter, findIndex, isNil, omitBy } from "lodash";
+import filter from "lodash/filter";
+import findIndex from "lodash/findIndex";
+import isNil from "lodash/isNil";
+import omitBy from "lodash/omitBy";
 
 import { createMessage, TMessage } from "../../messages";
 import {

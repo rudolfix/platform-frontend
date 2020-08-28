@@ -1,5 +1,6 @@
 import { AssertionError, expect } from "chai";
-import { isFunction, omit } from "lodash";
+import isFunction from "lodash/isFunction";
+import omit from "lodash/omit";
 import { spy } from "sinon";
 
 import { invariant } from "../invariant";

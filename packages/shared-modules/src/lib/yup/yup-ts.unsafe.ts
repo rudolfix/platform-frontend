@@ -1,5 +1,5 @@
 import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
-import { mapValues } from "lodash";
+import mapValues from "lodash/mapValues";
 import * as Yup from "yup";
 
 import { TTranslatedString } from "../../messages";

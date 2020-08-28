@@ -1,4 +1,7 @@
-import { camelCase, mapKeys, mapValues, snakeCase } from "lodash";
+import camelCase from "lodash/camelCase";
+import mapKeys from "lodash/mapKeys";
+import mapValues from "lodash/mapValues";
+import snakeCase from "lodash/snakeCase";
 
 type StringMapper = (s: string) => string;
 

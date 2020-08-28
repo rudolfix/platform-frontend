@@ -64,14 +64,13 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
       return;
     }
     case EWalletExistenceStatus.LOST: {
-      logger.warn("Wallet lost. Cleaning up the state from metadata");
+      logger.warn("Wallet lost");
 
       const walletMetadata = yield* call([ethManager, "getExistingWalletMetadata"]);
 
-      // do not allow to unlock existing account without having existing wallet
-      invariant(walletMetadata, "No existing wallet to sign in");
+      invariant(walletMetadata, "Wallet metadata should be present in case of account was lost");
 
-      yield put(authActions.lost(walletMetadata));
+      yield put(authActions.accountLost(walletMetadata));
 
       return;
     }
@@ -267,8 +266,8 @@ function* switchAccount(
 ): SagaGenerator<void> {
   const { privateKeyOrMnemonic, name } = action.payload;
 
-  yield put(authActions.logout());
-  yield* take(authActions.logoutDone);
+  yield put(authActions.logoutAccount());
+  yield* take(authActions.logoutAccountDone);
 
   yield put(authActions.importAccount(privateKeyOrMnemonic, name));
 }
@@ -285,7 +284,7 @@ function* logout(): SagaGenerator<void> {
     yield* call(authModuleAPI.sagas.resetUser);
     yield* call(() => ethManager.unsafeDeleteWallet());
 
-    yield put(authActions.logoutDone());
+    yield put(authActions.logoutAccountDone());
   } catch (e) {
     logger.error(e, "Failed to logout user");
 
@@ -300,5 +299,5 @@ export function* authSaga(): SagaGenerator<void> {
   yield takeLeading(authActions.importAccount, importNewAccount);
   yield takeLeading(authActions.switchAccount, switchAccount);
   yield takeLeading(authActions.unlockAccount, signInExistingAccount);
-  yield takeLeading(authActions.logout, logout);
+  yield takeLeading(authActions.logoutAccount, logout);
 }

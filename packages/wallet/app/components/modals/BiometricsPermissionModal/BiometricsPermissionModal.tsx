@@ -1,0 +1,71 @@
+import { invariant, UnknownObject } from "@neufund/shared-utils";
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { compose } from "recompose";
+
+import { biometricsName } from "components/screens/NoBiometricsScreen/NoBiometricsScreen";
+import { Button, EButtonLayout } from "components/shared/buttons/Button";
+import { BottomSheetModal } from "components/shared/modals/BottomSheetModal";
+import { BodyText } from "components/shared/typography/BodyText";
+
+import { BIOMETRICS_NONE, biometricsModuleApi } from "modules/biometrics/module";
+
+import { appConnect } from "store/utils";
+
+import { spacingStyles } from "styles/spacings";
+
+type TStateProps = {
+  isBiometryAccessRequestRequired: ReturnType<
+    typeof biometricsModuleApi.selectors.selectIsBiometricsAccessRequestRequired
+  >;
+  biometryType: ReturnType<typeof biometricsModuleApi.selectors.selectBiometricsType>;
+};
+
+type TDispatchProps = {
+  requestPermissions: () => void;
+};
+
+const BiometricsPermissionModalLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+  isBiometryAccessRequestRequired,
+  requestPermissions,
+  biometryType,
+}) => {
+  invariant(
+    biometryType !== undefined && biometryType !== BIOMETRICS_NONE,
+    "Biometrics type should be defined",
+  );
+
+  return (
+    <BottomSheetModal isVisible={isBiometryAccessRequestRequired}>
+      <BodyText style={styles.headline}>
+        To secure your account, we require your permission to enable {biometricsName[biometryType]}.
+      </BodyText>
+      <Button layout={EButtonLayout.PRIMARY} onPress={requestPermissions}>
+        Enable {biometricsName[biometryType]}
+      </Button>
+    </BottomSheetModal>
+  );
+};
+
+const styles = StyleSheet.create({
+  headline: {
+    ...spacingStyles.mt2,
+    ...spacingStyles.mb5,
+  },
+});
+
+const BiometricsPermissionModal = compose<TStateProps & TDispatchProps, UnknownObject>(
+  appConnect<TStateProps, TDispatchProps>({
+    stateToProps: state => ({
+      isBiometryAccessRequestRequired: biometricsModuleApi.selectors.selectIsBiometricsAccessRequestRequired(
+        state,
+      ),
+      biometryType: biometricsModuleApi.selectors.selectBiometricsType(state),
+    }),
+    dispatchToProps: dispatch => ({
+      requestPermissions: () => dispatch(biometricsModuleApi.actions.requestPermissions()),
+    }),
+  }),
+)(BiometricsPermissionModalLayout);
+
+export { BiometricsPermissionModal, BiometricsPermissionModalLayout };

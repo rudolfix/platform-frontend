@@ -44,7 +44,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       };
 
     case authActions.canCreateAccount.getType():
-    case authActions.logoutDone.getType():
+    case authActions.logoutAccountDone.getType():
     case authActions.failedToCreateAccount.getType():
     case authActions.failedToImportAccount.getType():
       return initialState;
@@ -62,7 +62,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         wallet: state.wallet,
       };
 
-    case authActions.lost.getType():
+    case authActions.accountLost.getType():
       return {
         ...initialState,
         state: EAuthState.LOST,

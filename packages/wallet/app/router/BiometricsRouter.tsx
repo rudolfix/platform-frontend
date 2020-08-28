@@ -4,7 +4,7 @@ import React from "react";
 
 import { NoBiometricsScreen } from "components/screens/NoBiometricsScreen/NoBiometricsScreen";
 
-import { EBiometricsState } from "modules/biometry/module";
+import { EBiometricsState } from "modules/biometrics/module";
 
 import { EAppRoutes } from "./appRoutes";
 import { RootStackParamList } from "./routeUtils";

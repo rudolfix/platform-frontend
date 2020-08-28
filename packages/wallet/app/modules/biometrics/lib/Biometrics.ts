@@ -7,8 +7,8 @@ import {
   getSupportedBiometryType,
 } from "react-native-keychain";
 
-import { convertBiometrics } from "modules/biometry/lib/utils";
-import { BIOMETRY_NONE, EBiometryType } from "modules/biometry/types";
+import { convertBiometrics } from "modules/biometrics/lib/utils";
+import { BIOMETRICS_NONE, EBiometricsType } from "modules/biometrics/types";
 import {
   PERMISSION_RESULTS,
   PERMISSIONS,
@@ -23,7 +23,7 @@ import {
  *
  */
 @injectable()
-export class Biometry {
+export class Biometrics {
   private readonly logger: ILogger;
   private readonly permissions: TLibSymbolType<typeof permissionsModuleApi.symbols.permissions>;
 
@@ -48,24 +48,24 @@ export class Biometry {
     return canImplyAuth;
   }
 
-  async getAvailableBiometrics(): Promise<EBiometryType | typeof BIOMETRY_NONE> {
+  async getAvailableBiometrics(): Promise<EBiometricsType | typeof BIOMETRICS_NONE> {
     const keychainBiometryType = await getSupportedBiometryType();
     const biometryType = convertBiometrics(keychainBiometryType);
 
-    this.logger.info(`Supported biometry type is "${biometryType}"`);
+    this.logger.info(`Supported biometrics type is "${biometryType}"`);
 
     return biometryType;
   }
 
-  async getBiometryPermission(): Promise<PermissionStatus> {
+  async getBiometricsPermission(): Promise<PermissionStatus> {
     const availableBiometrics = await this.getAvailableBiometrics();
 
     switch (availableBiometrics) {
-      case EBiometryType.IOSFaceID:
+      case EBiometricsType.IOSFaceID:
         return this.permissions.check(PERMISSIONS.IOS.FACE_ID);
-      case EBiometryType.IOSTouchID:
+      case EBiometricsType.IOSTouchID:
         return PERMISSION_RESULTS.GRANTED;
-      case BIOMETRY_NONE:
+      case BIOMETRICS_NONE:
         return PERMISSION_RESULTS.UNAVAILABLE;
       default:
         assertNever(availableBiometrics);
@@ -76,11 +76,11 @@ export class Biometry {
     const availableBiometrics = await this.getAvailableBiometrics();
 
     switch (availableBiometrics) {
-      case EBiometryType.IOSFaceID:
+      case EBiometricsType.IOSFaceID:
         return this.permissions.request(PERMISSIONS.IOS.FACE_ID);
-      case EBiometryType.IOSTouchID:
+      case EBiometricsType.IOSTouchID:
         return PERMISSION_RESULTS.GRANTED;
-      case BIOMETRY_NONE:
+      case BIOMETRICS_NONE:
         return PERMISSION_RESULTS.UNAVAILABLE;
       default:
         assertNever(availableBiometrics);

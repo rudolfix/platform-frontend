@@ -9,7 +9,7 @@ import { assertError } from "@neufund/shared-utils";
 
 import { authActions } from "modules/auth/actions";
 import { authModuleAPI } from "modules/auth/module";
-import { biometryModuleApi } from "modules/biometry/module";
+import { biometricsModuleApi } from "modules/biometrics/module";
 import { walletContractsModuleApi } from "modules/contracts/module";
 import { walletConnectActions } from "modules/wallet-connect/actions";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
@@ -20,7 +20,7 @@ import { initActions } from "./actions";
 
 function* initGlobalModules(): SagaGenerator<void> {
   yield* call(walletContractsModuleApi.sagas.initializeContracts);
-  yield* call(biometryModuleApi.sagas.initializeBiometrics);
+  yield* call(biometricsModuleApi.sagas.initializeBiometrics);
 }
 /**
  * Init global watchers
@@ -39,7 +39,7 @@ function* initStartSaga(): SagaGenerator<void> {
 
     // checks if we have credentials and automatically signs the user
     const isBiometryAvailable = yield* select(
-      biometryModuleApi.selectors.selectIsBiometryAvailable,
+      biometricsModuleApi.selectors.selectIsBiometricsAvailable,
     );
 
     // when there is not biometry support calling `trySignInExistingAccount` will fail on credentials check
@@ -76,5 +76,5 @@ function* initAuthLogoutDone(): SagaGenerator<void> {
 export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
   yield fork(neuTakeLatest, authActions.unlockAccountDone, initAuthSigned);
-  yield fork(neuTakeLatest, authActions.logoutDone, initAuthLogoutDone);
+  yield fork(neuTakeLatest, authActions.logoutAccountDone, initAuthLogoutDone);
 }

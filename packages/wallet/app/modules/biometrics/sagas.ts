@@ -2,20 +2,20 @@ import { call, fork, neuTakeLatest, put, SagaGenerator } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 import { assertNever, invariant, StateNotAllowedError } from "@neufund/shared-utils";
 
-import { biometricsActions } from "modules/biometry/actions";
-import { privateSymbols } from "modules/biometry/lib/symbols";
-import { BIOMETRY_NONE } from "modules/biometry/types";
+import { biometricsActions } from "modules/biometrics/actions";
+import { privateSymbols } from "modules/biometrics/lib/symbols";
+import { BIOMETRICS_NONE } from "modules/biometrics/types";
 import { PERMISSION_RESULTS } from "modules/permissions/module";
 
 export function* initializeBiometrics(): SagaGenerator<void> {
-  const { logger, biometry } = yield* neuGetBindings({
+  const { logger, biometrics } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
-    biometry: privateSymbols.biometry,
+    biometrics: privateSymbols.biometrics,
   });
 
-  const availableBiometrics = yield* call([biometry, "getAvailableBiometrics"]);
-  const canImplyAuthentication = yield* call([biometry, "canImplyAuthentication"]);
-  const biometryPermission = yield* call([biometry, "getBiometryPermission"]);
+  const availableBiometrics = yield* call([biometrics, "getAvailableBiometrics"]);
+  const canImplyAuthentication = yield* call([biometrics, "canImplyAuthentication"]);
+  const biometryPermission = yield* call([biometrics, "getBiometricsPermission"]);
 
   if (!canImplyAuthentication && biometryPermission !== PERMISSION_RESULTS.BLOCKED) {
     logger.info("No biometrics support");
@@ -25,7 +25,10 @@ export function* initializeBiometrics(): SagaGenerator<void> {
     return;
   }
 
-  invariant(availableBiometrics !== BIOMETRY_NONE, "Biometry type should be known at this point");
+  invariant(
+    availableBiometrics !== BIOMETRICS_NONE,
+    "Biometrics type should be known at this point",
+  );
 
   switch (biometryPermission) {
     case PERMISSION_RESULTS.DENIED:
@@ -45,28 +48,28 @@ export function* initializeBiometrics(): SagaGenerator<void> {
 
       break;
     case PERMISSION_RESULTS.UNAVAILABLE:
-      throw new StateNotAllowedError("Biometry type should be known at this point");
+      throw new StateNotAllowedError("Biometrics type should be known at this point");
 
     default:
       assertNever(biometryPermission);
   }
 }
 
-function* requestFaceIdPermissions(): SagaGenerator<void> {
-  const { logger, biometry } = yield* neuGetBindings({
+function* requestPermissions(): SagaGenerator<void> {
+  const { logger, biometrics } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
-    biometry: privateSymbols.biometry,
+    biometrics: privateSymbols.biometrics,
   });
 
-  logger.info("Requesting face id permissions");
+  logger.info("Requesting biometrics permissions");
 
-  const requestResult = yield* call([biometry, "requestBiometryPermission"]);
+  const requestResult = yield* call([biometrics, "requestBiometryPermission"]);
 
-  logger.info(`Face id permission "${requestResult}"`);
+  logger.info(`Biometrics permission "${requestResult}"`);
 
   yield* call(initializeBiometrics);
 }
 
 export function* biometricsSagas(): SagaGenerator<void> {
-  yield fork(neuTakeLatest, biometricsActions.requestFaceIdPermissions, requestFaceIdPermissions);
+  yield fork(neuTakeLatest, biometricsActions.requestPermissions, requestPermissions);
 }

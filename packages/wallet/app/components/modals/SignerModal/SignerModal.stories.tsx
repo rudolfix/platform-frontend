@@ -42,7 +42,7 @@ const wcSessionSignerRequest: TSignerSignPayload = {
   },
 };
 
-storiesOf("Templates|FaceIDPermissionModal", module)
+storiesOf("Templates|SignerModal", module)
   .add("Send Transaction Signer", () => (
     <SignerModalLayout {...signerModalCommonProps} request={sendTransactionSignerRequest} />
   ))

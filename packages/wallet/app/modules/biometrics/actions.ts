@@ -1,35 +1,32 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { EBiometryType, TBiometryNone } from "modules/biometry/types";
+import { EBiometricsType, TBiometricsNone } from "modules/biometrics/types";
 
 export const biometricsActions = {
   noBiometricsSupport: createActionFactory(
     "BIOMETRICS_NO_SUPPORT",
-    (type: EBiometryType | TBiometryNone) => ({
+    (type: EBiometricsType | TBiometricsNone) => ({
       type,
     }),
   ),
 
-  noBiometricsAccess: createActionFactory("BIOMETRICS_NO_ACCESS", (type: EBiometryType) => ({
+  noBiometricsAccess: createActionFactory("BIOMETRICS_NO_ACCESS", (type: EBiometricsType) => ({
     type,
   })),
 
   biometricsAccessRequestRequired: createActionFactory(
     "BIOMETRICS_ACCESS_REQUEST_REQUIRED",
-    (type: EBiometryType) => ({
+    (type: EBiometricsType) => ({
       type,
     }),
   ),
 
   biometricsAccessAllowed: createActionFactory(
     "BIOMETRICS_ACCESS_ALLOWED",
-    (type: EBiometryType) => ({
+    (type: EBiometricsType) => ({
       type,
     }),
   ),
 
-  requestFaceIdPermissions: createActionFactory("BIOMETRICS_REQUEST_FACE_ID_PERMISSION"),
-
-  // TODO: Find why typings are broken
-  test: createActionFactory("TEST"),
+  requestPermissions: createActionFactory("BIOMETRICS_REQUEST_PERMISSION"),
 };

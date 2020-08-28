@@ -50,13 +50,15 @@ export const authActions = {
   failedToUnlockAccount: createActionFactory("AUTH_UNLOCK_FAILED_TO_UNLOCK"),
 
   /**
-   * Logout flow
+   * Logout account flow
    */
-  logout: createActionFactory("AUTH_LOGOUT"),
-  logoutDone: createActionFactory("AUTH_LOGOUT_DONE"),
+  logoutAccount: createActionFactory("AUTH_ACCOUNT_LOGOUT"),
+  logoutAccountDone: createActionFactory("AUTH_ACCOUNT_LOGOUT_DONE"),
 
   /**
-   * Logout flow
+   * Lost account flow
    */
-  lost: createActionFactory("AUTH_LOST", (metadata: TAuthWalletMetadata) => ({ metadata })),
+  accountLost: createActionFactory("AUTH_ACCOUNT_LOST", (metadata: TAuthWalletMetadata) => ({
+    metadata,
+  })),
 };

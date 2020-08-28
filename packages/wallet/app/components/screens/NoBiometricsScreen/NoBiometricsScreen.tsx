@@ -9,11 +9,11 @@ import { BodyText } from "components/shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
 import {
-  BIOMETRY_NONE,
-  biometryModuleApi,
+  BIOMETRICS_NONE,
+  biometricsModuleApi,
   EBiometricsState,
-  EBiometryType,
-} from "modules/biometry/module";
+  EBiometricsType,
+} from "modules/biometrics/module";
 
 import { appConnect } from "store/utils";
 
@@ -21,41 +21,42 @@ import { baseSilver, baseWhite } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 type TStateProps = {
-  biometricsType: ReturnType<typeof biometryModuleApi.selectors.selectBiometricsType>;
-  biometricsState: ReturnType<typeof biometryModuleApi.selectors.selectBiometricsState>;
+  biometricsType: ReturnType<typeof biometricsModuleApi.selectors.selectBiometricsType>;
+  biometricsState: ReturnType<typeof biometricsModuleApi.selectors.selectBiometricsState>;
 };
 
-const biometrySettingsEntry: Record<EBiometryType, string> = {
-  [EBiometryType.IOSFaceID]: "Face ID & Passcode",
-  [EBiometryType.IOSTouchID]: "Touch ID & Passcode",
+const biometricsSettingsEntry: Record<EBiometricsType, string> = {
+  [EBiometricsType.IOSFaceID]: "Face ID & Passcode",
+  [EBiometricsType.IOSTouchID]: "Touch ID & Passcode",
 };
 
-const biometryName: Record<EBiometryType, string> = {
-  [EBiometryType.IOSFaceID]: "Face ID",
-  [EBiometryType.IOSTouchID]: "Touch ID",
+const biometricsName: Record<EBiometricsType, string> = {
+  [EBiometricsType.IOSFaceID]: "Face ID",
+  [EBiometricsType.IOSTouchID]: "Touch ID",
 };
 
-const BiometryText: React.FunctionComponent<TStateProps> = ({
+const BiometricsText: React.FunctionComponent<TStateProps> = ({
   biometricsType,
   biometricsState,
 }) => {
-  invariant(
-    biometricsType !== undefined && biometricsType !== BIOMETRY_NONE,
-    "Biometrics type should be defined",
-  );
+  invariant(biometricsType !== undefined, "Biometrics type should be defined");
+
+  if (biometricsType === BIOMETRICS_NONE) {
+    return <>To use the Neufund app, you need a device with biometrics authentication support.</>;
+  }
 
   switch (biometricsState) {
     case EBiometricsState.NO_SUPPORT:
       return (
         <>
           To use the Neufund app, you need to setup a biometrics on your phone. To do this, go to
-          your phone Settings > {biometrySettingsEntry[biometricsType]}.
+          your phone Settings > {biometricsSettingsEntry[biometricsType]}.
         </>
       );
     case EBiometricsState.NO_ACCESS:
       return (
         <>
-          To use the Neufund app, you need to allow {biometryName[biometricsType]} access. To do
+          To use the Neufund app, you need to allow {biometricsName[biometricsType]} access. To do
           this, go to your Phone Settings > Neufund.
         </>
       );
@@ -63,7 +64,7 @@ const BiometryText: React.FunctionComponent<TStateProps> = ({
     case EBiometricsState.ACCESS_ALLOWED:
     case EBiometricsState.ACCESS_REQUEST_REQUIRED:
     case EBiometricsState.UNKNOWN:
-      throw new StateNotAllowedError("Biometrics should be initialized and with allowed access");
+      throw new StateNotAllowedError("Biometrics should be initialized and without allowed access");
 
     default:
       assertNever(biometricsState, "Invalid biometrics state");
@@ -85,7 +86,7 @@ const NoBiometricsScreenLayout: React.FunctionComponent<TStateProps> = ({
       </Headline>
 
       <BodyText style={styles.paragraph}>
-        <BiometryText biometricsType={biometricsType} biometricsState={biometricsState} />
+        <BiometricsText biometricsType={biometricsType} biometricsState={biometricsState} />
       </BodyText>
     </View>
   </NeuGradientScreen>
@@ -116,9 +117,9 @@ const styles = StyleSheet.create({
 
 const NoBiometricsScreen = appConnect<TStateProps>({
   stateToProps: state => ({
-    biometricsType: biometryModuleApi.selectors.selectBiometricsType(state),
-    biometricsState: biometryModuleApi.selectors.selectBiometricsState(state),
+    biometricsType: biometricsModuleApi.selectors.selectBiometricsType(state),
+    biometricsState: biometricsModuleApi.selectors.selectBiometricsState(state),
   }),
 })(NoBiometricsScreenLayout);
 
-export { NoBiometricsScreen };
+export { NoBiometricsScreen, biometricsName };

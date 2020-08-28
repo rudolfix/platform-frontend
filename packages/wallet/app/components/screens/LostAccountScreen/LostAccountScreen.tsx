@@ -9,8 +9,7 @@ import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { BodyText } from "components/shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
-import { authModuleAPI } from "modules/auth/module";
-import { EAuthState } from "modules/auth/reducer";
+import { authModuleAPI, EAuthState } from "modules/auth/module";
 
 import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";

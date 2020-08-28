@@ -1,7 +1,7 @@
 import { AppReducer } from "@neufund/sagas";
 
 import { biometricsActions } from "./actions";
-import { EBiometryType, TBiometryNone } from "./types";
+import { EBiometricsType, TBiometricsNone } from "./types";
 
 export enum EBiometricsState {
   UNKNOWN = "unknown",
@@ -13,7 +13,7 @@ export enum EBiometricsState {
 
 interface IBiometricsState {
   state: EBiometricsState;
-  type: undefined | EBiometryType | TBiometryNone;
+  type: undefined | EBiometricsType | TBiometricsNone;
 }
 
 const initialState: IBiometricsState = {

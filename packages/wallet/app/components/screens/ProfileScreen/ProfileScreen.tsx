@@ -109,7 +109,7 @@ const ProfileScreen = appConnect<TStateProps, TDispatchProps>({
     walletConnectPeer: walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
   }),
   dispatchToProps: dispatch => ({
-    logout: () => dispatch(authModuleAPI.actions.logout()),
+    logout: () => dispatch(authModuleAPI.actions.logoutAccount()),
   }),
 })(ProfileLayout);
 

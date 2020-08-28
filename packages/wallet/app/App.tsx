@@ -5,14 +5,13 @@ import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
 
 import { CriticalError } from "components/CriticalError";
-import { FaceIDPermissionModal } from "components/modals/FaceIDPermissionModal/FaceIDPermissionModal";
+import { BiometricsPermissionModal } from "components/modals/BiometricsPermissionModal/BiometricsPermissionModal";
 import { SignerModal } from "components/modals/SignerModal/SignerModal";
 
 import { usePrevious } from "hooks/usePrevious";
 
 import { authModuleAPI, EAuthState } from "modules/auth/module";
-import { biometryModuleApi } from "modules/biometry/module";
-import { EBiometricsState } from "modules/biometry/reducer";
+import { biometricsModuleApi, EBiometricsState } from "modules/biometrics/module";
 import { EInitStatus, initModuleApi } from "modules/init/module";
 
 import { AppAuthRouter } from "router/AppAuthRouter";
@@ -28,7 +27,7 @@ type TStateProps = {
   initStatus: ReturnType<typeof initModuleApi.selectors.selectInitStatus>;
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
   authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
-  biometricsState: ReturnType<typeof biometryModuleApi.selectors.selectBiometricsState>;
+  biometricsState: ReturnType<typeof biometricsModuleApi.selectors.selectBiometricsState>;
 };
 
 type TDispatchProps = {
@@ -70,7 +69,7 @@ const AuthorizedGuards: React.FunctionComponent<Pick<TLayoutProps, "authState" |
           <AppAuthRouter />
 
           <SignerModal />
-          <FaceIDPermissionModal />
+          <BiometricsPermissionModal />
         </>
       );
     default:
@@ -130,7 +129,7 @@ const App = appConnect<TStateProps, TDispatchProps>({
     initStatus: initModuleApi.selectors.selectInitStatus(state),
     authState: authModuleAPI.selectors.selectAuthState(state),
     authWallet: authModuleAPI.selectors.selectAuthWallet(state),
-    biometricsState: biometryModuleApi.selectors.selectBiometricsState(state),
+    biometricsState: biometricsModuleApi.selectors.selectBiometricsState(state),
   }),
   dispatchToProps: dispatch => ({
     init: () => dispatch(initModuleApi.actions.start()),

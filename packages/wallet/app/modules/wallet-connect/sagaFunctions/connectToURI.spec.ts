@@ -140,25 +140,4 @@ describe("wallet-connect - connectToURI", () => {
     expect(session.rejectSession).toHaveBeenCalledWith();
     expect(navigate).toHaveBeenCalledWith(EAppRoutes.home);
   });
-
-  it("should stop connection process when uri is invalid", async () => {
-    const { expectSaga, logger } = setupTest();
-
-    mocked(isValidWalletConnectUri).mockImplementation(uri => {
-      invariant(uri === mockURI, "Invalid URI passed");
-
-      return false;
-    });
-
-    await expectSaga(connectToURI, walletConnectActions.connectToPeer(mockURI))
-      .put.actionType(notificationUIModuleApi.actions.showInfo.getType())
-      // should not rethrow the error to root saga
-      .not.throws(Error)
-      .run();
-
-    expect(logger.error).toHaveBeenCalledWith(
-      expect.any(InvalidWalletConnectUriError),
-      expect.any(String),
-    );
-  });
 });

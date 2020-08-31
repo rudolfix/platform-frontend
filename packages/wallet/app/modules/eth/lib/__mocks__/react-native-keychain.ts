@@ -13,6 +13,11 @@ const ACCESSIBLE = {
   WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: "WHEN_PASSCODE_SET_THIS_DEVICE_ONLY",
 };
 
+enum AUTHENTICATION_TYPE {
+  DEVICE_PASSCODE_OR_BIOMETRICS = "AuthenticationWithBiometricsDevicePasscode",
+  BIOMETRICS = "AuthenticationWithBiometrics",
+}
+
 const SECURITY_LEVEL = {
   SECURE_HARDWARE: "SECURE_HARDWARE",
 };
@@ -41,6 +46,7 @@ async function hasInternetCredentials(server: string) {
 }
 
 export {
+  AUTHENTICATION_TYPE,
   ACCESS_CONTROL,
   ACCESSIBLE,
   SECURITY_LEVEL,

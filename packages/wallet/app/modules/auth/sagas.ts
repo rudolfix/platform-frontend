@@ -6,7 +6,6 @@ import {
   SagaGenerator,
   TActionFromCreator,
   take,
-  select,
 } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, authModuleAPI } from "@neufund/shared-modules";
 import {
@@ -18,14 +17,16 @@ import {
 } from "@neufund/shared-utils";
 import Config from "react-native-config";
 
-import { EAuthState } from "modules/auth/reducer";
-import { selectAuthState } from "modules/auth/selectors";
 import { walletEthModuleApi, EWalletExistenceStatus } from "modules/eth/module";
 import { notificationUIModuleApi } from "modules/notification-ui/module";
 
 import { authActions } from "./actions";
 import { InvalidImportPhraseError } from "./errors";
-import { loadOrCreateUser } from "./sagasInternal";
+import {
+  allowToUnlockExistingAccount,
+  loadOrCreateUser,
+  ensureNoLostWallet,
+} from "./sagasInternal";
 import { EImportPhrase } from "./types";
 import { parseImportPhrase } from "./utils";
 
@@ -79,19 +80,6 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
   }
 }
 
-function* allowToUnlockExistingAccount(): SagaGenerator<void> {
-  const { ethManager } = yield* neuGetBindings({
-    ethManager: walletEthModuleApi.symbols.ethManager,
-  });
-
-  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
-
-  // do not allow to unlock existing account without having existing wallet
-  invariant(walletMetadata, "No existing wallet to sign in");
-
-  yield put(authActions.canUnlockAccount(walletMetadata));
-}
-
 function* signInExistingAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
@@ -135,21 +123,6 @@ function* signInExistingAccount(): SagaGenerator<void> {
     logger.error(e, "Failed to unlock account");
 
     yield put(authActions.failedToUnlockAccount());
-  }
-}
-
-function* ensureNoLostWallet(): SagaGenerator<void> {
-  const { ethManager, logger } = yield* neuGetBindings({
-    ethManager: walletEthModuleApi.symbols.ethManager,
-    logger: coreModuleApi.symbols.logger,
-  });
-
-  const authState = yield* select(selectAuthState);
-
-  if (authState === EAuthState.LOST) {
-    logger.info("Removing lost wallet metadata");
-
-    yield* call([ethManager, "unsafeDeleteLostWallet"]);
   }
 }
 

@@ -4,6 +4,7 @@ import {
   toEthereumChecksumAddress,
   toEthereumHDMnemonic,
   toEthereumHDPath,
+  invariant,
 } from "@neufund/shared-utils";
 
 import { AppSingleKeyStorage } from "modules/storage";
@@ -15,7 +16,7 @@ import { EthWallet } from "./EthWallet";
 import { EthWalletFactory, NoExistingWalletFoundError } from "./EthWalletFactory";
 import { toSecureReference, TSecureReference } from "./SecureStorage";
 import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
-import { EWalletType } from "./types";
+import { EWalletExistenceStatus, EWalletType } from "./types";
 
 const hdWalletMetadata: THDWalletMetadata = {
   type: EWalletType.HD_WALLET,
@@ -35,8 +36,8 @@ describe("EthWalletFactory", () => {
   const emptyEthSecureEnclaveMock = createMock(EthSecureEnclave, {});
   const emptyEthWalletProviderMock = jest.fn();
 
-  describe("hasExistingWallet", () => {
-    it("should return false when no metadata found", async () => {
+  describe("getWalletExistenceStatus", () => {
+    it("should return NOT_EXIST when no metadata found", async () => {
       const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
         AppSingleKeyStorage,
         {
@@ -51,29 +52,69 @@ describe("EthWalletFactory", () => {
         emptyEthWalletProviderMock,
       );
 
-      const hasExistingWallet = await ethWalletFactory.hasExistingWallet();
+      const existenceStatus = await ethWalletFactory.getWalletExistenceStatus();
 
-      expect(hasExistingWallet).toBeFalsy();
+      expect(existenceStatus).toBe(EWalletExistenceStatus.NOT_EXIST);
     });
 
-    it("should return true when metadata found", async () => {
+    it("should return EXIST when metadata found", async () => {
       const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
         AppSingleKeyStorage,
         {
           get: () => Promise.resolve(privateKeyWalletMetadata),
         },
       );
+      const ethSecureEnclaveMock = createMock(EthSecureEnclave, {
+        hasSecret: reference => {
+          invariant(
+            reference === privateKeyWalletMetadata.privateKeyReference,
+            "Invalid reference",
+          );
+
+          return true;
+        },
+      });
 
       const ethWalletFactory = new EthWalletFactory(
         walletStorageMock,
         noopLogger,
-        emptyEthSecureEnclaveMock,
+        ethSecureEnclaveMock,
         emptyEthWalletProviderMock,
       );
 
-      const hasExistingWallet = await ethWalletFactory.hasExistingWallet();
+      const existenceStatus = await ethWalletFactory.getWalletExistenceStatus();
 
-      expect(hasExistingWallet).toBeTruthy();
+      expect(existenceStatus).toBe(EWalletExistenceStatus.EXIST);
+    });
+
+    it("should return LOST when metadata found but no data in secure enclave", async () => {
+      const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
+        AppSingleKeyStorage,
+        {
+          get: () => Promise.resolve(privateKeyWalletMetadata),
+        },
+      );
+      const ethSecureEnclaveMock = createMock(EthSecureEnclave, {
+        hasSecret: reference => {
+          invariant(
+            reference === privateKeyWalletMetadata.privateKeyReference,
+            "Invalid reference",
+          );
+
+          return false;
+        },
+      });
+
+      const ethWalletFactory = new EthWalletFactory(
+        walletStorageMock,
+        noopLogger,
+        ethSecureEnclaveMock,
+        emptyEthWalletProviderMock,
+      );
+
+      const existenceStatus = await ethWalletFactory.getWalletExistenceStatus();
+
+      expect(existenceStatus).toBe(EWalletExistenceStatus.LOST);
     });
   });
 

@@ -21,11 +21,7 @@ type TExternalProps = {
   proposal: TProposal;
   eto: Pick<TEtoWithCompanyAndContract, "equityTokenName" | "nomineeDisplayName">;
   company: Pick<TCompanyEtoData, "name">;
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
   pendingDownloads: Record<string, boolean | undefined>;
 };
 
@@ -77,7 +73,6 @@ const ProposalDetails: React.FunctionComponent<TExternalProps> = ({
               mimeType: EMimeType.PDF,
             },
             proposal.title,
-            true,
           )
         }
       >

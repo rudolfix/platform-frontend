@@ -32,11 +32,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
 }
 
 type IProposalsProps = IStateProps & IDispatchProps;
@@ -96,14 +92,8 @@ export const ProposalIssuer = compose<IStateProps & IDispatchProps, TExternalPro
       ),
     }),
     dispatchToProps: dispatch => ({
-      downloadDocument: (
-        immutableFileId: IImmutableFileId,
-        fileName: string,
-        isProtected: boolean,
-      ) => {
-        dispatch(
-          actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName, isProtected),
-        );
+      downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => {
+        dispatch(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
       },
     }),
   }),

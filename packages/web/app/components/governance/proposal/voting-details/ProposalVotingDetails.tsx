@@ -20,11 +20,7 @@ type TExternalProps = {
   proposal: TProposal;
   nomineeShareBreakdown: ITokenHolderBreakdown | undefined;
   shareCapitalBreakdown: IShareCapitalBreakdown | undefined;
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
   pendingDownloads: Record<string, boolean | undefined>;
   eto: TEtoWithCompanyAndContract | undefined;
 };

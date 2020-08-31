@@ -1,8 +1,8 @@
 import { FormikContextType, isFunction } from "formik";
 import compose from "lodash/fp/compose";
 import includes from "lodash/fp/includes";
-import mapValues from "lodash/fp/mapValues";
 import pick from "lodash/fp/pick";
+import mapValues from "lodash/mapValues";
 import { MixedSchema, object, ObjectSchema, reach, Schema } from "yup";
 const getSchemaTests = <T>(schema: Schema<T>): string[] => schema.describe().tests;
 
@@ -36,7 +36,7 @@ export const findMax = (schema: any) => findSchemaConstraint("max", schema);
  */
 export const makeAllRequired = (schema: ObjectSchema<any>): ObjectSchema<any> => {
   const oldFields: { [key: string]: MixedSchema } = (schema as any).fields;
-  const newFields = mapValues(s => s.required(), oldFields);
+  const newFields = mapValues(oldFields, s => s.required());
   return object(newFields);
 };
 
@@ -45,15 +45,13 @@ export const makeAllRequiredExcept = (
   keys: string[],
 ): ObjectSchema<any> => {
   const oldFields: { [key: string]: MixedSchema } = (schema as any).fields;
-  const newFields = mapValues((s, ...rest) => {
-    const [key]: string[] = rest;
-
+  const newFields = mapValues(oldFields, (s, key) => {
     if (keys.includes(key)) {
       return s;
     }
 
     return s.required();
-  }, oldFields);
+  });
   return object(newFields);
 };
 

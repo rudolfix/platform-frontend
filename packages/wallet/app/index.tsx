@@ -7,12 +7,17 @@ import { IModuleStore } from "@neufund/sagas";
 import { Container } from "inversify";
 import React from "react";
 import { AppRegistry } from "react-native";
+import { enableScreens } from "react-native-screens";
 
 import { createAppStore } from "store/create";
 import { TAppGlobalState } from "store/types";
 
 // eslint-disable-next-line import/no-relative-parent-imports
 import { name as appName } from "../app.json";
+
+// Turn's on native navigation screens support to improve perf
+// see https://reactnavigation.org/docs/react-native-screens/#setup-when-you-are-using-expo
+enableScreens();
 
 function startupApp(): void {
   const container = new Container();

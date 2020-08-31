@@ -1,7 +1,8 @@
 const path = require("path");
+const webpack = require("webpack");
+
 const paths = require("../webpack/paths");
 const devConfig = require("../webpack/webpack.config.dev");
-const webpack = require("webpack");
 
 module.exports = ({ config }) => {
   config.module.rules = [

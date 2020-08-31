@@ -1,7 +1,8 @@
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 
 import { TxPendingData } from "../../../lib/api/users-tx/interfaces";
-import { ETxType, ITxData } from "../../../lib/web3/types";
+import { ITxData } from "../../../lib/web3/types";
 import { TAdditionalDataByType } from "../../../modules/tx/types";
 import { CommonHtmlProps } from "../../../types";
 

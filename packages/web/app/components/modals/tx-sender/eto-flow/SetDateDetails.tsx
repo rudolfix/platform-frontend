@@ -1,8 +1,8 @@
+import { ETxType } from "@neufund/shared-modules";
 import { localTime, timeZone, utcTime, weekdayLocal, weekdayUTC } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

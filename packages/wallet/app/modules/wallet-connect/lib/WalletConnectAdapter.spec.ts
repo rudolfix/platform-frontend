@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { noopLogger } from "@neufund/shared-modules";
+import { ETxType, noopLogger, EJwtPermissions } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import WalletConnectMock from "@walletconnect/react-native";
 import { EventEmitter2 } from "eventemitter2";
+
+import { UserRejectedRequestError } from "modules/wallet-connect/lib/adapterErrors";
 
 import { mockDate } from "utils/testUtils.specUtils";
 
@@ -12,6 +14,12 @@ import {
   InvalidRPCMethodError,
   WalletConnectAdapter,
 } from "./WalletConnectAdapter";
+import {
+  CALL_REQUEST_EVENT,
+  CONNECT_EVENT,
+  DISCONNECT_EVENT,
+  SESSION_REQUEST_EVENT,
+} from "./constants";
 import { EWalletConnectAdapterEvents, TWalletConnectAdapterEmit } from "./types";
 import { toWalletConnectUri } from "./utils";
 
@@ -51,7 +59,7 @@ const peerData = {
 const sessionRequestJsonRpcCall = {
   id: 1,
   jsonrpc: "2.0",
-  method: "session_request",
+  method: SESSION_REQUEST_EVENT,
   params: [peerData],
 };
 
@@ -73,14 +81,14 @@ const approveSession = async <T extends ApproveSessionMock>(sessionMock: T) => {
   const wcAdapter = new WalletConnectAdapter({ uri: toWalletConnectUri("mock uri") }, noopLogger);
 
   setTimeout(() => {
-    mockInstance.emit("session_request", undefined, sessionRequestJsonRpcCall);
+    mockInstance.emit(SESSION_REQUEST_EVENT, undefined, sessionRequestJsonRpcCall);
   }, 1);
 
   const session = await wcAdapter.connect();
   session.approveSession(chainId, address);
 
   // emit connect event to connect at date is calculated
-  mockInstance.emit("connect");
+  mockInstance.emit(CONNECT_EVENT);
 
   return { mockInstance, wcAdapter, session };
 };
@@ -96,10 +104,10 @@ describe("WalletConnectAdapter", () => {
       );
 
       setTimeout(() => {
-        mockInstance.emit("session_request", undefined, {
+        mockInstance.emit(SESSION_REQUEST_EVENT, undefined, {
           id: 1,
           jsonrpc: "2.0",
-          method: "session_request",
+          method: SESSION_REQUEST_EVENT,
           params: [
             {
               foo: "bar",
@@ -128,7 +136,7 @@ describe("WalletConnectAdapter", () => {
       const error = new Error();
 
       setTimeout(() => {
-        mockInstance.emit("session_request", error);
+        mockInstance.emit(SESSION_REQUEST_EVENT, error);
       }, 1);
 
       expect.assertions(1);
@@ -165,7 +173,7 @@ describe("WalletConnectAdapter", () => {
       );
 
       setTimeout(() => {
-        mockInstance.emit("session_request", undefined, sessionRequestJsonRpcCall);
+        mockInstance.emit(SESSION_REQUEST_EVENT, undefined, sessionRequestJsonRpcCall);
       }, 1);
 
       const session = await wcAdapter.connect();
@@ -198,7 +206,7 @@ describe("WalletConnectAdapter", () => {
         params: [{ foo: "bar" }],
       };
 
-      mockInstance.emit("call_request", undefined, personalSignJsonRpc);
+      mockInstance.emit(CALL_REQUEST_EVENT, undefined, personalSignJsonRpc);
 
       expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
         id: personalSignJsonRpc.id,
@@ -216,7 +224,7 @@ describe("WalletConnectAdapter", () => {
         params: [{ foo: "bar" }],
       };
 
-      mockInstance.emit("call_request", undefined, invalidEthSignJsonRpc);
+      mockInstance.emit(CALL_REQUEST_EVENT, undefined, invalidEthSignJsonRpc);
 
       expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
         id: invalidEthSignJsonRpc.id,
@@ -227,7 +235,8 @@ describe("WalletConnectAdapter", () => {
     it("should approve eth_sign method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new ApproveRequestMock());
 
-      const signingMessage = "message to sign";
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
       const signedMessage = "signed message";
 
       const validEthSignJsonRpc = {
@@ -238,7 +247,7 @@ describe("WalletConnectAdapter", () => {
       };
 
       setTimeout(() => {
-        mockInstance.emit("call_request", undefined, validEthSignJsonRpc);
+        mockInstance.emit(CALL_REQUEST_EVENT, undefined, validEthSignJsonRpc);
       }, 1);
 
       const { payload, meta } = await promisifyEvent(
@@ -249,7 +258,10 @@ describe("WalletConnectAdapter", () => {
       meta.approveRequest(signedMessage);
 
       setTimeout(() => {
-        expect(payload).toEqual({ digest: signingMessage });
+        expect(payload).toEqual({
+          digest: signingMessage,
+          permission: EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+        });
         expect(mockInstance.approveRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           result: signedMessage,
@@ -262,7 +274,46 @@ describe("WalletConnectAdapter", () => {
     it("should reject eth_sign method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new RejectRequestMock());
 
-      const signingMessage = "message to sign";
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
+
+      const validEthSignJsonRpc = {
+        id: 1,
+        jsonrpc: "2.0",
+        method: "eth_sign",
+        params: [address, signingMessage],
+      };
+
+      setTimeout(() => {
+        mockInstance.emit(CALL_REQUEST_EVENT, undefined, validEthSignJsonRpc);
+      }, 1);
+
+      const { payload, meta } = await promisifyEvent(
+        wcAdapter,
+        EWalletConnectAdapterEvents.SIGN_MESSAGE,
+      );
+
+      meta.rejectRequest(new Error("User rejected request"));
+
+      setTimeout(() => {
+        expect(payload).toEqual({
+          digest: signingMessage,
+          permission: EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+        });
+        expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
+          id: validEthSignJsonRpc.id,
+          error: expect.any(Error),
+        });
+
+        done();
+      }, 1);
+    });
+
+    it("should automatically reject eth_sign method for too many permissions", async done => {
+      const { mockInstance } = await approveSession(new RejectRequestMock());
+
+      const signingMessage =
+        "0x7b2261646472657373223a2022307866413141663245323531656537333946383365313464376461436664373742336430453933306237222c202273616c74223a202230396566643035633461643634626165346161356163333036643362343530663436393130323635663931653262643437306332643735333032376634363138222c20227065726d697373696f6e73223a205b226368616e67652d656d61696c222c2022646f2d626f6f6b6275696c64696e67225d2c202274696d657374616d70223a20313539353934343930302c20227369676e65725f74797065223a20226574685f7369676e222c20226d6163223a20223078306531626565353533323838613732373765336461656663363337396266326437636365326265326431393262653862343230386363316636666231373834333732653633313035303037633064353664663134373866346366323435383534227d";
 
       const validEthSignJsonRpc = {
         id: 1,
@@ -275,15 +326,7 @@ describe("WalletConnectAdapter", () => {
         mockInstance.emit("call_request", undefined, validEthSignJsonRpc);
       }, 1);
 
-      const { payload, meta } = await promisifyEvent(
-        wcAdapter,
-        EWalletConnectAdapterEvents.SIGN_MESSAGE,
-      );
-
-      meta.rejectRequest();
-
       setTimeout(() => {
-        expect(payload).toEqual({ digest: signingMessage });
         expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           error: expect.any(Error),
@@ -293,17 +336,17 @@ describe("WalletConnectAdapter", () => {
       }, 1);
     });
 
-    it("should validate eth_sendTransaction method rpc call", async () => {
+    it("should validate eth_sendTypedTransaction method rpc call", async () => {
       const { mockInstance } = await approveSession(new RejectRequestMock());
 
       const invalidEthSignJsonRpc = {
         id: 1,
         jsonrpc: "2.0",
-        method: "eth_sendTransaction",
+        method: "eth_sendTypedTransaction",
         params: [{ foo: "bar" }],
       };
 
-      mockInstance.emit("call_request", undefined, invalidEthSignJsonRpc);
+      mockInstance.emit(CALL_REQUEST_EVENT, undefined, invalidEthSignJsonRpc);
 
       expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
         id: invalidEthSignJsonRpc.id,
@@ -311,14 +354,14 @@ describe("WalletConnectAdapter", () => {
       });
     });
 
-    it("should strip unknown properties and approve eth_sendTransaction method", async done => {
+    it("should strip unknown properties and approve eth_sendTypedTransaction method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new ApproveRequestMock());
 
       const transactionHash = "tx hash";
 
       const transaction = {
         to: "0x7824e49353BD72E20B61717cf82a06a4EEE209e8",
-        gasLimit: "0x21000",
+        gas: "0x21000",
         gasPrice: "0x20000000000",
         value: "0x1000000000000000000",
         data: "0x",
@@ -330,15 +373,20 @@ describe("WalletConnectAdapter", () => {
         quiz: "baz",
       };
 
+      const transactionMetaData = {
+        transactionAdditionalData: {},
+        transactionType: ETxType.WITHDRAW,
+      };
+
       const validEthSignJsonRpc = {
         id: 1,
         jsonrpc: "2.0",
-        method: "eth_sendTransaction",
-        params: [transactionFromRpc],
+        method: "eth_sendTypedTransaction",
+        params: [transactionFromRpc, transactionMetaData],
       };
 
       setTimeout(() => {
-        mockInstance.emit("call_request", undefined, validEthSignJsonRpc);
+        mockInstance.emit(CALL_REQUEST_EVENT, undefined, validEthSignJsonRpc);
       }, 1);
 
       const { payload, meta } = await promisifyEvent(
@@ -349,7 +397,17 @@ describe("WalletConnectAdapter", () => {
       meta.approveRequest(transactionHash);
 
       setTimeout(() => {
-        expect(payload).toEqual({ transaction });
+        const expectedTransaction = {
+          transaction: {
+            ...transaction,
+            // should rename `gas` to `gasLimit`
+            gasLimit: transaction.gas,
+            gas: undefined,
+          },
+          transactionMetaData,
+        };
+        expect(payload).toEqual(expectedTransaction);
+
         expect(mockInstance.approveRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           result: transactionHash,
@@ -359,8 +417,61 @@ describe("WalletConnectAdapter", () => {
       }, 1);
     });
 
-    it("should reject eth_sendTransaction method", async done => {
+    it("should reject eth_sendTypedTransaction method", async done => {
       const { mockInstance, wcAdapter } = await approveSession(new RejectRequestMock());
+
+      const transaction = {
+        to: "0x7824e49353BD72E20B61717cf82a06a4EEE209e8",
+        gas: "0x21000",
+        gasPrice: "0x20000000000",
+        value: "0x1000000000000000000",
+        data: "0x",
+      };
+
+      const transactionMetaData = {
+        transactionAdditionalData: {},
+        transactionType: ETxType.WITHDRAW,
+      };
+
+      const validEthSignJsonRpc = {
+        id: 1,
+        jsonrpc: "2.0",
+        method: "eth_sendTypedTransaction",
+        params: [transaction, transactionMetaData],
+      };
+      setTimeout(() => {
+        mockInstance.emit(CALL_REQUEST_EVENT, undefined, validEthSignJsonRpc);
+      }, 1);
+
+      const { payload, meta } = await promisifyEvent(
+        wcAdapter,
+        EWalletConnectAdapterEvents.SEND_TRANSACTION,
+      );
+
+      meta.rejectRequest(new UserRejectedRequestError());
+
+      setTimeout(() => {
+        const expectedTransaction = {
+          transaction: {
+            ...transaction,
+            gasLimit: transaction.gas,
+            gas: undefined,
+          },
+          transactionMetaData,
+        };
+        expect(payload).toEqual(expectedTransaction);
+
+        expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
+          id: validEthSignJsonRpc.id,
+          error: expect.any(Error),
+        });
+
+        done();
+      }, 1);
+    });
+
+    it("should reject deprecated eth_sendTransaction method", async done => {
+      const { mockInstance } = await approveSession(new RejectRequestMock());
 
       const transaction = {
         to: "0x7824e49353BD72E20B61717cf82a06a4EEE209e8",
@@ -377,18 +488,10 @@ describe("WalletConnectAdapter", () => {
         params: [transaction],
       };
       setTimeout(() => {
-        mockInstance.emit("call_request", undefined, validEthSignJsonRpc);
+        mockInstance.emit(CALL_REQUEST_EVENT, undefined, validEthSignJsonRpc);
       }, 1);
 
-      const { payload, meta } = await promisifyEvent(
-        wcAdapter,
-        EWalletConnectAdapterEvents.SEND_TRANSACTION,
-      );
-
-      meta.rejectRequest();
-
       setTimeout(() => {
-        expect(payload).toEqual({ transaction });
         expect(mockInstance.rejectRequest).toHaveBeenCalledWith({
           id: validEthSignJsonRpc.id,
           error: expect.any(Error),
@@ -404,7 +507,7 @@ describe("WalletConnectAdapter", () => {
       const { mockInstance, wcAdapter } = await approveSession(new ApproveSessionMock());
 
       setTimeout(() => {
-        mockInstance.emit("disconnect");
+        mockInstance.emit(DISCONNECT_EVENT);
       }, 1);
 
       const result = await promisifyEvent(wcAdapter, EWalletConnectAdapterEvents.DISCONNECTED);

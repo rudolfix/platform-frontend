@@ -1,5 +1,5 @@
 import { all, put, select } from "@neufund/sagas";
-import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ETxType, ITokenDisbursal } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -13,7 +13,7 @@ import BigNumber from "bignumber.js";
 
 import { MINIMAL_PAYOUT_WITHOUT_WARNING } from "../../../../../config/constants";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../../lib/web3/types";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
 import { neuCall } from "../../../../sagasUtils";

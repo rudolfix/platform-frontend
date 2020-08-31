@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { ETxType, walletApi } from "@neufund/shared-modules";
 import {
   ECurrency,
   EthereumAddressWithChecksum,
@@ -10,7 +10,7 @@ import BigNumber from "bignumber.js";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Manager";
 import { actions } from "../../../actions";
 import { neuTakeLatest } from "../../../sagasUtils";

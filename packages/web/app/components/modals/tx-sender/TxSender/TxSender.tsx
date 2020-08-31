@@ -1,7 +1,7 @@
+import { ETxType } from "@neufund/shared-modules";
 import cn from "classnames";
 import * as React from "react";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
 import {

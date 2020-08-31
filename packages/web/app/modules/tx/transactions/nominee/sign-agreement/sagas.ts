@@ -4,6 +4,7 @@ import {
   EEtoState,
   EETOStateOnChain,
   etoModuleApi,
+  ETxType,
   InvalidETOStateError,
   TEtoWithCompanyAndContractReadonly,
 } from "@neufund/shared-modules";
@@ -12,7 +13,7 @@ import { assertNever, EthereumAddressWithChecksum, nonNullable } from "@neufund/
 import { ipfsLinkFromHash } from "../../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../../../../lib/web3/types";
+import { ITxData } from "../../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../../store";
 import { actions } from "../../../../actions";
 import {

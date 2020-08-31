@@ -10,6 +10,7 @@ import { ESignerType } from "modules/signer-ui/types";
 import { reduxify } from "modules/utils";
 import { walletConnectActions } from "modules/wallet-connect/actions";
 import { WalletConnectAdapter } from "modules/wallet-connect/lib/WalletConnectAdapter";
+import { UserRejectedRequestError } from "modules/wallet-connect/lib/adapterErrors";
 import { privateSymbols } from "modules/wallet-connect/lib/symbols";
 import {
   EWalletConnectAdapterEvents,
@@ -41,7 +42,7 @@ export function* watchWalletConnectEvents(wcAdapter: WalletConnectAdapter): Saga
         }
 
         if (denied) {
-          managerEvent.meta.rejectRequest();
+          managerEvent.meta.rejectRequest(new UserRejectedRequestError());
         }
 
         break;
@@ -65,7 +66,7 @@ export function* watchWalletConnectEvents(wcAdapter: WalletConnectAdapter): Saga
         }
 
         if (denied) {
-          managerEvent.meta.rejectRequest();
+          managerEvent.meta.rejectRequest(new UserRejectedRequestError());
         }
 
         break;

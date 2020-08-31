@@ -1,3 +1,4 @@
+import { ETxType } from "@neufund/shared-modules";
 import cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -5,7 +6,7 @@ import { compose } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { TxPendingData } from "../../../../lib/api/users-tx/interfaces";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import {
   selectTxAdditionalData,

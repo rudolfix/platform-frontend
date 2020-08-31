@@ -1,9 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
-import { Primitive, Tuple } from "@neufund/shared-utils";
+import { isInEnum, Primitive, Tuple } from "@neufund/shared-utils";
 import isArray from "lodash/fp/isArray";
-import { TestOptionsMessage } from "yup";
+import isString from "lodash/fp/isString";
 import * as yup from "yup";
 
 const isAbsent = <T>(value: T) => value === undefined || value === null;
@@ -50,7 +50,10 @@ export type InferTypeWithPrimitive<T> = T extends yup.Schema<infer P>
  * oneOfTypeSchema.isValidSync(100); // true
  * oneOfTypeSchema.isValidSync({ foo: "bar" }); // true
  */
-const oneOfSchema = <T extends yup.Schema<unknown>>(schemas: T[], message?: TestOptionsMessage) =>
+const oneOfSchema = <T extends yup.Schema<unknown>>(
+  schemas: T[],
+  message?: yup.TestOptionsMessage,
+) =>
   yup
     .mixed<InferTypeWithPrimitive<T>>()
     .test({
@@ -179,4 +182,15 @@ const typedValue = <T>(isValid: (value: unknown) => value is T) =>
     },
   });
 
-export { singleValue, oneOfSchema, typedValue, tupleSchema };
+/**
+ * Creates a schema that checks if value is in enum
+ * @param enumerable
+ */
+const enumValue = <T extends string, TEnumValue extends string | number>(
+  enumerable: { [key in T]: TEnumValue },
+) =>
+  typedValue(
+    (value: unknown): value is TEnumValue => isString(value) && isInEnum(enumerable, value),
+  );
+
+export { singleValue, oneOfSchema, typedValue, tupleSchema, enumValue };

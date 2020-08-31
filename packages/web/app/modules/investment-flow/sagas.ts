@@ -2,6 +2,7 @@ import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neu
 import {
   EETOStateOnChain,
   etoModuleApi,
+  ETxType,
   investorPortfolioModuleApi,
   TEtoWithCompanyAndContractReadonly,
   walletApi,
@@ -22,7 +23,7 @@ import BigNumber from "bignumber.js";
 import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ETxType, ITxData } from "../../lib/web3/types";
+import { ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall } from "../sagasUtils";

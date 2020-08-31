@@ -1,8 +1,8 @@
 import { Eth, EurToken } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { FormatBoolean } from "../../../shared/formatters/FormatBoolean";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

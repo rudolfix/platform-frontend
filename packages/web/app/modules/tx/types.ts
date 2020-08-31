@@ -1,6 +1,5 @@
-import { ETransactionType } from "@neufund/shared-modules";
+import { ETransactionType, ETxType } from "@neufund/shared-modules";
 
-import { ETxType } from "../../lib/web3/types";
 import { TClaimAdditionalData } from "./transactions/claim/types";
 import { TEtoSetDateAdditionalData } from "./transactions/eto-flow/types";
 import { TExecuteResolutionAdditionalData } from "./transactions/governance/types";

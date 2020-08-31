@@ -1,10 +1,11 @@
 import { Button } from "@neufund/design-system";
+import { ETxType } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
   selectTxAdditionalData,

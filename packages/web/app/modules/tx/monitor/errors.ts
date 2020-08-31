@@ -1,4 +1,4 @@
-import { ETxType } from "../../../lib/web3/types";
+import { ETxType } from "@neufund/shared-modules";
 
 export class TxMonitorError extends Error {}
 

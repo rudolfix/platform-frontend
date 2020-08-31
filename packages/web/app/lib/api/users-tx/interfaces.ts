@@ -1,8 +1,7 @@
-import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
+import { ETxType, TypeOfYTS, YupTS } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
-import { ETxType } from "../../../lib/web3/types";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 
 export const OOO_TRANSACTION_TYPE = "mempool";

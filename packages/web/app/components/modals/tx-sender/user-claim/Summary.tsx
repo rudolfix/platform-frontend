@@ -1,6 +1,7 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
 import {
   EEtoDocumentType,
+  ETxType,
   IEtoDocument,
   immutableDocumentName,
   investorPortfolioModuleApi,
@@ -12,7 +13,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 
 import { IImmutableFileId } from "../../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
-import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectPendingDownloads } from "../../../../modules/immutable-file/selectors";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";

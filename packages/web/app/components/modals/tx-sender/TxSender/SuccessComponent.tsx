@@ -1,6 +1,6 @@
+import { ETxType } from "@neufund/shared-modules";
 import * as React from "react";
 
-import { ETxType } from "../../../../lib/web3/types";
 import { InvestmentSuccess } from "../investment-flow/Success";
 import { InvestorAcceptPayoutSuccess } from "../investor-payout/AcceptSuccess";
 import { InvestorRedistributePayoutSuccess } from "../investor-payout/RedistributeSuccess";

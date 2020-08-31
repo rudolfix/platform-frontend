@@ -1,6 +1,7 @@
 import { fork, put, select, take } from "@neufund/sagas";
 import {
   etoModuleApi,
+  ETxType,
   investorPortfolioModuleApi,
   TEtoWithCompanyAndContractReadonly,
   walletApi,
@@ -9,7 +10,7 @@ import { compareBigNumbers, EthereumAddressWithChecksum } from "@neufund/shared-
 import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { EInvestmentType } from "../../../investment-flow/reducer";

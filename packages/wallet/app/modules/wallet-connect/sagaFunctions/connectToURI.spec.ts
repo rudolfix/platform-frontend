@@ -20,7 +20,6 @@ import { navigate } from "router/routeUtils";
 
 import { EAppRoutes } from "../../../router/appRoutes";
 import { createMock } from "../../../utils/testUtils.specUtils";
-import { notificationUIModuleApi } from "../../notification-ui/module";
 import { ESignerType, signerUIModuleApi } from "../../signer-ui/module";
 import { setupStorageModule } from "../../storage/module";
 import { walletConnectActions } from "../actions";
@@ -137,7 +136,7 @@ describe("wallet-connect - connectToURI", () => {
       .not.call(connectEvents, walletConnectAdapterMock)
       .run();
 
-    expect(session.rejectSession).toHaveBeenCalledWith();
+    expect(session.rejectSession).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(EAppRoutes.home);
   });
 });

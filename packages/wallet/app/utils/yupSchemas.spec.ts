@@ -1,7 +1,7 @@
 import { AssertEqual, assertType } from "@neufund/shared-utils/tests";
 import * as yup from "yup";
 
-import { singleValue, typedValue, oneOfSchema, tupleSchema } from "./yupSchemas";
+import { singleValue, typedValue, oneOfSchema, tupleSchema, enumValue } from "./yupSchemas";
 
 type YupPrimitiveInfer<T> = T extends yup.Schema<infer T> ? T : never;
 
@@ -23,6 +23,25 @@ describe("yup custom schemas", () => {
       expect(singleValueSchema.isValidSync("true")).toBeTruthy();
 
       expect(singleValueSchema.isValidSync("false")).toBeFalsy();
+    });
+  });
+
+  describe("enumValue", () => {
+    it("should only allow values from enum", () => {
+      enum EFruit {
+        APPLE = "apple",
+        ORANGE = "orange",
+      }
+
+      const enumValueSchema = enumValue(EFruit);
+
+      // assert proper type inference
+      type Type = YupPrimitiveInfer<typeof enumValueSchema>;
+      type ExpectedType = EFruit;
+      assertType<AssertEqual<Type, ExpectedType>>(true);
+
+      expect(enumValueSchema.isValidSync(EFruit.APPLE)).toBeTruthy();
+      expect(enumValueSchema.isValidSync("carrot")).toBeFalsy();
     });
   });
 

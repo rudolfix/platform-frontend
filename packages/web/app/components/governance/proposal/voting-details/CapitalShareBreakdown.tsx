@@ -14,11 +14,7 @@ import iconDownload from "../../../../assets/img/inline_icons/download-file.svg"
 
 type TExternalProps = {
   shareCapitalBreakdown: IShareCapitalBreakdown;
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
   pendingDownloads: Record<string, boolean | undefined>;
   currency: string;
 };
@@ -91,7 +87,6 @@ const CapitalShareBreakdown: React.FunctionComponent<TExternalProps> = ({
             getMessageTranslation({
               messageType: EProposalMessages.PROPOSAL_DOCUMENT_NAME,
             }) as string,
-            true,
           )
         }
       >

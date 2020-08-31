@@ -1,8 +1,7 @@
-import { ETransactionType } from "@neufund/shared-modules";
+import { ETransactionType, ETxType } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
 import { expect } from "chai";
 
-import { ETxType } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
 import { makeEthereumAddressChecksummed } from "../web3/utils";
 import {

@@ -1,3 +1,4 @@
+import { EJwtPermissions, ETxType } from "@neufund/shared-modules";
 import { toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react-native";
@@ -14,7 +15,7 @@ const signerModalCommonProps = {
   reject: action("reject"),
 };
 
-const sendTransactionSignerRequest: TSignerSignPayload = {
+const withdrawTransactionSignerRequest: TSignerSignPayload = {
   type: ESignerType.SEND_TRANSACTION,
   data: {
     transaction: {
@@ -23,6 +24,19 @@ const sendTransactionSignerRequest: TSignerSignPayload = {
       gasPrice: "0x0",
       value: "0x0",
     },
+    transactionMetaData: {
+      transactionType: ETxType.WITHDRAW,
+      transactionAdditionalData: {
+        amount: "100000000000000000",
+        amountEur: "21.059102643554456",
+        to: "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988",
+        tokenDecimals: 18,
+        tokenImage: "/images/1b0f8ccf.svg",
+        tokenSymbol: "eth",
+        total: "104881638400000000",
+        totalEur: "22087131884897625449.007104",
+      },
+    },
   },
 };
 
@@ -30,6 +44,7 @@ const signMessageSignerRequest: TSignerSignPayload = {
   type: ESignerType.SIGN_MESSAGE,
   data: {
     digest: "foo",
+    permission: EJwtPermissions.SUBMIT_KYC_PERMISSION,
   },
 };
 
@@ -44,7 +59,7 @@ const wcSessionSignerRequest: TSignerSignPayload = {
 
 storiesOf("Templates|SignerModal", module)
   .add("Send Transaction Signer", () => (
-    <SignerModalLayout {...signerModalCommonProps} request={sendTransactionSignerRequest} />
+    <SignerModalLayout {...signerModalCommonProps} request={withdrawTransactionSignerRequest} />
   ))
   .add("Sign Message Signer", () => (
     <SignerModalLayout {...signerModalCommonProps} request={signMessageSignerRequest} />

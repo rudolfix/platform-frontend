@@ -1,4 +1,9 @@
-import { ETransactionDirection, ETransactionType, ITokenDisbursal } from "@neufund/shared-modules";
+import {
+  ETransactionDirection,
+  ETransactionType,
+  ETxType,
+  ITokenDisbursal,
+} from "@neufund/shared-modules";
 import {
   ECurrency,
   EquityToken,
@@ -11,7 +16,7 @@ import { addHexPrefix } from "ethereumjs-util";
 import { TxData } from "web3";
 
 import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
-import { ETxType, TBigNumberVariants } from "../../lib/web3/types";
+import { TBigNumberVariants } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
 import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { ETxSenderState } from "./sender/reducer";

@@ -1,7 +1,7 @@
 import { fork, put } from "@neufund/sagas";
+import { ETxType } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuTakeLatest } from "../../../sagasUtils";
 import { txSendSaga } from "../../sender/sagas";

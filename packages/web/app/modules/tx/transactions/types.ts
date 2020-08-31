@@ -1,6 +1,5 @@
-import { SchemaYTS } from "@neufund/shared-modules";
+import { ETxType, SchemaYTS } from "@neufund/shared-modules";
 
-import { ETxType } from "../../../lib/web3/types";
 import { TUserClaimAdditionalData, UserClaimAdditionalDataSchema } from "./claim/types";
 import { EtoSetDateAdditionalDataSchema, TEtoSetDateAdditionalDataSchema } from "./eto-flow/types";
 import { ExecuteResolutionAdditionalDataSchema } from "./governance/types";

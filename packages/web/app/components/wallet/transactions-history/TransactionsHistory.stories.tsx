@@ -2,6 +2,7 @@ import {
   ETransactionDirection,
   ETransactionStatus,
   ETransactionType,
+  ETxType,
   txHistoryApi,
 } from "@neufund/shared-modules";
 import { ECurrency, ENumberInputFormat } from "@neufund/shared-utils";
@@ -10,7 +11,6 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
-import { ETxType } from "../../../lib/web3/types";
 import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { TransactionListLayout } from "./TransactionsHistory";
 

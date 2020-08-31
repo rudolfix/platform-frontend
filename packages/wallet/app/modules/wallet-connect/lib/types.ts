@@ -1,6 +1,6 @@
 import { Opaque, XOR } from "@neufund/shared-utils";
 
-import { TTransactionSchema, TWalletSession } from "./schemas";
+import { TTransactionMetaData, TTransactionSchema, TWalletSession } from "./schemas";
 
 export type TWalletConnectUri = Opaque<"WalletConnectUri", string>;
 
@@ -23,10 +23,11 @@ export type TWalletConnectAdapterEmit =
       type: EWalletConnectAdapterEvents.SIGN_MESSAGE;
       payload: {
         digest: string;
+        permission: string | undefined;
       };
       meta: {
         approveRequest: (signedMessage: string) => void;
-        rejectRequest: () => void;
+        rejectRequest: (error: Error) => void;
       };
       error: undefined;
     }
@@ -34,10 +35,11 @@ export type TWalletConnectAdapterEmit =
       type: EWalletConnectAdapterEvents.SEND_TRANSACTION;
       payload: {
         transaction: TTransactionSchema;
+        transactionMetaData: TTransactionMetaData;
       };
       meta: {
         approveRequest: (transactionHash: string) => void;
-        rejectRequest: () => void;
+        rejectRequest: (error: Error) => void;
       };
       error: undefined;
     }

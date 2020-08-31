@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { kycApi, TBankAccount, walletApi } from "@neufund/shared-modules";
+import { ETxType, kycApi, TBankAccount, walletApi } from "@neufund/shared-modules";
 import {
   compareBigNumbers,
   convertToUlps,
@@ -11,7 +11,7 @@ import {
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { EBankTransferType } from "../../../bank-transfer-flow/reducer";
 import {

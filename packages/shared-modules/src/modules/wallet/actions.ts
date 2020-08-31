@@ -10,5 +10,4 @@ export const walletActions = {
   loadWalletDataError: createActionFactory("WALLET_LOAD_WALLET_DATA_ERROR", (errorMsg: string) => ({
     errorMsg,
   })),
-  stopWalletBalanceWatcher: createActionFactory("STOP_WALLET_BALANCE_WATCHER"),
 };

@@ -1,7 +1,6 @@
-import { gasApi } from "@neufund/shared-modules";
+import { ETxType, gasApi } from "@neufund/shared-modules";
 import { multiplyBigNumbers } from "@neufund/shared-utils";
 
-import { ETxType } from "../../../lib/web3/types";
 import { TAppGlobalState } from "../../../store";
 import { selectEtherPriceEur } from "../../shared/tokenPrice/selectors";
 import { TAdditionalDataByType } from "../types";

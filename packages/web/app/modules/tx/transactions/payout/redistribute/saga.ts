@@ -1,10 +1,10 @@
 import { put, select, take } from "@neufund/sagas";
-import { ITokenDisbursal } from "@neufund/shared-modules";
+import { ETxType, ITokenDisbursal } from "@neufund/shared-modules";
 import { ECurrency, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ETxType, ITxData } from "../../../../../lib/web3/types";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
 import { neuCall } from "../../../../sagasUtils";

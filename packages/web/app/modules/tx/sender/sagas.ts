@@ -1,5 +1,5 @@
 import { call, Channel, put, race, select, take, takeLatest } from "@neufund/sagas";
-import { EWalletType, gasApi, IGasState } from "@neufund/shared-modules";
+import { ETxType, EWalletType, gasApi, IGasState } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import {
@@ -10,7 +10,6 @@ import {
 import { BrowserWalletError } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { LedgerError } from "../../../lib/web3/ledger-wallet/errors";
 import { LightError } from "../../../lib/web3/light-wallet/LightWallet";
-import { ETxType } from "../../../lib/web3/types";
 import {
   InvalidChangeIdError,
   InvalidRlpDataError,

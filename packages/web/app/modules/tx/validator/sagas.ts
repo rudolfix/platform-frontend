@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { ETxType, walletApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -13,7 +13,7 @@ import { ETxValidationMessages } from "../../../components/translatedMessages/me
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STIPEND_ELIGIBLE_WALLETS } from "../../../lib/web3/constants";
-import { ETxType, ITxData } from "../../../lib/web3/types";
+import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
 import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";

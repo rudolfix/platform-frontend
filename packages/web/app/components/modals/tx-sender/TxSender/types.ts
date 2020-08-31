@@ -1,4 +1,6 @@
-import { ETxType, ITxData } from "../../../../lib/web3/types";
+import { ETxType } from "@neufund/shared-modules";
+
+import { ITxData } from "../../../../lib/web3/types";
 import { ETransactionErrorType, ETxSenderState } from "../../../../modules/tx/sender/reducer";
 
 export interface ITxSenderStateProps {

@@ -68,3 +68,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Jest cache
+/.jest/cache/

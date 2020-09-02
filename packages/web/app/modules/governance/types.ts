@@ -120,10 +120,10 @@ export type TBasicResolutionData = {
 };
 
 export type TFullResolutionData = {
-  title?: string;
-  documentName?: string;
-  documentHash?: string;
-  documentSize?: string;
+  title: string;
+  documentName: string;
+  documentHash: string;
+  documentSize: string;
 } & TBasicResolutionData;
 
 export type TResolution =
@@ -189,6 +189,11 @@ export const hasPublishUpdate = (
   x: any,
 ): x is { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> } =>
   x.publishUpdate !== undefined;
+
+export const hasDownloadDocument = (
+  x: any,
+): x is { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> } =>
+  x.downloadIpfsDocument !== undefined;
 
 export const hasUpdatePublishSuccess = (
   x: any,

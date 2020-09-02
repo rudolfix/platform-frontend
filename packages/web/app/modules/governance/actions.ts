@@ -55,4 +55,5 @@ export const actions = {
   onFileRemove: createActionFactory("ON_FILE_REMOVE"),
   publishUpdate: createActionFactory("START_PUBLISH_UPDATE"),
   updatePublishSuccess: createActionFactory("UPDATE_PUBLISH_SUCCESS"),
+  downloadIpfsDocument: createActionFactory("DOWNLOAD_IPFS_DOCUMENT", (documentHash:string,documentTitle: string)=> ({documentHash,documentTitle}))
 };

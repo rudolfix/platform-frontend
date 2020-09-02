@@ -65,7 +65,7 @@ import {
   EGovernanceControllerState,
   EModalState,
   EResolutionState,
-  hasCloseGovernanceUpdateModal,
+  hasCloseGovernanceUpdateModal, hasDownloadDocument,
   hasOnFormBlur,
   hasOnFormChange,
   hasOpenGovernanceUpdateModal,
@@ -93,7 +93,8 @@ type TUpdate =
   | { closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal> }
   | { openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal> }
   | { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> }
-  | { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> };
+  | { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> }
+  | { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> };
 
 export function* selectGovernanceController(
   equityTokenContractAddress: string,
@@ -337,8 +338,8 @@ function* uploadGovernanceDocument(
 // --- UPDATES ---
 function* uploadFileUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   updateData: { uploadFile: ReturnType<typeof actions.governance.uploadFile> },
 ): Generator<any, TGovernanceViewState, any> {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
@@ -364,10 +365,11 @@ function* uploadFileUpdate(
     return oldState;
   }
 }
+
 function* removeFileUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   _updateData: { removeFile: ReturnType<typeof actions.governance.removeFile> },
 ): Generator<any, TGovernanceViewState, any> {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
@@ -391,8 +393,8 @@ function* removeFileUpdate(
 
 function* onFormChangeUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   updateData: { onFormChange: ReturnType<typeof actions.governance.onFormChange> },
 ): Generator<any, TGovernanceViewState, any> {
   const { fieldPath, newValue } = updateData.onFormChange.payload;
@@ -401,8 +403,8 @@ function* onFormChangeUpdate(
 
 function* onFormBlurUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   updateData: { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> },
 ): Generator<any, TGovernanceViewState, any> {
   const { fieldPath, newValue } = updateData.onFormBlur.payload;
@@ -411,8 +413,8 @@ function* onFormBlurUpdate(
 
 function onFormUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   fieldPath: string,
   newValue: string,
 ): TGovernanceViewState {
@@ -426,7 +428,7 @@ function onFormUpdate(
     const publishButtonDisabled = !(
       formValidated.isValid &&
       oldState.governanceUpdateModalState.documentUploadState.documentUploadStatus ===
-        EProcessState.SUCCESS
+      EProcessState.SUCCESS
     );
 
     return {
@@ -444,8 +446,8 @@ function onFormUpdate(
 
 function* closeGovernanceUpdateModalUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   _updateData: {
     closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal>;
   },
@@ -458,8 +460,8 @@ function* closeGovernanceUpdateModalUpdate(
 
 function* openGovernanceUpdateModalUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   _updateData: {
     openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal>;
   },
@@ -472,8 +474,8 @@ function* openGovernanceUpdateModalUpdate(
 
 function* publishUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   _updateData: { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> },
 ): Generator<any, TGovernanceViewState, any> {
   if (
@@ -510,8 +512,8 @@ function* publishUpdate(
 
 function* updatePublishSuccessUpdate(
   _oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-      tabVisible: boolean;
-    },
+    tabVisible: boolean;
+  },
   _updateData: { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> },
 ): Generator<any, TGovernanceViewState, any> {
   yield spawn(loadInitialGeneralInformationView);
@@ -519,6 +521,22 @@ function* updatePublishSuccessUpdate(
     tabVisible: true,
     processState: EProcessState.IN_PROGRESS as const,
   };
+}
+
+function* downloadIpfsDocument(
+  oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
+    tabVisible: boolean;
+  },
+  updateData: { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> },
+) {
+  const { documentHash, documentTitle } = updateData.downloadIpfsDocument.payload
+  const fileData = {
+    ipfsHash: documentHash,
+    mimeType: EMimeType.PDF,
+    asPdf: true,
+  }
+  yield put(actions.immutableStorage.downloadImmutableFile(fileData, documentTitle))
+  return oldState
 }
 
 export function* governanceGeneralInformationViewController(): Generator<any, void, any> {
@@ -555,6 +573,7 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
           onFileRemove: take(actions.governance.removeFile),
           publishUpdate: take(actions.governance.publishUpdate),
           updatePublishSuccess: take(actions.governance.updatePublishSuccess),
+          downloadIpfsDocument: take(actions.governance.downloadIpfsDocument)
         });
 
         if (hasUploadFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
@@ -580,6 +599,8 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
           newState = yield* call(publishUpdate, oldState, update);
         } else if (hasUpdatePublishSuccess(update)) {
           newState = yield* call(updatePublishSuccessUpdate, oldState, update);
+        } else if (hasDownloadDocument(update)) {
+          newState = yield* call(downloadIpfsDocument, oldState, update)
         } else {
           newState = oldState;
         }

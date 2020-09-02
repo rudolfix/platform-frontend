@@ -14,7 +14,7 @@ import styles from "./GeneralInformation.module.scss";
 export type TGeneralInformationListProps = {
   resolutions: ReadonlyArray<TResolution>;
   companyBrandName: string;
-  downloadIpfsDocument:(documentHash:string, documentName:string)=>void;
+  downloadIpfsDocument: (documentHash: string, documentName: string) => void;
 };
 
 export type TResolutionProps = {

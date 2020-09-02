@@ -23,5 +23,6 @@ storiesOf("Governance/GeneralInformation", module).add("GovernanceUpdateDetailsM
     resolution={resolution}
     companyBrandName="Nomera Tech"
     isOpen={true}
+    downloadIpfsDocument={action("downloadIpfsDocument")}
   />
 ));

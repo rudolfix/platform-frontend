@@ -39,8 +39,8 @@ export const GeneralInformation = compose<TGeneralInformationListProps, {}>(
         dispatch(actions.governance.onFormChange(formId, fieldPath, newValue)),
       onFormBlur: (formId: string, fieldPath: string, newValue: string) =>
         dispatch(actions.governance.onFormBlur(formId, fieldPath, newValue)),
-      downloadIpfsDocument:(documentHash:string, documentName:string)=>
-        dispatch(actions.governance.downloadIpfsDocument(documentHash,documentName))
+      downloadIpfsDocument: (documentHash: string, documentName: string) =>
+        dispatch(actions.governance.downloadIpfsDocument(documentHash, documentName)),
     }),
   }),
   branch<TGovernanceViewState>(

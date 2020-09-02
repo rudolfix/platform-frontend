@@ -138,6 +138,33 @@ export const GovernanceUpdateSchema = Yup.object().shape({
   updateTitle: Yup.string().required(),
 });
 
+export type TResolutionDocumentUploadResult = {
+  contract: string;
+  createdAt: string;
+  documentType: EResolutionDocumentType.RESOLUTION_DOCUMENT;
+  form: "document";
+  ipfsHash: string;
+  mimeType: EMimeType.PDF;
+  name: string;
+  owner: string;
+  resolutionId: string;
+  size: 116211;
+  title: string;
+};
+
+export type TUpdate =
+  | { uploadFile: ReturnType<typeof actions.governance.uploadFile> }
+  | { onFileUpload: ReturnType<typeof actions.governance.onFileUpload> }
+  | { removeFile: ReturnType<typeof actions.governance.removeFile> }
+  | { onFileRemove: ReturnType<typeof actions.governance.onFileRemove> }
+  | { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> }
+  | { onFormChange: ReturnType<typeof actions.governance.onFormChange> }
+  | { closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal> }
+  | { openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal> }
+  | { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> }
+  | { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> }
+  | { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> };
+
 //-- type guards
 export const modalStateIsOpen = <T>(
   x: { modalState: EModalState } & T,
@@ -194,6 +221,12 @@ export const hasDownloadDocument = (
   x: any,
 ): x is { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> } =>
   x.downloadIpfsDocument !== undefined;
+
+export const hasUpdateResolution = (
+  x: any,
+): x is {
+  resolutionUpdateReceived: ReturnType<typeof actions.governance.resolutionUpdateReceived>;
+} => x.resolutionUpdateReceived !== undefined;
 
 export const hasUpdatePublishSuccess = (
   x: any,

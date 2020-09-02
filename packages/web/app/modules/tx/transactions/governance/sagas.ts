@@ -85,6 +85,7 @@ function* startPublishResolutionUpdateFlow(
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxType.EXECUTE_RESOLUTION>({
       documentTitle: updateTitle,
+      //todo this shouldn't be done like that! Use createMesssage() here, resolve to translations inside components
       type: governanceActionToLabel(action, company.brandName) as string,
     }),
   );

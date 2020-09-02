@@ -29,3 +29,5 @@ export const WC_DEFAULT_SIGN_TIMEOUT = minutesToMs(10);
 export const MINIMAL_PAYOUT_WITHOUT_WARNING = new BigNumber(
   process.env.NF_MINIMAL_PAYOUT_WITHOUT_WARNING || "2",
 );
+
+export const RESOLUTION_WATCHER_DELAY = 20000;

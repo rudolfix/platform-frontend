@@ -1,7 +1,7 @@
 import { TResolutionData } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { TDocumentUploadResponse, TGovernanceViewState } from "./types";
+import { TDocumentUploadResponse, TGovernanceViewState, TResolution } from "./types";
 
 export const actions = {
   setGovernanceVisibility: createActionFactory(
@@ -55,5 +55,16 @@ export const actions = {
   onFileRemove: createActionFactory("ON_FILE_REMOVE"),
   publishUpdate: createActionFactory("START_PUBLISH_UPDATE"),
   updatePublishSuccess: createActionFactory("UPDATE_PUBLISH_SUCCESS"),
-  downloadIpfsDocument: createActionFactory("DOWNLOAD_IPFS_DOCUMENT", (documentHash:string,documentTitle: string)=> ({documentHash,documentTitle}))
+  downloadIpfsDocument: createActionFactory(
+    "DOWNLOAD_IPFS_DOCUMENT",
+    (documentHash: string, documentTitle: string) => ({ documentHash, documentTitle }),
+  ),
+  resolutionUpdateRequested: createActionFactory(
+    "RESOLUTION_UPDATE_REQUESTED",
+    (resolution: TResolution) => ({ resolution }),
+  ),
+  resolutionUpdateReceived: createActionFactory(
+    "RESOLUTION_UPDATE_RECEIVED",
+    (resolutions: TResolution[]) => ({ resolutions }),
+  ),
 };

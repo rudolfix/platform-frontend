@@ -1,6 +1,10 @@
 import {
   all,
   call,
+  channel,
+  Channel,
+  delay,
+  flush,
   fork,
   neuCall,
   put,
@@ -17,7 +21,6 @@ import {
   etoModuleApi,
   neuGetBindings,
   TEtoSpecsData,
-  TResolutionData,
 } from "@neufund/shared-modules";
 import {
   DataUnavailableError,
@@ -40,6 +43,7 @@ import {
   createMessage,
   createNotificationMessage,
 } from "../../components/translatedMessages/utils";
+import { RESOLUTION_WATCHER_DELAY } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { IControllerGovernance } from "../../lib/contracts/IControllerGovernance";
 import { IEquityToken } from "../../lib/contracts/IEquityToken";
@@ -65,36 +69,27 @@ import {
   EGovernanceControllerState,
   EModalState,
   EResolutionState,
-  hasCloseGovernanceUpdateModal, hasDownloadDocument,
+  hasCloseGovernanceUpdateModal,
+  hasDownloadDocument,
   hasOnFormBlur,
   hasOnFormChange,
   hasOpenGovernanceUpdateModal,
   hasPublishUpdate,
   hasRemoveFile,
   hasUpdatePublishSuccess,
+  hasUpdateResolution,
   hasUploadFile,
   modalStateIsOpen,
   TDocumentUploadResponse,
   TGovernanceViewState,
   TGovernanceViewSuccessState,
   TResolution,
+  TResolutionDocumentUploadResult,
+  TUpdate,
 } from "./types";
 import { convertGovernanceActionNumberToEnum } from "./utils";
 
 type TGlobalDependencies = unknown;
-
-type TUpdate =
-  | { uploadFile: ReturnType<typeof actions.governance.uploadFile> }
-  | { onFileUpload: ReturnType<typeof actions.governance.onFileUpload> }
-  | { removeFile: ReturnType<typeof actions.governance.removeFile> }
-  | { onFileRemove: ReturnType<typeof actions.governance.onFileRemove> }
-  | { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> }
-  | { onFormChange: ReturnType<typeof actions.governance.onFormChange> }
-  | { closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal> }
-  | { openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal> }
-  | { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> }
-  | { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> }
-  | { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> };
 
 export function* selectGovernanceController(
   equityTokenContractAddress: string,
@@ -150,6 +145,41 @@ function* checkGovernanceCompatibility(eto: TEtoSpecsData): Generator<any, boole
   return contractId[0] === GOVERNANCE_CONTRACT_ID;
 }
 
+function* loadFullResolutionForId(
+  company: {
+    documents: {
+      [key: string]: {
+        title: string;
+        name: string;
+        ipfsHash: string;
+        size: number;
+        resolutionId: string;
+      };
+    };
+  },
+  resolution: TResolution,
+): Generator<any, TResolution, any> {
+  const foundData = Object.entries(company.documents).find(
+    ([, document]) => document.resolutionId === resolution.id,
+  );
+  const resolutionData = foundData && foundData[1];
+  if (resolutionData) {
+    return {
+      resolutionState: EResolutionState.FULL as const,
+      action: resolution.action,
+      id: resolution.id,
+      draft: false,
+      startedAt: resolution.startedAt,
+      title: resolutionData.title,
+      documentName: resolutionData.name,
+      documentHash: resolutionData.ipfsHash,
+      documentSize: resolutionData.size.toString(),
+    };
+  } else {
+    return resolution;
+  }
+}
+
 function* loadResolutionForId(
   governanceController: IControllerGovernance,
   id: string,
@@ -161,31 +191,15 @@ function* loadResolutionForId(
   if (company === undefined) {
     throw new DataUnavailableError("company data cannot be missing at this point!");
   }
-  const foundData = Object.entries(company.documents).find(
-    ([, document]) => (document as { resolutionId: string }).resolutionId === id,
-  ); //TODO typecasting because typings for etoIssuer are incorrect!
-  const resolutionData = foundData && (foundData[1] as TResolutionData);
-  if (resolutionData) {
-    return {
-      resolutionState: EResolutionState.FULL as const,
-      action: convertGovernanceActionNumberToEnum(action),
-      id,
-      draft: false,
-      startedAt: new Date(secondsToMs(startedAt.toNumber())),
-      title: resolutionData.title,
-      documentName: resolutionData.name,
-      documentHash: resolutionData.ipfsHash,
-      documentSize: resolutionData.size.toString(),
-    };
-  } else {
-    return {
-      resolutionState: EResolutionState.BASIC as const,
-      action: convertGovernanceActionNumberToEnum(action),
-      id,
-      draft: false,
-      startedAt: new Date(secondsToMs(startedAt.toNumber())),
-    };
-  }
+  const basicResolution = {
+    resolutionState: EResolutionState.BASIC as const,
+    action: convertGovernanceActionNumberToEnum(action),
+    id,
+    draft: false,
+    startedAt: new Date(secondsToMs(startedAt.toNumber())),
+  };
+
+  return yield call(loadFullResolutionForId, company, basicResolution);
 }
 
 function* loadResolutionData(
@@ -220,15 +234,65 @@ function* getEto(): Generator<any, TEtoSpecsData, any> {
   return eto;
 }
 
+//todo move to utils
+const resolutionsNeedUpdate = (resolutions: TResolution[]): TResolution[] =>
+  resolutions.reduce((acc: TResolution[], resolution) => {
+    if (resolution.resolutionState === EResolutionState.BASIC) {
+      acc.push(resolution);
+    }
+    return acc;
+  }, []);
+
+const dedupeResolutions = <T>(arr: T[]): T[] => [...new Set(arr)];
+
+function* resolutionsUpdateChannelSaga(
+  resolutionsUpdateChannel: Channel<TResolution>,
+): Generator<any, void, any> {
+  let resolutionsToBeUpdated: TResolution[] = [];
+  while (true) {
+    const updateRequests = yield flush(resolutionsUpdateChannel);
+    resolutionsToBeUpdated = resolutionsToBeUpdated.concat(updateRequests);
+
+    const resolutionsDeduped = dedupeResolutions(resolutionsToBeUpdated);
+    yield neuCall(loadIssuerEto);
+    const company = yield select(selectIssuerCompany);
+
+    const newResolutions = yield* all(
+      resolutionsDeduped.map(resolution => call(loadFullResolutionForId, company, resolution)),
+    );
+    const updatedResolutions = newResolutions.filter(
+      r => r.resolutionState === EResolutionState.FULL,
+    );
+
+    yield put(actions.governance.resolutionUpdateReceived(updatedResolutions));
+    yield delay(RESOLUTION_WATCHER_DELAY);
+  }
+}
+
+function* resolutionsUpdateWatcherSaga(): Generator<any, void, any> {
+  const resolutionsUpdateChannel = channel<TResolution>();
+  yield fork(resolutionsUpdateChannelSaga, resolutionsUpdateChannel);
+
+  while (true) {
+    const { payload: resolution } = yield take(actions.governance.resolutionUpdateRequested);
+    yield put(resolutionsUpdateChannel, resolution);
+  }
+}
+
 export function* loadInitialGeneralInformationView(): Generator<any, void, any> {
   const eto = yield* call(getEto);
-
   const governanceController: IControllerGovernance = yield* call(
     selectGovernanceController,
     eto.equityTokenContractAddress,
   );
 
   const resolutions = yield* call(loadResolutionData, governanceController);
+  yield all(
+    resolutionsNeedUpdate(resolutions).map(resolution =>
+      put(actions.governance.resolutionUpdateRequested(resolution)),
+    ),
+  );
+
   const company = yield* select(selectIssuerCompany);
   if (!company) {
     throw new DataUnavailableError(
@@ -306,20 +370,6 @@ function* uploadGovernanceDocumentEffect(
   );
 }
 
-export type TResolutionDocumentUploadResult = {
-  contract: string;
-  createdAt: string;
-  documentType: EResolutionDocumentType.RESOLUTION_DOCUMENT;
-  form: "document";
-  ipfsHash: string;
-  mimeType: EMimeType.PDF;
-  name: string;
-  owner: string;
-  resolutionId: string;
-  size: 116211;
-  title: string;
-};
-
 function* uploadGovernanceDocument(
   file: File,
   documentType: EResolutionDocumentType,
@@ -338,12 +388,12 @@ function* uploadGovernanceDocument(
 // --- UPDATES ---
 function* uploadFileUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
-  updateData: { uploadFile: ReturnType<typeof actions.governance.uploadFile> },
+      tabVisible: boolean;
+    },
+  { uploadFile }: { uploadFile: ReturnType<typeof actions.governance.uploadFile> },
 ): Generator<any, TGovernanceViewState, any> {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
-    const { file } = updateData.uploadFile.payload;
+    const { file } = uploadFile.payload;
     const newDocumentUploadState = {
       documentUploadStatus: EProcessState.SUCCESS,
       document: file,
@@ -368,8 +418,8 @@ function* uploadFileUpdate(
 
 function* removeFileUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   _updateData: { removeFile: ReturnType<typeof actions.governance.removeFile> },
 ): Generator<any, TGovernanceViewState, any> {
   if (modalStateIsOpen(oldState.governanceUpdateModalState)) {
@@ -393,28 +443,28 @@ function* removeFileUpdate(
 
 function* onFormChangeUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
-  updateData: { onFormChange: ReturnType<typeof actions.governance.onFormChange> },
+      tabVisible: boolean;
+    },
+  { onFormChange }: { onFormChange: ReturnType<typeof actions.governance.onFormChange> },
 ): Generator<any, TGovernanceViewState, any> {
-  const { fieldPath, newValue } = updateData.onFormChange.payload;
+  const { fieldPath, newValue } = onFormChange.payload;
   return yield call(onFormUpdate, oldState, fieldPath, newValue);
 }
 
 function* onFormBlurUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
-  updateData: { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> },
+      tabVisible: boolean;
+    },
+  { onFormBlur }: { onFormBlur: ReturnType<typeof actions.governance.onFormBlur> },
 ): Generator<any, TGovernanceViewState, any> {
-  const { fieldPath, newValue } = updateData.onFormBlur.payload;
+  const { fieldPath, newValue } = onFormBlur.payload;
   return yield call(onFormUpdate, oldState, fieldPath, newValue);
 }
 
 function onFormUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   fieldPath: string,
   newValue: string,
 ): TGovernanceViewState {
@@ -428,7 +478,7 @@ function onFormUpdate(
     const publishButtonDisabled = !(
       formValidated.isValid &&
       oldState.governanceUpdateModalState.documentUploadState.documentUploadStatus ===
-      EProcessState.SUCCESS
+        EProcessState.SUCCESS
     );
 
     return {
@@ -446,8 +496,8 @@ function onFormUpdate(
 
 function* closeGovernanceUpdateModalUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   _updateData: {
     closeGovernanceUpdateModal: ReturnType<typeof actions.governance.closeGovernanceUpdateModal>;
   },
@@ -460,8 +510,8 @@ function* closeGovernanceUpdateModalUpdate(
 
 function* openGovernanceUpdateModalUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   _updateData: {
     openGovernanceUpdateModal: ReturnType<typeof actions.governance.openGovernanceUpdateModal>;
   },
@@ -474,8 +524,8 @@ function* openGovernanceUpdateModalUpdate(
 
 function* publishUpdate(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   _updateData: { publishUpdate: ReturnType<typeof actions.governance.publishUpdate> },
 ): Generator<any, TGovernanceViewState, any> {
   if (
@@ -512,8 +562,8 @@ function* publishUpdate(
 
 function* updatePublishSuccessUpdate(
   _oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
+      tabVisible: boolean;
+    },
   _updateData: { updatePublishSuccess: ReturnType<typeof actions.governance.updatePublishSuccess> },
 ): Generator<any, TGovernanceViewState, any> {
   yield spawn(loadInitialGeneralInformationView);
@@ -523,20 +573,50 @@ function* updatePublishSuccessUpdate(
   };
 }
 
-function* downloadIpfsDocument(
+function* downloadIpfsDocumentSaga(
   oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
-    tabVisible: boolean;
-  },
-  updateData: { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> },
-) {
-  const { documentHash, documentTitle } = updateData.downloadIpfsDocument.payload
+      tabVisible: boolean;
+    },
+  {
+    downloadIpfsDocument,
+  }: { downloadIpfsDocument: ReturnType<typeof actions.governance.downloadIpfsDocument> },
+): Generator<any, TGovernanceViewState, any> {
+  const { documentHash, documentTitle } = downloadIpfsDocument.payload;
   const fileData = {
     ipfsHash: documentHash,
     mimeType: EMimeType.PDF,
     asPdf: true,
-  }
-  yield put(actions.immutableStorage.downloadImmutableFile(fileData, documentTitle))
-  return oldState
+  };
+  yield put(actions.immutableStorage.downloadImmutableFile(fileData, documentTitle));
+  return oldState;
+}
+
+function* updateResolutions(
+  oldState: { processState: EProcessState.SUCCESS } & TGovernanceViewSuccessState & {
+      tabVisible: boolean;
+    },
+  {
+    resolutionUpdateReceived,
+  }: { resolutionUpdateReceived: ReturnType<typeof actions.governance.resolutionUpdateReceived> },
+): Generator<any, TGovernanceViewState, any> {
+  const { resolutions: updatedResolutions } = resolutionUpdateReceived.payload;
+
+  const resolutions = [...oldState.resolutions];
+
+  updatedResolutions.forEach(updatedResolution => {
+    const i = resolutions.findIndex(resolution => resolution.id === updatedResolution.id);
+    resolutions[i] = updatedResolution;
+  });
+  yield all(
+    resolutionsNeedUpdate(resolutions).map(resolutionId =>
+      put(actions.governance.resolutionUpdateRequested(resolutionId)),
+    ),
+  );
+
+  return {
+    ...oldState,
+    resolutions,
+  };
 }
 
 export function* governanceGeneralInformationViewController(): Generator<any, void, any> {
@@ -548,15 +628,13 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
   try {
     const eto = yield* call(getEto);
 
-    const isGovernanceVisible = yield select(selectGovernanceVisible);
-    const isGovernanceCompatible = yield call(checkGovernanceCompatibility, eto);
-
-    if (!isGovernanceVisible) {
+    if (!(yield select(selectGovernanceVisible))) {
       throw new GovernanceNotSetUpError();
-    } else if (!isGovernanceCompatible) {
+    } else if (!(yield call(checkGovernanceCompatibility, eto))) {
       throw new GovernanceIncompatibleError(eto.etoId);
     }
 
+    yield fork(resolutionsUpdateWatcherSaga);
     yield* call(loadInitialGeneralInformationView);
 
     while (true) {
@@ -573,7 +651,8 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
           onFileRemove: take(actions.governance.removeFile),
           publishUpdate: take(actions.governance.publishUpdate),
           updatePublishSuccess: take(actions.governance.updatePublishSuccess),
-          downloadIpfsDocument: take(actions.governance.downloadIpfsDocument)
+          downloadIpfsDocument: take(actions.governance.downloadIpfsDocument),
+          resolutionUpdateReceived: take(actions.governance.resolutionUpdateReceived),
         });
 
         if (hasUploadFile(update) && modalStateIsOpen(oldState.governanceUpdateModalState)) {
@@ -600,7 +679,9 @@ export function* governanceGeneralInformationViewController(): Generator<any, vo
         } else if (hasUpdatePublishSuccess(update)) {
           newState = yield* call(updatePublishSuccessUpdate, oldState, update);
         } else if (hasDownloadDocument(update)) {
-          newState = yield* call(downloadIpfsDocument, oldState, update)
+          newState = yield* call(downloadIpfsDocumentSaga, oldState, update);
+        } else if (hasUpdateResolution(update)) {
+          newState = yield* call(updateResolutions, oldState, update);
         } else {
           newState = oldState;
         }

@@ -1,7 +1,7 @@
+import { ButtonInline } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
-import {  ButtonInline, } from "@neufund/design-system";
 
 import { resolutionIsFull, TResolution } from "../../../../modules/governance/types";
 import { governanceActionToLabel } from "../../../../modules/governance/utils";
@@ -14,11 +14,16 @@ import styles from "./GovernanceUpdateDetailsModal.module.scss";
 interface IGovernanceUpdateDetailsModalProps {
   resolution: TResolution;
   companyBrandName: string;
-  downloadIpfsDocument:(documentHash:string, documentName:string)=>void;
+  downloadIpfsDocument: (documentHash: string, documentName: string) => void;
 }
 
 export const GovernanceUpdateDetailsModal: React.FunctionComponent<IModalComponentProps &
-  IGovernanceUpdateDetailsModalProps> = ({ resolution, companyBrandName, onClose, downloadIpfsDocument }) => {
+  IGovernanceUpdateDetailsModalProps> = ({
+  resolution,
+  companyBrandName,
+  onClose,
+  downloadIpfsDocument,
+}) => {
   if (resolutionIsFull(resolution)) {
     return (
       <Modal isOpen={true} onClose={onClose} bodyClass={styles.body}>
@@ -35,8 +40,9 @@ export const GovernanceUpdateDetailsModal: React.FunctionComponent<IModalCompone
           <div className={styles.downloadRow}>
             <InlineIcon svgIcon={downloadIcon} className={styles.downloadIcon} />
             <ButtonInline
-              onClick={()=>downloadIpfsDocument(resolution.documentHash, resolution.documentName)}
-            >{resolution.documentName}
+              onClick={() => downloadIpfsDocument(resolution.documentHash, resolution.documentName)}
+            >
+              {resolution.documentName}
             </ButtonInline>
             <span className={styles.size}>&nbsp;({resolution.documentSize})</span>
           </div>

@@ -18,8 +18,8 @@ const Section: React.FunctionComponent<TExternalProps> = ({
 }) => (
   <View {...props}>
     <View style={styles.header}>
-      <Headline level={EHeadlineLevel.LEVEL3}>{heading}</Headline>
-      {subHeading && <Headline level={EHeadlineLevel.LEVEL4}>{subHeading}</Headline>}
+      <Headline level={EHeadlineLevel.LEVEL4}>{heading}</Headline>
+      {subHeading && <Headline level={EHeadlineLevel.LEVEL5}>{subHeading}</Headline>}
     </View>
     {children}
   </View>

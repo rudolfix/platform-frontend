@@ -76,7 +76,7 @@ const WalletScreenLayout: React.FunctionComponent<TExternalProps> = ({
                 />
               ))}
 
-              <Headline style={[styles.headline]} level={EHeadlineLevel.LEVEL3}>
+              <Headline style={[styles.headline]} level={EHeadlineLevel.LEVEL4}>
                 Transactions
               </Headline>
             </>

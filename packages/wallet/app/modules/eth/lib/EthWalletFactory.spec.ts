@@ -71,7 +71,7 @@ describe("EthWalletFactory", () => {
             "Invalid reference",
           );
 
-          return true;
+          return Promise.resolve(true);
         },
       });
 
@@ -101,7 +101,7 @@ describe("EthWalletFactory", () => {
             "Invalid reference",
           );
 
-          return false;
+          return Promise.resolve(true);
         },
       });
 

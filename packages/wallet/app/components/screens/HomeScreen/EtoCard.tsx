@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native"
 
 import { ETOInvestorState } from "components/shared/eto/ETOInvestorState";
 import { Panel } from "components/shared/panel/Panel";
-import { Headline } from "components/shared/typography/Headline";
+import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
 import { baseGray, baseWhite } from "styles/colors";
 import { roundness, shadowStyles } from "styles/common";
@@ -46,7 +46,7 @@ const EtoCard: React.FunctionComponent<TEtoCardProps & React.ComponentProps<type
         <ETOInvestorState eto={eto} style={styles.stateRow} />
 
         <View>
-          <Headline level={3}>{eto.company.brandName}</Headline>
+          <Headline level={EHeadlineLevel.LEVEL4}>{eto.company.brandName}</Headline>
         </View>
       </View>
     </View>

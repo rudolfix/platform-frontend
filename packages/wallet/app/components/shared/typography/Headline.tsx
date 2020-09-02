@@ -9,6 +9,7 @@ enum EHeadlineLevel {
   LEVEL2 = 2,
   LEVEL3 = 3,
   LEVEL4 = 4,
+  LEVEL5 = 5,
 }
 
 type TNativeTextProps = React.ComponentProps<typeof Animated.Text>;
@@ -24,6 +25,8 @@ const getStyleForHeadlineLevel = (level: EHeadlineLevel) => {
       return typographyStyles.headline3;
     case EHeadlineLevel.LEVEL4:
       return typographyStyles.headline4;
+    case EHeadlineLevel.LEVEL5:
+      return typographyStyles.headline5;
 
     default:
       assertNever(level, "Invalid headline level");

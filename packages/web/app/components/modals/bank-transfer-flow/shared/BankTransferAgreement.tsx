@@ -1,5 +1,6 @@
 import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
 import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
+import { EHeadlineLevel } from "@neufund/wallet/app/components/shared/typography/Headline";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -31,7 +32,7 @@ const BankTransferVerifyAgreementLayout: React.FunctionComponent<IProps> = ({
 }) => (
   <section className="text-center">
     <Heading
-      level={3}
+      level={EHeadlineLevel.LEVEL4}
       className="mb-3"
       decorator={false}
       description={<ExternalLink href={externalRoutes.quintessenceLanding} />}

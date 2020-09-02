@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import { EIconType, Icon } from "components/shared/Icon";
 import { Button, EButtonLayout } from "components/shared/buttons/Button";
-import { Headline } from "components/shared/typography/Headline";
+import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
 import { baseGray } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
@@ -26,7 +26,7 @@ const SignerContainer: React.FunctionComponent<TExternalProps> = ({
     <View style={styles.container}>
       <Icon type={icon} style={styles.icon} />
 
-      <Headline style={styles.headline} level={3}>
+      <Headline style={styles.headline} level={EHeadlineLevel.LEVEL3}>
         {headline}
       </Headline>
 

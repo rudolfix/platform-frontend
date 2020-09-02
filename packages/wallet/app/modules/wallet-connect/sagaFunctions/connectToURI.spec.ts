@@ -10,11 +10,7 @@ import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { invariant, toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { mocked } from "ts-jest/utils";
 
-import {
-  InvalidWalletConnectUriError,
-  isValidWalletConnectUri,
-  toWalletConnectUri,
-} from "modules/wallet-connect/lib/utils";
+import { isValidWalletConnectUri, toWalletConnectUri } from "modules/wallet-connect/lib/utils";
 
 import { navigate } from "router/routeUtils";
 

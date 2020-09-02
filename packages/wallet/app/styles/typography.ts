@@ -53,14 +53,21 @@ const typographyStyles = StyleSheet.create({
   },
   headline3: {
     ...fonts.montserratSemiBold,
-    fontSize: 18,
+    fontSize: 20,
     lineHeight: 28,
+    letterSpacing: 0.2,
   },
   headline4: {
     ...fonts.montserratSemiBold,
+    fontSize: 18,
+    lineHeight: 28,
+    letterSpacing: 0.18,
+  },
+  headline5: {
+    ...fonts.montserratSemiBold,
     fontSize: 16,
     lineHeight: 24,
-    letterSpacing: 0.1,
+    letterSpacing: 0.16,
   },
   bodyBold: {
     ...fonts.robotoMedium,

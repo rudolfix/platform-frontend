@@ -15,8 +15,9 @@ storiesOf("Atoms|Typography", module)
       <Headline level={EHeadlineLevel.LEVEL1}>Headline 1</Headline>
       <Headline level={EHeadlineLevel.LEVEL2}>Headline 2</Headline>
       <Headline level={EHeadlineLevel.LEVEL3}>Headline 3</Headline>
-      <BodyBoldText>Body-bold</BodyBoldText>
       <Headline level={EHeadlineLevel.LEVEL4}>Headline 4</Headline>
+      <BodyBoldText>Body-bold</BodyBoldText>
+      <Headline level={EHeadlineLevel.LEVEL5}>Headline 5</Headline>
       <BodyText>Body text</BodyText>
       <Text>Text</Text>
       <HelperText>Helper Text</HelperText>

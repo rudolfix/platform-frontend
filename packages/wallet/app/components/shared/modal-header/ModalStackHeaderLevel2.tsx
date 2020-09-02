@@ -54,7 +54,7 @@ const ModalStackHeaderLevel2: React.FunctionComponent<StackHeaderProps> = ({
       )}
       <Headline
         style={styles.header}
-        level={EHeadlineLevel.LEVEL3}
+        level={EHeadlineLevel.LEVEL4}
         accessibilityRole="header"
         numberOfLines={1}
       >

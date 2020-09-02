@@ -8,6 +8,7 @@ import {
   neuGetBindings,
 } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
+
 import { authActions } from "modules/auth/actions";
 import { EAuthState } from "modules/auth/reducer";
 import { selectAuthState } from "modules/auth/selectors";

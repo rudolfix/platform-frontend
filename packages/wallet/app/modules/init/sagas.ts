@@ -41,7 +41,6 @@ function* initStartSaga(): SagaGenerator<void> {
   try {
     yield* call(initGlobalModules);
 
-    // checks if we have credentials and automatically signs the user
     const isBiometryAvailable = yield* select(
       biometricsModuleApi.selectors.selectIsBiometricsAvailable,
     );
@@ -83,8 +82,11 @@ function* handleAppStateChanges(): SagaGenerator<void> {
 
       if (nextState === "active" && currentState === "background") {
         const isAuthorized = yield* select(authModuleAPI.selectors.selectIsAuthorized);
+        const isBiometryAvailable = yield* select(
+          biometricsModuleApi.selectors.selectIsBiometricsAvailable,
+        );
 
-        if (!isAuthorized) {
+        if (!isAuthorized && isBiometryAvailable) {
           // checks if we have credentials and automatically signs the user
           yield* call(authModuleAPI.sagas.trySignInExistingAccount);
         }

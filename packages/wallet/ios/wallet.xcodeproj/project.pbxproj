@@ -17,7 +17,6 @@
 		8455F0A31BCC4D29A2D8B030 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C486F05C15B478AB5F6C2BC /* Roboto-Medium.ttf */; };
 		9650280324B90C5D009889FC /* RNProtectScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9650280224B90C5D009889FC /* RNProtectScreen.m */; };
 		965F0307243B1D190055C7D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 965F0306243B1D190055C7D0 /* LaunchScreen.storyboard */; };
-		96A4D35524EFF60500FFDBDA /* RNBiometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A4D35424EFF60500FFDBDA /* RNBiometrics.m */; };
 		BA577FB11DA5E440D4B93FF2 /* libPods-wallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F90EC4E5707298CEB599B49 /* libPods-wallet.a */; };
 /* End PBXBuildFile section */
 
@@ -61,8 +60,6 @@
 		965F0306243B1D190055C7D0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		969BBF0B24827A1100AC2ADB /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		96A376FD24CEEC2600DF6740 /* wallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wallet-Bridging-Header.h"; sourceTree = "<group>"; };
-		96A4D35424EFF60500FFDBDA /* RNBiometrics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNBiometrics.m; sourceTree = "<group>"; };
-		96A4D35624EFF64A00FFDBDA /* RNBiometrics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNBiometrics.h; sourceTree = "<group>"; };
 		96EA98EE24CF0CFD00579DCA /* walletTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "walletTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		9744DAC7C307A312D09888EB /* Pods-wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.release.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.release.xcconfig"; sourceTree = "<group>"; };
 		983C75446821FAEEFBC5BFF0 /* libPods-wallet-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wallet-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,8 +196,6 @@
 			children = (
 				9650280124B90C0C009889FC /* RNProtectScreen.h */,
 				9650280224B90C5D009889FC /* RNProtectScreen.m */,
-				96A4D35424EFF60500FFDBDA /* RNBiometrics.m */,
-				96A4D35624EFF64A00FFDBDA /* RNBiometrics.h */,
 			);
 			path = "custom-modules";
 			sourceTree = "<group>";
@@ -500,7 +495,6 @@
 			files = (
 				9650280324B90C5D009889FC /* RNProtectScreen.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				96A4D35524EFF60500FFDBDA /* RNBiometrics.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

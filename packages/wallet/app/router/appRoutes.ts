@@ -15,6 +15,7 @@ enum EAppRoutes {
   webView = "WebView",
   switchToFixture = "SwitchToFixture",
   accountBackup = "AccountBackup",
+  offlineMode = "OfflineMode",
 }
 
 export { EAppRoutes };

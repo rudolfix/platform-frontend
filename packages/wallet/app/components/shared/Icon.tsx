@@ -8,6 +8,7 @@ import Checklist from "assets/checklist.svg";
 import Close from "assets/close.svg";
 import Device from "assets/device.svg";
 import Home from "assets/home.svg";
+import OfflineMode from "assets/illustration_offline_mode.svg";
 import Investments from "assets/investments.svg";
 import Lock from "assets/lock.svg";
 import Logout from "assets/logout.svg";
@@ -25,40 +26,44 @@ import Wallet from "assets/wallet.svg";
 import Yes from "assets/yes.svg";
 
 enum EIconType {
+  BACKUP = "backup",
+  CHECKLIST = "Checklist",
+  CLOSE = "close",
+  DEVICE = "device",
+  ETH = "eth",
   HOME = "home",
+  ICBM = "icbm",
+  LOCK = "lock",
+  LOGOUT = "logout",
+  NEU = "neu",
+  N_EUR = "n-eur",
+  OFFLINE_MODE = "offline-mode",
+  PENDING = "pending",
+  PLACEHOLDER = "placeholder",
   PORTFOLIO = "portf",
   PROFILE = "profile",
+  QR_CODE = "qr-code",
+  RIGHT_ARROW = "right-arrow",
   SHARE = "share",
   WALLET = "wallet",
-  CLOSE = "close",
-  PLACEHOLDER = "placeholder",
-  RIGHT_ARROW = "right-arrow",
   YES = "yes",
-  N_EUR = "n-eur",
-  ICBM = "icbm",
-  ETH = "eth",
-  QR_CODE = "qr-code",
-  BACKUP = "backup",
-  DEVICE = "device",
-  LOGOUT = "logout",
-  PENDING = "pending",
-  CHECKLIST = "Checklist",
-  LOCK = "lock",
-  NEU = "neu",
 }
 
 const pickByIdentity = pickBy(identity);
 
 const icons: Record<EIconType, typeof Close> = {
   [EIconType.BACKUP]: Backup,
+  [EIconType.CHECKLIST]: Checklist,
   [EIconType.CLOSE]: Close,
   [EIconType.DEVICE]: Device,
   [EIconType.ETH]: Eth,
   [EIconType.HOME]: Home,
-  [EIconType.PORTFOLIO]: Investments,
-  [EIconType.LOGOUT]: Logout,
-  [EIconType.N_EUR]: NEur,
   [EIconType.ICBM]: Icbm,
+  [EIconType.LOCK]: Lock,
+  [EIconType.LOGOUT]: Logout,
+  [EIconType.NEU]: Neu,
+  [EIconType.N_EUR]: NEur,
+  [EIconType.OFFLINE_MODE]: OfflineMode,
   [EIconType.PENDING]: Pending,
   [EIconType.PLACEHOLDER]: Placeholder,
   [EIconType.PORTFOLIO]: Investments,
@@ -68,9 +73,6 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.SHARE]: Share,
   [EIconType.WALLET]: Wallet,
   [EIconType.YES]: Yes,
-  [EIconType.LOCK]: Lock,
-  [EIconType.CHECKLIST]: Checklist,
-  [EIconType.NEU]: Neu,
 };
 
 type TSvgIconProps = React.ComponentProps<typeof Close>;

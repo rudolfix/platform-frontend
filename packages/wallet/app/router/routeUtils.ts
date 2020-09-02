@@ -30,6 +30,7 @@ export type RootStackParamList = {
   [EAppRoutes.qrCode]: { requiredQRCodeType: EQRCodeType | undefined } | undefined;
   [EAppRoutes.walletConnectSession]: undefined;
   [EAppRoutes.webView]: { uri: string };
+  [EAppRoutes.offlineMode]: undefined;
 };
 
 const navigate = <T extends EAppRoutes>(

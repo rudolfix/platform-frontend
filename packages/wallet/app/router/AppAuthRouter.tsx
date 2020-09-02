@@ -5,6 +5,7 @@ import Config from "react-native-config";
 import { QRCode } from "components/QRCode";
 import { AccountBackupScreen } from "components/screens/AccountBackupScreen/AccountBackupScreen";
 import { SwitchFixtureScreen } from "components/screens/FixtureScreen/SwitchFixtureScreen";
+import { OfflineScreen } from "components/screens/OfflineScreen/OfflineScreen";
 import { WalletConnectSessionScreen } from "components/screens/WalletConnectSessionScreen/WalletConnectSessionScreen";
 import { WebView } from "components/screens/WebViewScreen/WebViewScreen";
 import { ModalStackHeaderLevel1 } from "components/shared/modal-header/ModalStackHeaderLevel1";
@@ -19,7 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppAuthRouter: React.FunctionComponent = () => (
   <>
     <Stack.Navigator
-      initialRouteName={EAppRoutes.home}
+      initialRouteName={EAppRoutes.offlineMode}
       screenOptions={({ route, navigation }) => ({
         ...TransitionPresets.ModalPresentationIOS,
         gestureEnabled: true,
@@ -81,6 +82,12 @@ const AppAuthRouter: React.FunctionComponent = () => (
         options={{
           header: ModalStackHeaderLevel2,
         }}
+      />
+
+      <Stack.Screen
+        name={EAppRoutes.offlineMode}
+        component={OfflineScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   </>

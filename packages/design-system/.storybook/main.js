@@ -1,5 +1,6 @@
 const path = require("path");
 const paths = require("../webpack/paths");
+const webpack = require("webpack");
 
 module.exports = {
   stories: ["../src/**/*.stories.tsx"],
@@ -118,6 +119,11 @@ module.exports = {
       },
     ];
 
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __DEV__: false,
+      }),
+    );
     config.resolve.extensions.push(".ts", ".tsx");
 
     return config;

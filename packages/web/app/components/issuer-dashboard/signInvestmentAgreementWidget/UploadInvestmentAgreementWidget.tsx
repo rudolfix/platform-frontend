@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, EButtonLayout } from "@neufund/design-system";
+import { Button, ButtonArrowRight, ButtonGroup, EButtonLayout } from "@neufund/design-system";
 import { EETOStateOnChain, etoModuleApi, IEtoDocument } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -13,10 +13,11 @@ import {
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonLink } from "../../shared/buttons/ButtonLink";
+import { ButtonLink } from "../../shared/buttons";
 import {
   DashboardCenteredWidget,
   DashboardLinkWidget,
+  DashboardWidget,
 } from "../../shared/dashboard-widget/DashboardWidget";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
@@ -69,13 +70,25 @@ export const UploadInvestmentAgreementLayout: React.FunctionComponent<Omit<
 );
 
 export const EtoCompletedWidgetLayout: React.ComponentType<IExternalProps> = ({ columnSpan }) => (
-  <DashboardLinkWidget
-    title={<FormattedMessage id="download-agreement-widget.success-title" />}
-    text={<FormattedMessage id="download-agreement-widget.success-text" />}
-    columnSpan={columnSpan}
-    to={appRoutes.wallet}
-    buttonText={<FormattedMessage id="download-agreement-widget.go-to-wallet" />}
-  />
+  <>
+    <DashboardLinkWidget
+      title={<FormattedMessage id="download-agreement-widget.success-title" />}
+      text={<FormattedMessage id="download-agreement-widget.success-text" />}
+      columnSpan={columnSpan}
+      to={appRoutes.wallet}
+      buttonText={<FormattedMessage id="download-agreement-widget.go-to-wallet" />}
+    />
+
+    <DashboardWidget
+      columnSpan={columnSpan}
+      title={<FormattedMessage id="shareholder-resolution-widget.title" />}
+      text={<FormattedMessage id="shareholder-resolution-widget.text" />}
+    >
+      <ButtonArrowRight>
+        <FormattedMessage id="shareholder-resolution-widget.button" />
+      </ButtonArrowRight>
+    </DashboardWidget>
+  </>
 );
 
 export const UploadInvestmentAgreement = compose<

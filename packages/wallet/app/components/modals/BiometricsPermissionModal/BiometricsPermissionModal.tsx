@@ -7,6 +7,7 @@ import { biometricsName } from "components/screens/NoBiometricsScreen/NoBiometri
 import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { BottomSheetModal } from "components/shared/modals/BottomSheetModal";
 import { BodyText } from "components/shared/typography/BodyText";
+import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
 import { BIOMETRICS_NONE, biometricsModuleApi } from "modules/biometrics/module";
 
@@ -37,10 +38,17 @@ const BiometricsPermissionModalLayout: React.FunctionComponent<TStateProps & TDi
 
   return (
     <BottomSheetModal isVisible={isBiometryAccessRequestRequired}>
-      <BodyText style={styles.headline}>
+      <Headline style={styles.headline} level={EHeadlineLevel.LEVEL3}>
+        Account security
+      </Headline>
+      <BodyText style={styles.paragraph}>
         To secure your account, we require your permission to enable {biometricsName[biometryType]}.
       </BodyText>
-      <Button layout={EButtonLayout.PRIMARY} onPress={requestPermissions}>
+      <Button
+        style={styles.callToAction}
+        layout={EButtonLayout.PRIMARY}
+        onPress={requestPermissions}
+      >
         Enable {biometricsName[biometryType]}
       </Button>
     </BottomSheetModal>
@@ -50,7 +58,12 @@ const BiometricsPermissionModalLayout: React.FunctionComponent<TStateProps & TDi
 const styles = StyleSheet.create({
   headline: {
     ...spacingStyles.mt2,
-    ...spacingStyles.mb5,
+  },
+  paragraph: {
+    ...spacingStyles.mt3,
+  },
+  callToAction: {
+    ...spacingStyles.mt4,
   },
 });
 

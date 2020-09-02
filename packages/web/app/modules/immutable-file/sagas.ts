@@ -13,12 +13,7 @@ import { downloadLink } from "./utils";
 export function* getFile(
   { apiImmutableStorage }: TGlobalDependencies,
   immutableFileId: IImmutableFileId,
-  isProtected: boolean,
 ): SagaGenerator<TFileDescription> {
-  if (isProtected) {
-    return yield* call([apiImmutableStorage, "getProtectedFile"], immutableFileId);
-  }
-
   return yield* call([apiImmutableStorage, "getFile"], immutableFileId);
 }
 
@@ -29,7 +24,7 @@ export function* downloadFile(
   try {
     const immutableFileId = action.payload.immutableFileId;
 
-    const downloadedFile = yield neuCall(getFile, immutableFileId, action.payload.isProtected);
+    const downloadedFile = yield neuCall(getFile, immutableFileId);
 
     const extension = immutableFileId.asPdf ? ".pdf" : ".doc";
 

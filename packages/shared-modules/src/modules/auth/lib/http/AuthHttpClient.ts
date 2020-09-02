@@ -31,18 +31,18 @@ export abstract class AuthHttpClient implements IAuthHttpClient {
     config: T,
     jwt?: string,
   ): Promise<T> {
-    const jwtFromStorage = await this.jwtStorage.get();
+    const jwtResolved = jwt || (await this.jwtStorage.get());
 
     return {
       ...config,
       headers: {
         ...config.headers,
-        Authorization: `Bearer ${jwt || jwtFromStorage}`,
+        Authorization: `Bearer ${jwtResolved}`,
         /*
          * Additional custom header required due authorization issues on iOS12/Safari
          * https://github.com/Neufund/platform-frontend/issues/2425
          */
-        "X-NF-Authorization": `Bearer ${jwt || jwtFromStorage}`,
+        "X-NF-Authorization": `Bearer ${jwtResolved}`,
       },
     };
   }

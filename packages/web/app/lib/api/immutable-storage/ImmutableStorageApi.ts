@@ -1,4 +1,9 @@
-import { authModuleAPI, coreModuleApi, IHttpClient } from "@neufund/shared-modules";
+import {
+  authModuleAPI,
+  coreModuleApi,
+  IHttpClient,
+  ISingleKeyStorage,
+} from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import {
@@ -18,6 +23,7 @@ export class ImmutableStorageApi {
     @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
     @inject(coreModuleApi.symbols.binaryHttpClient) private binaryHttpClient: IHttpClient,
     @inject(authModuleAPI.symbols.authBinaryHttpClient) private authBinaryHttpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.jwtStorage) private jwtStorage: ISingleKeyStorage<string>,
   ) {}
 
   /**
@@ -38,7 +44,7 @@ export class ImmutableStorageApi {
   }
 
   /**
-   * Downloads unprotected files (without JWT token) from the IPFS through backend
+   * Downloads files from the IPFS through backend. Sends authed request if jwt is present
    */
   public async getFile({
     ipfsHash,
@@ -46,30 +52,12 @@ export class ImmutableStorageApi {
     placeholders,
     asPdf,
   }: IImmutableFileId): Promise<TFileDescription> {
-    const placeHolder = placeholders ? JSON.stringify(placeholders) : "";
-    const response = await this.binaryHttpClient.get<TFileDescription>({
-      baseUrl: BASE_PATH,
-      url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,
-      queryParams: {
-        mime_type: mimeType,
-        placeholders: placeHolder,
-        as_pdf: asPdf,
-      },
-    });
-    return response.body;
-  }
+    const jwtFromStorage = await this.jwtStorage.get();
+    const httpClient =
+      jwtFromStorage === undefined ? this.binaryHttpClient : this.authBinaryHttpClient;
 
-  /**
-   * Downloads protected files from the IPFS through backend
-   */
-  public async getProtectedFile({
-    ipfsHash,
-    mimeType,
-    placeholders,
-    asPdf,
-  }: IImmutableFileId): Promise<TFileDescription> {
     const placeHolder = placeholders ? JSON.stringify(placeholders) : "";
-    const response = await this.authBinaryHttpClient.get<TFileDescription>({
+    const query = {
       baseUrl: BASE_PATH,
       url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,
       queryParams: {
@@ -77,7 +65,9 @@ export class ImmutableStorageApi {
         placeholders: placeHolder,
         as_pdf: asPdf,
       },
-    });
+    };
+
+    const response = await httpClient.get<TFileDescription>(query);
     return response.body;
   }
 }

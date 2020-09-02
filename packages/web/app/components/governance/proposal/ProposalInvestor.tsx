@@ -39,11 +39,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
   voteYes: () => void;
   voteNo: () => void;
 }
@@ -123,14 +119,8 @@ export const ProposalInvestor = compose<IStateProps & IDispatchProps, TExternalP
       invariant(proposalId, "Proposal id should be defined");
 
       return {
-        downloadDocument: (
-          immutableFileId: IImmutableFileId,
-          fileName: string,
-          isProtected: boolean,
-        ) => {
-          dispatch(
-            actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName, isProtected),
-          );
+        downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => {
+          dispatch(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
         },
         voteYes: () =>
           dispatch(actions.txTransactions.startShareholderResolutionVote(proposalId, true)),

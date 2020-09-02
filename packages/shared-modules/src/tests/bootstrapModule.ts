@@ -8,6 +8,7 @@ import {
   testSaga,
 } from "@neufund/sagas/tests";
 import { Container } from "inversify";
+import { combineReducers, ReducersMapObject } from "redux";
 
 import { getLoadContextExtension } from "../extensions";
 import { INeuModule } from "../types";
@@ -66,7 +67,12 @@ const bootstrapModule = <T extends INeuModule<any, any>[]>(modules: T) => {
       return originalProvider(pr);
     };
 
-    return saga.withState(store.getState()).provide(buildInProviders);
+    const modulesReducerMap = modules.reduce<ReducersMapObject>(
+      (reducerMap, module) => ({ ...reducerMap, ...module.reducerMap }),
+      {},
+    );
+
+    return saga.withReducer(combineReducers(modulesReducerMap)).provide(buildInProviders);
   };
 
   return {

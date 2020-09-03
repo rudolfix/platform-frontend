@@ -8,6 +8,11 @@
   }
 }
 
+.small-width {
+  min-width: px-to-rem(56px);
+  width: px-to-rem(56px);
+}
+
 .adornment-wrapper {
   position: absolute;
   top: 1px;

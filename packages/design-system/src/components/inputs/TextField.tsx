@@ -1,4 +1,5 @@
 import { TDataTestId } from "@neufund/shared-utils";
+import cn from "classnames";
 import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
@@ -38,6 +39,7 @@ type TFieldProps = {
   placeholder?: string;
   ignoreTouched?: boolean;
   isRequired?: boolean;
+  smallWidth?: boolean;
 };
 
 export const TextField: React.FunctionComponent<TFieldProps &
@@ -55,6 +57,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
   autoFocus,
   className,
   isRequired,
+  smallWidth,
   ...props
 }) => {
   const [unmaskPassword, setUnmaskPassword] = React.useState(false);
@@ -86,6 +89,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
 
           <div className={styles.inputWrapper}>
             <Input
+              className={cn({ [styles.smallWidth]: smallWidth }, className)}
               type={overridingType}
               value={transformedValue}
               id={name}

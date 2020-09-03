@@ -15,6 +15,7 @@ const schema = Yup.object().shape({
   field6: Yup.number().typeError("This is not a number"),
   field7: Yup.string(),
   field8: Yup.string().required("Field is required"),
+  field9: Yup.string(),
 });
 
 let isTouched = false;
@@ -63,6 +64,7 @@ storiesOf("NDS|Molecules/Inputs", module).add("TextField", () => (
             />
             <TextField label="Disabled" name="field7" disabled={true} placeholder="Input" />
             <TextField label="Password" type="password" name="field8" placeholder="Password" />
+            <TextField label="Small Width" name="field9" placeholder="No." smallWidth />
           </form>
         );
       }}

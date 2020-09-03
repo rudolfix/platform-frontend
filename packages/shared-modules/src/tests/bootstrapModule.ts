@@ -76,7 +76,7 @@ const bootstrapModule = <T extends INeuModule<any, any>[]>(modules: T) => {
   };
 
   return {
-    getState: store.getState,
+    getState: store.getState as () => any,
     dispatch: store.dispatch,
     runSaga: sagaMiddleware.run,
     container,

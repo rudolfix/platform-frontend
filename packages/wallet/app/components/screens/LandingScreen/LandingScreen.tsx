@@ -9,7 +9,7 @@ import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { BodyText } from "components/shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
-import { authModuleAPI, EAuthState } from "modules/auth/module";
+import { authModuleAPI } from "modules/auth/module";
 
 import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";
@@ -20,7 +20,7 @@ import { silverLighter2 } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 type TStateProps = {
-  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  isStateChangeInProgress: ReturnType<typeof authModuleAPI.selectors.selectIsStateChangeInProgress>;
 };
 
 type TDispatchProps = {
@@ -29,7 +29,7 @@ type TDispatchProps = {
 
 const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   createAccount,
-  authState,
+  isStateChangeInProgress,
 }) => {
   const navigation = useNavigationTyped();
 
@@ -50,7 +50,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
 
         <Button
           style={styles.button}
-          loading={authState === EAuthState.AUTHORIZING}
+          loading={isStateChangeInProgress}
           layout={EButtonLayout.PRIMARY}
           onPress={createAccount}
         >
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 
 const LandingScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
-    authState: authModuleAPI.selectors.selectAuthState(state),
+    isStateChangeInProgress: authModuleAPI.selectors.selectIsStateChangeInProgress(state),
   }),
   dispatchToProps: dispatch => ({
     createAccount: () => dispatch(authModuleAPI.actions.createAccount()),

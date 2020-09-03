@@ -5,7 +5,7 @@ import { authModuleAPI } from "modules/auth/module";
 import { appConnect } from "store/utils";
 
 type TStateProps = {
-  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  isStateChangeInProgress: ReturnType<typeof authModuleAPI.selectors.selectIsStateChangeInProgress>;
 };
 
 type TDispatchProps = {
@@ -14,7 +14,7 @@ type TDispatchProps = {
 
 const SwitchFixtureScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
-    authState: authModuleAPI.selectors.selectAuthState(state),
+    isStateChangeInProgress: authModuleAPI.selectors.selectIsStateChangeInProgress(state),
   }),
   dispatchToProps: dispatch => ({
     changeAccount: (privateKeyOrMnemonic: string, name: string) =>

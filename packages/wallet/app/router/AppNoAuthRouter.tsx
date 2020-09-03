@@ -19,32 +19,39 @@ const NoAuthStack = createStackNavigator<RootStackParamList>();
 
 type TExternalProps = {
   authWallet: undefined | TAuthWalletMetadata;
+  authLostWallet: undefined | TAuthWalletMetadata;
   authState: EAuthState;
 };
 
-const getInitialState = (authState: EAuthState, authWallet: undefined | TAuthWalletMetadata) => {
+const getInitialState = (
+  authState: EAuthState,
+  authWallet: undefined | TAuthWalletMetadata,
+  authLostWallet: undefined | TAuthWalletMetadata,
+) => {
+  if (authLostWallet) {
+    return EAppRoutes.lostAccount;
+  }
+
   const hasAnAccountToUnlock = !!authWallet;
 
   switch (authState) {
     case EAuthState.NOT_AUTHORIZED:
       return hasAnAccountToUnlock ? EAppRoutes.unlockAccount : EAppRoutes.landing;
 
-    case EAuthState.LOST:
-      return EAppRoutes.lostAccount;
-
     case EAuthState.AUTHORIZED:
       throw new StateNotAllowedError("Auth should not be authorized");
-
-    case EAuthState.AUTHORIZING:
-      return undefined;
 
     default:
       assertNever(authState, "Invalid auth state");
   }
 };
-const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authState, authWallet }) => (
+const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({
+  authState,
+  authWallet,
+  authLostWallet,
+}) => (
   <NoAuthStack.Navigator
-    initialRouteName={getInitialState(authState, authWallet)}
+    initialRouteName={getInitialState(authState, authWallet, authLostWallet)}
     screenOptions={({ route, navigation }) => ({
       ...TransitionPresets.ModalPresentationIOS,
       gestureEnabled: true,

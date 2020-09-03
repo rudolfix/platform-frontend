@@ -35,12 +35,12 @@ const MODULE_ID = "wallet:init";
 
 type TConfig = { backendRootUrl: string; rpcUrl: string; universeContractAddress: string };
 
-const ensurePermissionsArePresentAndRunEffect = function* () {
+const ensurePermissionsArePresentAndRunEffect = function*() {
   throw new Error("Not implemented");
 };
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const waitUntilSmartContractsAreInitialized = function* () {};
-const displayErrorModalSaga = function* () {
+const waitUntilSmartContractsAreInitialized = function*() {};
+const displayErrorModalSaga = function*() {
   throw new Error("Not implemented");
 };
 
@@ -61,7 +61,7 @@ const setupInitModule = (config: TConfig) => {
     setupNotificationsModule(),
     setupPermissionsModule(),
     setupDeviceInformationModule(),
-    setupWalletEthModule({ rpcUrl: config.rpcUrl }),
+    ...setupWalletEthModule({ rpcUrl: config.rpcUrl }),
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),

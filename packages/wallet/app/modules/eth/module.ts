@@ -1,7 +1,9 @@
 import { utils as ethersUtils } from "ethers";
+import { setupDeviceInformationModule } from "modules/device-information/module";
 
 import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
-import { EWalletExistenceStatus } from "modules/eth/lib/types";
+import { EWalletExistenceStatus, EWalletType } from "modules/eth/lib/types";
+import { setupStorageModule } from "modules/storage";
 
 import { setupBindings } from "./lib/bindings";
 import {
@@ -29,11 +31,15 @@ const utils = {
   BigNumber: ethersUtils.BigNumber,
 };
 
-const setupWalletEthModule = (config: TEthModuleConfig) => ({
-  id: MODULE_ID,
-  libs: [setupBindings(config.rpcUrl)],
-  api: walletEthModuleApi,
-});
+const setupWalletEthModule = (config: TEthModuleConfig) => {
+  const module = {
+    id: MODULE_ID,
+    libs: [setupBindings(config.rpcUrl)],
+    api: walletEthModuleApi,
+  };
+
+  return [setupDeviceInformationModule(), setupStorageModule(), module];
+};
 
 const walletEthModuleApi = {
   symbols,
@@ -44,4 +50,4 @@ const walletEthModuleApi = {
   },
 };
 
-export { setupWalletEthModule, walletEthModuleApi, EWalletExistenceStatus };
+export { setupWalletEthModule, walletEthModuleApi, EWalletExistenceStatus, EWalletType };

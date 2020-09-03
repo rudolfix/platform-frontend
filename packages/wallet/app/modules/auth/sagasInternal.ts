@@ -10,8 +10,7 @@ import {
 import { invariant } from "@neufund/shared-utils";
 
 import { authActions } from "modules/auth/actions";
-import { EAuthState } from "modules/auth/reducer";
-import { selectAuthState } from "modules/auth/selectors";
+import { selectAuthLostWallet } from "modules/auth/selectors";
 import { walletEthModuleApi } from "modules/eth/module";
 
 function* loadOrCreateUser(): SagaGenerator<void> {
@@ -51,9 +50,9 @@ function* ensureNoLostWallet(): SagaGenerator<void> {
     logger: coreModuleApi.symbols.logger,
   });
 
-  const authState = yield* select(selectAuthState);
+  const lostWallet = yield* select(selectAuthLostWallet);
 
-  if (authState === EAuthState.LOST) {
+  if (lostWallet) {
     logger.info("Removing lost wallet metadata");
 
     yield* call([ethManager, "unsafeDeleteLostWallet"]);

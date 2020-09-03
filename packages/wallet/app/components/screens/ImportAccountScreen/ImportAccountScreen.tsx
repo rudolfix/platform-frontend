@@ -15,7 +15,7 @@ import { spacingStyles } from "styles/spacings";
 import { ImportAccountScreenForm } from "./ImportAccountScreenForm";
 
 type TStateProps = {
-  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  isStateChangeInProgress: ReturnType<typeof authModuleAPI.selectors.selectIsStateChangeInProgress>;
 };
 
 type TDispatchProps = {
@@ -23,7 +23,7 @@ type TDispatchProps = {
 };
 
 const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
-  authState,
+  isStateChangeInProgress,
   importExistingAccount,
 }) => (
   <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
@@ -35,7 +35,10 @@ const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
       Enter your recovery phrase/private key to import and connect your Ethereum wallet to Neufund.
     </BodyText>
 
-    <ImportAccountScreenForm authState={authState} importExistingAccount={importExistingAccount} />
+    <ImportAccountScreenForm
+      isStateChangeInProgress={isStateChangeInProgress}
+      importExistingAccount={importExistingAccount}
+    />
   </SafeAreaScreen>
 );
 
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
 
 const ImportAccountScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
-    authState: authModuleAPI.selectors.selectAuthState(state),
+    isStateChangeInProgress: authModuleAPI.selectors.selectIsStateChangeInProgress(state),
   }),
   dispatchToProps: dispatch => ({
     importExistingAccount: (privateKeyOrMnemonic: string) =>

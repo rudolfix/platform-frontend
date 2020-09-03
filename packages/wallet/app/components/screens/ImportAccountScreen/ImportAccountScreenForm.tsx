@@ -9,7 +9,6 @@ import { Form } from "components/shared/forms/fields/Form";
 import { EFieldType } from "components/shared/forms/layouts/FieldLayout";
 import { TextAreaInput } from "components/shared/forms/layouts/TextAreaInput";
 
-import { EAuthState } from "modules/auth/module";
 import { walletEthModuleApi } from "modules/eth/module";
 
 import { useNavigationTyped } from "router/routeUtils";
@@ -48,12 +47,12 @@ const INITIAL_VALUES = {
 };
 
 type TExternalProps = {
-  authState: EAuthState;
+  isStateChangeInProgress: boolean;
   importExistingAccount: (privateKeyOrMnemonic: string) => void;
 };
 
 const ImportAccountScreenForm: React.FunctionComponent<TExternalProps> = ({
-  authState,
+  isStateChangeInProgress,
   importExistingAccount,
 }) => {
   const navigation = useNavigationTyped();
@@ -94,7 +93,7 @@ const ImportAccountScreenForm: React.FunctionComponent<TExternalProps> = ({
           <Button
             style={styles.importAccountButton}
             disabled={!isValid}
-            loading={authState === EAuthState.AUTHORIZING}
+            loading={isStateChangeInProgress}
             layout={EButtonLayout.PRIMARY}
             onPress={handleSubmit}
           >

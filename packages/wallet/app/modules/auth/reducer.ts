@@ -5,13 +5,13 @@ import { TAuthWalletMetadata } from "./types";
 
 export enum EAuthState {
   NOT_AUTHORIZED = "not_authorized",
-  AUTHORIZING = "authorizing",
   AUTHORIZED = "authorized",
-  LOST = "lost",
 }
 
 interface IAuthState {
   state: EAuthState;
+  isStateChangeInProgress: boolean;
+  lostWallet: undefined | TAuthWalletMetadata;
   /**
    * @note wallet can be already defined for `NOT_AUTHORIZED` state given it's taken from device storage
    */
@@ -20,6 +20,8 @@ interface IAuthState {
 
 const initialState: IAuthState = {
   state: EAuthState.NOT_AUTHORIZED,
+  isStateChangeInProgress: false,
+  lostWallet: undefined,
   wallet: undefined,
 };
 
@@ -33,7 +35,9 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         ...initialState,
         // still keep current wallet in the store to show the proper UI
         wallet: state.wallet,
-        state: EAuthState.AUTHORIZING,
+        // still keep lost wallet in the store to show the proper UI
+        lostWallet: state.lostWallet,
+        isStateChangeInProgress: true,
       };
 
     case authActions.unlockAccountDone.getType():
@@ -72,8 +76,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
     case authActions.accountLost.getType():
       return {
         ...initialState,
-        state: EAuthState.LOST,
-        wallet: action.payload.metadata,
+        lostWallet: action.payload.metadata,
       };
 
     default:

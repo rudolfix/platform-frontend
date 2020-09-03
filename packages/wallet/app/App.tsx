@@ -27,6 +27,7 @@ type TStateProps = {
   initStatus: ReturnType<typeof initModuleApi.selectors.selectInitStatus>;
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
   authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
+  authLostWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthLostWallet>;
   biometricsState: ReturnType<typeof biometricsModuleApi.selectors.selectBiometricsState>;
 };
 
@@ -38,12 +39,18 @@ type TLayoutProps = TStateProps & TDispatchProps;
 
 const BiometricsGuards: React.FunctionComponent<Pick<
   TLayoutProps,
-  "authState" | "authWallet" | "biometricsState"
->> = ({ authState, authWallet, biometricsState }) => {
+  "authState" | "authWallet" | "biometricsState" | "authLostWallet"
+>> = ({ authState, authWallet, authLostWallet, biometricsState }) => {
   switch (biometricsState) {
     case EBiometricsState.ACCESS_ALLOWED:
     case EBiometricsState.ACCESS_REQUEST_REQUIRED:
-      return <AuthorizedGuards authState={authState} authWallet={authWallet} />;
+      return (
+        <AuthorizedGuards
+          authState={authState}
+          authWallet={authWallet}
+          authLostWallet={authLostWallet}
+        />
+      );
     case EBiometricsState.NO_SUPPORT:
     case EBiometricsState.NO_ACCESS:
       return <BiometricsRoute biometricsState={biometricsState} />;
@@ -54,15 +61,19 @@ const BiometricsGuards: React.FunctionComponent<Pick<
   }
 };
 
-const AuthorizedGuards: React.FunctionComponent<Pick<TLayoutProps, "authState" | "authWallet">> = ({
-  authState,
-  authWallet,
-}) => {
+const AuthorizedGuards: React.FunctionComponent<Pick<
+  TLayoutProps,
+  "authState" | "authWallet" | "authLostWallet"
+>> = ({ authState, authWallet, authLostWallet }) => {
   switch (authState) {
     case EAuthState.NOT_AUTHORIZED:
-    case EAuthState.AUTHORIZING:
-    case EAuthState.LOST:
-      return <AppNoAuthRouter authWallet={authWallet} authState={authState} />;
+      return (
+        <AppNoAuthRouter
+          authWallet={authWallet}
+          authState={authState}
+          authLostWallet={authLostWallet}
+        />
+      );
     case EAuthState.AUTHORIZED:
       return (
         <>
@@ -81,6 +92,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
   init,
   authState,
   authWallet,
+  authLostWallet,
   initStatus,
   biometricsState,
 }) => {
@@ -114,6 +126,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
             biometricsState={biometricsState}
             authState={authState}
             authWallet={authWallet}
+            authLostWallet={authLostWallet}
           />
         </NavigationContainer>
       );
@@ -129,6 +142,7 @@ const App = appConnect<TStateProps, TDispatchProps>({
     initStatus: initModuleApi.selectors.selectInitStatus(state),
     authState: authModuleAPI.selectors.selectAuthState(state),
     authWallet: authModuleAPI.selectors.selectAuthWallet(state),
+    authLostWallet: authModuleAPI.selectors.selectAuthLostWallet(state),
     biometricsState: biometricsModuleApi.selectors.selectBiometricsState(state),
   }),
   dispatchToProps: dispatch => ({

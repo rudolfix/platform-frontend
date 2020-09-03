@@ -144,7 +144,7 @@ function* createNewAccount(): SagaGenerator<void> {
 
     logger.info("Plugging random wallet");
 
-    yield* call(() => ethManager.plugNewRandomWallet());
+    yield* call([ethManager, "plugNewRandomWallet"]);
 
     logger.info("Generating new JWT token");
 
@@ -154,7 +154,7 @@ function* createNewAccount(): SagaGenerator<void> {
 
     yield* call(loadOrCreateUser);
 
-    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    const walletMetadata = yield* call([ethManager, "getExistingWalletMetadata"]);
     // do not allow to start sign in without having existing wallet
     invariant(walletMetadata, "No existing wallet to sign in");
 

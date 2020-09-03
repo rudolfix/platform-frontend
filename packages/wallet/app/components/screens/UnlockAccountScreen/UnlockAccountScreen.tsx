@@ -8,7 +8,7 @@ import { NeuGradientScreen } from "components/shared/NeuGradientScreen";
 import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
-import { authModuleAPI, EAuthState } from "modules/auth/module";
+import { authModuleAPI } from "modules/auth/module";
 
 import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";
@@ -19,7 +19,7 @@ import { silverLighter2 } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 type TStateProps = {
-  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  isStateChangeInProgress: ReturnType<typeof authModuleAPI.selectors.selectIsStateChangeInProgress>;
   authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
 };
 
@@ -29,7 +29,7 @@ type TDispatchProps = {
 
 const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   unlockAccount,
-  authState,
+  isStateChangeInProgress,
   authWallet,
 }) => {
   const navigation = useNavigationTyped();
@@ -47,7 +47,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
 
         <Button
           style={styles.createAccountButton}
-          loading={authState === EAuthState.AUTHORIZING}
+          loading={isStateChangeInProgress}
           layout={EButtonLayout.PRIMARY}
           onPress={unlockAccount}
         >
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 
 const UnlockAccountScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
-    authState: authModuleAPI.selectors.selectAuthState(state),
+    isStateChangeInProgress: authModuleAPI.selectors.selectIsStateChangeInProgress(state),
     authWallet: authModuleAPI.selectors.selectAuthWallet(state),
   }),
   dispatchToProps: dispatch => ({

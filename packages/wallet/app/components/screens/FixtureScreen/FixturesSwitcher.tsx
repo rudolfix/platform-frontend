@@ -12,13 +12,12 @@ import { EFieldType } from "components/shared/forms/layouts/FieldLayout";
 
 import fixtures from "lib/contracts/fixtures.json";
 
-import { EAuthState } from "modules/auth/module";
 import { walletEthModuleApi } from "modules/eth/module";
 
 import { spacingStyles } from "styles/spacings";
 
 type TExternalProps = {
-  authState: EAuthState;
+  isStateChangeInProgress: boolean;
   changeAccount: (privateKeyOrMnemonic: string, name: string) => void;
 };
 
@@ -43,7 +42,7 @@ const UIFixtures = Object.values(fixtures).map(fixture => ({
 const fuse = new Fuse(UIFixtures, { keys: ["id", "title"], shouldSort: false, threshold: 0.4 });
 
 const FixturesSwitcher: React.FunctionComponent<TExternalProps> = ({
-  authState,
+  isStateChangeInProgress,
   changeAccount,
 }) => (
   <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
@@ -73,7 +72,7 @@ const FixturesSwitcher: React.FunctionComponent<TExternalProps> = ({
 
             <Button
               disabled={!isValid}
-              loading={authState === EAuthState.AUTHORIZING}
+              loading={isStateChangeInProgress}
               layout={EButtonLayout.PRIMARY}
               onPress={handleSubmit}
             >

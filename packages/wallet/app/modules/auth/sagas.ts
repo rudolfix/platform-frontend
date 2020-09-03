@@ -187,11 +187,11 @@ function* importNewAccount(
   try {
     yield* call(ensureNoLostWallet);
 
-    const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
+    const hasExistingWallet = yield* call([ethManager, "hasExistingWallet"]);
 
     if (hasExistingWallet) {
       logger.info("Clearing existing wallet from storage");
-      yield* call(() => ethManager.unsafeDeleteWallet());
+      yield* call([ethManager, "unsafeDeleteWallet"]);
     }
 
     const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
@@ -200,15 +200,20 @@ function* importNewAccount(
 
     switch (importPhraseType) {
       case EImportPhrase.PRIVATE_KEY:
-        yield* call(() =>
-          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic), name),
+        yield* call(
+          [ethManager, "plugNewWalletFromPrivateKey"],
+          toEthereumPrivateKey(privateKeyOrMnemonic),
+          name,
         );
         break;
 
       case EImportPhrase.MNEMONICS:
-        yield* call(() =>
-          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic), name),
+        yield* call(
+          [ethManager, "plugNewWalletFromMnemonic"],
+          toEthereumHDMnemonic(privateKeyOrMnemonic),
+          name,
         );
+
         break;
 
       default:
@@ -221,7 +226,7 @@ function* importNewAccount(
     logger.info("Creating or loading new user");
     yield* call(loadOrCreateUser);
 
-    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    const walletMetadata = yield* call([ethManager, "getExistingWalletMetadata"]);
     // do not allow to start sign in without having existing wallet
     invariant(walletMetadata, "No existing wallet to sign in");
 

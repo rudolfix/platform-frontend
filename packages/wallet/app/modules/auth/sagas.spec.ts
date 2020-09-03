@@ -15,7 +15,6 @@ import { EWalletType, setupWalletEthModule, walletEthModuleApi } from "../eth/mo
 import { authActions } from "./actions";
 import { EAuthState, setupAuthModule } from "./module";
 import { authSaga } from "./sagas";
-import { ensureNoLostWallet } from "./sagasInternal";
 import {
   selectAuthLostWallet,
   selectAuthState,
@@ -83,7 +82,6 @@ describe("Auth sagas", () => {
           walletMetadata: authWalletMetadata,
           userType: EUserType.INVESTOR,
         })
-        .call.fn(ethManager.getExistingWalletMetadata)
 
         .put(authActions.unlockAccountDone(walletMetadata))
         .run();
@@ -114,7 +112,7 @@ describe("Auth sagas", () => {
       expect(selectAuthLostWallet(storeState)).toBeUndefined();
     });
 
-    it.only("should handle an error during account creation flow", async () => {
+    it("should handle an error during account creation flow", async () => {
       const { expectSaga, ethManager } = setupContextForTests();
 
       const { storeState } = await expectSaga(authSaga)
@@ -128,6 +126,145 @@ describe("Auth sagas", () => {
 
         .not.put(authActions.unlockAccountDone(walletMetadata))
         .put(authActions.failedToCreateAccount())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+      expect(selectIsStateChangeInProgress(storeState)).toBeFalsy();
+    });
+  });
+
+  describe("importNewAccount", () => {
+    it("should import new account from private key", async () => {
+      const { expectSaga, ethManager, getState } = setupContextForTests();
+
+      const initialState = getState();
+      expect(selectAuthState(initialState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(initialState)).toBeUndefined();
+
+      const privateKey = "0x7ccdc091ae2a3cccb338d1aa00f8ec7ff60f30abb9a447a17fe3326ebc0849f1";
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [matchers.call.fn(ethManager.hasExistingWallet), false],
+          [matchers.call.fn(ethManager.plugNewWalletFromPrivateKey), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.createJwt), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.loadOrCreateUser), undefined],
+          [matchers.call.fn(ethManager.getExistingWalletMetadata), walletMetadata],
+        ])
+        .dispatch(authActions.importAccount(privateKey, walletMetadata.name))
+
+        .call([ethManager, "plugNewWalletFromPrivateKey"], privateKey, walletMetadata.name)
+        .call.fn(authModuleAPI.sagas.createJwt)
+        .call(authModuleAPI.sagas.loadOrCreateUser, {
+          walletMetadata: authWalletMetadata,
+          userType: EUserType.INVESTOR,
+        })
+
+        .put(authActions.unlockAccountDone(walletMetadata))
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toEqual(walletMetadata);
+    });
+
+    it("should import new account from mnemonics", async () => {
+      const { expectSaga, ethManager, getState } = setupContextForTests();
+
+      const initialState = getState();
+      expect(selectAuthState(initialState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(initialState)).toBeUndefined();
+
+      const mnemonics =
+        "submit defy item boss situate isolate purse major retire nothing mammal usual boil hope sentence group vivid clutch another indoor slam illegal street dust";
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [matchers.call.fn(ethManager.hasExistingWallet), false],
+          [matchers.call.fn(ethManager.plugNewWalletFromMnemonic), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.createJwt), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.loadOrCreateUser), undefined],
+          [matchers.call.fn(ethManager.getExistingWalletMetadata), walletMetadata],
+        ])
+        .dispatch(authActions.importAccount(mnemonics, walletMetadata.name))
+
+        .call([ethManager, "plugNewWalletFromMnemonic"], mnemonics, walletMetadata.name)
+        .call.fn(authModuleAPI.sagas.createJwt)
+        .call(authModuleAPI.sagas.loadOrCreateUser, {
+          walletMetadata: authWalletMetadata,
+          userType: EUserType.INVESTOR,
+        })
+
+        .put(authActions.unlockAccountDone(walletMetadata))
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toEqual(walletMetadata);
+    });
+
+    it("should throw when importing new account with invalid backup", async () => {
+      const { expectSaga, ethManager } = setupContextForTests();
+
+      const mnemonics = "invalid mnemonics";
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([[matchers.call.fn(ethManager.hasExistingWallet), false]])
+        .dispatch(authActions.importAccount(mnemonics, walletMetadata.name))
+
+        .not.call.fn(ethManager.plugNewWalletFromPrivateKey)
+        .not.call.fn(ethManager.plugNewWalletFromMnemonic)
+
+        .put(authActions.failedToImportAccount())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+    });
+
+    it("should remove existing account if any", async () => {
+      const { expectSaga, ethManager, getState } = setupContextForTests();
+
+      const initialState = getState();
+      expect(selectAuthState(initialState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(initialState)).toBeUndefined();
+
+      const privateKey = "0x7ccdc091ae2a3cccb338d1aa00f8ec7ff60f30abb9a447a17fe3326ebc0849f1";
+
+      await expectSaga(authSaga)
+        .provide([
+          [matchers.call.fn(ethManager.hasExistingWallet), true],
+          [matchers.call.fn(ethManager.unsafeDeleteWallet), undefined],
+          [matchers.call.fn(ethManager.plugNewWalletFromPrivateKey), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.createJwt), undefined],
+          [matchers.call.fn(authModuleAPI.sagas.loadOrCreateUser), undefined],
+          [matchers.call.fn(ethManager.getExistingWalletMetadata), walletMetadata],
+        ])
+        .dispatch(authActions.importAccount(privateKey, walletMetadata.name))
+
+        .call.fn(ethManager.unsafeDeleteWallet)
+
+        .put(authActions.unlockAccountDone(walletMetadata))
+        .run();
+    });
+
+    it("should handle an error during account import flow", async () => {
+      const { expectSaga, ethManager } = setupContextForTests();
+
+      const privateKey = "0x7ccdc091ae2a3cccb338d1aa00f8ec7ff60f30abb9a447a17fe3326ebc0849f1";
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [matchers.call.fn(ethManager.hasExistingWallet), false],
+
+          [
+            matchers.call.fn(ethManager.plugNewWalletFromPrivateKey),
+            providers.throwError(new Error("oy vey")),
+          ],
+        ])
+        .dispatch(authActions.importAccount(privateKey, walletMetadata.name))
+
+        .not.put(authActions.unlockAccountDone(walletMetadata))
+        .put(authActions.failedToImportAccount())
         .run();
 
       expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);

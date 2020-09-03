@@ -1,11 +1,7 @@
-$checkbox-height: px-to-rem(18px);
-
 .wrapper {
   display: flex;
   align-items: center;
   position: relative;
-  height: $checkbox-height;
-  width: $checkbox-height;
   user-select: none;
   cursor: pointer;
 
@@ -42,8 +38,8 @@ $checkbox-height: px-to-rem(18px);
 .checkmark {
   top: 0;
   left: 0;
-  height: $checkbox-height;
-  width: $checkbox-height;
+  height: px-to-rem(18px);
+  width: px-to-rem(18px);
   border: solid 1px $neu-gull-gray;
   border-radius: px-to-rem(2px);
   transition: border 200ms ease-out, background-color 200ms ease-out;

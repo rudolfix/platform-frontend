@@ -67,6 +67,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       };
 
     case authActions.failedToUnlockAccount.getType():
+    case authActions.failedToLockAccount.getType():
       return {
         ...initialState,
         // still keep current wallet in the store to show the proper UI

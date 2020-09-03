@@ -417,7 +417,7 @@ describe("Auth sagas", () => {
     });
 
     it("should handle an error during unlock flow", async () => {
-      const { expectSaga, ethManager, getState } = setupContextForTests();
+      const { expectSaga, ethManager } = setupContextForTests();
 
       const { storeState } = await expectSaga(authSaga)
         .provide([
@@ -437,4 +437,81 @@ describe("Auth sagas", () => {
     });
   });
 
+  describe("lockAccount", () => {
+    it("should lock account", async () => {
+      const { expectSaga } = setupContextForTests();
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([[matchers.call.fn(authModuleAPI.sagas.resetUser), undefined]])
+        .dispatch(authActions.lockAccount())
+
+        .call(authModuleAPI.sagas.resetUser, { clearStorage: false })
+        .put(authActions.lockAccountDone())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+    });
+
+    it("should handle an error during unlock flow", async () => {
+      const { expectSaga } = setupContextForTests();
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [
+            matchers.call.fn(authModuleAPI.sagas.resetUser),
+            providers.throwError(new Error("oy vey")),
+          ],
+        ])
+        .dispatch(authActions.lockAccount())
+
+        .not.put.actionType(authActions.lockAccountDone.getType())
+        .put(authActions.failedToLockAccount())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+    });
+  });
+
+  describe("logoutAccount", () => {
+    it("should logout account", async () => {
+      const { expectSaga, ethManager } = setupContextForTests();
+
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [matchers.call.fn(authModuleAPI.sagas.resetUser), undefined],
+          [matchers.call.fn(ethManager.unsafeDeleteWallet), undefined],
+        ])
+        .dispatch(authActions.logoutAccount())
+
+        .call(authModuleAPI.sagas.resetUser)
+        .call.fn(ethManager.unsafeDeleteWallet)
+        .put(authActions.logoutAccountDone())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+    });
+
+    it("should handle an error during logout flow", async () => {
+      const { expectSaga, ethManager } = setupContextForTests();
+      const { storeState } = await expectSaga(authSaga)
+        .provide([
+          [
+            matchers.call.fn(authModuleAPI.sagas.resetUser),
+            providers.throwError(new Error("oy vey")),
+          ],
+          [matchers.call.fn(ethManager.unsafeDeleteLostWallet), undefined],
+        ])
+        .dispatch(authActions.logoutAccount())
+
+        .call.fn(ethManager.unsafeDeleteLostWallet)
+        .put(authActions.logoutAccountDone())
+        .run();
+
+      expect(selectAuthState(storeState)).toEqual(EAuthState.NOT_AUTHORIZED);
+      expect(selectAuthWallet(storeState)).toBeUndefined();
+    });
+  });
 });

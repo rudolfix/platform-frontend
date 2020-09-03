@@ -127,10 +127,22 @@ function* signInExistingAccount(): SagaGenerator<void> {
 }
 
 function* lockAccount(): SagaGenerator<void> {
-  // keep to store so JWT can be reused if not expired
-  yield* call(authModuleAPI.sagas.resetUser, { clearStorage: false });
+  const { logger } = yield* neuGetBindings({
+    logger: coreModuleApi.symbols.logger,
+  });
 
-  yield put(authActions.lockAccountDone());
+  try {
+    logger.info("Locking account");
+
+    // keep to store so JWT can be reused if not expired
+    yield* call(authModuleAPI.sagas.resetUser, { clearStorage: false });
+
+    yield put(authActions.lockAccountDone());
+  } catch (e) {
+    logger.error(e, "Failed to lock account");
+
+    yield put(authActions.failedToLockAccount());
+  }
 }
 
 function* createNewAccount(): SagaGenerator<void> {
@@ -267,13 +279,15 @@ function* logout(): SagaGenerator<void> {
     logger.info("Logging out user");
 
     yield* call(authModuleAPI.sagas.resetUser);
-    yield* call(() => ethManager.unsafeDeleteWallet());
+    yield* call([ethManager, "unsafeDeleteWallet"]);
 
     yield put(authActions.logoutAccountDone());
   } catch (e) {
     logger.error(e, "Failed to logout user");
 
+    // in case of an error during logout we should cleanup wallet completely
     yield* call([ethManager, "unsafeDeleteLostWallet"]);
+    yield put(authActions.logoutAccountDone());
 
     logger.info("State cleared from the lost wallet");
   }

@@ -40,6 +40,7 @@ type TFieldProps = {
   ignoreTouched?: boolean;
   isRequired?: boolean;
   smallWidth?: boolean;
+  units?: React.ReactNode;
 };
 
 export const TextField: React.FunctionComponent<TFieldProps &
@@ -58,6 +59,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
   className,
   isRequired,
   smallWidth,
+  units,
   ...props
 }) => {
   const [unmaskPassword, setUnmaskPassword] = React.useState(false);
@@ -112,6 +114,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
               }}
               {...props}
             />
+            {smallWidth && units && <span className={styles.units}>{units}</span>}
             {hasAdornment && (
               <div className={styles.adornmentWrapper}>
                 <button

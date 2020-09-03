@@ -64,7 +64,13 @@ storiesOf("NDS|Molecules/Inputs", module).add("TextField", () => (
             />
             <TextField label="Disabled" name="field7" disabled={true} placeholder="Input" />
             <TextField label="Password" type="password" name="field8" placeholder="Password" />
-            <TextField label="Small Width" name="field9" placeholder="No." smallWidth />
+            <TextField
+              label="Small Width"
+              name="field9"
+              placeholder="No."
+              smallWidth
+              units="Days"
+            />
           </form>
         );
       }}

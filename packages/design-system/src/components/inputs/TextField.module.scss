@@ -13,6 +13,12 @@
   width: px-to-rem(56px);
 }
 
+.units {
+  @include nds-body-small;
+  margin-left: px-to-rem(8px);
+  color: $neu-charcoal-grey;
+}
+
 .adornment-wrapper {
   position: absolute;
   top: 1px;

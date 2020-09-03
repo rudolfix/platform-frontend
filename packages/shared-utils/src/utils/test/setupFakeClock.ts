@@ -1,15 +1,15 @@
-import * as lolex from "lolex";
+import { Clock, install, InstalledClock, LolexInstallOpts } from "lolex";
 
-export const setupFakeClock = (now?: number) => {
-  let wrapper: { fakeClock?: lolex.InstalledClock<lolex.Clock> } = {};
+export const setupFakeClock = (now?: number, options?: Omit<LolexInstallOpts, "now">) => {
+  let wrapper: { fakeClock?: InstalledClock<Clock> } = {};
 
   beforeEach(() => {
-    wrapper.fakeClock = lolex.install({ now });
+    wrapper.fakeClock = install({ now, ...options });
   });
 
   afterEach(() => {
     wrapper.fakeClock && wrapper.fakeClock.uninstall();
   });
 
-  return wrapper as { fakeClock: lolex.InstalledClock<lolex.Clock> };
+  return wrapper as { fakeClock: InstalledClock<Clock> };
 };

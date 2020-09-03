@@ -87,12 +87,12 @@ function* signInExistingAccount(): SagaGenerator<void> {
   });
 
   try {
-    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    const walletMetadata = yield* call([ethManager, "getExistingWalletMetadata"]);
 
     // do not allow to start sign in without having existing wallet
     invariant(walletMetadata, "No existing wallet to sign in");
 
-    const jwt = yield* neuCall(authModuleAPI.sagas.loadJwt);
+    const jwt = yield* call(authModuleAPI.sagas.loadJwt);
 
     // if JWT is already in the store and it's won't expire soon
     // then just feed state with the current jwt
@@ -108,10 +108,10 @@ function* signInExistingAccount(): SagaGenerator<void> {
         return;
       }
 
-      yield* call(() => ethManager.plugExistingWallet());
-      yield* neuCall(authModuleAPI.sagas.setJwt, jwt);
+      yield* call([ethManager, "plugExistingWallet"]);
+      yield* call(authModuleAPI.sagas.setJwt, {}, jwt);
     } else {
-      yield* call(() => ethManager.plugExistingWallet());
+      yield* call([ethManager, "plugExistingWallet"]);
       yield* call(authModuleAPI.sagas.createJwt, []);
     }
 

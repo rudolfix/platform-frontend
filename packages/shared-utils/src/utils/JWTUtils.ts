@@ -22,7 +22,7 @@ export function getJwtExpiryDate(token: string): Date {
 
     return new Date(unixTimestampToTimestamp(parsedJwt.exp));
   } catch (e) {
-    throw new Error(`Cannot parse JWT token: ${token}`);
+    throw new Error(`Failed to parse JWT token: ${e.message}`);
   }
 }
 
@@ -30,15 +30,11 @@ export function getJwtExpiryDate(token: string): Date {
  * Checks if JWT expiration date is further in past than AUTH_TOKEN_REFRESH_THRESHOLD minutes
  */
 export function isJwtExpiringLateEnough(token: string): boolean {
-  try {
-    const expirationDate = getJwtExpiryDate(token);
+  const expirationDate = getJwtExpiryDate(token);
 
-    const expirationDiff = expirationDate.getTime() - Date.now();
+  const expirationDiff = expirationDate.getTime() - Date.now();
 
-    return expirationDiff >= AUTH_TOKEN_REFRESH_THRESHOLD;
-  } catch (e) {
-    throw new Error(`Cannot parse JWT token: ${token}`);
-  }
+  return expirationDiff >= AUTH_TOKEN_REFRESH_THRESHOLD;
 }
 
 /**
@@ -47,7 +43,7 @@ export function isJwtExpiringLateEnough(token: string): boolean {
 export function parseJwt(token: string): IJwt {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace("-", "+").replace("_", "/");
-  return JSON.parse(window.atob(base64));
+  return JSON.parse(globalThis.atob(base64));
 }
 
 /**

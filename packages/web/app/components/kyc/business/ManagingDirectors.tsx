@@ -25,10 +25,10 @@ import {
   FormSelectField,
   FormSelectNationalityField,
   FormSelectStateField,
-} from "../../shared/forms/index";
+} from "../../shared/forms";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
-import { Tooltip } from "../../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
+import { Tooltip } from "../../shared/tooltips";
+import { ECustomTooltipTextPosition } from "../../shared/tooltips";
 import { AddPersonButton } from "../shared/AddPersonButton";
 import { PEP_VALUES } from "../shared/constants";
 import { FooterButtons } from "../shared/FooterButtons";

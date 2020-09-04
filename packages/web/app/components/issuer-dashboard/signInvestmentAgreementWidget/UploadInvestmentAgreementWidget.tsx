@@ -21,6 +21,7 @@ import {
 } from "../../shared/dashboard-widget/DashboardWidget";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
+import { NewVotingResolutionModal } from "../NewVotingResolutionModal";
 import { SignInvestmentAgreement } from "./SignInvestmentAgreement";
 
 interface IDispatchProps {
@@ -69,27 +70,36 @@ export const UploadInvestmentAgreementLayout: React.FunctionComponent<Omit<
   </DashboardCenteredWidget>
 );
 
-export const EtoCompletedWidgetLayout: React.ComponentType<IExternalProps> = ({ columnSpan }) => (
-  <>
-    <DashboardLinkWidget
-      title={<FormattedMessage id="download-agreement-widget.success-title" />}
-      text={<FormattedMessage id="download-agreement-widget.success-text" />}
-      columnSpan={columnSpan}
-      to={appRoutes.wallet}
-      buttonText={<FormattedMessage id="download-agreement-widget.go-to-wallet" />}
-    />
+export const EtoCompletedWidgetLayout: React.ComponentType<IExternalProps> = ({ columnSpan }) => {
+  const [showNewVotingResolutionModal, setShowNewVotingResolutionModal] = React.useState(false);
 
-    <DashboardWidget
-      columnSpan={columnSpan}
-      title={<FormattedMessage id="shareholder-resolution-widget.title" />}
-      text={<FormattedMessage id="shareholder-resolution-widget.text" />}
-    >
-      <ButtonArrowRight>
-        <FormattedMessage id="shareholder-resolution-widget.button" />
-      </ButtonArrowRight>
-    </DashboardWidget>
-  </>
-);
+  return (
+    <>
+      <DashboardLinkWidget
+        title={<FormattedMessage id="download-agreement-widget.success-title" />}
+        text={<FormattedMessage id="download-agreement-widget.success-text" />}
+        columnSpan={columnSpan}
+        to={appRoutes.wallet}
+        buttonText={<FormattedMessage id="download-agreement-widget.go-to-wallet" />}
+      />
+
+      <DashboardWidget
+        columnSpan={columnSpan}
+        title={<FormattedMessage id="shareholder-resolution-widget.title" />}
+        text={<FormattedMessage id="shareholder-resolution-widget.text" />}
+      >
+        <ButtonArrowRight onClick={() => setShowNewVotingResolutionModal(true)}>
+          <FormattedMessage id="shareholder-resolution-widget.button" />
+        </ButtonArrowRight>
+      </DashboardWidget>
+
+      <NewVotingResolutionModal
+        show={showNewVotingResolutionModal}
+        onClose={() => setShowNewVotingResolutionModal(false)}
+      />
+    </>
+  );
+};
 
 export const UploadInvestmentAgreement = compose<
   IStateProps & IDispatchProps & IExternalProps,

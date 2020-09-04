@@ -29,6 +29,7 @@ export enum EKycUploadType {
 
 interface IProps {
   uploadType: EKycRequestType | EKycUploadType | EUploadType;
+  uploadTitle?: React.ReactNode;
   acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
   filesUploading: boolean;
   onDropFile: (file: File) => void;
@@ -59,6 +60,7 @@ export const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   layout,
   onDropFile,
   uploadType,
+  uploadTitle,
   "data-test-id": dataTestId,
   dropZoneWrapperClass,
   ...props
@@ -67,7 +69,7 @@ export const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
 
   return (
     <div className={cn(styles.multiFileUpload, layout)} data-test-id={dataTestId}>
-      <p className={styles.uploadTitle}>{selectTitle(uploadType)}</p>
+      <p className={styles.uploadTitle}>{uploadTitle || selectTitle(uploadType)}</p>
       <div className={styles.uploadContainer}>
         <div className={cn(styles.dropzoneWrapper, dropZoneWrapperClass)}>
           <Dropzone

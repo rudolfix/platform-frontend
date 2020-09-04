@@ -1,6 +1,6 @@
 import { utils as ethersUtils } from "ethers";
-import { setupDeviceInformationModule } from "modules/device-information/module";
 
+import { setupDeviceInformationModule } from "modules/device-information/module";
 import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
 import { EWalletExistenceStatus, EWalletType } from "modules/eth/lib/types";
 import { setupStorageModule } from "modules/storage";

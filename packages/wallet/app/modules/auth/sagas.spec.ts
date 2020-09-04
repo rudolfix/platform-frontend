@@ -10,7 +10,6 @@ import {
 import { bootstrapModule } from "@neufund/shared-modules/tests";
 import {
   toEthereumChecksumAddress,
-  minutesToMs,
   secondsToMs,
   unixTimestampToTimestamp,
 } from "@neufund/shared-utils";
@@ -40,11 +39,6 @@ const setupContextForTests = () => {
     }),
     ...setupAuthModule(BACKEND_BASE_URL),
   ]);
-
-  // const analyticsApi = createMock(AnalyticsApi, {
-  //   getUpdatedTransactions: callGuard("getUpdatedTransactions"),
-  //   getTransactionsList: callGuard("getTransactionsList"),
-  // });
 
   const ethManager = container.get<TLibSymbolType<typeof walletEthModuleApi.symbols.ethManager>>(
     walletEthModuleApi.symbols.ethManager,

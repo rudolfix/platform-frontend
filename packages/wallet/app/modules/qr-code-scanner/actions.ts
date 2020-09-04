@@ -7,4 +7,5 @@ export const qrCodeScannerActions = {
     "ON_SCAN",
     (data: string, requiredQRCodeType: EQRCodeType | undefined) => ({ data, requiredQRCodeType }),
   ),
+  onScanDone: createActionFactory("ON_SCAN_DONE"),
 };

@@ -19,7 +19,7 @@ export const getPlatformHost = () => {
 const platformHost = getPlatformHost();
 
 export const externalRoutes = {
-  platformWalletConnect: `${platformHost}/wc`,
+  platformWalletConnect: `${platformHost}/wallet-connect`,
   etherscanTransaction: "https://etherscan.io/tx/:txHash",
   platformEto: `${platformHost}/eto/view/:jurisdiction/:previewCode`,
 };

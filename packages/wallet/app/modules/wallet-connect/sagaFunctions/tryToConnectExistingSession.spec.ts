@@ -1,18 +1,20 @@
 import { matchers } from "@neufund/sagas/tests";
 import {
-  TLibSymbolType,
-  setupCoreModule,
   coreModuleApi,
   DevConsoleLogger,
   noopLogger,
+  setupCoreModule,
+  TLibSymbolType,
 } from "@neufund/shared-modules";
 import { bootstrapModule } from "@neufund/shared-modules/tests";
 
-import { createMock } from "../../../utils/testUtils.specUtils";
-import { setupStorageModule } from "../../storage/module";
-import { WalletConnectAdapter } from "../lib/WalletConnectAdapter";
-import { privateSymbols } from "../lib/symbols";
-import { setupWalletConnectModule } from "../module";
+import { setupStorageModule } from "modules/storage/module";
+import { WalletConnectAdapter } from "modules/wallet-connect/lib/WalletConnectAdapter";
+import { privateSymbols } from "modules/wallet-connect/lib/symbols";
+import { setupWalletConnectModule } from "modules/wallet-connect/module";
+
+import { createMock } from "utils/testUtils.specUtils";
+
 import { connectEvents } from "./connectEvents";
 import { tryToConnectExistingSession } from "./tryToConnectExistingSession";
 

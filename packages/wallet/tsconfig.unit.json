@@ -2,9 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
+    "target": "ES6",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": ["jest"]
+    "types": ["jest"],
+    "jsx": "react"
   },
   "include": ["./**/*.d.ts", "./**/*.spec.*", "./**/*.specUtils.*", "./**/__mocks__/**/*"],
   "exclude": ["node_modules"]

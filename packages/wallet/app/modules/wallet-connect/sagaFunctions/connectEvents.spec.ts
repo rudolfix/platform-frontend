@@ -352,7 +352,7 @@ describe("wallet-connect - watchWalletConnectEvents", () => {
     });
   });
 
-  describe.only("DISCONNECTED", () => {
+  describe("DISCONNECTED", () => {
     it("should cancel saga", () => {
       const { testSaga } = setupTest();
 

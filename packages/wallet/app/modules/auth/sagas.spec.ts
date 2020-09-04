@@ -16,8 +16,9 @@ import {
 } from "@neufund/shared-utils";
 import { setupFakeClock } from "@neufund/shared-utils/tests";
 
-import { setupBiometricsModule } from "../biometrics/module";
-import { EWalletType, setupWalletEthModule, walletEthModuleApi } from "../eth/module";
+import { setupBiometricsModule } from "modules/biometrics/module";
+import { EWalletType, setupWalletEthModule, walletEthModuleApi } from "modules/eth/module";
+
 import { authActions } from "./actions";
 import { EAuthState, setupAuthModule } from "./module";
 import { authSaga } from "./sagas";

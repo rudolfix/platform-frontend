@@ -43,7 +43,7 @@ export function isJwtExpiringLateEnough(token: string): boolean {
 export function parseJwt(token: string): IJwt {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace("-", "+").replace("_", "/");
-  return JSON.parse(globalThis.atob(base64));
+  return JSON.parse(window.atob(base64));
 }
 
 /**

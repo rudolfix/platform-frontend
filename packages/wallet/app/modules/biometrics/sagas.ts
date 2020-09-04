@@ -4,14 +4,22 @@ import { assertNever, invariant, StateNotAllowedError } from "@neufund/shared-ut
 
 import { biometricsActions } from "modules/biometrics/actions";
 import { privateSymbols } from "modules/biometrics/lib/symbols";
-import { BIOMETRICS_NONE } from "modules/biometrics/types";
+import { BIOMETRICS_NONE, EBiometricsType } from "modules/biometrics/types";
 import { PERMISSION_RESULTS } from "modules/permissions/module";
+
+import { EPlatform, Platform } from "utils/Platform";
 
 export function* initializeBiometrics(): SagaGenerator<void> {
   const { logger, biometrics } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     biometrics: privateSymbols.biometrics,
   });
+
+  // TODO Replace with proper logic for Android
+  if (Platform.OS === EPlatform.Android) {
+    yield put(biometricsActions.biometricsAccessAllowed(EBiometricsType.IOSFaceID));
+    return;
+  }
 
   const availableBiometrics = yield* call([biometrics, "getAvailableBiometrics"]);
   const canImplyAuthentication = yield* call([biometrics, "canImplyAuthentication"]);

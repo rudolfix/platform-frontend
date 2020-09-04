@@ -1,22 +1,28 @@
+import { SagaGenerator } from "@neufund/sagas";
 import { matchers } from "@neufund/sagas/tests";
 import {
   convertFromUlps,
   convertToUlps,
   divideBigNumbers,
+  EthereumAddressWithChecksum,
   multiplyBigNumbers,
   Q18,
+  toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
+import { createMock } from "@neufund/shared-utils/tests";
 import BigNumber from "bignumber.js";
 import { omit } from "lodash/fp";
 
 import { bootstrapModule } from "../../tests";
 import { testCompany, testContract, testEto } from "../../tests/fixtures";
 import { TLibSymbolType } from "../../types";
-import { EUserType } from "../auth/module";
+import { createLibSymbol } from "../../utils";
+import { EUserType, setupAuthModule } from "../auth/module";
 import { bookbuildingModuleApi } from "../bookbuilding/module";
 import { contractsModuleApi } from "../contracts/module";
-import { coreModuleApi } from "../core/module";
+import { ESignerType, IEthManager, ISingleKeyStorage } from "../core/module";
 import { investorPortfolioModuleApi } from "../investor-portfolio/module";
+import { setupKycModule } from "../kyc/module";
 import { etoActions } from "./actions";
 import { etoModuleApi, setupEtoModule } from "./module";
 import { loadEtos } from "./sagas";
@@ -92,16 +98,72 @@ const etosByPreviewCode = {
   [testEto.previewCode]: omit("company", testEto),
 };
 
-describe("loadEtos", () => {
-  const { expectSaga, container } = bootstrapModule([setupEtoModule()]);
+const ensurePermissionsArePresentAndRunEffect = function*(): SagaGenerator<void> {
+  throw new Error("Not implemented");
+};
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const waitUntilSmartContractsAreInitialized = function*(): SagaGenerator<void> {};
+const displayErrorModalSaga = function*(): SagaGenerator<void> {
+  throw new Error("Not implemented");
+};
 
-  container
-    .bind<TLibSymbolType<typeof coreModuleApi.symbols.logger>>(coreModuleApi.symbols.logger)
-    .toConstantValue(globalDependencies.logger);
+class DummyStorage implements ISingleKeyStorage<string> {
+  async clear(): Promise<void> {}
+  async get(): Promise<string | undefined> {
+    return "foo";
+  }
+  async set(): Promise<void> {}
+}
+
+class DummyEthManager implements IEthManager {
+  hasPluggedWallet(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
+
+  getWalletSignerType(): Promise<ESignerType> {
+    return Promise.reject(ESignerType.ETH_SIGN);
+  }
+
+  signMessage(message: string): Promise<string> {
+    return Promise.resolve(message);
+  }
+
+  getWalletAddress(): Promise<EthereumAddressWithChecksum> {
+    return Promise.resolve(toEthereumChecksumAddress("0x7824e49353BD72E20B61717cf82a06a4EEE209e8"));
+  }
+}
+
+describe("loadEtos", () => {
+  const jwtStorageSymbol = createLibSymbol<ISingleKeyStorage<string>>("jwtStorageSymbol");
+  const ethManagerSymbol = createLibSymbol<IEthManager>("ethManagerSymbol");
+
+  const { expectSaga, container } = bootstrapModule([
+    ...setupAuthModule({
+      backendRootUrl: "foo",
+      jwtStorageSymbol,
+      ethManagerSymbol,
+      jwtTimingThreshold: 10,
+      jwtRefreshThreshold: 10,
+    }),
+    setupKycModule({
+      displayErrorModalSaga,
+      ensurePermissionsArePresentAndRunEffect,
+      waitUntilSmartContractsAreInitialized,
+    }),
+    setupEtoModule(),
+  ]);
 
   container
     .rebind<TLibSymbolType<typeof etoModuleApi.symbols.etoApi>>(etoModuleApi.symbols.etoApi)
     .toConstantValue(globalDependencies.apiEtoService);
+
+  container
+    .bind<TLibSymbolType<typeof ethManagerSymbol>>(ethManagerSymbol)
+    .toConstantValue(createMock(DummyEthManager, {}));
+
+  container
+    .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
+    .toConstantValue(createMock(DummyStorage, {}));
 
   container
     .bind<TLibSymbolType<typeof contractsModuleApi.symbols.contractsService>>(
@@ -143,8 +205,8 @@ describe("loadEtos", () => {
       .run();
   });
 
-  it("should load investor ticket for investor", () => {
-    expectSaga(loadEtos)
+  it("should load investor ticket for investor", async () => {
+    await expectSaga(loadEtos)
       .provide([[matchers.getContext("deps"), globalDependencies]])
       .withState({
         kyc: {
@@ -220,7 +282,7 @@ describe("loadEtos", () => {
       canTransferToken: true,
     };
 
-    expectSaga(loadEtos)
+    await expectSaga(loadEtos)
       .withState({
         kyc: {
           individualData: {

@@ -1,3 +1,1 @@
-import { requestNotifications } from "react-native-permissions/mock";
-
-export { requestNotifications };
+export * from "react-native-permissions/mock";

@@ -8,6 +8,7 @@ import { compose } from "recompose";
 import * as Yup from "yup";
 import InfoIcon from "../../assets/img/info-outline.svg";
 import { selectIssuerEto } from "../../modules/eto-flow/selectors";
+import { shareholderResolutionsVotingSetupModuleApi } from "../../modules/shareholder-resolutions-voting-setup/module";
 import { appConnect } from "../../store";
 import { Modal } from "../modals/Modal";
 import { EMimeType } from "../shared/forms";
@@ -74,10 +75,10 @@ const NewVotingResolutionForm = props => {
               }
               dropZoneWrapperClass={styles.dropZoneWrapper}
               className={styles.dropZone}
-              onDropFile={() => setUploaded(true)}
+              onDropFile={props.onUploadDocument}
               acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
-              filesUploading={false}
-              data-test-id="general-information-update-upload-dropzone"
+              filesUploading={props.isDocumentUploading}
+              data-test-id="new-voting-resolution-upload-dropzone"
             />
 
             <Checkbox
@@ -166,8 +167,6 @@ const VotingResolutionSchema = Yup.object().shape({
   submissionDeadline: Yup.number().required(),
 });
 
-const defaultEmptyObject = defaultTo<IVotingResolution | {}>({});
-
 const EnhancedNewVotingResolutionForm = compose()(injectIntlHelpers)(NewVotingResolutionForm);
 
 const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
@@ -186,13 +185,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
         <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.title" />
       </h4>
 
-      <EnhancedNewVotingResolutionForm
-        {...props}
-        currentValues={{
-          votingDuration: 10,
-        }}
-        initialFormValues={initialFormValues}
-      />
+      <EnhancedNewVotingResolutionForm {...props} initialFormValues={initialFormValues} />
     </Modal>
   );
 };
@@ -201,7 +194,13 @@ export const NewVotingResolutionModal = compose(
   appConnect({
     stateToProps: state => ({
       contract: etoModuleApi.selectors.selectEtoContract(state, selectIssuerEtoPreviewCode(state)),
+      isDocumentUploading: shareholderResolutionsVotingSetupModuleApi.selectors.isDocumentUploading(
+        state,
+      ),
     }),
-    dispatchToProps: (dispatch, ownProps) => ({}),
+    dispatchToProps: (dispatch, ownProps) => ({
+      onUploadDocument: file =>
+        dispatch(shareholderResolutionsVotingSetupModuleApi.actions.uploadResolutionDocument(file)),
+    }),
   }),
 )(NewVotingResolutionModalLayout);

@@ -3,7 +3,7 @@ import { createActionFactory } from "@neufund/shared-utils";
 export const actions = {
   uploadResolutionDocument: createActionFactory(
     "UPLOAD_RESOLUTION_DOCUMENT",
-    (tabVisible: boolean) => ({ tabVisible }),
+    (file: File) => ({ file }),
   ),
   uploadResolutionDocumentSuccess: createActionFactory(
     "UPLOAD_RESOLUTION_DOCUMENT_SUCCESS",

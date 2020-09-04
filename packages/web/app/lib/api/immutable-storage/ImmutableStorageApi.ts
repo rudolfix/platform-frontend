@@ -1,8 +1,9 @@
 import {
+  AuthHttpClient,
   authModuleAPI,
-  coreModuleApi,
+  coreModuleApi, IAuthHttpClient,
   IHttpClient,
-  ISingleKeyStorage,
+  ISingleKeyStorage
 } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
@@ -15,12 +16,12 @@ import { IImmutableFileId } from "./ImmutableStorage.interfaces";
 
 const BASE_PATH = "/api/immutable-storage";
 const DOWNLOAD_DOCUMENT_PATH = "/download/";
-const UPLOAD_DOCUMENT_PATH = "/upload";
+const UPLOAD_DOCUMENT_PATH = "/documents";
 
 @injectable()
 export class ImmutableStorageApi {
   constructor(
-    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IAuthHttpClient,
     @inject(coreModuleApi.symbols.binaryHttpClient) private binaryHttpClient: IHttpClient,
     @inject(authModuleAPI.symbols.authBinaryHttpClient) private authBinaryHttpClient: IHttpClient,
     @inject(authModuleAPI.symbols.jwtStorage) private jwtStorage: ISingleKeyStorage<string>,
@@ -30,12 +31,15 @@ export class ImmutableStorageApi {
    * Uploads file to the IPFS through backend
    */
   public async uploadFile(mime_type: TFileType, file: File): Promise<TFileDescription> {
+    const jwtFromStorage = await this.jwtStorage.get();
+    console.log({jwtFromStorage});
     const data = new FormData();
     data.append("file", file);
+    data.append("meta_string", "");
 
     const response = await this.httpClient.post<TFileDescription>({
       baseUrl: BASE_PATH,
-      url: UPLOAD_DOCUMENT_PATH + `?declared_mime_type=${mime_type}`,
+      url: UPLOAD_DOCUMENT_PATH,
       formData: data,
       responseSchema: FileDescriptionValidator,
     });

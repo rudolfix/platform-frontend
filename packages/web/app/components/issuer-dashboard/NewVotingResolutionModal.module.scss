@@ -37,3 +37,32 @@
   margin-right: px-to-rem(-80px);
   margin-bottom: px-to-rem(-25px);
 }
+
+.summary {
+  margin-bottom: px-to-rem(24px);
+}
+
+.summary-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.summary-item {
+  padding: px-to-rem(8px) 0;
+  border-bottom: solid 1px $neu-very-light-blue;
+}
+
+.summary-item-title {
+  @include nds-body-small;
+  display: block;
+}
+
+.summary-item-value {
+  @include nds-body-small;
+  display: block;
+  color: $neu-charcoal-grey;
+}
+
+.editButton {
+  margin-right: px-to-rem(16px);
+}

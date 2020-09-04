@@ -1,13 +1,19 @@
-import { Button, Checkbox, EButtonLayout, TextField } from "@neufund/design-system";
+import {
+  Button,
+  Checkbox,
+  CheckboxBase,
+  EButtonLayout,
+  Eur,
+  TextField,
+} from "@neufund/design-system";
 import { etoModuleApi } from "@neufund/shared-modules";
-import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { ModalFooter } from "reactstrap";
 import { compose } from "recompose";
 import * as Yup from "yup";
 import InfoIcon from "../../assets/img/info-outline.svg";
-import { selectIssuerEto } from "../../modules/eto-flow/selectors";
+import { actions } from "../../modules/actions";
 import { shareholderResolutionsVotingSetupModuleApi } from "../../modules/shareholder-resolutions-voting-setup/module";
 import { appConnect } from "../../store";
 import { Modal } from "../modals/Modal";
@@ -138,7 +144,11 @@ const NewVotingResolutionForm = props => {
             )}
 
             <ModalFooter className={styles.footer}>
-              <Button layout={EButtonLayout.PRIMARY} disabled={disableNext} onClick={f => f}>
+              <Button
+                layout={EButtonLayout.PRIMARY}
+                disabled={disableNext && false}
+                onClick={() => props.onNext(values)}
+              >
                 <FormattedMessage id="form.button.next" />
               </Button>
             </ModalFooter>
@@ -148,6 +158,68 @@ const NewVotingResolutionForm = props => {
     </Form>
   );
 };
+
+const NewVotingResolutionSummary = props => (
+  <>
+    <div className={styles.summary}>
+      <FormattedHTMLMessage
+        id="eto-dashboard.new-voting-resolution-modal.summary.description"
+        tagName="p"
+      />
+      <ul className={styles.summaryList}>
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>Title</span>
+          <span className={styles.summaryItemValue}>{props.values.title}</span>
+        </li>
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>Voting Duration</span>
+          <span className={styles.summaryItemValue}>{props.values.votingDuration} Days</span>
+        </li>
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>Resolution document uploaded</span>
+          <span className={styles.summaryItemValue}>{props.values.votingDuration.document}</span>
+        </li>
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>
+            Resolution will include external shareholder votes?
+          </span>
+          <span className={styles.summaryItemValue}>
+            {props.values.includeExternalVotes ? "Yes" : "No"}
+          </span>
+        </li>
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>Total voting share capital (in EUR)</span>
+          <span className={styles.summaryItemValue}>
+            <Eur value={props.values.votingShareCapital} />
+          </span>
+        </li>
+        {props.values.includeExternalVotes && (
+          <li className={styles.summaryItem}>
+            <span className={styles.summaryItemTitle}>Submission deadline of final results</span>
+            <span className={styles.summaryItemValue}>
+              {props.values.submissionDeadline} Days after voting ends
+            </span>
+          </li>
+        )}
+      </ul>
+      <CheckboxBase
+        name="iUnderstand"
+        label={
+          <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.summary.condition" />
+        }
+      />
+    </div>
+
+    <ModalFooter className={styles.footer}>
+      <Button layout={EButtonLayout.SECONDARY} onClick={props.onEdit} className={styles.editButton}>
+        <FormattedMessage id="form.button.edit" />
+      </Button>
+      <Button layout={EButtonLayout.PRIMARY} onClick={props.onPublish}>
+        <FormattedMessage id="form.button.publish" />
+      </Button>
+    </ModalFooter>
+  </>
+);
 
 interface IVotingResolution {
   title: string;
@@ -173,19 +245,49 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
   const initialFormValues = {
     title: undefined,
     votingDuration: 10,
-    document: undefined,
     includeExternalVotes: false,
     votingShareCapital: props.contract.totalInvestment.totalTokensInt,
     submissionDeadline: undefined,
   };
 
+  const [showForm, setShowForm] = React.useState(true);
+  const [formValues, setFormValues] = React.useState(initialFormValues);
+
+  const onNext = values => {
+    console.log("onNext", values);
+    setFormValues(values);
+    setShowForm(false);
+  };
+
+  const onEdit = () => {
+    setShowForm(true);
+  };
+
   return (
     <Modal isOpen={show} onClose={onClose} bodyClass={styles.modalBody}>
-      <h4 className={styles.modalTitle}>
-        <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.title" />
-      </h4>
-
-      <EnhancedNewVotingResolutionForm {...props} initialFormValues={initialFormValues} />
+      {showForm ? (
+        <>
+          <h4 className={styles.modalTitle}>
+            <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.title" />
+          </h4>
+          <EnhancedNewVotingResolutionForm
+            {...props}
+            initialFormValues={formValues}
+            onNext={onNext}
+          />
+        </>
+      ) : (
+        <>
+          <h4 className={styles.modalTitle}>
+            <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.summary.title" />
+          </h4>
+          <NewVotingResolutionSummary
+            onEdit={onEdit}
+            values={formValues}
+            onPublish={props.onPublish}
+          />
+        </>
+      )}
     </Modal>
   );
 };
@@ -201,6 +303,7 @@ export const NewVotingResolutionModal = compose(
     dispatchToProps: (dispatch, ownProps) => ({
       onUploadDocument: file =>
         dispatch(shareholderResolutionsVotingSetupModuleApi.actions.uploadResolutionDocument(file)),
+      onPublish: () => dispatch(actions.txTransactions.startShareholderVotingResolutionSetup()),
     }),
   }),
 )(NewVotingResolutionModalLayout);

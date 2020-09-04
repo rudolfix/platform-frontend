@@ -12,20 +12,34 @@ import { RootStackParamList } from "router/routeUtils";
 
 import { appConnect } from "store/utils";
 
-type TStateProps = {
+type TExternalProps = {
   route: RouteProp<RootStackParamList, EAppRoutes.qrCode>;
+};
+
+type TStateProps = {
+  scannerReady: boolean;
 };
 
 type TDispatchProps = {
   onScan: (data: string, requiredQRCodeType: EQRCodeType | undefined) => void;
 };
 
-const QRCodeLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({ onScan, route }) => (
-  <QRCodeScanner onRead={data => onScan(data, route.params?.requiredQRCodeType)} />
+const QRCodeLayout: React.FunctionComponent<TStateProps & TDispatchProps & TExternalProps> = ({
+  onScan,
+  route,
+  scannerReady,
+}) => (
+  <QRCodeScanner
+    onRead={data => onScan(data, route.params?.requiredQRCodeType)}
+    reactivate={scannerReady}
+  />
 );
 
-const QRCode = compose<TStateProps & TDispatchProps, UnknownObject>(
+const QRCode = compose<TStateProps & TDispatchProps & TExternalProps, UnknownObject>(
   appConnect<TStateProps, TDispatchProps>({
+    stateToProps: state => ({
+      scannerReady: qrCodeScannerModuleApi.selectors.selectQRCodeScannerReady(state),
+    }),
     dispatchToProps: dispatch => ({
       onScan: (data, requiredQRCodeType) =>
         dispatch(qrCodeScannerModuleApi.actions.onScan(data, requiredQRCodeType)),

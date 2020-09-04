@@ -13,14 +13,16 @@ import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { simpleDelay, toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { EventEmitter2 } from "eventemitter2";
 
-import { createMock } from "../../../utils/testUtils.specUtils";
-import { notificationUIModuleApi } from "../../notification-ui/module";
-import { ESignerType, signerUIModuleApi } from "../../signer-ui/module";
-import { setupStorageModule } from "../../storage/module";
-import { walletConnectActions } from "../actions";
-import { WalletConnectAdapter } from "../lib/WalletConnectAdapter";
-import { EWalletConnectAdapterEvents } from "../lib/types";
-import { setupWalletConnectModule } from "../module";
+import { notificationUIModuleApi } from "modules/notification-ui/module";
+import { ESignerType, signerUIModuleApi } from "modules/signer-ui/module";
+import { setupStorageModule } from "modules/storage/module";
+import { walletConnectActions } from "modules/wallet-connect/actions";
+import { WalletConnectAdapter } from "modules/wallet-connect/lib/WalletConnectAdapter";
+import { EWalletConnectAdapterEvents } from "modules/wallet-connect/lib/types";
+import { setupWalletConnectModule } from "modules/wallet-connect/module";
+
+import { createMock } from "utils/testUtils.specUtils";
+
 import { connectEvents, watchWalletConnectEvents } from "./connectEvents";
 
 const setupTest = () => {

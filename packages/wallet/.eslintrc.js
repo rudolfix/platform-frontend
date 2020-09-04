@@ -72,7 +72,6 @@ module.exports = {
         "@typescript-eslint/no-magic-numbers": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-call": "off",
-        "import/no-relative-parent-imports": "off",
       },
     },
   ],

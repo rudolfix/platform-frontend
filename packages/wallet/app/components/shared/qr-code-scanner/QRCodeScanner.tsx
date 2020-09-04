@@ -4,9 +4,14 @@ import RNQRCodeScanner from "react-native-qrcode-scanner";
 
 type TExternalProps = {
   onRead: (uri: string) => void;
+  reactivate: boolean;
 };
 
-const QRCodeScanner: React.FunctionComponent<TExternalProps> = ({ onRead }) => {
+// so that scanner doesn't immediately start scanning new codes
+// and instead gives time for saga to execute
+const REACTIVATE_TIMEOUT = 2000;
+
+const QRCodeScanner: React.FunctionComponent<TExternalProps> = ({ onRead, reactivate }) => {
   const { width, height } = useWindowDimensions();
 
   return (
@@ -14,6 +19,11 @@ const QRCodeScanner: React.FunctionComponent<TExternalProps> = ({ onRead }) => {
       topViewStyle={styles.topAndBottom}
       bottomViewStyle={styles.topAndBottom}
       cameraStyle={{ width, height }}
+      reactivate={reactivate}
+      reactivateTimeout={REACTIVATE_TIMEOUT}
+      cameraProps={{
+        androidCameraPermissionOptions: null,
+      }}
       onRead={e => {
         onRead(e.data);
       }}

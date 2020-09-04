@@ -1,7 +1,8 @@
-import { eventChannel } from "@neufund/sagas";
+import { eventChannel, END } from "@neufund/sagas";
 import { invariant, UnknownObject } from "@neufund/shared-utils";
 import { EventEmitter2 } from "eventemitter2";
-import { AppState, AppStateStatus } from "react-native";
+import noop from "lodash/noop";
+import { Alert, AppState, AppStateStatus } from "react-native";
 
 type TReduxifyAction = {
   type: string;
@@ -50,4 +51,20 @@ const appStateChannel = () =>
     };
   });
 
-export { reduxify, appStateChannel };
+const createAlertChannel = (title: string, message: string) =>
+  eventChannel<boolean>(emitter => {
+    const emit = () => {
+      emitter(true);
+      // close the channel given only one even can be emitted from Alert
+      emitter(END);
+    };
+
+    Alert.alert(title, message, [{ text: "OK", onPress: () => emit() }], {
+      cancelable: true,
+      onDismiss: () => emit(),
+    });
+
+    return noop;
+  });
+
+export { reduxify, createAlertChannel, appStateChannel };

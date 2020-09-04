@@ -58,5 +58,8 @@ export const txTransactionsActions = {
     "TRANSACTION_START_PUBLISH_RESOLUTION_UPDATE",
     (title: string) => ({ title }),
   ),
+  startShareholderVotingResolutionSetup: createActionFactory(
+    "TRANSACTION_START_SHAREHOLDER_VOTING_RESOLUTION_SETUP",
+  ),
   // Add here new custom sagas that represent flows
 };

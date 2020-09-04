@@ -12,6 +12,7 @@ import { makeEthereumAddressChecksummed } from "../../../web3/utils";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import { selectTxGasCostEthUlps, selectTxGasCostEurUlps } from "./../../sender/selectors";
+import { shareholderVotingResolutionSetup } from "./setup/sagas";
 
 function* generateShareholderResolutionVoteTransaction(
   proposalId: string,
@@ -125,5 +126,9 @@ export function* txShareholderResolutionVoteSagas(): SagaGenerator<void> {
   yield takeLatest(
     actions.txTransactions.startShareholderResolutionVote,
     shareholderResolutionVote,
+  );
+  yield takeLatest(
+    actions.txTransactions.startShareholderVotingResolutionSetup,
+    shareholderVotingResolutionSetup,
   );
 }

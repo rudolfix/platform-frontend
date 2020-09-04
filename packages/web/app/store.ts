@@ -40,6 +40,7 @@ import { setupInstantIdModule } from "./modules/instant-id/module";
 import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
+import { setupShareholderResolutionsVotingSetupModule } from "./modules/shareholder-resolutions-voting-setup/module";
 import { setupShareholderResolutionsVotingViewModule } from "./modules/shareholder-resolutions-voting-view/module";
 import { setupWebTxHistoryModule } from "./modules/tx-history/module";
 import { IDisconnectedWeb3State, web3InitialState } from "./modules/web3/reducer";
@@ -98,6 +99,7 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupGasModule(),
     setupWebNotificationUIModule(),
     ...setupShareholderResolutionsVotingViewModule(),
+    setupShareholderResolutionsVotingSetupModule(),
     setupGovernanceModule(),
     setupKycModule({
       ensurePermissionsArePresentAndRunEffect,

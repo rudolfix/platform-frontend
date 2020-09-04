@@ -73,6 +73,7 @@ export function* loadInvestorShareholderResolution(
     }
   }
 }
+
 export function* loadIssuerShareholderResolution(
   action: TActionFromCreator<
     typeof actions,

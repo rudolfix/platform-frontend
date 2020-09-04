@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { matchers, providers } from "@neufund/sagas/tests";
 import {
   authModuleAPI,

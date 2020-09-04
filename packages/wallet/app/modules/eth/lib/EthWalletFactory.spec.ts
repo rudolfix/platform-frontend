@@ -101,7 +101,7 @@ describe("EthWalletFactory", () => {
             "Invalid reference",
           );
 
-          return Promise.resolve(true);
+          return Promise.resolve(false);
         },
       });
 

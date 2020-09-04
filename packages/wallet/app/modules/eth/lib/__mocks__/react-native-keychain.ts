@@ -36,10 +36,12 @@ async function resetInternetCredentials(server: string) {
   return Promise.resolve(null);
 }
 
-async function getInternetCredentials(server: string): Promise<TCredentials | null> {
-  const result = store[server] ? store[server] : null;
-  return Promise.resolve(result);
-}
+const getInternetCredentials = jest.fn(
+  (server: string): Promise<TCredentials | null> => {
+    const result = store[server] ? store[server] : null;
+    return Promise.resolve(result);
+  },
+);
 
 async function hasInternetCredentials(server: string) {
   return Promise.resolve(!!store[server]);

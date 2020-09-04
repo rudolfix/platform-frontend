@@ -121,9 +121,10 @@ class EthSecureEnclave {
 
       // secret access will force biometrics check
       // if biometrics are not valid secret access will throw an error
-      await storage.getSecret(reference);
+      const secret = await storage.getSecret(reference);
 
-      return true;
+      // in case secret not found assume we don't have access to that secret
+      return secret !== null;
     } catch (e) {
       if (e instanceof SecureStorageAccessCancelled) {
         return false;

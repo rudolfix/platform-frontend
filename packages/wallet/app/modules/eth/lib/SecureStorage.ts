@@ -1,7 +1,16 @@
 import { assertError, assertNever, Opaque } from "@neufund/shared-utils";
 import AsyncStorage from "@react-native-community/async-storage";
 import { utils } from "ethers";
-import * as Keychain from "react-native-keychain";
+import {
+  ACCESSIBLE,
+  hasInternetCredentials,
+  setInternetCredentials,
+  getInternetCredentials,
+  resetInternetCredentials,
+  SECURITY_LEVEL,
+  AUTHENTICATION_TYPE,
+  ACCESS_CONTROL,
+} from "react-native-keychain";
 
 import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
 
@@ -155,23 +164,23 @@ export class KeychainSecureStorage extends BaseSecureStorage {
   }
 
   async setSecretInternal(reference: string, secret: string): Promise<void> {
-    await Keychain.setInternetCredentials(reference, "NOT_USED", secret, {
+    await setInternetCredentials(reference, "NOT_USED", secret, {
       accessControl: this.useBiometry
-        ? Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
-        : Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
+        ? ACCESS_CONTROL.BIOMETRY_CURRENT_SET
+        : ACCESS_CONTROL.DEVICE_PASSCODE,
 
       // IOS
-      accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
-      authenticationType: Keychain.AUTHENTICATION_TYPE.BIOMETRICS,
+      accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+      authenticationType: AUTHENTICATION_TYPE.BIOMETRICS,
 
       // ANDROID
-      securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE,
+      securityLevel: SECURITY_LEVEL.SECURE_HARDWARE,
     });
   }
 
   async getSecretInternal(reference: string): Promise<string | null> {
     try {
-      const result = await Keychain.getInternetCredentials(reference, {
+      const result = await getInternetCredentials(reference, {
         authenticationPrompt: {
           title: "Allow Neufund to manage your ethereum key.",
         },
@@ -198,7 +207,6 @@ export class KeychainSecureStorage extends BaseSecureStorage {
           break;
         case EPlatform.Android:
           throw new Error("Not yet supported");
-          break;
 
         default:
           assertNever(Platform);
@@ -209,10 +217,10 @@ export class KeychainSecureStorage extends BaseSecureStorage {
   }
 
   async hasSecretInternal(reference: TSecureReference): Promise<boolean> {
-    return !!(await Keychain.hasInternetCredentials(reference));
+    return !!(await hasInternetCredentials(reference));
   }
 
   async deleteSecretInternal(reference: TSecureReference): Promise<void> {
-    await Keychain.resetInternetCredentials(reference);
+    await resetInternetCredentials(reference);
   }
 }

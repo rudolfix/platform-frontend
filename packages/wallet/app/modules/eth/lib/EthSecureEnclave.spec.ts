@@ -1,5 +1,7 @@
 import { noopLogger } from "@neufund/shared-modules";
-import { toEthereumHDPath } from "@neufund/shared-utils";
+import { simpleDelay, toEthereumHDPath } from "@neufund/shared-utils";
+import { getInternetCredentials } from "react-native-keychain";
+import { mocked } from "ts-jest/utils";
 
 import { DeviceInformation } from "modules/device-information/DeviceInformation";
 
@@ -14,14 +16,10 @@ import {
   SecretNotAPrivateKeyError,
 } from "./EthSecureEnclave";
 import { toSecureReference } from "./SecureStorage";
-import { getInternetCredentials } from "./__mocks__/react-native-keychain";
+import { CACHE_TIMEOUT } from "./constants";
 import { isMnemonic } from "./utils";
 
 describe("EthSecureEnclave (with SecureStorage)", () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
   const messageHash = "0xc7595adb6684bd03eb6ee54f10b0224e4bcfdaa5d393187583eb1777ae169d80";
   const privateKey = "0xc8f0b2c1a527e9c69495341ed9eb4ba51943abd1f35bed2e08fa29895ad902e2";
   const mnemonic =
@@ -219,6 +217,41 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
 
       // every reference should be a new one
       expect(references.length).toBe(new Set(references).size);
+    });
+  });
+
+  describe("has secret flow", () => {
+    it("should check if storage has a secret", async () => {
+      const privateKeyReference = await secureEnclave.addSecret(privateKey);
+
+      await expect(secureEnclave.hasSecret(privateKeyReference)).resolves.toBeTruthy();
+      await expect(
+        secureEnclave.hasSecret(toSecureReference("unknown reference")),
+      ).resolves.toBeFalsy();
+    });
+
+    it("should check if storage has access to a secret", async () => {
+      const privateKeyReference = await secureEnclave.addSecret(privateKey);
+
+      await expect(secureEnclave.hasAccessToSecret(privateKeyReference)).resolves.toBeTruthy();
+      await expect(
+        secureEnclave.hasAccessToSecret(toSecureReference("unknown reference")),
+      ).resolves.toBeFalsy();
+
+      // wait for cache to be removed
+      await simpleDelay(CACHE_TIMEOUT);
+
+      // a well known error throwed from keychain in case access was cancelled on IO
+      mocked(getInternetCredentials).mockRejectedValue(new Error("User canceled the operation."));
+
+      await expect(secureEnclave.hasAccessToSecret(privateKeyReference)).resolves.toBeFalsy();
+
+      // a well known error throwed from keychain in case permissions not granted on IOS
+      mocked(getInternetCredentials).mockRejectedValue(
+        new Error("The user name or passphrase you entered is not correct."),
+      );
+      //
+      await expect(secureEnclave.hasAccessToSecret(privateKeyReference)).resolves.toBeFalsy();
     });
   });
 });

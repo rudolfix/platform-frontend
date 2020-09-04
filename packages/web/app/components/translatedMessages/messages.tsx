@@ -79,6 +79,7 @@ export enum EVotingErrorMessage {
   UNSUPPORTED_PROPOSAL_STATE = "unsupportedProposalState",
   CANNOT_VOTE = "cannotVote",
   FAILED_TO_LOAD_PROPOSAL = "failedToLoadProposal",
+  FAILED_TO_UPLOAD_RESOLUTION_DOCUMENT = "failedToUploadResolutionDocument"
 }
 
 export enum GenericModalMessage {
@@ -815,6 +816,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case EVotingErrorMessage.FAILED_TO_LOAD_PROPOSAL:
       return <FormattedMessage id="voting.failed-to-load-proposal" />;
+
+    case EVotingErrorMessage.FAILED_TO_UPLOAD_RESOLUTION_DOCUMENT:
+      return <FormattedMessage id="voting.failed-to-upload-resolution-document" />;
 
     case EGovernanceErrorMessage.CONTRACT_VERSION_NOT_SUPPORTED:
       return <FormattedMessage id="modules.governance.contract-version-not-supported" />;

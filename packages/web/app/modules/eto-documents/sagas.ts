@@ -253,7 +253,7 @@ function* uploadEtoFile(
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
       neuCall(uploadEtoFileEffect, file, documentType),
-      [EJwtPermissions.UPLOAD_IMMUTABLE_DOCUMENT],
+      [EJwtPermissions.UPLOAD_ISSUER_IMMUTABLE_DOCUMENT],
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE),
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION),
     );
@@ -299,7 +299,7 @@ function* removeEtoFile(
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
       neuCall(removeEtoFileEffect, documentType),
-      [EJwtPermissions.UPLOAD_IMMUTABLE_DOCUMENT],
+      [EJwtPermissions.UPLOAD_ISSUER_IMMUTABLE_DOCUMENT],
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE),
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION),
     );

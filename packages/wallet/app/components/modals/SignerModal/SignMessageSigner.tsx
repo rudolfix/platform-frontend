@@ -30,7 +30,7 @@ const titles: Record<EJwtPermissions, React.ReactNode> = {
   [EJwtPermissions.SUBMIT_ETO_PERMISSION]: (
     <FormattedMessage id="wallet.message-signer.title.submit-eto" />
   ),
-  [EJwtPermissions.UPLOAD_IMMUTABLE_DOCUMENT]: (
+  [EJwtPermissions.UPLOAD_ISSUER_IMMUTABLE_DOCUMENT]: (
     <FormattedMessage id="wallet.message-signer.title.upload-immutable-document" />
   ),
   [EJwtPermissions.DO_BOOK_BUILDING]: (

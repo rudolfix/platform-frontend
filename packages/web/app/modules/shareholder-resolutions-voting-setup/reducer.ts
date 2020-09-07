@@ -7,7 +7,7 @@ export type TShareholderResolutionsVotingSetupState = {
 };
 
 const initialState: TShareholderResolutionsVotingSetupState = {
-  uploadingDocument: false
+  uploadingDocument: false,
 };
 
 export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof actions> = (
@@ -18,17 +18,22 @@ export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof
     case actions.uploadResolutionDocument.getType():
       return {
         ...state,
-        uploadingDocument: true
+        uploadingDocument: true,
       };
     case actions.uploadResolutionDocumentSuccess.getType():
       return {
         ...state,
-        uploadingDocument: false
+        uploadingDocument: false,
       };
     case actions.uploadResolutionDocumentError.getType():
       return {
         ...state,
-        uploadingDocument: false
+        uploadingDocument: false,
+      };
+    case actions.setShareCapital.getType():
+      return {
+        ...state,
+        shareCapital: action.payload.shareCapital,
       };
     default:
       return state;
@@ -38,4 +43,3 @@ export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof
 export const shareholderResolutionsVotingSetupReducerMap = {
   shareholderResolutionsVotingSetup: reducer,
 };
-

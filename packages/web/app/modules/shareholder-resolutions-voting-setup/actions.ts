@@ -1,10 +1,11 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
 export const actions = {
-  uploadResolutionDocument: createActionFactory(
-    "UPLOAD_RESOLUTION_DOCUMENT",
-    (file: File) => ({ file }),
-  ),
+  getShareCapital: createActionFactory("GET_SHARE_CAPITAL"),
+  setShareCapital: createActionFactory("SET_SHARE_CAPITAL", shareCapital => ({ shareCapital })),
+  uploadResolutionDocument: createActionFactory("UPLOAD_RESOLUTION_DOCUMENT", (file: File) => ({
+    file,
+  })),
   uploadResolutionDocumentSuccess: createActionFactory(
     "UPLOAD_RESOLUTION_DOCUMENT_SUCCESS",
     (tabVisible: boolean) => ({ tabVisible }),
@@ -13,4 +14,4 @@ export const actions = {
     "UPLOAD_RESOLUTION_DOCUMENT_ERROR",
     (tabVisible: boolean) => ({ tabVisible }),
   ),
-}
+};

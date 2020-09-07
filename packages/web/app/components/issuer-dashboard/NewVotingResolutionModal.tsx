@@ -14,15 +14,14 @@ import { compose } from "recompose";
 import * as Yup from "yup";
 import InfoIcon from "../../assets/img/info-outline.svg";
 import { actions } from "../../modules/actions";
+import { selectIssuerCompany, selectIssuerEtoPreviewCode } from "../../modules/eto-flow/selectors";
 import { shareholderResolutionsVotingSetupModuleApi } from "../../modules/shareholder-resolutions-voting-setup/module";
 import { appConnect } from "../../store";
 import { Modal } from "../modals/Modal";
-import { EMimeType } from "../shared/forms";
-import { Form } from "../shared/forms";
+import { EMimeType, Form } from "../shared/forms";
 import { injectIntlHelpers } from "../shared/hocs/injectIntlHelpers.unsafe";
 import { EUploadType, MultiFileUploadComponent } from "../shared/MultiFileUpload";
 import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
-import { selectIssuerEtoPreviewCode } from "../../modules/eto-flow/selectors";
 
 import * as styles from "./NewVotingResolutionModal.module.scss";
 
@@ -35,8 +34,8 @@ const NewVotingResolutionForm = props => {
       validateOnMount
     >
       {({ values, ...formProps }) => {
-        console.log(values);
-        console.log(formProps);
+        // console.log(values);
+        // console.log(formProps);
         const disableNext = !props.isValid;
 
         return (
@@ -97,7 +96,10 @@ const NewVotingResolutionForm = props => {
             <TextField
               label={
                 <span className="d-flex">
-                  <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.voting-share-capital" />
+                  <FormattedMessage
+                    id="eto-dashboard.new-voting-resolution-modal.form.voting-share-capital"
+                    values={{ shareCapitalCurrencyCode: props.shareCapitalCurrencyCode }}
+                  />
                   <Tooltip
                     content={
                       <FormattedHTMLMessage
@@ -113,8 +115,15 @@ const NewVotingResolutionForm = props => {
               }
               name="votingShareCapital"
               description={
-                <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.voting-share-capital.caption" />
+                <FormattedMessage
+                  id="eto-dashboard.new-voting-resolution-modal.form.voting-share-capital.caption"
+                  values={{
+                    shareCapital: <Eur value={props.shareCapital} noSymbol />,
+                    shareCapitalCurrencyCode: props.shareCapitalCurrencyCode,
+                  }}
+                />
               }
+              disabled={!values.includeExternalVotes}
             />
 
             {values.includeExternalVotes && (
@@ -247,7 +256,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
     votingDuration: 10,
     includeExternalVotes: false,
     votingShareCapital: props.contract.totalInvestment.totalTokensInt,
-    submissionDeadline: undefined,
+    submissionDeadline: 6 * 7, // 6 weeks
   };
 
   const [showForm, setShowForm] = React.useState(true);
@@ -263,6 +272,11 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
     setShowForm(true);
   };
 
+  React.useEffect(() => {
+    console.log("count changed");
+    props.getShareCapital();
+  }, [show]);
+
   return (
     <Modal isOpen={show} onClose={onClose} bodyClass={styles.modalBody}>
       {showForm ? (
@@ -272,6 +286,8 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
           </h4>
           <EnhancedNewVotingResolutionForm
             {...props}
+            shareCapitalCurrencyCode={props.company.shareCapitalCurrencyCode}
+            shareCapital={props.shareCapital}
             initialFormValues={formValues}
             onNext={onNext}
           />
@@ -295,15 +311,19 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
 export const NewVotingResolutionModal = compose(
   appConnect({
     stateToProps: state => ({
+      company: selectIssuerCompany(state),
       contract: etoModuleApi.selectors.selectEtoContract(state, selectIssuerEtoPreviewCode(state)),
       isDocumentUploading: shareholderResolutionsVotingSetupModuleApi.selectors.isDocumentUploading(
         state,
       ),
+      shareCapital: shareholderResolutionsVotingSetupModuleApi.selectors.selectShareCapital(state),
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       onUploadDocument: file =>
         dispatch(shareholderResolutionsVotingSetupModuleApi.actions.uploadResolutionDocument(file)),
       onPublish: () => dispatch(actions.txTransactions.startShareholderVotingResolutionSetup()),
+      getShareCapital: () =>
+        dispatch(shareholderResolutionsVotingSetupModuleApi.actions.getShareCapital()),
     }),
   }),
 )(NewVotingResolutionModalLayout);

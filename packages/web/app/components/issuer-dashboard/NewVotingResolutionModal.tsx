@@ -175,42 +175,71 @@ const NewVotingResolutionSummary = props => (
         id="eto-dashboard.new-voting-resolution-modal.summary.description"
         tagName="p"
       />
+
       <ul className={styles.summaryList}>
         <li className={styles.summaryItem}>
-          <span className={styles.summaryItemTitle}>Title</span>
+          <span className={styles.summaryItemTitle}>
+            <FormattedMessage id="form.label.title" />
+          </span>
           <span className={styles.summaryItemValue}>{props.values.title}</span>
         </li>
-        <li className={styles.summaryItem}>
-          <span className={styles.summaryItemTitle}>Voting Duration</span>
-          <span className={styles.summaryItemValue}>{props.values.votingDuration} Days</span>
-        </li>
-        <li className={styles.summaryItem}>
-          <span className={styles.summaryItemTitle}>Resolution document uploaded</span>
-          <span className={styles.summaryItemValue}>{props.values.votingDuration.document}</span>
-        </li>
+
         <li className={styles.summaryItem}>
           <span className={styles.summaryItemTitle}>
-            Resolution will include external shareholder votes?
+            <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.voting-duration" />
           </span>
           <span className={styles.summaryItemValue}>
-            {props.values.includeExternalVotes ? "Yes" : "No"}
+            {props.values.votingDuration} <FormattedMessage id="counter.label.days" />
           </span>
         </li>
+
         <li className={styles.summaryItem}>
-          <span className={styles.summaryItemTitle}>Total voting share capital (in EUR)</span>
+          <span className={styles.summaryItemTitle}>
+            <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.summary.upload-resolution-document-uploaded" />
+          </span>
+          <span className={styles.summaryItemValue}>{props.values.votingDuration.document}</span>
+        </li>
+
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>
+            <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.summary.will-include-external-shareholder-votes" />
+          </span>
+
           <span className={styles.summaryItemValue}>
-            <Eur value={props.values.votingShareCapital} />
+            {props.values.includeExternalVotes ? (
+              <FormattedMessage id="form.select.yes" />
+            ) : (
+              <FormattedMessage id="form.select.no" />
+            )}
           </span>
         </li>
+
+        <li className={styles.summaryItem}>
+          <span className={styles.summaryItemTitle}>
+            <FormattedMessage
+              id="eto-dashboard.new-voting-resolution-modal.summary.total-voting-share-capital"
+              values={{ shareCapitalCurrencyCode: props.shareCapitalCurrencyCode }}
+            />
+          </span>
+
+          <span className={styles.summaryItemValue}>
+            <Eur value={props.values.votingShareCapital} noSymbol />
+          </span>
+        </li>
+
         {props.values.includeExternalVotes && (
           <li className={styles.summaryItem}>
-            <span className={styles.summaryItemTitle}>Submission deadline of final results</span>
+            <span className={styles.summaryItemTitle}>
+              <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.submission-deadline" />
+            </span>
             <span className={styles.summaryItemValue}>
-              {props.values.submissionDeadline} Days after voting ends
+              {props.values.submissionDeadline}{" "}
+              <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.submission-deadline.units" />
             </span>
           </li>
         )}
       </ul>
+
       <CheckboxBase
         name="iUnderstand"
         label={
@@ -259,7 +288,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
     submissionDeadline: 6 * 7, // 6 weeks
   };
 
-  const [showForm, setShowForm] = React.useState(true);
+  const [showForm, setShowForm] = React.useState(false);
   const [formValues, setFormValues] = React.useState(initialFormValues);
 
   const onNext = values => {
@@ -300,6 +329,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
           <NewVotingResolutionSummary
             onEdit={onEdit}
             values={formValues}
+            shareCapitalCurrencyCode={props.company.shareCapitalCurrencyCode}
             onPublish={props.onPublish}
           />
         </>

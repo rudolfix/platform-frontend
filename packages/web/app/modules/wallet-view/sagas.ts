@@ -52,13 +52,13 @@ export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> 
 
   return [
     {
-      name: EBalanceViewType.ETH,
+      id: EBalanceViewType.ETH,
       hasFunds: compareBigNumbers(ethWalletData.amount, "0") > 0,
       amount: ethWalletData.amount,
       euroEquivalentAmount: ethWalletData.euroEquivalentAmount,
     },
     {
-      name:
+      id:
         neuroWalletData.neurStatus === ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE
           ? EBalanceViewType.RESTRICTED_NEUR
           : EBalanceViewType.NEUR,
@@ -67,25 +67,25 @@ export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> 
       euroEquivalentAmount: neuroWalletData.euroEquivalentAmount,
     },
     {
-      name: EBalanceViewType.ICBM_ETH,
+      id: EBalanceViewType.ICBM_ETH,
       hasFunds: compareBigNumbers(icbmEthWalletData.amount, "0") > 0,
       amount: icbmEthWalletData.amount,
       euroEquivalentAmount: icbmEthWalletData.euroEquivalentAmount,
     },
     {
-      name: EBalanceViewType.ICBM_NEUR,
+      id: EBalanceViewType.ICBM_NEUR,
       hasFunds: compareBigNumbers(icbmNeuroWalletData.amount, "0") > 0,
       amount: icbmNeuroWalletData.amount,
       euroEquivalentAmount: icbmNeuroWalletData.euroEquivalentAmount,
     },
     {
-      name: EBalanceViewType.LOCKED_ICBM_ETH,
+      id: EBalanceViewType.LOCKED_ICBM_ETH,
       hasFunds: compareBigNumbers(lockedIcbmEthWalletData.amount, "0") > 0,
       amount: lockedIcbmEthWalletData.amount,
       euroEquivalentAmount: lockedIcbmEthWalletData.euroEquivalentAmount,
     },
     {
-      name: EBalanceViewType.LOCKED_ICBM_NEUR,
+      id: EBalanceViewType.LOCKED_ICBM_NEUR,
       hasFunds: compareBigNumbers(lockedIcbmNeuroWalletData.amount, "0") > 0,
       amount: lockedIcbmNeuroWalletData.amount,
       euroEquivalentAmount: lockedIcbmNeuroWalletData.euroEquivalentAmount,
@@ -147,9 +147,9 @@ export function* loadInitialWalletView(): Generator<any, EProcessState, any> {
         balanceData,
         totalBalanceEuro,
         bankAccount,
+        processState: EProcessState.SUCCESS,
         transactionsHistoryPaginated,
         pendingTransaction,
-        processState: EProcessState.SUCCESS,
       }),
     );
     return EProcessState.SUCCESS;
@@ -172,51 +172,27 @@ export function* walletViewController(): Generator<any, void, any> {
       yield put(txHistoryApi.actions.startWatchingForNewTransactions());
 
       while (true) {
-        const dataReloadRequired = yield race({
+        yield race({
           icbmUpgrade: take(actions.txTransactions.upgradeSuccessful),
           tokenPriceData: take(tokenPriceModuleApi.actions.saveTokenPrice),
           txHistoryData: take(txHistoryApi.actions.setTransactions),
           pendingTxChange: take(actions.txMonitor.setPendingTxs),
+          // TODO: Remove the actions above and rely only on loadWalletData
+          loadWallet: take(walletApi.actions.loadWalletData),
         });
         const oldState = yield* select(selectWalletViewData);
-        let newState;
 
-        if (dataReloadRequired.icbmUpgrade) {
-          const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
-          newState = {
-            ...oldState,
-            balanceData,
-            totalBalanceEuro,
-          };
-        } else if (dataReloadRequired.tokenPriceData) {
-          const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
-          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
-            populateTxHistory,
-          );
-
-          newState = {
-            ...oldState,
-            balanceData,
-            totalBalanceEuro,
-            transactionsHistoryPaginated,
-            pendingTransaction,
-          };
-        } else if (dataReloadRequired.txHistoryData || dataReloadRequired.pendingTxChange) {
-          const { transactionsHistoryPaginated, pendingTransaction } = yield* call(
-            populateTxHistory,
-          );
-
-          newState = {
-            ...oldState,
-            transactionsHistoryPaginated,
-            pendingTransaction,
-          };
-        }
+        const { balanceData, totalBalanceEuro } = yield* call(populateBalanceData);
+        const { transactionsHistoryPaginated, pendingTransaction } = yield* call(populateTxHistory);
 
         yield put(
-          actions.walletView.walletViewSetData(
-            newState as TWalletViewReadyState & { processState: EProcessState.SUCCESS },
-          ),
+          actions.walletView.walletViewSetData({
+            ...oldState,
+            balanceData,
+            totalBalanceEuro,
+            transactionsHistoryPaginated,
+            pendingTransaction,
+          } as TWalletViewReadyState & { processState: EProcessState.SUCCESS }),
         );
       }
     }

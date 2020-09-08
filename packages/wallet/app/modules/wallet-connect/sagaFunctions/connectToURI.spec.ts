@@ -10,18 +10,22 @@ import { bootstrapModule } from "@neufund/shared-modules/tests";
 import { invariant, toEthereumChecksumAddress } from "@neufund/shared-utils";
 import { mocked } from "ts-jest/utils";
 
+import { ESignerType, signerUIModuleApi } from "modules/signer-ui/module";
+import { setupStorageModule } from "modules/storage/module";
+import { walletConnectActions } from "modules/wallet-connect/actions";
+import {
+  TSessionDetails,
+  WalletConnectAdapter,
+} from "modules/wallet-connect/lib/WalletConnectAdapter";
+import { privateSymbols } from "modules/wallet-connect/lib/symbols";
 import { isValidWalletConnectUri, toWalletConnectUri } from "modules/wallet-connect/lib/utils";
+import { setupWalletConnectModule } from "modules/wallet-connect/module";
 
+import { EAppRoutes } from "router/appRoutes";
 import { navigate } from "router/routeUtils";
 
-import { EAppRoutes } from "../../../router/appRoutes";
-import { createMock } from "../../../utils/testUtils.specUtils";
-import { ESignerType, signerUIModuleApi } from "../../signer-ui/module";
-import { setupStorageModule } from "../../storage/module";
-import { walletConnectActions } from "../actions";
-import { TSessionDetails, WalletConnectAdapter } from "../lib/WalletConnectAdapter";
-import { privateSymbols } from "../lib/symbols";
-import { setupWalletConnectModule } from "../module";
+import { createMock } from "utils/testUtils.specUtils";
+
 import { connectEvents } from "./connectEvents";
 import { connectToURI } from "./connectToURI";
 
@@ -53,7 +57,9 @@ const setupTest = () => {
 };
 
 describe("wallet-connect - connectToURI", () => {
-  const mockURI = toWalletConnectUri("wallet-connect-uri");
+  const mockURI = toWalletConnectUri(
+    "wc:f2b44876-7cbf-4a04-ac82-909525d647d2@1?bridge=https%3A%2F%2Fplatform.neufund.io%2Fapi%2Fwc-bridge-socket%2F&key=d3d0c3ab280886cd52c52051ec2b809e0139f36bab07abaad742bd9abe0e61a2",
+  );
 
   const walletConnectAdapterMock = createMock(WalletConnectAdapter, {});
 

@@ -19,55 +19,55 @@ const dummyDispatch = () => {};
 
 const actions = createBalanceActions(dummyDispatch);
 const ethEmpty = {
-  name: EBalanceViewType.ETH,
+  id: EBalanceViewType.ETH,
   amount: "0",
   euroEquivalentAmount: "0",
 };
 
 const ethNotEmpty = {
-  name: EBalanceViewType.ETH,
+  id: EBalanceViewType.ETH,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const neuroEmpty = {
-  name: EBalanceViewType.NEUR,
+  id: EBalanceViewType.NEUR,
   amount: "0",
   euroEquivalentAmount: "0",
 };
 
 const neuroNotEmpty = {
-  name: EBalanceViewType.NEUR,
+  id: EBalanceViewType.NEUR,
   amount: "25054421780000000".toString(),
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const neuroRestricted = {
-  name: EBalanceViewType.RESTRICTED_NEUR,
+  id: EBalanceViewType.RESTRICTED_NEUR,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const icbmEth = {
-  name: EBalanceViewType.ICBM_ETH,
+  id: EBalanceViewType.ICBM_ETH,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const icbmNeuro = {
-  name: EBalanceViewType.ICBM_NEUR,
+  id: EBalanceViewType.ICBM_NEUR,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const lockedIcbmEth = {
-  name: EBalanceViewType.LOCKED_ICBM_ETH,
+  id: EBalanceViewType.LOCKED_ICBM_ETH,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const lockedIcbmNeuro = {
-  name: EBalanceViewType.LOCKED_ICBM_NEUR,
+  id: EBalanceViewType.LOCKED_ICBM_NEUR,
   amount: "25054421780000000",
   euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
@@ -277,7 +277,7 @@ describe("<Balance />", () => {
       component
         .find(tid("balance-name"))
         .text()
-        .includes("Icbm Ether"),
+        .includes("ICBM Ether"),
     ).to.be.true;
     expect(component.exists(tid("balance.info"))).to.be.true;
     expect(
@@ -294,7 +294,7 @@ describe("<Balance />", () => {
         .find(tid("value"))
         .text(),
     ).to.eq("0.35");
-    expect(component.exists("button")).to.be.false;
+    expect(component.exists("button")).to.be.true;
   });
 
   it("icbm neuro", () => {
@@ -306,7 +306,7 @@ describe("<Balance />", () => {
       component
         .find(tid("balance-name"))
         .text()
-        .includes("Icbm nEUR"),
+        .includes("ICBM nEUR"),
     ).to.be.true;
     expect(component.exists(tid("balance.info"))).to.be.true;
     expect(
@@ -323,7 +323,7 @@ describe("<Balance />", () => {
         .find(tid("value"))
         .text(),
     ).to.eq("0.35");
-    expect(component.exists("button")).to.be.false;
+    expect(component.exists("button")).to.be.true;
   });
 
   it("locked icbm eth", () => {
@@ -335,7 +335,7 @@ describe("<Balance />", () => {
       component
         .find(tid("balance-name"))
         .text()
-        .includes("Icbm Ether"),
+        .includes("ICBM Ether"),
     ).to.be.true;
     expect(component.exists(tid("balance.info"))).to.be.true;
     expect(
@@ -370,7 +370,7 @@ describe("<Balance />", () => {
       component
         .find(tid("balance-name"))
         .text()
-        .includes("Icbm nEUR"),
+        .includes("ICBM nEUR"),
     ).to.be.true;
     expect(component.exists(tid("balance.info"))).to.be.true;
     expect(

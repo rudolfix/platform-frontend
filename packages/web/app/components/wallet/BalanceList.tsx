@@ -11,8 +11,8 @@ export type TBalanceListProps = { balances: TBalance[] };
 export const BalanceList: React.FunctionComponent<TBalanceListProps> = ({ balances }) => (
   <PanelRounded>
     <li className={styles.balanceList}>
-      {balances.map((b, i) => (
-        <Balance {...b} key={i} />
+      {balances.map(b => (
+        <Balance {...b} key={b.balanceId} />
       ))}
     </li>
   </PanelRounded>

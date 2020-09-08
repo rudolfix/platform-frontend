@@ -41,6 +41,7 @@ const txHistoryApi = {
   sagas: {
     loadTransactionsHistory,
   },
+  reducer: txHistoryReducerMap.txHistory,
 };
 
 export { setupTxHistoryModule, txHistoryApi };

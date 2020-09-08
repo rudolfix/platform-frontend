@@ -8,7 +8,7 @@ import {
   txHistoryApi,
   walletApi,
 } from "@neufund/shared-modules";
-import { convertFromUlps } from "@neufund/shared-utils";
+import { convertFromUlps, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { combineReducers } from "redux";
 
 import { EProcessState } from "../../utils/enums/processStates";
@@ -16,6 +16,7 @@ import { actions } from "../actions";
 import { generalPendingTxFixture } from "../tx/utils";
 import { web3Reducer } from "../web3/reducer";
 import { makeEthereumAddressChecksummed } from "../web3/utils";
+import { txMonitorReducer } from "./../tx/monitor/reducer";
 import { walletViewReducer } from "./reducer";
 import {
   loadInitialWalletView,
@@ -193,7 +194,7 @@ describe("Wallet View", () => {
       pendingTransaction: pendingTx,
     };
 
-    it.only(
+    it(
       "loads inital view data " +
         "and then loops on receiving specified actions and reloads the view data",
       async () => {
@@ -206,6 +207,8 @@ describe("Wallet View", () => {
               wallet: walletApi.reducer.wallet,
               web3: web3Reducer,
               walletView: walletViewReducer,
+              txHistory: txHistoryApi.reducer,
+              txMonitor: txMonitorReducer,
             }),
             {
               ...testStateCommon,
@@ -227,6 +230,24 @@ describe("Wallet View", () => {
                 },
                 pendingTransaction: pendingTx,
               },
+              txHistory: {
+                transactionsByHash: {
+                  [ethTransfer.id]: ethTransfer,
+                  [neuTransfer.id]: neuTransfer,
+                  [neuroSend.id]: neuroSend,
+                },
+                transactionsOrder: ["1117_0_256", "132_0_8", "132_0_1"],
+                lastTransactionId: "132_0_1",
+                timestampOfLastChange: 1225,
+                status: EModuleStatus.IDLE,
+              },
+              txMonitor: {
+                txs: {
+                  pendingTransaction: generalPendingTxFixture(
+                    "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988" as EthereumAddressWithChecksum,
+                  ),
+                },
+              } as any,
             },
           )
           .provide([
@@ -295,7 +316,6 @@ describe("Wallet View", () => {
           .take(actions.txMonitor.setPendingTxs)
           .call(populateTxHistory)
           .put(actions.walletView.walletViewSetData(newState))
-
           .run();
       },
     );

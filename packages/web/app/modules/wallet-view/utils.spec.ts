@@ -6,14 +6,14 @@ import { isMainBalance } from "./utils";
 describe("isMainBalance()", () => {
   it("should return true main balances (eth & neuro)", () => {
     const ethBalance = {
-      name: EBalanceViewType.ETH,
+      id: EBalanceViewType.ETH,
       hasFunds: true,
       amount: "0",
       euroEquivalentAmount: "0",
     };
 
     const neurBalance = {
-      name: EBalanceViewType.NEUR,
+      id: EBalanceViewType.NEUR,
       hasFunds: true,
       amount: "0",
       euroEquivalentAmount: "0",
@@ -25,14 +25,14 @@ describe("isMainBalance()", () => {
 
   it("should return false for non-essential balances (not eth & neuro)", () => {
     const ethBalance = {
-      name: EBalanceViewType.ICBM_ETH,
+      id: EBalanceViewType.ICBM_ETH,
       hasFunds: true,
       amount: "0",
       euroEquivalentAmount: "0",
     };
 
     const neurBalance = {
-      name: EBalanceViewType.ICBM_NEUR,
+      id: EBalanceViewType.ICBM_NEUR,
       hasFunds: true,
       amount: "0",
       euroEquivalentAmount: "0",
@@ -46,7 +46,7 @@ describe("isMainBalance()", () => {
 describe("hasFunds()", () => {
   it("should return true if balance has funds", () => {
     const ethBalance = {
-      name: EBalanceViewType.ETH,
+      id: EBalanceViewType.ETH,
       hasFunds: true,
       amount: "10",
       euroEquivalentAmount: "3000",
@@ -57,7 +57,7 @@ describe("hasFunds()", () => {
 
   it("should return false for for balance with no funds", () => {
     const ethBalance = {
-      name: EBalanceViewType.ICBM_ETH,
+      id: EBalanceViewType.ICBM_ETH,
       hasFunds: true,
       amount: "0",
       euroEquivalentAmount: "0",

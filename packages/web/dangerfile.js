@@ -1,6 +1,6 @@
 import { danger, fail, message } from "danger";
 import { writeFileSync } from "fs";
-import uniq from "lodash/uniq";
+import { uniq } from "lodash";
 
 const main = () => {
   checkPackageLock();

@@ -15,7 +15,12 @@ import * as Yup from "yup";
 import InfoIcon from "../../assets/img/info-outline.svg";
 import { actions } from "../../modules/actions";
 import { selectIssuerCompany, selectIssuerEtoPreviewCode } from "../../modules/eto-flow/selectors";
-import { shareholderResolutionsVotingSetupModuleApi } from "../../modules/shareholder-resolutions-voting-setup/module";
+import {
+  DEFAULT_SUBMISSION_DEADLINE_DAYS,
+  DEFAULT_VOTING_DURATION_DAYS,
+  shareholderResolutionsVotingSetupModuleApi,
+  TVotingResolution
+} from "../../modules/shareholder-resolutions-voting-setup/module";
 import { appConnect } from "../../store";
 import { Modal } from "../modals/Modal";
 import { EMimeType, Form } from "../shared/forms";
@@ -259,15 +264,6 @@ const NewVotingResolutionSummary = props => (
   </>
 );
 
-interface IVotingResolution {
-  title: string;
-  votingDuration: number;
-  document: string;
-  includeExternalVotes: boolean;
-  votingShareCapital: number;
-  submissionDeadline: number;
-}
-
 const VotingResolutionSchema = Yup.object().shape({
   title: Yup.string().required(),
   votingDuration: Yup.number().required(),
@@ -282,10 +278,10 @@ const EnhancedNewVotingResolutionForm = compose()(injectIntlHelpers)(NewVotingRe
 const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
   const initialFormValues = {
     title: undefined,
-    votingDuration: 10,
+    votingDuration: DEFAULT_VOTING_DURATION_DAYS,
     includeExternalVotes: false,
     votingShareCapital: props.contract.totalInvestment.totalTokensInt,
-    submissionDeadline: 6 * 7, // 6 weeks
+    submissionDeadline: DEFAULT_SUBMISSION_DEADLINE_DAYS
   };
 
   const [showForm, setShowForm] = React.useState(false);
@@ -330,7 +326,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
             onEdit={onEdit}
             values={formValues}
             shareCapitalCurrencyCode={props.company.shareCapitalCurrencyCode}
-            onPublish={props.onPublish}
+            onPublish={() => props.onPublish(formValues)}
           />
         </>
       )}
@@ -351,7 +347,8 @@ export const NewVotingResolutionModal = compose(
     dispatchToProps: (dispatch, ownProps) => ({
       onUploadDocument: file =>
         dispatch(shareholderResolutionsVotingSetupModuleApi.actions.uploadResolutionDocument(file)),
-      onPublish: () => dispatch(actions.txTransactions.startShareholderVotingResolutionSetup()),
+      onPublish: (votingResolution: TVotingResolution) =>
+        dispatch(actions.txTransactions.startShareholderVotingResolutionSetup(votingResolution)),
       getShareCapital: () =>
         dispatch(shareholderResolutionsVotingSetupModuleApi.actions.getShareCapital()),
     }),

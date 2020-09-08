@@ -2,6 +2,7 @@ import { ITokenDisbursal } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 
 import { createAction, createSimpleAction } from "../../actionsUtils";
+import { TVotingResolution } from "../../shareholder-resolutions-voting-setup/module";
 import { ETokenType } from "../types";
 
 export const txTransactionsActions = {
@@ -60,6 +61,7 @@ export const txTransactionsActions = {
   ),
   startShareholderVotingResolutionSetup: createActionFactory(
     "TRANSACTION_START_SHAREHOLDER_VOTING_RESOLUTION_SETUP",
+    (votingResolution: TVotingResolution) => ({ votingResolution }),
   ),
   // Add here new custom sagas that represent flows
 };

@@ -71,7 +71,7 @@ export const UploadInvestmentAgreementLayout: React.FunctionComponent<Omit<
 );
 
 export const EtoCompletedWidgetLayout: React.ComponentType<IExternalProps> = ({ columnSpan }) => {
-  const [showNewVotingResolutionModal, setShowNewVotingResolutionModal] = React.useState(false);
+  const [showNewVotingResolutionModal, setShowNewVotingResolutionModal] = React.useState(true);
 
   return (
     <>

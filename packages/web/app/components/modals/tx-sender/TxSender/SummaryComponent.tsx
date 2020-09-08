@@ -13,6 +13,7 @@ import { SignNomineeAgreementSummary } from "../nominee/sign-agreement/SignAgree
 import { SignNomineeISHASummary } from "../nominee/sign-isha/SignISHASummary";
 import { BankTransferRedeemSummary } from "../redeem/BankTransferRedeemSummary";
 import { ShareholderResolutionVoteSummary } from "../shareholder-resolution-vote-flow/ShareholderResolutionVoteSummary";
+import { ShareholderResolutionVoteSetupSummary } from "../shareholder-resolution-vote-setup/ShareholderResolutionVoteSetupSummary";
 import { UnlockWalletSummary } from "../unlock-wallet-flow/Summary.unsafe";
 import { UpgradeSummary } from "../upgrade-flow/Summary";
 import { UserClaimSummary } from "../user-claim/Summary";
@@ -47,6 +48,8 @@ const SummaryComponent: React.FunctionComponent<TExternalProps> = ({ type }) => 
       return <SignNomineeAgreementSummary />;
     case ETxType.NOMINEE_ISHA_SIGN:
       return <SignNomineeISHASummary />;
+    case ETxType.SHAREHOLDER_RESOLUTIONS_VOTE_SETUP:
+      return <ShareholderResolutionVoteSetupSummary />;
     case ETxType.SHAREHOLDER_RESOLUTIONS_VOTE:
       return <ShareholderResolutionVoteSummary />;
     case ETxType.TRANSFER_TOKENS:

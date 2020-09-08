@@ -23,7 +23,7 @@ interface IDispatchProps {
 
 type TGovernanceResolutionSummaryProps = IStateProps & IDispatchProps;
 
-const GovernanceResolutionSummaryBase: React.FunctionComponent<TGovernanceResolutionSummaryProps> = ({
+export const GovernanceResolutionSummaryBase: React.FunctionComponent<TGovernanceResolutionSummaryProps> = ({
   onAccept,
   additionalData,
 }) => (

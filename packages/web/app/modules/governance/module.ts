@@ -2,12 +2,17 @@ import { actions } from "./actions";
 import { governanceReducerMap } from "./reducer";
 import { governanceModuleSagas } from "./sagas";
 import * as selectors from "./selectors";
+import { governanceActionToLabel } from "./utils";
+import { EGovernanceAction } from "./types";
 
 const MODULE_ID = "web:governance";
 
 const governanceModuleApi = {
   actions,
   selectors,
+  utils: {
+    governanceActionToLabel,
+  },
 };
 
 const setupGovernanceModule = () => ({
@@ -17,4 +22,4 @@ const setupGovernanceModule = () => ({
   api: governanceModuleApi,
 });
 
-export { setupGovernanceModule, governanceModuleApi };
+export { setupGovernanceModule, governanceModuleApi, EGovernanceAction };

@@ -35,7 +35,7 @@ function* generateShareholderVotingResolutionSetupTransaction(votingResolution: 
   );
   console.log({ contract });
 
-  // TODO#4556 proposal id must be randonly generated
+  // TODO#4556 proposal id must be randomly generated
   // TODO#4556 the same proposal id must be passed when uploading document to ipfs
   const proposalId = cryptoRandomString({ length: 32 });
   const token = contract.equityTokenAddress;

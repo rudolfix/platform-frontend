@@ -98,7 +98,7 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
           disabled={!isValid(props) || props.isLocked}
           data-test-id="verify-email-widget-form-submit"
         >
-          <FormattedMessage id="form.button.submit" />
+          <FormattedMessage id="form.button.CONTINUE" />
         </Button>
       </div>
     </FormDeprecated>

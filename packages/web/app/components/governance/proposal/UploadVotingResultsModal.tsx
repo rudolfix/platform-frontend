@@ -17,7 +17,7 @@ const VotingResultsSchema = Yup.object().shape({
 
 export const UploadVotingResultsModal = props => {
   return (
-    <Modal isOpen={true} onClose={f => f} bodyClass={styles.modalBody}>
+    <Modal isOpen={props.isOpen} onClose={props.onClose} bodyClass={styles.modalBody}>
       <h4 className={styles.modalTitle}>
         <FormattedMessage id="governance.proposal.upload-voting-results-modal.title" />
       </h4>

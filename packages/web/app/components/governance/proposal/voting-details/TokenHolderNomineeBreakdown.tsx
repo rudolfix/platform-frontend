@@ -16,7 +16,7 @@ type TExternalProps = { nomineeShareBreakdown: ITokenHolderBreakdown };
 const TokenHolderNomineeBreakdown: React.FunctionComponent<TExternalProps> = ({
   nomineeShareBreakdown,
 }) => (
-  <div className="mb-3">
+  <div>
     <Heading level={6} decorator={false} className="text-uppercase mb-2">
       <FormattedMessage id="governance.proposal.shareholder.vote.breakdown.heading" />
     </Heading>

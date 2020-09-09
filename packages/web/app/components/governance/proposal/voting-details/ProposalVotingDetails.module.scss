@@ -1,0 +1,10 @@
+.tally-section {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.submit-by {
+  text-align: center;
+  @include nds-body-small;
+  color: $neu-shuttle-gray;
+}

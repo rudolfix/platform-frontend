@@ -824,6 +824,8 @@
   "governance.proposal.vote.vote-no": "Vote no",
   "governance.proposal.vote.vote-yes": "Vote yes",
   "governance.proposal.voting.details.waiting.for.votes": "Waiting for all votes to be counted",
+  "governance.proposal.voting.details.submit-final-results": "Submit final voting results",
+  "governance.proposal.voting.details.submit-by": "Please submit your final voting results by <br/>24 Jun 2020, 18:00 UTC",
   "governance.publish-update": "Publish new general update",
   "governance.title": "Governance",
   "governance.title.cap-table": "Cap Table",

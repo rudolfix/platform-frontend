@@ -6,13 +6,13 @@ import * as React from "react";
 import * as styles from "./Checkbox.module.scss";
 
 interface IFieldCheckboxProps {
-  label?: React.ReactNode | string;
+  label: React.ReactNode | string;
   disabled?: boolean;
   name: string;
 }
 
 interface ICheckboxBaseProps {
-  label?: React.ReactNode | string;
+  label: React.ReactNode | string;
   disabled?: boolean;
   name: string;
   checked: boolean;
@@ -36,7 +36,9 @@ export const CheckboxBase: React.FunctionComponent<ICheckboxBaseProps & TDataTes
       onChange={onChange}
       checked={checked}
     />
+
     <span className={styles.checkmark} onClick={onChange} data-test-id={dataTestId} />
+
     {label && (
       <label htmlFor={name} className={styles.label}>
         {label}

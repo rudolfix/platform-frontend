@@ -20,6 +20,7 @@
     "lint:fix": "concurrently -p \"[{name}]\" -n \"TSLINT/PRETTIER,SASS/TSC/INTL\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tslint:fix && yarn format:fix\" \"yarn sasslint && yarn tsc\"",
     "prepare": "yarn build",
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
+    "start": "NODE_ENV=development webpack --config ./webpack/webpack.config.js --watch",
     "storybook": "start-storybook -s ./src/assets -p 9002",
     "storybook:build": "build-storybook -s ./src/assets",
     "tsc": "tsc --noEmit",

@@ -4,10 +4,6 @@ $checkbox-height: px-to-rem(18px);
   display: flex;
   align-items: center;
   position: relative;
-  height: $checkbox-height;
-  width: $checkbox-height;
-  user-select: none;
-  cursor: pointer;
 
   &.disabled {
     pointer-events: none;
@@ -16,8 +12,6 @@ $checkbox-height: px-to-rem(18px);
 
 .input {
   position: absolute;
-  opacity: 0;
-  cursor: pointer;
   height: 0;
   width: 0;
 
@@ -40,13 +34,14 @@ $checkbox-height: px-to-rem(18px);
 }
 
 .checkmark {
-  top: 0;
-  left: 0;
   height: $checkbox-height;
   width: $checkbox-height;
   border: solid 1px $neu-gull-gray;
   border-radius: px-to-rem(2px);
+  position: relative;
   transition: border 200ms ease-out, background-color 200ms ease-out;
+  flex-shrink: 0;
+  cursor: pointer;
 
   &:hover {
     border-color: $neu-bitter-lemon;
@@ -56,7 +51,7 @@ $checkbox-height: px-to-rem(18px);
     content: "";
     position: absolute;
     left: px-to-rem(7px);
-    top: px-to-rem(4px);
+    top: px-to-rem(3px);
     width: px-to-rem(5px);
     height: px-to-rem(10px);
     border: solid $neu-white;
@@ -68,7 +63,7 @@ $checkbox-height: px-to-rem(18px);
 .label {
   font-size: $font-size-medium-small;
   color: $neu-shuttle-gray;
-  margin-left: px-to-rem(10px);
-  white-space: nowrap;
+  padding-left: px-to-rem(10px);
   cursor: pointer;
+  user-select: none;
 }

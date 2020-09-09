@@ -56,16 +56,12 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
         <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
       </ExternalLink>
       {additionalData.payoutLowerThanMinimum && (
-        <div className={styles.highGasCostWarning}>
-          <CheckboxBase
-            name="high-gas-cost-warning-checkbox"
-            checked={warningAccepted}
-            onChange={() => setWarningAccepted(!warningAccepted)}
-          />
-          <p className={styles.highGasCostWarningText}>
-            <FormattedMessage id="investor-payout.accept.summary.high-gas-cost-warning" />
-          </p>
-        </div>
+        <CheckboxBase
+          name="high-gas-cost-warning-checkbox"
+          checked={warningAccepted}
+          onChange={() => setWarningAccepted(!warningAccepted)}
+          label={<FormattedMessage id="investor-payout.accept.summary.high-gas-cost-warning" />}
+        />
       )}
       <Button
         onClick={onAccept}

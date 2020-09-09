@@ -185,7 +185,7 @@
   "eto-dashboard.new-voting-resolution-modal.summary.will-include-external-shareholder-votes": "Resolution will include external shareholder votes?",
   "eto-dashboard.new-voting-resolution-modal.form.voting-share-capital": "Voting Share Capital (In {shareCapitalCurrencyCode})",
   "eto-dashboard.new-voting-resolution-modal.summary.total-voting-share-capital": "Total voting share capital (in {shareCapitalCurrencyCode})",
-  "eto-dashboard.new-voting-resolution-modal.form.voting-share-capital.caption": "Including <nominee_name> share capital of {shareCapital} {shareCapitalCurrencyCode}",
+  "eto-dashboard.new-voting-resolution-modal.form.voting-share-capital.caption": "Including {nomineeDisplayName} share capital of {shareCapital} {shareCapitalCurrencyCode}",
   "eto-dashboard.new-voting-resolution-modal.form.voting-share-capital.tooltip": "This refers to the total share capital value that will be voting on this resolution.",
   "eto-dashboard.new-voting-resolution-modal.form.submission-deadline": "Submission Deadline Of Final results",
   "eto-dashboard.new-voting-resolution-modal.form.submission-deadline.tooltip": "This refers to the timeframe in which the final voting results needs to be uploaded, including the external shareholder votes.",

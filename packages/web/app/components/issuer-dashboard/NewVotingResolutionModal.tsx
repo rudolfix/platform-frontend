@@ -15,7 +15,11 @@ import * as Yup from "yup";
 import InfoIcon from "../../assets/img/info-outline.svg";
 import { actions } from "../../modules/actions";
 import { selectEtoDocumentUploadingByType } from "../../modules/eto-documents/selectors";
-import { selectIssuerCompany, selectIssuerEtoPreviewCode } from "../../modules/eto-flow/selectors";
+import {
+  selectEtoNomineeDisplayName,
+  selectIssuerCompany,
+  selectIssuerEtoPreviewCode
+} from "../../modules/eto-flow/selectors";
 import {
   DEFAULT_SUBMISSION_DEADLINE_DAYS,
   DEFAULT_VOTING_DURATION_DAYS,
@@ -38,7 +42,7 @@ const NewVotingResolutionForm = props => {
       <Heading level={4} decorator={false} className={styles.modalTitle}>
         <FormattedMessage id="eto-dashboard.new-voting-resolution-modal.form.title" />
       </Heading>
-      
+
       <Form
         validationSchema={VotingResolutionSchema}
         initialValues={props.initialFormValues}
@@ -138,6 +142,7 @@ const NewVotingResolutionForm = props => {
                     values={{
                       shareCapital: <Eur value={props.shareCapital} noSymbol />,
                       shareCapitalCurrencyCode: props.shareCapitalCurrencyCode,
+                      nomineeDisplayName: props.nomineeDisplayName
                     }}
                   />
                 }
@@ -330,6 +335,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
           shareCapitalCurrencyCode={props.company.shareCapitalCurrencyCode}
           shareCapital={props.shareCapital}
           initialFormValues={formValues}
+          nomineeDisplayName={props.nomineeDisplayName}
           uploadedDocumentTitle={props.uploadedDocumentTitle}
           onNext={onNext}
         />
@@ -348,6 +354,7 @@ const NewVotingResolutionModalLayout = ({ show, onClose, ...props }) => {
 export const NewVotingResolutionModal = compose(
   appConnect({
     stateToProps: state => ({
+      nomineeDisplayName: selectEtoNomineeDisplayName(state),
       company: selectIssuerCompany(state),
       contract: etoModuleApi.selectors.selectEtoContract(state, selectIssuerEtoPreviewCode(state)),
       isDocumentUploading: selectEtoDocumentUploadingByType(

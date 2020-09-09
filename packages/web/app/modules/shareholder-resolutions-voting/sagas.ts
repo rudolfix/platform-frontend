@@ -137,7 +137,7 @@ export function* loadInvestorShareholderResolution(proposalId: string): SagaGene
     companyId,
     id: proposalId,
     state: proposalDetails.state,
-    votingContractAddress: toEthereumChecksumAddress(contractsService.votingCenter.address),
+    votingContractAddress: makeEthereumAddressChecksummed(contractsService.votingCenter.address),
     tally: proposalTally,
     // hardcoded for now (we could take it from smart contract but it will be too complicated)
     quorum: "50",
@@ -240,7 +240,7 @@ export function* loadIssuerShareholderResolution(proposalId: string): SagaGenera
     companyId,
     id: proposalId,
     state: proposalDetails.state,
-    votingContractAddress: toEthereumChecksumAddress(contractsService.votingCenter.address),
+    votingContractAddress: makeEthereumAddressChecksummed(contractsService.votingCenter.address),
     tally: proposalTally,
     // hardcoded for now (we could take it from smart contract but it will be too complicated)
     quorum: "50",

@@ -2,7 +2,7 @@
   font-family: $font-family-roboto;
   font-size: px-to-rem(20px);
   font-weight: $font-weight-medium;
-  margin-bottom: 2rem;
+  margin-bottom: px-to-rem(24px);
 }
 
 .modal-body {
@@ -40,6 +40,11 @@
 
 .summary {
   margin-bottom: px-to-rem(24px);
+}
+
+.summary-description {
+  @include nds-body;
+  color: $neu-shuttle-gray;
 }
 
 .summary-list {

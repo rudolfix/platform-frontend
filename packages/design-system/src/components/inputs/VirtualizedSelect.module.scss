@@ -1,24 +1,24 @@
-//this is to sync the look of virtualizedSelect with NDS
+// this is to sync the look of virtualizedSelect with NDS
 // Need to disable the linter here because virtualizedSelect uses
 // complex selectors (that have to be overridden with !important)
 // and their style naming doesn't follow  our naming conventions
 
 // sass-lint:disable-all
 
-.Select-control {
+:global(.Select-control) {
   box-sizing: content-box !important;
   height: 30px;
 
   display: flex;
   align-items: center;
   border: none;
+
+  :hover {
+    box-shadow: none;
+  }
 }
 
-.Select-control:hover {
-  box-shadow: none;
-}
-
-.Select-multi-value-wrapper {
+:global(.Select-multi-value-wrapper) {
   box-sizing: content-box !important;
   height: 30px;
   display: flex;
@@ -29,7 +29,7 @@
   padding-left: 0;
 }
 
-.Select-clear-zone {
+:global(.Select-clear-zone) {
   box-sizing: content-box !important;
   height: 30px;
 
@@ -39,7 +39,7 @@
   justify-content: center;
 }
 
-.Select-arrow-zone {
+:global(.Select-arrow-zone) {
   box-sizing: content-box !important;
   height: 30px;
   padding-top: 4px;
@@ -49,13 +49,13 @@
   justify-content: center;
 }
 
-.Select-placeholder {
+:global(.Select-placeholder) {
   height: 30px;
   display: flex;
   align-items: center;
 }
 
-.Select-value {
+:global(.Select-value) {
   display: flex;
   align-items: center;
   padding-left: 0 !important;
@@ -65,18 +65,18 @@
   }
 }
 
-.Select-value-label {
+:global(.Select-value-label) {
   font-family: Roboto, sans-serif;
   color: #656b72 !important;
 }
 
-.Select-clear {
+:global(.Select-clear) {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.Select-input {
+:global(.Select-input) {
   height: 30px;
 
   input {
@@ -87,8 +87,8 @@
   }
 }
 
-.Select.is-pseudo-focused,
-.Select.is-focused:not(.is-open) > .Select-control {
+:global(.Select.is-pseudo-focused),
+:global(.Select.is-focused:not(.is-open)) > :global(.Select-control) {
   outline: none;
   border: none !important;
   box-shadow: none;

@@ -6,7 +6,7 @@ import { TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { EProcessState } from "../../utils/enums/processStates";
 
 export type TBasicBalanceData = {
-  name: EBalanceViewType;
+  id: EBalanceViewType;
   hasFunds: boolean;
   amount: string;
   euroEquivalentAmount: string;
@@ -30,7 +30,7 @@ export enum EBalanceActionLevel {
 }
 
 export type TBalanceData = {
-  name: EBalanceViewType;
+  id: EBalanceViewType;
   amount: string;
   euroEquivalentAmount: string;
 };
@@ -61,8 +61,9 @@ export type TWalletViewState =
     } & {});
 
 export type TBalance = {
+  balanceId: EBalanceViewType;
   logo: React.ComponentType;
-  balanceName: string;
+  balanceName: TTranslatedString;
   balanceAdditionalInfo: TTranslatedString | undefined;
   amount: string;
   currency: ECurrency;

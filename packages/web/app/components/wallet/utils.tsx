@@ -21,14 +21,15 @@ import {
 } from "../../modules/wallet-view/types";
 
 export const createBalanceUiData = (balance: TBalanceData, balanceActions: TBalanceActions) => ({
-  logo: balanceSymbols[balance.name],
-  balanceName: balanceNames[balance.name],
-  balanceAdditionalInfo: balanceAdditionalInfo[balance.name],
+  balanceId: balance.id,
+  logo: balanceSymbols[balance.id],
+  balanceName: balanceNames[balance.id],
+  balanceAdditionalInfo: balanceAdditionalInfo[balance.id],
   amount: balance.amount,
-  currency: balanceCurrencies[balance.name],
+  currency: balanceCurrencies[balance.id],
   euroEquivalentAmount: balance.euroEquivalentAmount,
-  walletActions: balanceActions[balance.name],
-  dataTestId: balanceDataTestIds[balance.name],
+  walletActions: balanceActions[balance.id],
+  dataTestId: balanceDataTestIds[balance.id],
 });
 
 export const balanceCurrencies: { [key in EBalanceViewType]: ECurrency } = {
@@ -41,14 +42,16 @@ export const balanceCurrencies: { [key in EBalanceViewType]: ECurrency } = {
   [EBalanceViewType.LOCKED_ICBM_NEUR]: ECurrency.EUR_TOKEN,
 };
 
-export const balanceNames: { [key in EBalanceViewType]: string } = {
-  [EBalanceViewType.ETH]: `Ether`,
-  [EBalanceViewType.NEUR]: `nEUR`,
-  [EBalanceViewType.RESTRICTED_NEUR]: `nEUR`,
-  [EBalanceViewType.ICBM_ETH]: `Icbm Ether`,
-  [EBalanceViewType.ICBM_NEUR]: `Icbm nEUR`,
-  [EBalanceViewType.LOCKED_ICBM_ETH]: `Icbm Ether`,
-  [EBalanceViewType.LOCKED_ICBM_NEUR]: `Icbm nEUR`,
+export const balanceNames: { [key in EBalanceViewType]: TTranslatedString } = {
+  [EBalanceViewType.ETH]: <FormattedMessage id="wallet.balance-name.eth" />,
+  [EBalanceViewType.NEUR]: <FormattedMessage id="wallet.balance-name.neur" />,
+  [EBalanceViewType.RESTRICTED_NEUR]: <FormattedMessage id="wallet.balance-name.restricted-neur" />,
+  [EBalanceViewType.ICBM_ETH]: <FormattedMessage id="wallet.balance-name.icbm-eth" />,
+  [EBalanceViewType.ICBM_NEUR]: <FormattedMessage id="wallet.balance-name.icbm-neur" />,
+  [EBalanceViewType.LOCKED_ICBM_ETH]: <FormattedMessage id="wallet.balance-name.locked-icbm-eth" />,
+  [EBalanceViewType.LOCKED_ICBM_NEUR]: (
+    <FormattedMessage id="wallet.balance-name.locked-icbm-neur" />
+  ),
 };
 
 export const balanceAdditionalInfo: { [key in EBalanceViewType]: TTranslatedString | undefined } = {
@@ -134,15 +137,37 @@ export const createBalanceActions = (dispatch: Function): TBalanceActions => ({
       dataTestId: "wallet-balance.neur.purchase-button",
     },
   ],
-  [EBalanceViewType.ICBM_ETH]: [],
-  [EBalanceViewType.ICBM_NEUR]: [],
+  [EBalanceViewType.ICBM_ETH]: [
+    {
+      dispatchAction: () => dispatch(actions.txTransactions.startUnlockEtherFunds()),
+      disableIf: () => false,
+      text: <FormattedMessage id="components.wallet.start.eth-wallet-unlock" />,
+      level: EBalanceActionLevel.PRIMARY,
+    },
+  ],
+  [EBalanceViewType.ICBM_NEUR]: [
+    {
+      dispatchAction: () => dispatch(actions.txTransactions.startUnlockEuroFunds()),
+      disableIf: () => false,
+      text: <FormattedMessage id="components.wallet.start.euro-wallet-unlock" />,
+      level: EBalanceActionLevel.PRIMARY,
+    },
+  ],
   [EBalanceViewType.LOCKED_ICBM_ETH]: [
     {
       dispatchAction: () => dispatch(actions.txTransactions.startUpgrade(ETokenType.ETHER)),
       disableIf: () => false,
       text: <FormattedMessage id="wallet.enable-icbm" />,
-      level: EBalanceActionLevel.SECONDARY,
+      level: EBalanceActionLevel.PRIMARY,
       dataTestId: "wallet.icbm-eth.upgrade-button",
+    },
+    {
+      // Disabled is always true in this case as the user will still need to enable their wallet before unlocking
+      dispatchAction: () => {},
+      disableIf: () => true,
+      text: <FormattedMessage id="components.wallet.start.eth-wallet-unlock" />,
+      level: EBalanceActionLevel.PRIMARY,
+      dataTestId: "wallet.icbm-eth.unlock-button",
     },
   ],
   [EBalanceViewType.LOCKED_ICBM_NEUR]: [
@@ -152,6 +177,13 @@ export const createBalanceActions = (dispatch: Function): TBalanceActions => ({
       text: <FormattedMessage id="wallet.enable-icbm" />,
       level: EBalanceActionLevel.SECONDARY,
       dataTestId: "wallet.icbm-euro.upgrade-button",
+    },
+    {
+      dispatchAction: () => dispatch(actions.txTransactions.startUnlockEuroFunds()),
+      disableIf: () => true,
+      text: <FormattedMessage id="components.wallet.start.euro-wallet-unlock" />,
+      level: EBalanceActionLevel.PRIMARY,
+      dataTestId: "wallet.icbm-euro.unlock-button",
     },
   ],
 });

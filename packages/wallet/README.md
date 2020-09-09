@@ -146,9 +146,10 @@ Google in Play Store and bundle is signed with upload key. The application id is
    to `debug`
 5. specify signing keys for `production` signing config in
    `NF_WALLET_ANDROID_PRODUCTION_KEYSTORE_PASS`
-6. build apk (`./gradlew :app:assembleRelease`) or bundle (`./gradlew :app:bundleRelease`). you must
+6. Make sure you build the react app, run `yarn` from repository root.
+7. build apk (`./gradlew :app:assembleRelease`) or bundle (`./gradlew :app:bundleRelease`). you must
    `cd` to `[..]/wallet/android`
-7. verify release build with
+8. verify release build with
    `jarsigner -verify -verbose -certs app/build/outputs/apk/release/app-release.apk`
 
 #### Android Production Keystore Format

@@ -12,18 +12,14 @@ import { ContractsService } from "../../lib/web3/ContractsService";
 import { selectUserId } from "../auth/selectors";
 import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { actions } from "./actions";
-import {
-  ProposalNotFoundError,
-  ProposalStateNotSupportedError,
-  ShareholderHasNoAccessToProposalError,
-} from "./errors";
+import { ProposalNotFoundError, ShareholderHasNoAccessToProposalError } from "./errors";
 import { IShareholderVote, setupShareholderResolutionsVotingModule } from "./module";
 import {
   loadInvestorShareholderResolution,
   loadIssuerShareholderResolution,
   loadProposalEto,
 } from "./sagas";
-import { EProposalState, EShareholderVoteResolution } from "./types";
+import { EShareholderVoteResolution } from "./types";
 import { convertToProposalDetails, convertToProposalTally } from "./utils";
 
 const proposalId = "0x6400a3523bc839d6bad3232d118c4234d9ef6b2408ca6afcadcbff728f06d220";
@@ -72,10 +68,12 @@ const equityToken = {
   companyLegalRepresentative: toEthereumChecksumAddress(
     "0x4B07fd23BAA7198061caEd44cF470B0F20cE1b7e",
   ),
+  decimals: new BigNumber("0"),
 };
 
 const equityTokenIssuer = {
   companyLegalRepresentative: toEthereumChecksumAddress(userId),
+  decimals: new BigNumber("0"),
 };
 
 const proposal = {
@@ -186,24 +184,6 @@ describe("shareholder-resolutions-voting sagas", () => {
         .throws(ShareholderHasNoAccessToProposalError)
         .run();
     });
-
-    it("should throw an error when proposal is not in a public state", async () => {
-      await expectSaga(loadInvestorShareholderResolution, proposalId)
-        .provide([
-          [matchers.select(selectUserId), userId],
-          [matchers.call([contractsService.votingCenter, "hasProposal"], proposalId), true],
-          [
-            matchers.call([contractsService.votingCenter, "getVotingPower"], proposalId, userId),
-            new BigNumber("100"),
-          ],
-          [
-            matchers.call([contractsService.votingCenter, "timedProposal"], proposalId),
-            [new BigNumber(EProposalState.Final.toString()), ...rawProposalDetails.slice(1)],
-          ],
-        ])
-        .throws(ProposalStateNotSupportedError)
-        .run();
-    });
   });
 
   describe("loadIssuerShareholderResolution", () => {
@@ -248,20 +228,6 @@ describe("shareholder-resolutions-voting sagas", () => {
           [matchers.call([contractsService, "getEquityToken"], tokenAddress), equityTokenIssuer],
         ])
         .throws(ProposalNotFoundError)
-        .run();
-    });
-
-    it("should throw an error when proposal is not in a public state", async () => {
-      await expectSaga(loadIssuerShareholderResolution, proposalId)
-        .provide([
-          [matchers.select(selectUserId), userId],
-          [matchers.call([contractsService.votingCenter, "hasProposal"], proposalId), true],
-          [
-            matchers.call([contractsService.votingCenter, "timedProposal"], proposalId),
-            [new BigNumber(EProposalState.Final.toString()), ...rawProposalDetails.slice(1)],
-          ],
-        ])
-        .throws(ProposalStateNotSupportedError)
         .run();
     });
   });

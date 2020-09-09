@@ -41,37 +41,37 @@ export const testBankAccount = {
 
 export const emptyWalletData = [
   {
-    name: EBalanceViewType.ETH,
+    id: EBalanceViewType.ETH,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.NEUR,
+    id: EBalanceViewType.NEUR,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.ICBM_ETH,
+    id: EBalanceViewType.ICBM_ETH,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.ICBM_NEUR,
+    id: EBalanceViewType.ICBM_NEUR,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.LOCKED_ICBM_ETH,
+    id: EBalanceViewType.LOCKED_ICBM_ETH,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.LOCKED_ICBM_NEUR,
+    id: EBalanceViewType.LOCKED_ICBM_NEUR,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
@@ -80,37 +80,37 @@ export const emptyWalletData = [
 
 export const walletData = [
   {
-    name: EBalanceViewType.ETH,
+    id: EBalanceViewType.ETH,
     hasFunds: true,
     amount: "386635441865000003000",
     euroEquivalentAmount: convertFromUlps("7.185643883006235505906790797322021e+22").toString(),
   },
   {
-    name: EBalanceViewType.NEUR,
+    id: EBalanceViewType.NEUR,
     hasFunds: true,
     amount: "87654",
     euroEquivalentAmount: convertFromUlps("87654").toString(),
   },
   {
-    name: EBalanceViewType.ICBM_ETH,
+    id: EBalanceViewType.ICBM_ETH,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.ICBM_NEUR,
+    id: EBalanceViewType.ICBM_NEUR,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
   },
   {
-    name: EBalanceViewType.LOCKED_ICBM_ETH,
+    id: EBalanceViewType.LOCKED_ICBM_ETH,
     hasFunds: true,
     amount: "23456",
     euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
   },
   {
-    name: EBalanceViewType.LOCKED_ICBM_NEUR,
+    id: EBalanceViewType.LOCKED_ICBM_NEUR,
     hasFunds: false,
     amount: "0",
     euroEquivalentAmount: "0",
@@ -234,19 +234,19 @@ export const loadWalletViewContext = {
 
 export const resultBalanceData = [
   {
-    name: EBalanceViewType.ETH,
+    id: EBalanceViewType.ETH,
     hasFunds: true,
     amount: "386635441865000003000",
     euroEquivalentAmount: convertFromUlps("7.185643883006235505906790797322021e+22").toString(),
   },
   {
-    name: EBalanceViewType.NEUR,
+    id: EBalanceViewType.NEUR,
     hasFunds: true,
     amount: "87654",
     euroEquivalentAmount: convertFromUlps("87654").toString(),
   },
   {
-    name: EBalanceViewType.LOCKED_ICBM_ETH,
+    id: EBalanceViewType.LOCKED_ICBM_ETH,
     hasFunds: true,
     amount: "23456",
     euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
@@ -316,7 +316,7 @@ export const pendingTx = {
     input:
       "0x64663ea600000000000000000000000016cd5ac5a1b77fb72032e3a09e91a98bb21d89880000000000000000000000000000000000000000000000008ac7230489e80000",
     nonce: "0x0",
-    to: "0xf538ca71b753e5fa634172c133e5f40ccaddaa80" as EthereumAddressWithChecksum,
+    to: "0xf538ca71b753E5fA634172c133e5f40ccaDDaA80" as EthereumAddressWithChecksum,
     value: "0x1",
     blockHash: undefined,
     blockNumber: undefined,

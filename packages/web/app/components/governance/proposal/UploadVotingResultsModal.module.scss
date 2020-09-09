@@ -1,0 +1,37 @@
+.modal-body {
+  @include media-breakpoint-down(sm) {
+    padding-left: px-to-rem(12px);
+    padding-right: px-to-rem(12px);
+  }
+
+  padding-left: px-to-rem(55px);
+  padding-right: px-to-rem(55px);
+}
+
+.description {
+  @include nds-body;
+  color: $neu-shuttle-gray;
+}
+
+.form {
+  display: grid;
+  grid-gap: px-to-rem(20);
+  grid-auto-flow: row;
+}
+
+.drop-zone-wrapper,
+.drop-zone {
+  width: 100%;
+}
+
+.multi-file-upload-layout {
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.footer {
+  margin-left: px-to-rem(-80px);
+  margin-right: px-to-rem(-80px);
+  margin-bottom: px-to-rem(-25px);
+}

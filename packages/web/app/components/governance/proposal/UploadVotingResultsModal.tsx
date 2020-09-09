@@ -3,9 +3,10 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { ModalFooter } from "reactstrap";
 import * as Yup from "yup";
-import * as styles from "../../issuer-dashboard/NewVotingResolutionModal.module.scss";
+import * as styles from "./UploadVotingResultsModal.module.scss";
 import { Modal } from "../../modals/Modal";
 import { EMimeType, Form } from "../../shared/forms";
+import { Heading } from "../../shared/Heading";
 import { EUploadType, MultiFileUploadComponent } from "../../shared/MultiFileUpload";
 
 const VotingResultsSchema = Yup.object().shape({
@@ -18,15 +19,17 @@ const VotingResultsSchema = Yup.object().shape({
 export const UploadVotingResultsModal = props => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} bodyClass={styles.modalBody}>
-      <h4 className={styles.modalTitle}>
+      <Heading level={4} decorator={false}>
         <FormattedMessage id="governance.proposal.upload-voting-results-modal.title" />
-      </h4>
+      </Heading>
 
+      <p className={styles.description}>
       <FormattedHTMLMessage
         id="governance.proposal.upload-voting-results-modal.description"
-        tagName="p"
+        tagName="span"
         values={{nomineeName: "nomineeName"}}
       />
+      </p>
 
       <Form
         validationSchema={VotingResultsSchema}

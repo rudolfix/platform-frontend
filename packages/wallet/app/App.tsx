@@ -16,7 +16,7 @@ import { EInitStatus, initModuleApi } from "modules/init/module";
 
 import { AppAuthRouter } from "router/AppAuthRouter";
 import { AppNoAuthRouter } from "router/AppNoAuthRouter";
-import { BiometricsRoute } from "router/BiometricsRouter";
+import { NoBiometricsRoute } from "router/NoBiometricsRoute";
 import { navigationRef } from "router/routeUtils";
 
 import { appConnect } from "store/utils";
@@ -37,31 +37,7 @@ type TDispatchProps = {
 
 type TLayoutProps = TStateProps & TDispatchProps;
 
-const BiometricsGuards: React.FunctionComponent<Pick<
-  TLayoutProps,
-  "authState" | "authWallet" | "biometricsState" | "authLostWallet"
->> = ({ authState, authWallet, authLostWallet, biometricsState }) => {
-  switch (biometricsState) {
-    case EBiometricsState.ACCESS_ALLOWED:
-    case EBiometricsState.ACCESS_REQUEST_REQUIRED:
-      return (
-        <AuthorizedGuards
-          authState={authState}
-          authWallet={authWallet}
-          authLostWallet={authLostWallet}
-        />
-      );
-    case EBiometricsState.NO_SUPPORT:
-    case EBiometricsState.NO_ACCESS:
-      return <BiometricsRoute biometricsState={biometricsState} />;
-    case EBiometricsState.UNKNOWN:
-      throw new StateNotAllowedError("Biometrics should be initialized");
-    default:
-      assertNever(biometricsState, "Invalid biometrics state");
-  }
-};
-
-const AuthorizedGuards: React.FunctionComponent<Pick<
+const AuthGuards: React.FunctionComponent<Pick<
   TLayoutProps,
   "authState" | "authWallet" | "authLostWallet"
 >> = ({ authState, authWallet, authLostWallet }) => {
@@ -85,6 +61,26 @@ const AuthorizedGuards: React.FunctionComponent<Pick<
       );
     default:
       assertNever(authState, "Invalid auth state");
+  }
+};
+
+const BiometricsGuards: React.FunctionComponent<Pick<
+  TLayoutProps,
+  "authState" | "authWallet" | "biometricsState" | "authLostWallet"
+>> = ({ authState, authWallet, authLostWallet, biometricsState }) => {
+  switch (biometricsState) {
+    case EBiometricsState.ACCESS_ALLOWED:
+    case EBiometricsState.ACCESS_REQUEST_REQUIRED:
+      return (
+        <AuthGuards authState={authState} authWallet={authWallet} authLostWallet={authLostWallet} />
+      );
+    case EBiometricsState.NO_SUPPORT:
+    case EBiometricsState.NO_ACCESS:
+      return <NoBiometricsRoute biometricsState={biometricsState} />;
+    case EBiometricsState.UNKNOWN:
+      throw new StateNotAllowedError("Biometrics should be initialized");
+    default:
+      assertNever(biometricsState, "Invalid biometrics state");
   }
 };
 

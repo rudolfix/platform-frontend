@@ -17,10 +17,7 @@ import {
 } from "modules/permissions/module";
 
 /**
- * @class Permissions
- * Class to manage (request) device permissions e.g. camera, push notifications, location etc.
- * @note to add more permissions follow https://github.com/react-native-community/react-native-permissions
- *
+ * Manages devices biometrics access
  */
 @injectable()
 export class Biometrics {

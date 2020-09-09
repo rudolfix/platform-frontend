@@ -9,13 +9,13 @@ import { EBiometricsState } from "modules/biometrics/module";
 import { EAppRoutes } from "./appRoutes";
 import { RootStackParamList } from "./routeUtils";
 
-const BiometricsRouter = createStackNavigator<RootStackParamList>();
+const NoBiometricsRouter = createStackNavigator<RootStackParamList>();
 
 type TExternalProps = {
   biometricsState: EBiometricsState;
 };
 
-const getInitialState = (state: EBiometricsState) => {
+const getInitialRoute = (state: EBiometricsState) => {
   switch (state) {
     case EBiometricsState.NO_SUPPORT:
     case EBiometricsState.NO_ACCESS:
@@ -31,14 +31,14 @@ const getInitialState = (state: EBiometricsState) => {
   }
 };
 
-const BiometricsRoute: React.FunctionComponent<TExternalProps> = ({ biometricsState }) => (
-  <BiometricsRouter.Navigator initialRouteName={getInitialState(biometricsState)}>
-    <BiometricsRouter.Screen
+const NoBiometricsRoute: React.FunctionComponent<TExternalProps> = ({ biometricsState }) => (
+  <NoBiometricsRouter.Navigator initialRouteName={getInitialRoute(biometricsState)}>
+    <NoBiometricsRouter.Screen
       name={EAppRoutes.noBiometrics}
       component={NoBiometricsScreen}
       options={{ headerShown: false }}
     />
-  </BiometricsRouter.Navigator>
+  </NoBiometricsRouter.Navigator>
 );
 
-export { BiometricsRoute };
+export { NoBiometricsRoute };

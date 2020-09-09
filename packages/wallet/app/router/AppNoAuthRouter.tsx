@@ -23,7 +23,7 @@ type TExternalProps = {
   authState: EAuthState;
 };
 
-const getInitialState = (
+const getInitialRoute = (
   authState: EAuthState,
   authWallet: undefined | TAuthWalletMetadata,
   authLostWallet: undefined | TAuthWalletMetadata,
@@ -51,7 +51,7 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({
   authLostWallet,
 }) => (
   <NoAuthStack.Navigator
-    initialRouteName={getInitialState(authState, authWallet, authLostWallet)}
+    initialRouteName={getInitialRoute(authState, authWallet, authLostWallet)}
     screenOptions={({ route, navigation }) => ({
       ...TransitionPresets.ModalPresentationIOS,
       gestureEnabled: true,

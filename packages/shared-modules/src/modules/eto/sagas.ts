@@ -47,7 +47,8 @@ import {
   TCompanyEtoData,
   TEtoDataWithCompany,
   TEtoSpecsData,
-} from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+} from "./lib/http/eto-api/EtoApi.interfaces";
+import { symbols } from "./lib/symbols";
 import { EtoMessage } from "./messages";
 import { TEtoContractData, TEtoModuleState } from "./module";
 import { watchEtosSetActionSaga } from "./sagas/watchEtosSetActionSaga";
@@ -56,7 +57,6 @@ import {
   selectEtoSubStateEtoEtoWithContract,
   selectFilteredEtosByRestrictedJurisdictions,
 } from "./selectors";
-import { symbols } from "./symbols";
 import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,

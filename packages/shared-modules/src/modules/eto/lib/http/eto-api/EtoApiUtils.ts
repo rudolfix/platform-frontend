@@ -1,7 +1,7 @@
 import { Dictionary } from "@neufund/shared-utils";
 
 import { EEtoFormTypes, TEtoWithCompanyAndContractReadonly } from "../../../types";
-import { EEtoState, EFundingRound, FUNDING_ROUNDS } from "./EtoApi.interfaces.unsafe";
+import { EEtoState, EFundingRound, FUNDING_ROUNDS } from "./EtoApi.interfaces";
 
 export const etoFormIsReadonly = (formName: EEtoFormTypes, etoState?: EEtoState) => {
   const readOnlyForms = [

@@ -1,14 +1,17 @@
-import { call, fork, put, select } from "@neufund/sagas";
+import { call, fork, put, SagaGenerator, select, takeLeading } from "@neufund/sagas";
 import {
+  coreModuleApi,
   EEtoState,
   EJwtPermissions,
   etoModuleApi,
   IHttpResponse,
   InvalidETOStateError,
+  neuGetBindings,
   TCompanyEtoData,
   TEtoProducts,
   TEtoSpecsData,
 } from "@neufund/shared-modules";
+import { nonNullable } from "@neufund/shared-utils";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import {
@@ -25,12 +28,18 @@ import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { etoFlowActions } from "./actions";
 import {
   selectIsNewPreEtoStartDateValid,
+  selectIssuerEtoEquityTokenAddress,
   selectIssuerEtoWithCompanyAndContract,
   selectNewPreEtoStartDate,
   selectPreEtoStartDateFromContract,
   userHasKycAndEmailVerified,
 } from "./selectors";
-import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
+import {
+  bookBuildingStatsToCsvString,
+  createCsvDataUri,
+  downloadFile,
+  tokenholdersListToCsvString,
+} from "./utils";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -330,6 +339,30 @@ export function* loadIssuerView(): Generator<any, any, any> {
   }
 }
 
+export function* downloadTokenholdersList(): SagaGenerator<void> {
+  const { logger, etoTokensApi } = yield* neuGetBindings({
+    logger: coreModuleApi.symbols.logger,
+    etoTokensApi: etoModuleApi.symbols.etoTokensApi,
+  });
+
+  try {
+    const tokenAddress = nonNullable(yield* select(selectIssuerEtoEquityTokenAddress));
+
+    const tokenHolders = yield* call([etoTokensApi, "getTokenholdersList"], tokenAddress);
+
+    const dataAsString = tokenholdersListToCsvString(tokenHolders);
+
+    yield* call(downloadFile, createCsvDataUri(dataAsString), "tokenholders.csv");
+  } catch (e) {
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(EtoFlowMessage.ETO_TOKENHOLDERS_DOWNLOAD_FAILED),
+      ),
+    );
+    logger.error(e, `Failed to generate tokenholders list`);
+  }
+}
+
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, etoFlowActions.loadIssuerView, loadIssuerView);
   yield fork(neuTakeEvery, etoFlowActions.loadIssuerEto, loadIssuerEto);
@@ -344,4 +377,5 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeLatest, etoFlowActions.loadIssuerStep, loadIssuerStep);
   yield fork(neuTakeLatest, etoFlowActions.changeProductType, changeProductType);
   yield fork(neuTakeLatest, etoFlowActions.publishDataStart, publishEtoData);
+  yield takeLeading(etoFlowActions.downloadTokenholdersList, downloadTokenholdersList);
 }

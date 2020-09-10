@@ -1,4 +1,4 @@
-import { EEtoState } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+import { EEtoState } from "./lib/http/eto-api/EtoApi.interfaces";
 
 export class InvalidETOStateError extends Error {
   constructor(actual: EEtoState, expected: EEtoState) {

@@ -494,7 +494,7 @@ interface IAdditionalEtoType {
   product: TEtoProduct;
   nomineeDisplayName?: string;
   hasDividendRights?: boolean;
-  equityTokenContractAddress: string;
+  equityTokenContractAddress: EthereumAddressWithChecksum;
 }
 
 export type TBookbuildingStatsType = {

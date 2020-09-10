@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { TEtoWithCompanyAndContractReadonly } from "../../../types";
-import { EFundingRound } from "./EtoApi.interfaces.unsafe";
+import { EFundingRound } from "./EtoApi.interfaces";
 import { getNextFundingRound } from "./EtoApiUtils";
 
 describe("EtoApiUtils", () => {

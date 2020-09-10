@@ -5,7 +5,7 @@ import {
   TBigNumberVariants,
 } from "@neufund/shared-utils";
 
-import { TPartialEtoSpecData } from "./EtoApi.interfaces.unsafe";
+import { TPartialEtoSpecData } from "./EtoApi.interfaces";
 
 export const calcInvestmentAmount = (eto: TPartialEtoSpecData, sharePrice: number | undefined) => ({
   minInvestmentAmount: calcMaxInvestmentAmount(sharePrice, eto.minimumNewSharesToIssue),

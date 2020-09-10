@@ -19,7 +19,7 @@ import { neuGetBindings } from "../../../utils";
 import { coreModuleApi } from "../../core/module";
 import { etoActions } from "../actions";
 import { etoInProgressPollingDelay, etoNormalPollingDelay } from "../constants";
-import { EEtoState, TEtoSpecsData } from "../lib/http/eto-api//EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoSpecsData } from "../lib/http/eto-api//EtoApi.interfaces";
 import { TEtoModuleState } from "../module";
 import { selectInvestorEtoWithCompanyAndContract } from "../selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../types";

@@ -153,6 +153,7 @@ export enum EtoFlowMessage {
   ETO_PRODUCTS_LOAD_FAILED = "etoProductsLoadFailed",
   ETO_TERMS_PRODUCT_CHANGE_FAILED = "etoTermsProductChangeFailed",
   ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL = "etoTermsProductChangeSuccessful",
+  ETO_TOKENHOLDERS_DOWNLOAD_FAILED = "etoTokenholdersDownloadFailed",
 }
 
 export enum EtoDocumentsMessage {
@@ -617,6 +618,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="modules.eto-flow.change-product.failed" />;
     case EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL:
       return <FormattedMessage id="modules.eto-flow.change-product.successful" />;
+    case EtoFlowMessage.ETO_TOKENHOLDERS_DOWNLOAD_FAILED:
+      return <FormattedMessage id="modules.eto-flow.tokenholders-download.failed" />;
     case EtoFlowMessage.ETO_PRODUCTS_LOAD_FAILED:
       return <FormattedMessage id="modules.eto-flow.load-products.failed" />;
     case EtoFlowMessage.ETO_LOAD_FAILED:

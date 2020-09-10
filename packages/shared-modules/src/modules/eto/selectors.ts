@@ -9,7 +9,7 @@ import {
   EEtoState,
   TEtoDataWithCompany,
   TEtoSpecsData,
-} from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+} from "./lib/http/eto-api/EtoApi.interfaces";
 import { calcShareAndTokenPrice } from "./lib/http/eto-api/EtoUtils";
 import { TEtoModuleState } from "./module";
 import { IEtoState } from "./reducer";

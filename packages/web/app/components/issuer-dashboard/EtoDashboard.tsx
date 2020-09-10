@@ -52,16 +52,17 @@ import { Heading } from "../shared/Heading";
 import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { Tooltip } from "../shared/tooltips";
-import { BookBuildingWidget } from "./bookBuildingWidget/BookBuildingWidget";
-import { ChooseEtoStartDateWidget } from "./chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
-import { DashboardStep } from "./dashboardStep/DashboardStep";
-import { ETOFormsProgressSection } from "./ETOFormsProgressSection";
+import { BookBuildingWidget } from "./book-building-widget/BookBuildingWidget";
+import { ChooseEtoStartDateWidget } from "./choose-eto-start-date-widget/ChooseEtoStartDateWidget";
+import { DashboardStep } from "./dashboard-step/DashboardStep";
+import { ETOFormsProgressWidget } from "./eto-forms-progress-widget/ETOFormsProgressWidget";
 import { ETOFundraisingCounterWidget } from "./ETOFundraisingCounterWidget";
 import { ETOFundraisingStatistics } from "./ETOFundraisingStatistics";
 import { ETOISHASignCounter } from "./ETOISHASignCounter";
 import { PublishETOWidget } from "./PublishETOWidget";
-import { UploadInvestmentAgreement } from "./signInvestmentAgreementWidget/UploadInvestmentAgreementWidget";
-import { SubmitProposalWidget } from "./submitProposalWidget/SubmitProposalWidget";
+import { UploadInvestmentAgreement } from "./sign-investment-agreement-widget/UploadInvestmentAgreementWidget";
+import { SubmitProposalWidget } from "./submit-proposal-widget/SubmitProposalWidget";
+import { TokenholdersWidget } from "./tokenholders-widget/TokenholdersWidget";
 import { UploadInvestmentMemorandum } from "./UploadInvestmentMemorandum";
 import { UploadISHA } from "./UploadISHA";
 import { UploadProspectusWidget } from "./UploadProspectusWidget";
@@ -167,14 +168,14 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
             />
           )}
 
-          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewEtoSettings} />
+          <ETOFormsProgressWidget shouldViewEtoSettings={shouldViewEtoSettings} />
         </>
       );
     case EEtoState.PENDING:
     case EEtoState.SUSPENDED:
       return (
         <>
-          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
+          <ETOFormsProgressWidget shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
     case EEtoState.LISTED:
@@ -193,14 +194,14 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
             <UploadISHA columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           )}
 
-          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
+          <ETOFormsProgressWidget shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
     case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
+          <ETOFormsProgressWidget shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
     case EEtoState.ON_CHAIN:
@@ -217,7 +218,8 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
           <ETOISHASignCounter eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ChooseEtoStartDateWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
+          <TokenholdersWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          <ETOFormsProgressWidget shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
     default:

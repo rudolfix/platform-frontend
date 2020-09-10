@@ -13,6 +13,8 @@ import {
   getEtoTermsSchema,
   TBookbuildingStatsType,
   TEtoProduct,
+  TTokenholder,
+  TTokenholders,
 } from "@neufund/shared-modules";
 import { sortBy } from "lodash/fp";
 import * as Yup from "yup";
@@ -185,6 +187,15 @@ export const bookBuildingStatsToCsvString = (stats: TBookbuildingStatsType[]) =>
     )
     .join("\r\n");
 
+export const tokenholdersListToCsvString = (tokenHolders: TTokenholders) =>
+  [`address,email,amount`]
+    .concat(
+      sortTokenholders(tokenHolders).map(
+        tokenHolder => `${tokenHolder.userId},${tokenHolder.email},${tokenHolder.amount}`,
+      ),
+    )
+    .join("\r\n");
+
 export const createCsvDataUri = (dataAsString: string) =>
   `data:text/csv,${encodeURIComponent(dataAsString)}`;
 
@@ -223,3 +234,5 @@ export const sortProducts = sortBy((product: TEtoProduct) => {
 
   return index;
 });
+
+export const sortTokenholders = sortBy((tokenholder: TTokenholder) => -tokenholder.amount);

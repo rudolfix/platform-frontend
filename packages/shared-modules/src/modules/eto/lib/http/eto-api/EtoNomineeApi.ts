@@ -4,7 +4,7 @@ import { inject, injectable } from "inversify";
 import { authModuleAPI } from "../../../../auth/module";
 import { IHttpClient } from "../../../../core/module";
 import { ENomineeUpdateRequestStatus } from "../../../types";
-import { TNomineeRequestResponse } from "./EtoApi.interfaces.unsafe";
+import { TNomineeRequestResponse } from "./EtoApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/etos";
 const CREATE_NOMINEE_REQUEST_PATH = "/:etoId/nominee-requests/me";

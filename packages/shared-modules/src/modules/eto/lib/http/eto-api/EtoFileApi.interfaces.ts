@@ -1,6 +1,6 @@
 import { Dictionary } from "@neufund/shared-utils";
 
-import { EtoStateToCamelcase } from "./EtoApi.interfaces.unsafe";
+import { EtoStateToCamelcase } from "./EtoApi.interfaces";
 
 type fileStates = "canReplace" | "locked" | "readOnly";
 

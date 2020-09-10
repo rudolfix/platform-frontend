@@ -1,6 +1,6 @@
 import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 
-import { TCompanyEtoData, TEtoSpecsData } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+import { TCompanyEtoData, TEtoSpecsData } from "./lib/http/eto-api/EtoApi.interfaces";
 
 export enum EAgreementType {
   RAAA = "raaa",

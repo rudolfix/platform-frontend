@@ -5,6 +5,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   toEquityTokenSymbol,
+  toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
 import { createStore, Store } from "redux";
 
@@ -636,7 +637,9 @@ export const testProduct = {
 };
 
 export const testEto: TEtoWithCompanyAndContractReadonly = {
-  equityTokenContractAddress: "0x84A89a974273bD6C99DB2A2Dcd07C97e8C3E295f",
+  equityTokenContractAddress: toEthereumChecksumAddress(
+    "0x84A89a974273bD6C99DB2A2Dcd07C97e8C3E295f",
+  ),
   authorizedCapital: undefined,
   newSharesToIssueInFixedSlots: undefined,
   canEnableBookbuilding: false,

@@ -2,7 +2,7 @@ import { EEtoState } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETOFormsProgressSectionComponent } from "./ETOFormsProgressSection";
+import { ETOFormsProgressWidgetLayout } from "./ETOFormsProgressWidget";
 
 const data = {
   etoStatus: EEtoState.LISTED,
@@ -20,6 +20,6 @@ const data = {
   etoInvestmentTermsProgress: 1,
 };
 
-storiesOf("ETO/ETOFormsProgressSection", module).add("default", () => (
-  <ETOFormsProgressSectionComponent {...data} />
+storiesOf("ETO/ETOFormsProgressWidget", module).add("default", () => (
+  <ETOFormsProgressWidgetLayout {...data} />
 ));

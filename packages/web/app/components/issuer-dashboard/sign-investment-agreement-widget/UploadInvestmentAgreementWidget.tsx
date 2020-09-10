@@ -68,8 +68,10 @@ export const UploadInvestmentAgreementLayout: React.FunctionComponent<Omit<
   </DashboardCenteredWidget>
 );
 
+// TODO: Move to a separate widget given it's not in any way connected to investment agreement
 export const EtoCompletedWidgetLayout: React.ComponentType<IExternalProps> = ({ columnSpan }) => (
   <DashboardLinkWidget
+    data-test-id="dashboard-eto-completed-widget"
     title={<FormattedMessage id="download-agreement-widget.success-title" />}
     text={<FormattedMessage id="download-agreement-widget.success-text" />}
     columnSpan={columnSpan}

@@ -1,10 +1,15 @@
-import { toDeepPartialMock } from "@neufund/shared-utils/tests";
+import { AssertEqual, assertType, toDeepPartialMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 
 import { testEto } from "../../tests/fixtures";
 import { EJurisdiction } from "../kyc/module";
-import { EEtoState } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
-import { EETOStateOnChain, EEtoSubState, TEtoWithCompanyAndContract } from "./types";
+import { EEtoState } from "./lib/http/eto-api/EtoApi.interfaces";
+import {
+  EETOStateOnChain,
+  EEtoSubState,
+  TEtoContractData,
+  TEtoWithCompanyAndContract,
+} from "./types";
 import {
   amendEtoToCompatibleFormat,
   getEtoCurrentState,
@@ -12,6 +17,8 @@ import {
   getEtoEurMinTarget,
   getEtoNextStateStartDate,
   getInvestmentCalculatedPercentage,
+  isOnChain,
+  isSuccessful,
 } from "./utils";
 
 const mockEto = (
@@ -159,6 +166,67 @@ describe("eto-utils", () => {
 
     it("should return eto state when subState and onChain state is not yet set", () => {
       expect(getEtoCurrentState({ ...eto, subState: undefined, contract: undefined })).to.eq(state);
+    });
+  });
+
+  describe("isOnChain", () => {
+    it("should mark eto as ON_CHAIN and guard a type", () => {
+      const onChainEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.ON_CHAIN,
+        contract: {},
+      });
+      const onChainEtoWithoutContracts = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.ON_CHAIN,
+        contract: undefined,
+      });
+      const offChainEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.PROSPECTUS_APPROVED,
+      });
+
+      if (isOnChain(onChainEto)) {
+        assertType<
+          AssertEqual<
+            typeof onChainEto,
+            // `contract` should not be `undefined` anymore
+            TEtoWithCompanyAndContract & { contract: TEtoContractData }
+          >
+        >(true);
+      }
+
+      expect(isOnChain(onChainEto)).to.be.true;
+      expect(isOnChain(onChainEtoWithoutContracts)).to.be.false;
+      expect(isOnChain(offChainEto)).to.be.false;
+    });
+  });
+
+  describe("isSuccessful", () => {
+    it("should mark eto as ON_CHAIN and guard a type", () => {
+      const inClaimEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.ON_CHAIN,
+        contract: {
+          timedState: EETOStateOnChain.Claim,
+        },
+      });
+      const inPayoutEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.ON_CHAIN,
+        contract: {
+          timedState: EETOStateOnChain.Payout,
+        },
+      });
+      const inRefundEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.ON_CHAIN,
+        contract: {
+          timedState: EETOStateOnChain.Refund,
+        },
+      });
+      const offChainEto = toDeepPartialMock<TEtoWithCompanyAndContract>({
+        state: EEtoState.PROSPECTUS_APPROVED,
+      });
+
+      expect(isSuccessful(inClaimEto)).to.be.true;
+      expect(isSuccessful(inPayoutEto)).to.be.true;
+      expect(isSuccessful(inRefundEto)).to.be.false;
+      expect(isSuccessful(offChainEto)).to.be.false;
     });
   });
 });

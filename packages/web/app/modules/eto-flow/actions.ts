@@ -63,4 +63,6 @@ export const etoFlowActions = {
   ),
   setEtoDateStart: createActionFactory("ETO_FLOW_SET_ETO_DATE_START"),
   setEtoDateStop: createActionFactory("ETO_FLOW_SET_ETO_DATE_STOP"),
+
+  downloadTokenholdersList: createActionFactory("ETO_ISSUER_DOWNLOAD_TOKENHOLDERS_LIST"),
 };

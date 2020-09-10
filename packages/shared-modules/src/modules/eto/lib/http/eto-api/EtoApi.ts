@@ -11,7 +11,7 @@ import {
   TEtoDataWithCompany,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "./EtoApi.interfaces.unsafe";
+} from "./EtoApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/";
 const COMPANIES_ME_DATA_PATH = "/companies/me";

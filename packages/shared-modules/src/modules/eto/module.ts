@@ -6,7 +6,8 @@ import { TPureInvestorPortfolioModuleState } from "../investor-portfolio/module"
 import { TPureTokenPriceModuleState } from "../token-price/module";
 import { TPureWalletModuleState } from "../wallet/module";
 import { etoActions } from "./actions";
-import { setupContainerModule } from "./bindings";
+import { setupContainerModule } from "./lib/bindings";
+import { symbols } from "./lib/symbols";
 import { etoReducerMap } from "./reducer";
 import {
   getEtoContract,
@@ -22,7 +23,6 @@ import {
   setupEtoSagas,
 } from "./sagas";
 import * as selectors from "./selectors";
-import { symbols } from "./symbols";
 import * as utils from "./utils";
 
 const MODULE_ID = generateSharedModuleId("eto");
@@ -68,9 +68,10 @@ export type TEtoModuleState = TPureEtoModuleState &
   TAuthModuleState;
 
 export { EtoMessage } from "./messages";
-export * from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+export * from "./lib/http/eto-api/EtoApi.interfaces";
 export * from "./lib/http/eto-api/EtoFileApi.interfaces";
 export * from "./lib/http/eto-api/EtoProductsApi.interfaces";
+export * from "./lib/http/eto-api/EtoTokensApi.interfaces";
 export * from "./lib/http/eto-api/EtoFileApi";
 export * from "./lib/http/eto-api/EtoUtils";
 export * from "./lib/http/eto-api/EtoApiUtils";

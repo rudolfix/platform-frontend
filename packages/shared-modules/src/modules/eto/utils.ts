@@ -9,7 +9,7 @@ import {
   TEtoDataWithCompany,
   TEtoSpecsData,
   TPartialEtoSpecData,
-} from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+} from "./lib/http/eto-api/EtoApi.interfaces";
 import {
   calculateCurrentInvestmentProgressPercentage,
   calculateTarget,
@@ -91,6 +91,13 @@ export function isOnChain<T extends TEtoWithContract>(
   eto: T,
 ): eto is T & { contract: Exclude<T["contract"], undefined> } {
   return eto.state === EEtoState.ON_CHAIN && eto.contract !== undefined;
+}
+
+export function isSuccessful(eto: TEtoWithContract): boolean {
+  return (
+    isOnChain(eto) &&
+    [EETOStateOnChain.Claim, EETOStateOnChain.Payout].includes(eto.contract.timedState)
+  );
 }
 
 export const isRestrictedEto = (eto: TEtoWithCompanyAndContractReadonly): boolean =>

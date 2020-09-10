@@ -13,7 +13,7 @@ import {
   selectIssuerEto,
   selectIssuerEtoState,
   userHasKycAndEmailVerified,
-} from "../../modules/eto-flow/selectors";
+} from "../../../modules/eto-flow/selectors";
 import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
@@ -25,15 +25,15 @@ import {
   calculateInvestmentTermsProgress,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
-} from "../../modules/eto-flow/utils";
-import { appConnect } from "../../store";
-import { TTranslatedString } from "../../types";
-import { etoRegisterRoutes } from "../eto/registration/routes";
-import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
-import { Heading } from "../shared/Heading";
+} from "../../../modules/eto-flow/utils";
+import { appConnect } from "../../../store";
+import { TTranslatedString } from "../../../types";
+import { etoRegisterRoutes } from "../../eto/registration/routes";
+import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
+import { Heading } from "../../shared/Heading";
 import { EtoFormProgressWidget } from "./EtoFormProgressWidget";
 
-import * as styles from "./ETOFormsProgressSection.module.scss";
+import * as styles from "./ETOFormsProgressWidget.module.scss";
 
 interface IEtoRegisteredRoutes {
   [id: string]: EEtoFormTypes;
@@ -69,7 +69,7 @@ interface IExternalProps {
   shouldViewEtoSettings?: boolean;
 }
 
-export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStateProps &
+export const ETOFormsProgressWidgetLayout: React.FunctionComponent<IStateProps &
   IExternalProps> = ({
   etoStatus,
   loadingData,
@@ -173,7 +173,7 @@ export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStatePro
           <Heading level={2} decorator={false} className="mb-3">
             {group.name}
           </Heading>
-          <Container type={EContainerType.INHERIT_GRID} className={styles.progressSectionLayout}>
+          <Container type={EContainerType.INHERIT_GRID} className={styles.progressWidgetLayout}>
             {group.sections
               .filter(s => !s.hidden)
               .map((section, sectionIndex) => (
@@ -195,7 +195,7 @@ export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStatePro
   );
 };
 
-export const ETOFormsProgressSection = appConnect<IStateProps, {}, IExternalProps>({
+export const ETOFormsProgressWidget = appConnect<IStateProps, {}, IExternalProps>({
   stateToProps: state => ({
     etoStatus: selectIssuerEtoState(state),
     loadingData: selectIsGeneralEtoLoading(state),
@@ -211,4 +211,4 @@ export const ETOFormsProgressSection = appConnect<IStateProps, {}, IExternalProp
     etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectIssuerCompany(state)),
     etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectIssuerEto(state)),
   }),
-})(ETOFormsProgressSectionComponent);
+})(ETOFormsProgressWidgetLayout);

@@ -19,7 +19,12 @@ import {
   TEtoWithCompanyAndContractReadonly,
   TOfferingAgreementsStatus,
 } from "@neufund/shared-modules";
-import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
+import {
+  DeepReadonly,
+  EthereumAddressWithChecksum,
+  nonNullable,
+  objectToFilteredArray,
+} from "@neufund/shared-utils";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
@@ -95,6 +100,18 @@ export const selectIsBookBuilding = (state: TAppGlobalState): boolean => {
   }
 
   return false;
+};
+
+export const selectIssuerEtoEquityTokenAddress = (
+  state: TAppGlobalState,
+): EthereumAddressWithChecksum | undefined => {
+  const eto = selectIssuerEto(state);
+
+  if (eto) {
+    return eto.equityTokenContractAddress;
+  }
+
+  return undefined;
 };
 
 export const selectMaxPledges = (state: TAppGlobalState) => {

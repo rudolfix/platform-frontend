@@ -280,6 +280,20 @@ export const assertPublicStep = () => {
   cy.get(tid("eto-dashboard-fundraising-live")).should("exist");
 };
 
+export const assertClaimStep = () => {
+  cy.get(tid("eto-state-4")).should("exist");
+
+  cy.get(tid("dashboard-eto-completed-widget")).should("exist");
+  cy.get(tid("eto-settings-tokenholders")).should("exist");
+};
+
+export const assertPayoutStep = () => {
+  cy.get(tid("eto-state-5")).should("exist");
+
+  cy.get(tid("dashboard-eto-completed-widget")).should("exist");
+  cy.get(tid("eto-settings-tokenholders")).should("exist");
+};
+
 export const openAndCheckValues = (
   section: string,
   sectionForm: TFormFixture,

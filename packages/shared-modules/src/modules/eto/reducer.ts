@@ -2,7 +2,7 @@ import { AppReducer } from "@neufund/sagas";
 import { DeepReadonly } from "@neufund/shared-utils";
 
 import { etoActions } from "./actions";
-import { TCompanyEtoData, TEtoSpecsData } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
+import { TCompanyEtoData, TEtoSpecsData } from "./lib/http/eto-api/EtoApi.interfaces";
 import {
   IEtoTokenData,
   IEtoTokenGeneralDiscounts,

@@ -1,8 +1,8 @@
 $checkbox-height: px-to-rem(18px);
 
 .wrapper {
-  display: inline-flex;
   align-items: center;
+  display: inline-flex;
   position: relative;
   user-select: none;
 }
@@ -10,9 +10,37 @@ $checkbox-height: px-to-rem(18px);
 .input {
   @include sr-only();
 
-  &:hover, &:focus {
-    ~  .checkmark {
+  &:hover {
+    // `:not` is used to increase priority
+    // when `.focus-visible` is set we want to have also a visible effect for `:hover`
+    &:not(:checked) ~  .checkmark {
       border-color: $neu-bitter-lemon;
+    }
+
+    &:checked {
+      ~  .checkmark {
+        border-color: $neu-gull-gray;
+      }
+    }
+  }
+
+  &:checked {
+    ~ .checkmark {
+      background-color: $neu-bitter-lemon;
+      border-color: $neu-bitter-lemon;
+
+      &::after {
+        display: block;
+      }
+    }
+  }
+
+  &:global(.focus-visible) {
+    ~  .checkmark {
+      $focus-shadow: rgba($neu-base-blue, .3);
+
+      border-color: $neu-base-blue;
+      box-shadow: 0 0 0 3px $focus-shadow;
     }
   }
 
@@ -21,24 +49,14 @@ $checkbox-height: px-to-rem(18px);
       cursor: default;
     }
 
-    ~ .checkmark {
+    &:not(:checked) ~ .checkmark {
       border-color: $neu-light-blue-grey-two;
     }
 
     &:checked {
       ~ .checkmark {
         background-color: $neu-light-blue-grey-two;
-      }
-    }
-  }
-
-  &:checked {
-    ~ .checkmark {
-      background-color: $neu-bitter-lemon;
-      border: 0;
-
-      &::after {
-        display: block;
+        border-color: $neu-light-blue-grey-two;
       }
     }
   }
@@ -66,8 +84,8 @@ $checkbox-height: px-to-rem(18px);
 
     content: "";
     position: absolute;
-    left: px-to-rem(7px);
-    top: px-to-rem(3px);
+    left: px-to-rem(6px);
+    top: px-to-rem(2px);
     width: px-to-rem(5px);
     height: px-to-rem(10px);
     border: solid $neu-white;

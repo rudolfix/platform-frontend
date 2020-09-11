@@ -1,9 +1,9 @@
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import { Formik } from "formik";
 import * as React from "react";
 
-import { PaddedWrapper, BlockWrapper } from "../../storybook-decorators";
+import { BlockWrapper, PaddedWrapper } from "../../storybook-decorators";
 import { Checkbox } from "./Checkbox";
 import CheckboxReadme from "./Checkbox.md";
 

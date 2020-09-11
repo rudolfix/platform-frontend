@@ -8,7 +8,7 @@ $checkbox-height: px-to-rem(18px);
 }
 
 .input {
-  @include sr-only();
+  @include sr-only;
 
   &:hover {
     // `:not` is used to increase priority
@@ -45,7 +45,8 @@ $checkbox-height: px-to-rem(18px);
   }
 
   &:disabled {
-    ~ .checkmark, ~ .label {
+    ~ .checkmark,
+    ~ .label {
       cursor: default;
     }
 
@@ -62,7 +63,8 @@ $checkbox-height: px-to-rem(18px);
   }
 }
 
-.checkmark, .label {
+.checkmark,
+.label {
   cursor: pointer;
 }
 

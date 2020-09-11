@@ -27,7 +27,7 @@ export const CheckboxBase: React.FunctionComponent<ICheckboxBaseProps & TDataTes
   label,
   "data-test-id": dataTestId,
 }) => (
-  <div className={cn(styles.wrapper, { [styles.disabled]: disabled })}>
+  <label className={cn(styles.wrapper)}>
     <input
       type="checkbox"
       className={styles.input}
@@ -37,14 +37,10 @@ export const CheckboxBase: React.FunctionComponent<ICheckboxBaseProps & TDataTes
       checked={checked}
     />
 
-    <span className={styles.checkmark} onClick={onChange} data-test-id={dataTestId} />
+    <span className={styles.checkmark} data-test-id={dataTestId} />
 
-    {label && (
-      <label htmlFor={name} className={styles.label}>
-        {label}
-      </label>
-    )}
-  </div>
+    {label && <span className={styles.label}>{label}</span>}
+  </label>
 );
 
 export const Checkbox: React.FunctionComponent<IFieldCheckboxProps & TDataTestId> = ({

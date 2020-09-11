@@ -1,4 +1,6 @@
+const { DefinePlugin } = require("webpack");
 const path = require("path");
+
 const paths = require("../webpack/paths");
 
 module.exports = {
@@ -119,6 +121,12 @@ module.exports = {
     ];
 
     config.resolve.extensions.push(".ts", ".tsx");
+
+    config.plugins.push(
+      new DefinePlugin({
+        __DEV__: false,
+      }),
+    );
 
     return config;
   },

@@ -1,36 +1,51 @@
 $checkbox-height: px-to-rem(18px);
 
 .wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   position: relative;
-
-  &.disabled {
-    pointer-events: none;
-  }
+  user-select: none;
 }
 
 .input {
-  position: absolute;
-  height: 0;
-  width: 0;
+  @include sr-only();
 
-  &:disabled ~ .checkmark {
-    border-color: $neu-light-blue-grey-two;
-
-    &:checked ~ .checkmark {
-      background-color: $neu-light-blue-grey-two;
+  &:hover, &:focus {
+    ~  .checkmark {
+      border-color: $neu-bitter-lemon;
     }
   }
 
-  &:checked ~ .checkmark {
-    background-color: $neu-bitter-lemon;
-    border: 0;
+  &:disabled {
+    ~ .checkmark, ~ .label {
+      cursor: default;
+    }
 
-    &::after {
-      display: block;
+    ~ .checkmark {
+      border-color: $neu-light-blue-grey-two;
+    }
+
+    &:checked {
+      ~ .checkmark {
+        background-color: $neu-light-blue-grey-two;
+      }
     }
   }
+
+  &:checked {
+    ~ .checkmark {
+      background-color: $neu-bitter-lemon;
+      border: 0;
+
+      &::after {
+        display: block;
+      }
+    }
+  }
+}
+
+.checkmark, .label {
+  cursor: pointer;
 }
 
 .checkmark {
@@ -41,13 +56,14 @@ $checkbox-height: px-to-rem(18px);
   position: relative;
   transition: border 200ms ease-out, background-color 200ms ease-out;
   flex-shrink: 0;
-  cursor: pointer;
 
-  &:hover {
-    border-color: $neu-bitter-lemon;
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 
   &::after {
+    display: none;
+
     content: "";
     position: absolute;
     left: px-to-rem(7px);
@@ -64,6 +80,5 @@ $checkbox-height: px-to-rem(18px);
   font-size: $font-size-medium-small;
   color: $neu-shuttle-gray;
   padding-left: px-to-rem(10px);
-  cursor: pointer;
-  user-select: none;
+  line-height: 1;
 }

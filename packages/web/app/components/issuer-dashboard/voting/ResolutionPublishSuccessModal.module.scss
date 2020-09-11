@@ -1,0 +1,28 @@
+.main {
+  width: px-to-rem(560px);
+  text-align: center;
+
+  & > div {
+    border: 0;
+    border-radius: 1rem;
+  }
+
+  & > div > section {
+    border-radius: 4px;
+  }
+}
+
+.title {
+  margin-top: px-to-rem(24px);
+  margin-bottom: px-to-rem(16px);
+}
+
+.description {
+  padding: 0 px-to-rem(48px);
+  @include nds-body-small;
+  color: $neu-shuttle-gray;
+}
+
+.link {
+  color: $neu-dark-blue;
+}

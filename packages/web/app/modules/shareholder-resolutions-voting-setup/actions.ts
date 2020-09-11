@@ -14,4 +14,6 @@ export const actions = {
     "UPLOAD_RESOLUTION_DOCUMENT_ERROR",
     (tabVisible: boolean) => ({ tabVisible }),
   ),
+  showSuccessModal: createActionFactory("SHOW_SUCCESS_MODAL"),
+  closeSuccessModal: createActionFactory("CLOSE_SUCCESS_MODAL"),
 };

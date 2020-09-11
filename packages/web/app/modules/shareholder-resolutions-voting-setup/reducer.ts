@@ -4,10 +4,12 @@ import { actions } from "./actions";
 
 export type TShareholderResolutionsVotingSetupState = {
   uploadingDocument: boolean;
+  showSuccessModal: boolean;
 };
 
 const initialState: TShareholderResolutionsVotingSetupState = {
   uploadingDocument: false,
+  showSuccessModal: false,
 };
 
 export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof actions> = (
@@ -34,6 +36,16 @@ export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof
       return {
         ...state,
         shareCapital: action.payload.shareCapital,
+      };
+    case actions.showSuccessModal.getType():
+      return {
+        ...state,
+        showSuccessModal: true,
+      };
+    case actions.closeSuccessModal.getType():
+      return {
+        ...state,
+        showSuccessModal: false,
       };
     default:
       return state;

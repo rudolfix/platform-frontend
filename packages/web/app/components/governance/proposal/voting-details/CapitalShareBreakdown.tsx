@@ -1,11 +1,11 @@
 import { ButtonInline, EInlineIconFill, Eth, EurToken, InlineIcon } from "@neufund/design-system";
+import { EMimeType } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { IImmutableFileId } from "../../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { IShareCapitalBreakdown } from "../../../../modules/shareholder-resolutions-voting/types";
 import { DataRowSeparated, DataRowSeparator, EDataRowSize } from "../../../shared/DataRow";
-import { EMimeType } from "../../../shared/forms";
 import { Heading } from "../../../shared/Heading";
 import { EProposalMessages, getMessageTranslation } from "../../../translatedMessages/messages";
 import { EVotingStateLayout, VotingStateWidget } from "./VotingStateWidget";

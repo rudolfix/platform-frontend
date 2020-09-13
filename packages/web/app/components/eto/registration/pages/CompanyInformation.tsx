@@ -4,7 +4,7 @@ import {
   EtoCompanyInformationType,
   TPartialCompanyEtoData,
 } from "@neufund/shared-modules";
-import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT } from "@neufund/shared-utils";
+import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT, EMimeType } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -19,7 +19,7 @@ import {
 import { appConnect } from "../../../../store";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType, TAcceptedFileType } from "../../../shared/forms/fields/utils";
+import { TAcceptedFileType } from "../../../shared/forms/fields/utils";
 import { EtoTagWidget, generateTagOptions } from "../eto-tags-widget/EtoTagWidget.unsafe";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";

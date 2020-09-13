@@ -12,6 +12,7 @@ import {
   TEtoKeyIndividualType,
   TPartialCompanyEtoData,
 } from "@neufund/shared-modules";
+import { EMimeType } from "@neufund/shared-utils";
 import cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
@@ -29,7 +30,6 @@ import { appConnect } from "../../../../store";
 import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType } from "../../../shared/forms/fields/utils";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { SocialProfilesEditor, SOCIAL_PROFILES_PERSON } from "../../../shared/SocialProfilesEditor";

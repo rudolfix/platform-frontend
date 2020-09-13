@@ -5,6 +5,7 @@ import {
   EButtonWidth,
   TextField,
 } from "@neufund/design-system";
+import { EMimeType } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,7 +13,7 @@ import { ModalFooter } from "reactstrap";
 
 import { GovernanceUpdateSchema, IResolutionUpdate } from "../../../../modules/governance/types";
 import { IModalComponentProps, Modal } from "../../../modals/Modal";
-import { EMimeType, FormDeprecated } from "../../../shared/forms";
+import { FormDeprecated } from "../../../shared/forms";
 import { EUploadType, MultiFileUploadComponent } from "../../../shared/MultiFileUpload";
 
 import trashIcon from "../../../../assets/img/inline_icons/delete.svg";

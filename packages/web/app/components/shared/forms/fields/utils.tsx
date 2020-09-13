@@ -4,7 +4,7 @@ import {
   getValidationSchema,
   isRequired,
 } from "@neufund/design-system";
-import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
+import { ArrayWithAtLeastOneMember, EMimeType } from "@neufund/shared-utils";
 import cn from "classnames";
 import { FormikContextType, useField } from "formik";
 import * as React from "react";
@@ -18,15 +18,6 @@ import { FormFieldLabel } from "./FormFieldLabel";
 import { IImageDimensions } from "./FormSingleFileUpload";
 
 import * as styles from "../fields/FormStyles.module.scss";
-
-export enum EMimeType {
-  PDF = "application/pdf",
-  JPEG = "image/jpeg",
-  JPG = "image/jpg",
-  PNG = "image/png",
-  SVG = "image/svg+xml",
-  ANY_IMAGE_TYPE = "image/*",
-}
 
 export type TAcceptedFileType = EMimeType & string;
 

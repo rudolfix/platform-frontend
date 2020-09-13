@@ -1,11 +1,12 @@
 import { Button, CheckboxBase, EButtonLayout, TextField } from "@neufund/design-system";
+import { EMimeType } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { ModalFooter } from "reactstrap";
 import * as Yup from "yup";
 import * as styles from "./UploadVotingResultsModal.module.scss";
 import { Modal } from "../../modals/Modal";
-import { EMimeType, Form } from "../../shared/forms";
+import { Form } from "../../shared/forms";
 import { Heading } from "../../shared/Heading";
 import { EUploadType, MultiFileUploadComponent } from "../../shared/MultiFileUpload";
 
@@ -24,11 +25,11 @@ export const UploadVotingResultsModal = props => {
       </Heading>
 
       <p className={styles.description}>
-      <FormattedHTMLMessage
-        id="governance.proposal.upload-voting-results-modal.description"
-        tagName="span"
-        values={{nomineeName: "nomineeName"}}
-      />
+        <FormattedHTMLMessage
+          id="governance.proposal.upload-voting-results-modal.description"
+          tagName="span"
+          values={{ nomineeName: "nomineeName" }}
+        />
       </p>
 
       <Form
@@ -89,7 +90,7 @@ export const UploadVotingResultsModal = props => {
                 files={[
                   {
                     id: "1",
-                    fileName: 'Fifth Force GmbH Series C resolution results.pdf',
+                    fileName: "Fifth Force GmbH Series C resolution results.pdf",
                   },
                 ]}
               />

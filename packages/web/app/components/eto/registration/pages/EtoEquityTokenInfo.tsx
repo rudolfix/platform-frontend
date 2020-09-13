@@ -5,6 +5,7 @@ import {
   etoFormIsReadonly,
   TPartialEtoSpecData,
 } from "@neufund/shared-modules";
+import { EMimeType } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -21,7 +22,6 @@ import { appConnect } from "../../../../store";
 import { FormField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType } from "../../../shared/forms/fields/utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

@@ -1,5 +1,6 @@
 import { ButtonInline } from "@neufund/design-system";
 import { TCompanyEtoData, TEtoWithCompanyAndContract } from "@neufund/shared-modules";
+import { EMimeType } from "@neufund/shared-utils";
 import cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -9,7 +10,7 @@ import { externalRoutes } from "../../../config/externalRoutes";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { TProposal } from "../../../modules/shareholder-resolutions-voting/types";
 import { etherscanAddressReadContractLink } from "../../appRouteUtils";
-import { EMimeType, mapMimeTypeToExtension } from "../../shared/forms";
+import { mapMimeTypeToExtension } from "../../shared/forms";
 import { Heading } from "../../shared/Heading";
 import { EInlineIconFill, InlineIcon } from "../../shared/icons";
 import { ExternalLink } from "../../shared/links";

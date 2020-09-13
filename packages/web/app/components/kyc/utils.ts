@@ -3,10 +3,10 @@ import {
   TInstantIdNoneProvider,
   TManualIdProvider,
 } from "@neufund/shared-modules";
-import { ArrayWithAtLeastOneMember, assertNever } from "@neufund/shared-utils";
+import { ArrayWithAtLeastOneMember, assertNever, EMimeType } from "@neufund/shared-utils";
 
 import { OnfidoSDK } from "../../modules/instant-id/lib/onfido/OnfidoSDK";
-import { EMimeType, TAcceptedFileType } from "../shared/forms/fields/utils";
+import { TAcceptedFileType } from "../shared/forms/fields/utils";
 
 import id_now from "../../assets/img/instant-id/id_now.svg";
 import onfido from "../../assets/img/instant-id/onfido.svg";

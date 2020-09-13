@@ -1,8 +1,9 @@
 import { isValid } from "@neufund/design-system";
+import { EMimeType } from "@neufund/shared-utils";
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { EMimeType, generateFileInformationDescription, isFieldRequired } from "./utils";
+import { generateFileInformationDescription, isFieldRequired } from "./utils";
 
 describe("Form utils", () => {
   // TODO move test suite to design-system once it has CI

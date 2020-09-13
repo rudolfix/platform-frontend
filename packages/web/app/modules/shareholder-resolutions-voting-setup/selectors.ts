@@ -6,6 +6,9 @@ const selectShareholderResolutionsVotingSetupModule = (state: TAppGlobalState) =
 export const isDocumentUploading = (state: TAppGlobalState) =>
   selectShareholderResolutionsVotingSetupModule(state).uploadingDocument;
 
+export const selectUploadedDocument = (state: TAppGlobalState) =>
+  selectShareholderResolutionsVotingSetupModule(state).uploadedDocument;
+
 export const selectShareCapital = (state: TAppGlobalState) =>
   selectShareholderResolutionsVotingSetupModule(state).shareCapital;
 

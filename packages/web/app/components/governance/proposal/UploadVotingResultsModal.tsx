@@ -17,7 +17,14 @@ const VotingResultsSchema = Yup.object().shape({
   iUnderstand: Yup.boolean().required(),
 });
 
-export const UploadVotingResultsModal = props => {
+type TExternalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onUploadDocument: () => void;
+  onNext: () => void;
+};
+
+export const UploadVotingResultsModal: React.FunctionComponent<TExternalProps> = props => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} bodyClass={styles.modalBody}>
       <Heading level={4} decorator={false}>
@@ -37,8 +44,9 @@ export const UploadVotingResultsModal = props => {
         className={styles.form}
         validateOnMount
         initialValues={{}}
+        onSubmit={f=>f}
       >
-        {({ values, ...formProps }) => {
+        {({ values }) => {
           // console.log(values);
           // console.log(formProps);
           const disableSubmit = !props.isValid;

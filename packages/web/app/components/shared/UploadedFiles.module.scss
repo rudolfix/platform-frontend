@@ -11,7 +11,6 @@
 
   &:last-of-type {
     border-bottom: 0;
-    margin-bottom: px-to-rem(16px);
   }
 
   > * {
@@ -55,5 +54,15 @@
     text-overflow: ellipsis;
     overflow: hidden;
     transition: 150ms ease-out color;
+  }
+}
+
+.delete-button {
+  width: px-to-rem(24px);
+  height: px-to-rem(24px);
+
+  & path {
+    stroke: $neu-flamingo-red;
+    fill: $neu-white;
   }
 }

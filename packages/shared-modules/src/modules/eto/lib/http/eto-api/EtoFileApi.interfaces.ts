@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared-utils";
+import { Dictionary, EMimeType } from "@neufund/shared-utils";
 
 import { EtoStateToCamelcase } from "./EtoApi.interfaces.unsafe";
 
@@ -34,6 +34,11 @@ export enum EEtoDocumentType {
   INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW = "investment_and_shareholder_agreement_preview",
   INVESTMENT_AND_SHAREHOLDER_AGREEMENT = "investment_and_shareholder_agreement",
   SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT = "signed_investment_and_shareholder_agreement",
+}
+
+export enum ECompanyDocumentType {
+  RESOLUTION_DOCUMENT = "resolution_document",
+  RESOLUTION_RESULTS_DOCUMENT = "resolution_results_document",
 }
 
 export type TEtoFormType = "document" | "template";
@@ -84,4 +89,18 @@ export const immutableDocumentName: { [key in EEtoDocumentType]: string } = {
   signed_termsheet: "Signed Termsheet",
   signed_investment_and_shareholder_agreement: "Signed Investment and Shareholder Agreement",
   investment_and_shareholder_agreement_preview: "Investment and Shareholder Agreement",
+};
+
+export type TResolutionDocument = {
+  contract: string;
+  createdAt: string;
+  documentType: ECompanyDocumentType.RESOLUTION_DOCUMENT;
+  form: "document";
+  ipfsHash: string;
+  mimeType: EMimeType.PDF;
+  name: string;
+  owner: string;
+  resolutionId: string;
+  size: number;
+  title: string;
 };

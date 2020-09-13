@@ -1,4 +1,4 @@
-import { EKycRequestType, IKycFileInfo } from "@neufund/shared-modules";
+import { EKycRequestType, IKycFileInfo, TResolutionDocument } from "@neufund/shared-modules";
 import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
 import cn from "classnames";
 import * as React from "react";
@@ -34,10 +34,12 @@ interface IProps {
   filesUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
-  files?: ReadonlyArray<IKycFileInfo>;
+  files?: ReadonlyArray<IKycFileInfo> | TResolutionDocument[];
   "data-test-id"?: string;
   className?: string;
   dropZoneWrapperClass?: string;
+  onDelete?: (index: number) => void;
+  uploadedState?: React.ReactNode;
 }
 
 const selectTitle = (uploadType: EKycRequestType | EKycUploadType | EUploadType) => {
@@ -63,36 +65,44 @@ export const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   uploadTitle,
   "data-test-id": dataTestId,
   dropZoneWrapperClass,
+  onDelete,
+  uploadedState,
   ...props
 }) => {
   const onDrop = (accepted: File[]) => accepted.forEach(onDropFile);
 
   return (
     <div className={cn(styles.multiFileUpload, layout)} data-test-id={dataTestId}>
-      <p className={styles.uploadTitle}>{uploadTitle || selectTitle(uploadType)}</p>
-      <div className={styles.uploadContainer}>
-        <div className={cn(styles.dropzoneWrapper, dropZoneWrapperClass)}>
-          <Dropzone
-            data-test-id="multi-file-upload-dropzone"
-            accept={acceptedFiles}
-            onDrop={onDrop}
-            disabled={filesUploading}
-            isUploading={filesUploading}
-            name={uploadType}
-            {...props}
-          />
-          <p className={styles.fileTypes}>
-            <FormattedMessage id="shared-component.multi-file-upload.accepted-types" />
-          </p>
-        </div>
-        <section className={styles.uploaderInfo}>
-          <div className={styles.uploadInformationsWrapper}>
-            <MultiFileUploadInfo uploadType={uploadType} />
+      {uploadedState && (!files || files.length === 0) ? (
+        <>
+          <p className={styles.uploadTitle}>{uploadTitle || selectTitle(uploadType)}</p>
+          <div className={styles.uploadContainer}>
+            <div className={cn(styles.dropzoneWrapper, dropZoneWrapperClass)}>
+              <Dropzone
+                data-test-id="multi-file-upload-dropzone"
+                accept={acceptedFiles}
+                onDrop={onDrop}
+                disabled={filesUploading}
+                isUploading={filesUploading}
+                name={uploadType}
+                {...props}
+              />
+              <p className={styles.fileTypes}>
+                <FormattedMessage id="shared-component.multi-file-upload.accepted-types" />
+              </p>
+            </div>
+            <section className={styles.uploaderInfo}>
+              <div className={styles.uploadInformationsWrapper}>
+                <MultiFileUploadInfo uploadType={uploadType} />
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
+        </>
+      ) : (
+        uploadedState
+      )}
 
-      {files && files.length > 0 && <UploadedFiles files={files} />}
+      {files && files.length > 0 && <UploadedFiles files={files} onDelete={onDelete} />}
     </div>
   );
 };

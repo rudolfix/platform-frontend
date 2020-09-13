@@ -79,7 +79,7 @@ export enum EVotingErrorMessage {
   UNSUPPORTED_PROPOSAL_STATE = "unsupportedProposalState",
   CANNOT_VOTE = "cannotVote",
   FAILED_TO_LOAD_PROPOSAL = "failedToLoadProposal",
-  FAILED_TO_UPLOAD_RESOLUTION_DOCUMENT = "failedToUploadResolutionDocument"
+  FAILED_TO_UPLOAD_RESOLUTION_DOCUMENT = "failedToUploadResolutionDocument",
 }
 
 export enum GenericModalMessage {

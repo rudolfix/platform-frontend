@@ -71,3 +71,14 @@
 .editButton {
   margin-right: px-to-rem(16px);
 }
+
+.after-upload-message {
+  @include nds-body-small;
+  background-color: $neu-pale-grey-three;
+  border: 1px solid $neu-light-blue-grey-two;
+  padding: px-to-rem(56px) px-to-rem(24px);
+  color: $neu-shuttle-gray;
+  line-height: px-to-rem(20px);
+  margin-bottom: px-to-rem(16px);
+  text-align: center;
+}

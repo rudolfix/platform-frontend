@@ -4,13 +4,20 @@ import { Dictionary } from "lodash";
 
 import { authModuleAPI } from "../../../../auth/module";
 import { IHttpClient } from "../../../../core/module";
-import { EEtoDocumentType, IEtoDocument, TStateInfo } from "./EtoFileApi.interfaces";
+import {
+  ECompanyDocumentType,
+  EEtoDocumentType,
+  IEtoDocument,
+  TResolutionDocument,
+  TStateInfo,
+} from "./EtoFileApi.interfaces";
 
-const BASE_PATH = "/api/eto-listing/etos";
+const BASE_PATH = "/api/eto-listing";
 // Issuer endpoints
-const ETO_DOCUMENTS_PATH = "/me/documents";
-const ETO_DOCUMENTS_INFO_PATH = "/me/documents/state_info";
-const ETO_TEMPLATES_PATH = "/me/templates";
+const ETO_DOCUMENTS_PATH = "/etos/me/documents";
+const ETO_DOCUMENTS_INFO_PATH = "/etos/me/documents/state_info";
+const ETO_TEMPLATES_PATH = "/etos/me/templates";
+const COMPANY_DOCUMENTS_PATH = "/companies/me/documents";
 // Public ETO endpoints
 const ETO_BY_ID_TEMPLATES_PATH = "/:etoId/templates/:documentType";
 
@@ -30,7 +37,7 @@ export class EtoFileApi {
     data.append(
       "document_data",
       JSON.stringify({
-        mime_type: "application/pdf",
+        mime_type: file.type,
         document_type: documentType,
         name: file.name,
         form: "document",
@@ -39,6 +46,35 @@ export class EtoFileApi {
     const response = await this.httpClient.post<IEtoDocument>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_PATH,
+      formData: data,
+      allowedStatusCodes: [409],
+    });
+    if (response.statusCode === 409) {
+      throw new FileAlreadyExists();
+    }
+
+    return response.body;
+  }
+
+  public async uploadCompanyDocument(
+    file: File,
+    documentType: ECompanyDocumentType,
+  ): Promise<TResolutionDocument> {
+    const data = new FormData();
+    data.append("file", file);
+    data.append(
+      "document_data",
+      JSON.stringify({
+        mime_type: "application/pdf",
+        document_type: documentType,
+        name: file.name,
+        form: "document",
+        resolution_id: "0x1234",
+      }),
+    );
+    const response = await this.httpClient.post<TResolutionDocument>({
+      baseUrl: BASE_PATH,
+      url: COMPANY_DOCUMENTS_PATH,
       formData: data,
       allowedStatusCodes: [409],
     });

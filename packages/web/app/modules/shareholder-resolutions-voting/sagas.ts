@@ -5,7 +5,6 @@ import {
   isZero,
   nonNullable,
   toEthereumAddress,
-  toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 

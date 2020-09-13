@@ -1,3 +1,4 @@
+import { TResolutionDocument } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 import { AppReducer } from "@neufund/sagas";
 import { actions } from "./actions";
@@ -5,11 +6,15 @@ import { actions } from "./actions";
 export type TShareholderResolutionsVotingSetupState = {
   uploadingDocument: boolean;
   showSuccessModal: boolean;
+  uploadedDocument: TResolutionDocument | null;
+  shareCapital: string | null;
 };
 
 const initialState: TShareholderResolutionsVotingSetupState = {
   uploadingDocument: false,
   showSuccessModal: false,
+  uploadedDocument: null,
+  shareCapital: null,
 };
 
 export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof actions> = (
@@ -26,11 +31,17 @@ export const reducer: AppReducer<TShareholderResolutionsVotingSetupState, typeof
       return {
         ...state,
         uploadingDocument: false,
+        uploadedDocument: action.payload,
       };
     case actions.uploadResolutionDocumentError.getType():
       return {
         ...state,
         uploadingDocument: false,
+      };
+    case actions.removeUploadedDocument.getType():
+      return {
+        ...state,
+        uploadedDocument: null,
       };
     case actions.setShareCapital.getType():
       return {

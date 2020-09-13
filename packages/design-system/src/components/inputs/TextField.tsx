@@ -3,6 +3,7 @@ import cn from "classnames";
 import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
+import { TTranslatedString } from "../../types";
 import {
   getSchemaField,
   getValidationSchema,
@@ -33,8 +34,8 @@ const transformBack = (value: number | string, charactersLimit?: number) => {
 
 type TFieldProps = {
   name: string;
-  label?: React.ReactNode;
-  description?: string;
+  label?: React.ReactNode | string;
+  description?: TTranslatedString;
   disabled?: boolean;
   placeholder?: string;
   ignoreTouched?: boolean;

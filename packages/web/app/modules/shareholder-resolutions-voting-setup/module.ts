@@ -2,7 +2,7 @@ import { actions } from "./actions";
 import { shareholderResolutionsVotingSetupReducerMap } from "./reducer";
 import { shareholderResolutionsVotingSetupSagas } from "./sagas";
 import * as selectors from "./selectors";
-import { TVotingResolution } from "./types";
+import { TVotingResolutionSetupData, VotingResolutionSchema } from "./types";
 import { DEFAULT_VOTING_DURATION_DAYS, DEFAULT_SUBMISSION_DEADLINE_DAYS } from "./constants";
 
 const MODULE_ID = "web:shareholder-resolutions-voting-setup";
@@ -22,7 +22,8 @@ const setupShareholderResolutionsVotingSetupModule = () => ({
 export {
   setupShareholderResolutionsVotingSetupModule,
   shareholderResolutionsVotingSetupModuleApi,
-  TVotingResolution,
+  TVotingResolutionSetupData,
+  VotingResolutionSchema,
   DEFAULT_VOTING_DURATION_DAYS,
   DEFAULT_SUBMISSION_DEADLINE_DAYS,
 };
